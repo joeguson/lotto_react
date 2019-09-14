@@ -1,0 +1,170 @@
+1. DB 를 하나 만듬
+CREATE DATABASE beritamus CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+show grants for pillar2@localhost;
+grant all privileges on *.* to 'pillar2'@'localhost' with grant option;
+grant all privileges on beritamus.* to 'pillar2'@'localhost' identified by 'TlqkfEnfgdjqhk1@' with grant option;
+create user root identified by 'TlqkfEnfgdjqhk1@';
+grant all privileges on beritamus.* to 'root'@'localhost' identified by 'TlqkfEnfgdjqhk1@';
+
+2. Overview Table
+
+CREATE TABLE `overview` (
+  `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `total_user` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_p` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_t` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_pl` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_tl` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_comment` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_answer` int UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+바로 data 하나를 넣어줘야 update 가 가능해짐
+INSERT INTO overview(total_user) values(0);
+
+3. Overview Table
+
+CREATE TABLE `users` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `u_id` varchar(100) NOT NULL,
+  `u_pw` varchar(200) NOT NULL,
+  `u_bday` TIMESTAMP DEFAULT NOW(),
+  `u_pen` int UNSIGNED NOT NULL DEFAULT 0,
+  `u_tan` int UNSIGNED NOT NULL DEFAULT 0,
+  `up_like` int UNSIGNED NOT NULL DEFAULT 0,
+  `ut_like` int UNSIGNED NOT NULL DEFAULT 0,
+  `last_login` TIMESTAMP DEFAULT NOW(),
+  `u_level` varchar(100) NOT NULL DEFAULT 'KAMUS',
+  `u_haipur` int UNSIGNED NOT NULL DEFAULT 10000,
+  `sex` CHAR(2) NOT NULL DEFAULT 'n',
+  `email` varchar(255) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+4. Penobrol Table (fulltext index 2개 추가)
+
+CREATE TABLE `penobrol` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `author` varchar(100) NOT NULL,
+  `p_view` int UNSIGNED NOT NULL DEFAULT 0,
+  `date` TIMESTAMP DEFAULT NOW(),
+  `com`  int UNSIGNED NOT NULL DEFAULT 0,
+  `p_like`  int UNSIGNED NOT NULL DEFAULT 0,
+  `identifier` char(2) DEFAULT 'p',
+  `score`  int UNSIGNED NOT NULL DEFAULT 0,
+  `hashtagcount`  int UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (id),
+  FULLTEXT search (title, content)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+여기서 test 필요 title, content에서 search 해봐야함
+
+5. tandya
+CREATE TABLE `tandya` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `question` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `author` varchar(100) NOT NULL,
+  `t_view` int UNSIGNED NOT NULL DEFAULT 0,
+  `date` TIMESTAMP DEFAULT NOW(),
+  `answer`  int UNSIGNED NOT NULL DEFAULT 0,
+  `t_like`  int UNSIGNED NOT NULL DEFAULT 0,
+  `identifier` char(2) DEFAULT 't',
+  `score`  int UNSIGNED NOT NULL DEFAULT 0,
+  `hashtagcount`  int UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (id),
+  FULLTEXT search (question, content)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+6. p_like_dislike
+
+CREATE TABLE `p_like` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `u_id` varchar(100) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+7.t_like
+CREATE TABLE `t_like` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `t_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `u_id` varchar(100) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+8. p_com
+CREATE TABLE `p_com` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `author` varchar(100) NOT NULL,
+  `content` text NOT NULL,
+  `date` TIMESTAMP DEFAULT NOW(),
+  `pc_like` int UNSIGNED NOT NULL DEFAULT 0,
+  `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `score`  int UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+9.t_ans
+CREATE TABLE `t_ans` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `author` varchar(100) NOT NULL,
+  `answer` text NOT NULL,
+  `date` TIMESTAMP DEFAULT NOW(),
+  `ta_like` int UNSIGNED NOT NULL DEFAULT 0,
+  `t_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `score`  int UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+10.pc_like
+CREATE TABLE `pc_like` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `pc_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `u_id` varchar(100) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+11.ta_like
+CREATE TABLE `ta_like` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ta_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `u_id` varchar(100) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+12.hashtag
+CREATE TABLE `hashtag` (
+    `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+    `u_id` varchar(100) NOT NULL,
+    `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+    `t_id` int UNSIGNED NOT NULL DEFAULT 0, 
+    `ht1` varchar(100) DEFAULT '',
+    `ht2` varchar(100) DEFAULT '',
+    `ht3` varchar(100) DEFAULT '',
+    `ht4` varchar(100) DEFAULT '',
+    `ht5` varchar(100) DEFAULT '',
+    `ht6` varchar(100) DEFAULT '',
+    `ht7` varchar(100) DEFAULT '',
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+13.user_save
+CREATE TABLE `user_save` (
+    `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+    `u_id` varchar(100) NOT NULL,
+    `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+    `t_id` int UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+************************************************************************************
+
+
+
+
+
+

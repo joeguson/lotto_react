@@ -1,0 +1,48 @@
+doctype html
+html
+    head
+        title beritamus
+        // what appears on the tab
+        base(href="/")
+        link(rel='stylesheet', href='common.css' type="text/css")
+        link(rel='stylesheet', href='common2.css' type="text/css")
+        // links css common file
+        link(rel='stylesheet', href='cari.css' type="text/css")
+        // links css file
+        link(href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet")
+        meta(charset='UTF-8') 
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        // iphone에서 어플식으로 저장가능
+        // Lorem ipsum
+    body
+        header(id='header')
+            a(href='/cari') Beritamus      
+        nav(id='nav')
+            ul
+                li
+                    a(href='/aku') Aku
+                li(style='border-bottom: 2px solid yellow; opacity: .9')
+                    a(href='/cari') Cari
+                li
+                    a(href='/penobrol') Penobrol
+                li
+                    a(href='/tandya') Tandya
+                br.clear
+        section.sub-main(id='sub-main')
+            .search
+                    form(action='/cari/search' method='get')
+                        p
+                            input(type='text' name='search' placeholder='   Apa?')
+                        br
+                        p
+                            input(type='submit' class="submit")
+            .login
+                if user
+                    h2= 'Welcome ' + user.u_id
+                else
+                    a(href='/aku') Login Dulu
+            .ad
+        section.main(id='main')
+            ul(id='uls')
+        script(type="text/javascript" src="cari.js")

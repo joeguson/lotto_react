@@ -1,0 +1,66 @@
+//this common file is for body, header and nav and main tags only
+//margin order : top right bottom left;
+@bgcolor1: #f6f6f6; //for all body
+@bgcolor2: #1976d2; //for nav
+@bgcolor3: #fbfbfb; // for section
+
+@button-color: #e5e5f2;
+
+@font-color1: black;
+@font-color2: white;
+@font-family: 'Lato', sans-serif;
+//text size & color
+@header-text-size: 25px;
+@header-text-size-big: 50px;
+
+.section-border{
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.button{
+    width: 100%; height:60px; box-sizing: border-box; font-size: 20px; background-color:@button-color; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; margin-bottom: 20px; border-style: none;
+}
+
+body{width:100%; margin:0px; padding:0px; background-color: @bgcolor1;}
+
+//body - header nav
+header{width: 100%; font-size: @header-text-size; height:80px; line-height: 70px; text-align: center; font-family: @font-family;}
+header a{color:@font-color1; text-decoration: none; font-family: @font-family;}
+
+nav{width:100%; margin-bottom: 20px;}
+//nav - ul
+nav ul{list-style: none; padding:0px; margin:0px;}
+
+//ul - li
+nav ul li{width:25%; height:45px; float:left; box-sizing: border-box; text-align: center; line-height: 40px; background-color: @bgcolor2; }
+
+//li - a
+nav ul li a{text-decoration: none; color:@font-color2; font-size: 14px; font-family: @font-family;}
+
+.sub-main{width:100%; margin:0 auto 20px auto; box-sizing: border-box; color:@font-color1; background-color: @bgcolor1; font-family: @font-family;}
+.clear{clear:both;}
+
+.main{width:100%; margin:0 auto 40px auto; box-sizing: border-box; padding:10px 5px; background-color: @bgcolor1; font-family: @font-family;}
+
+//.main - .p-terbaru(div), .p-terkenal(div)
+.t-terbaru, .t-terkenal, .p-terbaru, .p-terkenal{width:90%; margin: 0px auto 20px auto; background-color: @bgcolor3;  box-sizing: border-box; color:@font-color1;}
+
+.p-title, .t-title{background-color: @bgcolor3; color:@font-color1; font-size: 24px; margin-bottom: 10px; font-weight: bold;}
+
+.bar{border-left: 1px solid #dbdbdb;}
+
+
+/*for bigger windows*/
+@media (min-width:768px){
+    header{font-size: @header-text-size-big; height:120px; line-height: 100px;}
+    //ul - li
+    nav ul li{height:60px; box-sizing: border-box; text-align: center;line-height: 60px;}
+    nav ul li:hover{opacity: .7;}
+    //li - a
+    nav ul li a{font-size: 20px;}
+    .sub-main{width:90%;}
+    .main{width:90%;}
+    
+}

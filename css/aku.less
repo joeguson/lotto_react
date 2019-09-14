@@ -1,0 +1,74 @@
+//margin order : top right bottom left;
+@bgcolor1: #f6f6f6; //for all body
+@bgcolor2: #1976d2; //for nav
+@bgcolor3: #fbfbfb; // for section
+
+@button-color: #e5e5f2;
+
+@font-color1: black;
+@font-color2: white;
+
+//text size & color
+@header-text-size: 25px;
+@header-text-size-big: 50px;
+
+*{margin:0px; padding:0px;}
+.section-border{
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.button{
+    width: 100%; height:50px; box-sizing: border-box; font-size: 20px; background-color:@button-color; display: inline-block; text-align: center; line-height: 50px; text-decoration: none; border-style: none; margin-bottom: 20px;
+}
+.button-big{
+    width: 100%; height:65px; box-sizing: border-box; font-size: 35px; background-color:@button-color; display: inline-block; text-align: center; line-height: 65px; text-decoration: none; border-style: none; margin-bottom: 20px;
+}
+
+
+//.login - .ad(div), .login(div)
+.ad{width:100%; height:100px; font: 50px; box-sizing: border-box; margin: 0px 0px 20px 0px; background-color: @bgcolor3; color:@font-color1; text-align: center; font-size: 20px; line-height: 100px;}
+
+.login{width:100%; box-sizing: border-box; margin: 0px; background-color: @bgcolor2; .section-border();}
+
+.logout{.button();}
+
+form{font-size:0px;} //when making input tags inline, they have space between them. Cannot remove it with margin 0px;
+form p{margin:0px 0px 10px 0px; padding:0px; }
+form p:nth-child(1) input{width: 50%; height:40px; box-sizing: border-box; border: 2px solid @button-color; font-size: 20px; display: inline; color:@font-color1;}
+form p:nth-child(2) input{.button(); margin-bottom: 80px;}
+form p:nth-child(3) a{.button();}
+
+//.main - .p-stat(div) .p-penobrol(div), .p-tandya(div)
+.pic{width:20%; height:100%;}
+.p-stat {width:100%; margin-bottom: 20px; background-color: @bgcolor3; padding-left: 10px; .section-border(); box-sizing: border-box; color:@font-color1;}
+
+.p-penobrol {width:100%; margin-bottom: 20px; background-color: @bgcolor3; padding-left: 10px; .section-border(); box-sizing: border-box; font-size: 20px; margin-bottom: 10px; font-weight: bold;}
+
+.p-tandya {width:100%; margin-bottom: 20px; background-color: @bgcolor3; padding-left: 10px; box-sizing: border-box; .section-border(); font-size: 20px; margin-bottom: 10px; font-weight: bold;}
+
+.clear{clear:both}
+
+.links{padding-left:8px;}
+
+.bar{border-left: 1px solid #dbdbdb;}
+
+/*for bigger windows*/
+@media (min-width:768px){
+    input{width:50%; height:70px; border: 2px solid @button-color; margin: 0 auto; font: 50px; background-color: @bgcolor1;}
+    
+    form p:nth-child(1) input{width: 50%; height:65px; box-sizing: border-box; border: 2px solid @button-color; font-size: 40px; background-color:@bgcolor1; display: inline; color:@font-color1;}
+    
+    form p:nth-child(2) input{.button-big();}
+    form p:nth-child(3) a{.button-big();}
+    
+    .login{height:100px; width:100%; float: left; margin: 0px 0px 0px .5%;}
+    
+    .ad{height:150px; width:100%; margin: 0px .5% 0px 0px;}
+    
+    .links{padding-left:8px;}
+
+    .bar{border-left: 1px solid #dbdbdb;}
+    
+}

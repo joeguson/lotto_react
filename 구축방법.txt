@@ -1,0 +1,294 @@
+﻿1. 디렉토리 하나를 만든다 (beritamus-test)
+2. npm init을 통해 하나의 프로젝트로써의 역할을 할 수 있게 한다
+- npm init
+3. 해당 directory에 express를 설치
+- npm install --save express
+4. 해당 directory에 node-mysql 설치
+- npm install --save node-mysql
+5. 해당 directory에 body-parser 설치
+- npm install --save body-parser
+6. 해당 directory에 session설치
+- npm install --save session
+7. 해당 directory에 mysql-session설치
+- npm install express-mysql-session --save
+
+https://freeprog.tistory.com/168
+https://m.blog.naver.com/wlsdml1103/221159758141
+grant all privileges on *.* to 'root'@'%' with grant option;
+/**************************************************************************/
+show grants for pillar2@localhost;
+grant all privileges on *.* to 'pillar2'@'localhost' with grant option;
+grant all privileges on b_test.* to 'pillar2'@'localhost' identified by '111111' with grant option;
+create user root identified by 'code2633'
+grant all privileges on b_test.* to 'root'@'localhost' identified by 'code2633';
+/**************************************************************************/
+
+Database 설정
+1. Database를 하나 만듬
+- CREATE DATABASE b_test CHARACTER SET utf8 COLLATE utf8_general_ci;
+2. b_test안에 여러개의 table을 만듬
+
+1. overview
+- CREATE TABLE `overview` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `total_user` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_p` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_t` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_pl` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_tl` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_pdl` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_tdl` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_comment` int UNSIGNED NOT NULL DEFAULT 0,
+  `total_answer` int UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+2. users
+- CREATE TABLE `user` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `u_id` varchar(100) NOT NULL,
+  `u_pw` varchar(200) NOT NULL,
+  `u_bday` TIMESTAMP DEFAULT NOW(),
+  `u_pen` int UNSIGNED NOT NULL DEFAULT 0,
+  `u_tan` int UNSIGNED NOT NULL DEFAULT 0,
+  `up_like` int UNSIGNED NOT NULL DEFAULT 0,
+  `ut_like` int UNSIGNED NOT NULL DEFAULT 0,
+  `up_dislike` int UNSIGNED NOT NULL DEFAULT 0,
+  `ut_dislike` int UNSIGNED NOT NULL DEFAULT 0,
+  `last_login' TIMESTAMP DEFAULT NOW(),
+  `u_level` varchar(100) NOT NULL DEFAULT 'KAMUS',
+  `u_haipur` int UNSIGNED NOT NULL DEFAULT 10000,
+  `sex` CHAR(2) NOT NULL DEFAULT 'n',
+  `email` varchar(255) NOT NULL
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+3. penobrol
+- CREATE TABLE `penobrol` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `author` varchar(100) NOT NULL,
+  `p_view` int UNSIGNED NOT NULL DEFAULT 0,
+  `date` TIMESTAMP DEFAULT NOW(),
+  `com`  int UNSIGNED NOT NULL DEFAULT 0,
+  `p_like`  int UNSIGNED NOT NULL DEFAULT 0,
+  `p_dislike`  int UNSIGNED NOT NULL DEFAULT 0,
+  `identifier` char(2) DEFAULT 'p',
+  PRIMARY KEY (id),
+  FULLTEXT KEY ptitle (title),
+  FULLTEXT KEY pcontent (content)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+4. tandya
+- CREATE TABLE `tandya` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `question` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `author` varchar(100) NOT NULL,
+  `t_view` int UNSIGNED NOT NULL DEFAULT 0,
+  `date` TIMESTAMP DEFAULT NOW(),
+  `answer`  int UNSIGNED NOT NULL DEFAULT 0,
+  `t_likes`  int UNSIGNED NOT NULL DEFAULT 0,
+  `t_dislike`  int UNSIGNED NOT NULL DEFAULT 0,
+  `identifier` char(2) DEFAULT 't',
+  PRIMARY KEY (id),
+  FULLTEXT KEY tquestion (question),
+  FULLTEXT KEY tcontent (content)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+5.p_like_dislike
+- CREATE TABLE `p_like_dislike` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `u_id` varchar(100) NOT NULL,
+  `p_like_status` CHAR(2) NOT NULL DEFAULT 'n',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+6.t_like_dislike
+- CREATE TABLE `t_like_dislike` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `t_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `u_id` varchar(100) NOT NULL,
+  `t_like_status` CHAR(2) NOT NULL DEFAULT 'n',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+7. p_com
+- CREATE TABLE `p_com` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `author` varchar(100) NOT NULL,
+  `content` text NOT NULL,
+  `date` TIMESTAMP DEFAULT NOW(),
+  `pc_like` int UNSIGNED NOT NULL DEFAULT 0,
+  `pc_dislike` int UNSIGNED NOT NULL DEFAULT 0,
+  `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+8.t_ans
+- CREATE TABLE `t_ans` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `author` varchar(100) NOT NULL,
+  `answer` text NOT NULL,
+  `date` TIMESTAMP DEFAULT NOW(),
+  `ta_like` int UNSIGNED NOT NULL DEFAULT 0,
+  `ta_dislike` int UNSIGNED NOT NULL DEFAULT 0,
+  `t_id` int UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+9.pc_like_dislike
+- CREATE TABLE `pc_like_dislike` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `pc_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `u_id` varchar(100) NOT NULL,
+  `pc_like_status` CHAR(2) NOT NULL DEFAULT 'n',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+10.ta_like_dislike
+- CREATE TABLE `ta_like_dislike` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ta_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `u_id` varchar(100) NOT NULL,
+  `ta_like_status` CHAR(2) NOT NULL DEFAULT 'n',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+11.hashtag
+CREATE TABLE `hashtag` (
+    `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+    `u_id` varchar(100) NOT NULL,
+    `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+    `t_id` int UNSIGNED NOT NULL DEFAULT 0, 
+    `ht1` varchar(100) DEFAULT '',
+    `ht2` varchar(100) DEFAULT '',
+    `ht3` varchar(100) DEFAULT '',
+    `ht4` varchar(100) DEFAULT '',
+    `ht5` varchar(100) DEFAULT '',
+    `ht6` varchar(100) DEFAULT '',
+    `ht7` varchar(100) DEFAULT '',
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+12.user_save
+CREATE TABLE `user_save` (
+    `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+    `u_id` varchar(100) NOT NULL,
+    `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+    `t_id` int UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+6/24
+1. p_com안의 필드중 '-'를 포함하는 필드가 있어 '_'로 추가
+
+alter table [테이블명] add [컬럼명] [타입] [옵션]; 
+ex) alter table [테이블명] add [컬럼명] varchar(100) not null default '0'; 
+alter table p_com add p_num int(255) default '0';
+alter table p_com add p_aut varchar(255);
+alter table penobrol add `points` DECIMAL(5,2) DEFAULT 0;
+
+SELECT * FROM penobrol WHERE id = 1
+
+alter table p_com modify date TIMESTAMP DEFAULT NOW();
+alter table penobrol modify date TIMESTAMP DEFAULT NOW();
+'UPDATE penobrol SET views = views + 1 WHERE id = (?)'
+
+0부터 시작하여 하나씩 올라가야 하는 필드는 NULL이 아닌 0부터이다 (default를 0으로 바꿈)
+alter table penobrol modify views INT(255) default 0;
+
+penobrol안의 모든 views를 0으로 바꿈
+UPDATE penobrol SET views = 0;
+UPDATE penobrol SET com = 0;
+UPDATE penobrol SET dislike=0;
+
+ALTER TABLE `penobrol` CHANGE `like` `likes` INT DEFAULT 0;
+UPDATE penobrol SET likes = 0;
+6/25
+
+시간 표시 방법
+https://vvh-avv.tistory.com/109
+https://mkil.tistory.com/343
+
+6/28
+회원가입시, birthday를 넣기위해선 birthday 필드값을 datetime으로  넣어야합.
+ALTER table user modify date datetime;
+
+검색창에서 쓰일 부분 잘 성명됨
+https://codeforgeek.com/ajax-search-box-using-node-mysql/
+
+검색 기능이 활성화 되려면 찾고자하는 필드에는 fulltext라는 인덱스를 줘야함
+alter table penobrol add FULLTEXT(content);
+alter table penobrol add FULLTEXT(author);
+alter table penobrol add FULLTEXT(title);
+
+alter table users add sex char(5) default 'n';
+alter table users add sex varchar(255) default 'a@a.com';
+
+select * from penobrol where match(content) against('asdf');
+
+alter table penobrol add FULLTEXT(penobrol);
+table안의 필드중 fulltext index를 주입해줘야 함
+
+https://dogcowking.tistory.com/78
+https://m.blog.naver.com/wlsdml1103/221159758141
+
+mysql에 대한 설명이 좋음
+mysql 버전 확인 방법
+터미널 환경에서
+- mysql --version
+mysql안에서
+- select version();
+
+SHOW VARIABLES LIKE 'ft_min_word_len';
+sudo service mysql restart를 통해 재 시작하면 됨
+ALTER TABLE tandya ADD FULLTEXT INDEX seaching3 (question);
+ALTER TABLE penobrol ADD FULLTEXT INDEX seaching (title) DEFAULT title;
+
+SELECT * FROM tandya AS result WHERE MATCH(content) AGAINST('yang diacak');
+
+'SELECT DATEDIFF(NOW(), date) AS time FROM penobrol WHERE id = ?';
+Kamus
+우리는 모두 지식을 가지고 있습니다. 나에겐 당연한 지식이 남에겐 절실한 지식일 수 있습니다. 이제 당신의 경험, 지식,
+    그리고 배려하는 마음으로 남을 도울 준비가 되었습니다. 여러분 모두가 사전입니다.
+
+    ~ Kmaus
+    당신은 여러 사람에게 도움이 되는 지식을 제공하였습니다. 알게 모르게 그들은 모두 당신께 감사하게 생각하고 있습니다.
+    당신이 제공한 지식, 경험으로 조금더 올바른 선택을 하였을 것입니다. 당신이 도움을 준 문제들 중 #의 빈도수의 전문가로
+    사전의 이름이 바뀌었습니다. 축하합니다, 그리고 감사합니다.
+
+    Encyclopedia
+    정말 다양한 분야에 전문가이시군요! 당신은 다양한 문제를 당신의 풍부한 경험과 지식으로 다른 사람을 도왔습니다.
+    당신은 단순한 사전 보다는 encyclopedia 입니다! 더욱더 많은 도움이 되세요!
+
+    ~ encyclopedia.
+    혹시 ~분야를 전공하셨나요? 훌륭한 백과 사전이 되어주어 감사합니다!. 당신의 특별한 경험과 지식으로 인해 세상에 긍정적인
+    영향을 미치고 있다는 걸 아셨나요? 정말 많은 사람들이 당신께 감사하고 있습니다. 감사합니다!
+
+<약 오글주의>
+
+
+약 9년을 가지고 있던 꿈을 오늘 이뤘습니다. 
+직장을 다니며 먹을것 안먹고 놀것 안놀고 잘것 안자면서 조금씩 조금씩 천천히 하다보니 결국 완성이 되네요.
+디자인, frontend, backend, database 모두 제가 직접 구현하였습니다. 
+아직 많이 부족하고 고칠것이 수도 없이 많은 서비스지만 정말 최선을 다했기에 부끄럽지 않습니다.
+
+정말 아름다운 밤입니다!
+
+SELECT TIMESTAMPDIFF(second, date_format(NOW(), '%Y-%m-%d %H:%i'), date_format(date, '%Y-%m-%d %H:%i')) AS time_diff from penobrol where id=1;
+
+https://poiemaweb.com/js-date
+JAVASCRIPT date 에 대한 설명 잘됨
+
+alter table penobrol add score int unsigned not null default '0';
+alter table penobrol add hashtagcount int unsigned not null default '0';
+
+alter table tandya add score int unsigned not null default '0';
+alter table tandya add hashtagcount int unsigned not null default '0';
+
+alter table p_com add hashtagcount int unsigned not null default '0';
+alter table t_ans add hashtagcount int unsigned not null default '0';
+
+alter table overview drop 

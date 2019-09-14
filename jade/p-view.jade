@@ -1,0 +1,81 @@
+doctype html
+html
+    head
+        title beritamus
+        // what appears on the tab
+        base(href="/")
+        link(rel='stylesheet', href='common.css' type="text/css")
+        // links css common file
+        link(rel="stylesheet" href="penobrol_view.css" type="text/css")
+        // links css file
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')    
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        // iphone에서 어플식으로 저장가능
+        // Lorem ipsum
+    body
+        header
+            a(href='/penobrol') Beritamus      
+        nav
+            ul
+                li
+                    a(href='/aku') Aku
+                li
+                    a(href='/cari') Cari
+                li(style='border-bottom: 2px solid yellow; opacity: .9')
+                    a(href='/penobrol') Penobrol
+                li
+                    a(href='/tandya') Tandya
+                br.clear
+        section.main
+            .title
+                dl.pview-dl
+                    dt.pview-dt= topic.title
+                    dd.pview-dd= topic.author
+                    span.bar             
+                    dd.pview-dd= topic.p_view
+                    span.bar                   
+                    dd.pview-dd= topic.com
+                    span.bar                 
+                    dd.pview-dd= topic.date
+                    if hashtag
+                        -for(var n=0; n<topic.hashtagcount; n++)
+                            a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+            .pcontent= topic.content
+                div(id="plikes" style="font-size:12px;")=topic.p_like
+                div(id="plikebuttons")
+                    if u_id
+                        if statusCheck == 'yes'
+                            button(id="likeButton" class="plikes" type="submit" value="Batal Suka") Batal Suka
+                        else
+                            button(id="likeButton" class="plikes" type="submit" value="Suka") Suka
+                    else
+                        a(href='/aku/') Please Login First
+            br
+            if u_id
+                form(action='penobrol/'+topic.id method='post')
+                  p
+                    textarea(name='comment' id="comment")
+                  p
+                    input(type='submit' value='submit' class="comment")
+            else
+                div
+                    a(href='/aku') Please Login first
+            if comments
+                .pcomment
+                    ul.pcomment-ul
+                        li.pcomment-li
+                            dl.pcomment-dl
+                                each c in comments
+                                    dt.pcomment-dt= c.content
+                                    dd.pcomment-dd= c.autor
+                                    dd.pcomment-dd(id="pCommentlikes"+c.id)=c.pc_like
+                                    dd.pcomment-dd= c.date
+                                    dd.pcomment-dd
+                                        if u_id
+                                            if statusCheck == 'yes'
+                                                button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Batal Suka
+                                            else
+                                                button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Suka
+                                            // liked by how many
+        script(type="text/javascript" src="plikes.js")

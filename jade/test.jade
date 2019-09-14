@@ -1,0 +1,46 @@
+doctype html
+html
+    head
+        title beritamus
+        // what appears on the tab
+        base(href="/")
+        link(rel='stylesheet', href='common.css' type="text/css")
+        // links css common file
+        link(rel='stylesheet', href='cari.css' type="text/css")
+        // links css file
+        meta(charset='UTF-8') 
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        // iphone에서 어플식으로 저장가능
+        // Lorem ipsum
+    body
+        header
+            a(href='/cari') Beritamus      
+        nav
+            ul
+                li
+                    a(href='/aku') Aku
+                li(style='border-bottom: 2px solid yellow; opacity: .9')
+                    a(href='/cari') Cari
+                li
+                    a(href='/penobrol') Penobrol
+                li
+                    a(href='/tandya') Tandya
+                br.clear
+        section.sub-main
+            .login
+                if user
+                    h2= 'Welcome ' + user.u_id
+                else
+                    a(href='/aku') Login First!
+            .ad
+        section.main
+            .search
+                form(action='cari/search' method='get')
+                    p
+                        input(type='text' name='search' placeholder='   What do you want?')
+                    p
+                        input(type='submit')
+            .random
+                .random-object
+        script(type="text/javascript" src="test.js")

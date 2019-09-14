@@ -1,0 +1,81 @@
+doctype html
+html
+    head
+        title beritamus
+        // what appears on the tab
+        base(href="/")
+        link(rel='stylesheet', href='common.css' type="text/css")
+        link(rel='stylesheet', href='common2.css' type="text/css")
+        // links css common file
+        link(rel="stylesheet" href="penobrol.css" type="text/css")
+        // links css file
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')    
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        // iphone에서 어플식으로 저장가능
+        // Lorem ipsum
+        
+    body
+        header
+            a(href='/tandya') Beritamus
+        nav
+            ul
+                li
+                    a(href='/aku') Aku
+                li
+                    a(href='/cari') Cari
+                li(style='border-bottom: 2px solid yellow; opacity: .9')
+                    a(href='/penobrol') Penobrol
+                li
+                    a(href='/tandya') Tandya
+                br.clear
+        section.sub-main
+            .ad Advertisement
+        if(u_id)
+                a.addPenobrol(href='/penobrol/add') adder
+            else
+                a.addPenobrol(href='/aku') Login Dulu
+        section.main
+            .p-terbaru
+                .p-title Penobrol Terbaru
+                ul
+                    each v in topics
+                        li
+                            dl.p-dl
+                                // dt/first dd must be display:inline
+                                dt(id='precent2')
+                                    a(href='/penobrol/'+v.id)= v.title
+                                dd
+                                    span.content-info= v.content
+                                    span.bar
+                                    span.content-info comment: #{v.com}
+                                    span.bar
+                                    span.content-info author: #{v.author}
+                                    span.bar          
+                                    span.content-info view: #{v.p_view}
+                                    span.bar           
+                                    span.content-info date: #{v.date}
+                                    span.bar           
+                                    span.content-info comments: #{v.com}
+            .p-terkenal
+                .p-title Penobrol Terkenal
+                ul
+                    each v in topics
+                        li
+                            dl.p-dl
+                                // dt/first dd must be display:inline
+                                dt(id='precent2')
+                                    a(href='/penobrol/'+v.id)= v.title
+                                dd
+                                    span.content-info= v.content
+                                    span.bar
+                                    span.content-info comment: #{v.com}
+                                    span.bar
+                                    span.content-info author: #{v.author}
+                                    span.bar          
+                                    span.content-info view: #{v.p_view}
+                                    span.bar           
+                                    span.content-info date: #{v.date}
+                                    span.bar           
+                                    span.content-info comments: #{v.com}
+    script(type="text/javascript" src="prank.js")

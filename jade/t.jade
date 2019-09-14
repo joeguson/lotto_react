@@ -1,0 +1,86 @@
+doctype html
+html
+    head
+        title beritamus
+        // what appears on the tab
+        base(href="/")
+        link(rel='stylesheet', href='common.css' type="text/css")
+        link(rel='stylesheet', href='common2.css' type="text/css")
+        // links css common file
+        link(rel="stylesheet" href="tandya.css" type="text/css")
+        // links css file
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        // iphone에서 어플식으로 저장가능
+        // Lorem ipsum
+    body
+        header
+            a(href='/tandya') Beritamus
+        nav
+            ul
+                li
+                    a(href='/aku') Aku
+                li
+                    a(href='/cari') Cari
+                li
+                    a(href='/penobrol') Penobrol
+                li(style='border-bottom: 2px solid yellow; opacity: .9')
+                    a(href='/tandya') Tandya
+                br.clear
+        section.sub-main 
+            .ad Advertisement
+        if(u_id)
+                a.addTandya(href='/tandya/add') adder
+            else
+                a.addTandya(href='/aku') Login Dulu
+        section.main
+            .t-terbaru
+                .t-title Tandya Terbaru
+                ul
+                    each v in topics
+                        li    
+                            dl.t-dl
+
+                                    dt
+                                        a(href='/tandya/'+v.id)= v.question
+                                    dd
+                                        div.content-info
+                                        |answer: #{v.answer}
+                                        span.bar          
+                                        span.content-info
+                                        |author: #{v.author}
+                                        span.bar          
+                                        span.content-info
+                                        |view: #{v.t_view}
+                                        span.bar           
+                                        span.content-info
+                                        |date: #{v.date}
+                                        span.bar           
+                                        span.content-info
+                                        |comments: #{v.com}
+            .t-terkenal
+                .t-title Tandya Terkenal               
+                ul
+                    each v in topics
+                        li    
+                            dl.t-dl
+
+                                    dt
+                                        a(href='/tandya/'+v.id)= v.question
+                                    dd
+                                        div.content-info
+                                        |answer: #{v.answer}
+                                        span.bar          
+                                        span.content-info
+                                        |author: #{v.author}
+                                        span.bar          
+                                        span.content-info
+                                        |view: #{v.t_view}
+                                        span.bar           
+                                        span.content-info
+                                        |date: #{v.date}
+                                        span.bar           
+                                        span.content-info
+                                        |comments: #{v.com}
+            
