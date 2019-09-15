@@ -168,7 +168,6 @@ app.get('/cari/load', function(req, res){
         conn.query(sql2, function(err, tandya, fields){
             if(err){console.log(err);}
             else{
-                console.log('from db' + penobrol);
                 var p = JSON.parse(JSON.stringify(penobrol));
                 var t = JSON.parse(JSON.stringify(tandya));
                 p = p.concat(t);
