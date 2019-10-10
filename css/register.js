@@ -5,7 +5,12 @@ var sex = '';
 
 document.getElementById('u_id').addEventListener('change', function(){
     var v = document.getElementById('u_id').value;
-    sendAjax('/aku/register', v);
+    if(v.length < 3){
+        document.getElementById("idchecker").innerHTML = 'terlalu pendek';
+    }
+    else{
+        sendAjax('/aku/register', v);
+    }
 });
 function sendAjax(url, data){
     var data2 = {'u_id' : data};
