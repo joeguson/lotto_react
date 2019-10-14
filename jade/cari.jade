@@ -45,4 +45,25 @@ html
             .ad
         section.main(id='main')
             ul(id='uls')
+                - for(var i=0; i<3; i++)
+                    if(randomResult[i].identifier =='p')
+                        li
+                            dl
+                                dt
+                                    a(href='/penobrol/'+randomResult[i].id)= randomResult[i].title
+                                dd= randomResult[i].content
+                                dd= randomResult[i].author
+                                dd= randomResult[i].p_view
+                                dd= randomResult[i].date
+                            span
+                    else
+                        li
+                            dl
+                                dt
+                                    a(href='/tandya/'+randomResult[i].id)= randomResult[i].question
+                                dd= randomResult[i].content
+                                dd= randomResult[i].author
+                                dd= randomResult[i].t_view
+                                dd= randomResult[i].date
+                            span
         script(type="text/javascript" src="cari.js")

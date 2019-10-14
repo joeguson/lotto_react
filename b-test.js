@@ -180,8 +180,15 @@ app.get('/cari/load', function(req, res){
 });
 
 app.get(['/cari','/'], function(req, res){
-    res.render('cari');
-});
+    sql = '(select * from penobrol) union all (select * from tandya) order by rand() limit 5';
+    conn.query(sql, function(err, randomResult, fields){
+        if(err){console.log(err);}
+        else{
+            console.log(randomResult);
+            res.render('cari', {randomResult:randomResult});
+        }
+        });
+    });
 
 /************FOR TANDYA************/
 app.get('/tandya/add', tandya.getAddTandya);
