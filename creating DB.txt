@@ -24,7 +24,7 @@ CREATE TABLE `overview` (
 바로 data 하나를 넣어줘야 update 가 가능해짐
 INSERT INTO overview(total_user) values(0);
 
-3. Overview Table
+3. Users Table
 
 CREATE TABLE `users` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -49,6 +49,7 @@ CREATE TABLE `penobrol` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `content` text NOT NULL,
+  `public` char(2) DEFAULT 'p',
   `author` varchar(100) NOT NULL,
   `p_view` int UNSIGNED NOT NULL DEFAULT 0,
   `date` TIMESTAMP DEFAULT NOW(),
@@ -68,6 +69,7 @@ CREATE TABLE `tandya` (
   `question` varchar(255) NOT NULL,
   `content` text NOT NULL,
   `author` varchar(100) NOT NULL,
+  `public` char(2) DEFAULT 'p',
   `t_view` int UNSIGNED NOT NULL DEFAULT 0,
   `date` TIMESTAMP DEFAULT NOW(),
   `answer`  int UNSIGNED NOT NULL DEFAULT 0,

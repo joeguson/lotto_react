@@ -184,7 +184,6 @@ app.get(['/cari','/'], function(req, res){
     conn.query(sql, function(err, randomResult, fields){
         if(err){console.log(err);}
         else{
-            console.log(randomResult);
             res.render('cari', {randomResult:randomResult});
         }
         });
