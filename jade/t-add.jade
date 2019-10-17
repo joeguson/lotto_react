@@ -35,6 +35,16 @@ html
                 p
                     input(type='text' name='question' placeholder='title' class="title")
                 p
+                    label
+                        input(type='radio' value='p' name="public" checked)
+                        |public
+                    label
+                        input(type='radio' value='s' name="public")
+                        |semi-public
+                    label
+                        input(type='radio' value='a' name="public")
+                        |anonim  
+                p
                     textarea(name='content' class="content")
                 p
                     input(type='text' name='hashtag' placeholder='#cinta' class="hashtag")

@@ -5,6 +5,9 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var mysql = require('mysql');
+var path = require('path')
+var favicon = require('serve-favicon');
+app.use(favicon(path.join(__dirname,'css', 'favicon.ico')));
 app.use(session({
     secret : 'hithere@#',
     resave: false,

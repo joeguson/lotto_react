@@ -33,11 +33,13 @@ html
                     input(type='text' name='title' placeholder='title' class="title")
                 p
                     label
-                        input(type='radio' value='public' name="public" checked)
+                        input(type='radio' value='p' name="public" checked)
                         |public
-                        input(type='radio' value='semi-public' name="public")
+                    label
+                        input(type='radio' value='s' name="public")
                         |semi-public
-                        input(type='radio' value='anonim' name="public")
+                    label
+                        input(type='radio' value='a' name="public")
                         |anonim  
                 p
                     textarea(name='content' class="content")
