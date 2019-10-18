@@ -81,7 +81,7 @@ CREATE TABLE `tandya` (
   FULLTEXT search (question, content)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-6. p_like_dislike
+6. p_like
 
 CREATE TABLE `p_like` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -107,6 +107,17 @@ CREATE TABLE `p_com` (
   `pc_like` int UNSIGNED NOT NULL DEFAULT 0,
   `p_id` int UNSIGNED NOT NULL DEFAULT 0,
   `score`  int UNSIGNED NOT NULL DEFAULT 0,
+  `com`  int UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+8.1 pc_com
+- CREATE TABLE `pc_com` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `author` varchar(100) NOT NULL,
+  `content` text NOT NULL,
+  `date` TIMESTAMP DEFAULT NOW(),
+  `pc_id` int UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

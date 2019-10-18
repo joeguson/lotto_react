@@ -7,7 +7,7 @@ var MySQLStore = require('express-mysql-session')(session);
 var mysql = require('mysql');
 var path = require('path')
 var favicon = require('serve-favicon');
-app.use(favicon(path.join(__dirname,'css', 'favicon.ico')));
+app.use(favicon(path.join(__dirname,'css', 'logo2.png')));
 app.use(session({
     secret : 'hithere@#',
     resave: false,
@@ -29,7 +29,6 @@ var conn = mysql.createConnection(
 );
 conn.connect();
 exports.conn = conn;
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.locals.pretty = true;
@@ -183,7 +182,8 @@ app.get('/cari/load', function(req, res){
 });
 
 app.get(['/cari','/'], function(req, res){
-    sql = '(select * from penobrol) union all (select * from tandya) order by rand() limit 5';
+    sql = '(select id, title, content, p_view from penobrol) union all (select id, question, content, t_view from tandya) order by rand() limit 5';
+    //DO NOT SELECT *. Penobrol, tandya have different number of columns. union all will make an error.
     conn.query(sql, function(err, randomResult, fields){
         if(err){console.log(err);}
         else{
@@ -205,6 +205,7 @@ app.post('/tAnswerlikes/:id', tandya.likesAnswer);
 app.get('/penobrol/add', penobrol.getAddPenobrol);
 app.post('/penobrol/add', penobrol.postAddPenobrol);
 app.post('/penobrol/:penobrol_no', penobrol.postAddComment);
+app.post('/penobrol/:penobrol_no/:comment_no', penobrol.postAddCcomment);
 app.get(['/penobrol'], penobrol.getPenobrol);
 app.get(['/penobrol/:penobrol_no'], penobrol.getViewPenobrol);
 app.post('/plikes/:id', penobrol.likesPenobrol);

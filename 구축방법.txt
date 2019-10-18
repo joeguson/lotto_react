@@ -102,7 +102,7 @@ Database 설정
   FULLTEXT KEY tcontent (content)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-5.p_like_dislike
+5.p_like
 - CREATE TABLE `p_like_dislike` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `p_id` int UNSIGNED NOT NULL DEFAULT 0,
@@ -111,7 +111,7 @@ Database 설정
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-6.t_like_dislike
+6.t_like
 - CREATE TABLE `t_like_dislike` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `t_id` int UNSIGNED NOT NULL DEFAULT 0,
@@ -127,8 +127,18 @@ Database 설정
   `content` text NOT NULL,
   `date` TIMESTAMP DEFAULT NOW(),
   `pc_like` int UNSIGNED NOT NULL DEFAULT 0,
-  `pc_dislike` int UNSIGNED NOT NULL DEFAULT 0,
   `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+7.1 pcom_com
+- CREATE TABLE `pcom_com` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `author` varchar(100) NOT NULL,
+  `content` text NOT NULL,
+  `date` TIMESTAMP DEFAULT NOW(),
+  `pcc_like` int UNSIGNED NOT NULL DEFAULT 0,
+  `pc_id` int UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -139,12 +149,11 @@ Database 설정
   `answer` text NOT NULL,
   `date` TIMESTAMP DEFAULT NOW(),
   `ta_like` int UNSIGNED NOT NULL DEFAULT 0,
-  `ta_dislike` int UNSIGNED NOT NULL DEFAULT 0,
   `t_id` int UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-9.pc_like_dislike
+9.pc_like
 - CREATE TABLE `pc_like_dislike` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `pc_id` int UNSIGNED NOT NULL DEFAULT 0,
@@ -153,7 +162,7 @@ Database 설정
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-10.ta_like_dislike
+10.ta_like
 - CREATE TABLE `ta_like_dislike` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `ta_id` int UNSIGNED NOT NULL DEFAULT 0,

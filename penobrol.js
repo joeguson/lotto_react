@@ -22,7 +22,8 @@ exports.getViewPenobrol = function(req, res){
     var id = req.params.penobrol_no;
     var sql1 = 'SELECT MAX(id) AS max from penobrol';
     var sql3 = 'UPDATE penobrol SET p_view = p_view + 1 WHERE id = ?';
-    var sql7 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
+    var sql5 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
+
     var sql = 'SELECT * FROM penobrol WHERE id = ?';
     var sql2 = 'SELECT * FROM p_com WHERE p_id = ?';
     var sql6 = 'SELECT * FROM hashtag where p_id = ?';
@@ -36,7 +37,7 @@ exports.getViewPenobrol = function(req, res){
             conn.conn.query(sql3, id, function(err, views, fields){
                 if(err){console.log(err);}
                 else{
-                    conn.conn.query(sql7, id, function(err, score, fields){
+                    conn.conn.query(sql5, id, function(err, score, fields){
                         if(err){console.log(err);}
                     });
                 }
@@ -50,6 +51,13 @@ exports.getViewPenobrol = function(req, res){
                     conn.conn.query(sql6, id, function(err, hashtag, fields){
                     if(err){console.log(err);}
                     else{
+                        if(content[0].public != 'p'){
+                            var idChanger = '';
+                            var idLength = (content[0].author).length;
+                            console.log(idLength);
+                            idChanger = content[0].author.substr(0,3) + '****';
+                            content[0].author = idChanger;
+                        }
                         delete hashtag[0].id;
                         delete hashtag[0].u_id;
                         delete hashtag[0].p_id;
@@ -160,6 +168,24 @@ exports.postAddComment = function(req, res){
     });  
 };
 
+exports.postAddCcomment = function(req, res){
+    var author = req.session.u_id;
+    var content = req.body.ccomment;
+    var p_id = req.params.penobrol_no;
+    var pc_id = req.params.comment_no;
+    //when connection is more than two, divide
+    var sql = 'INSERT INTO pc_com (author, content, pc_id) VALUES (?, ?, ?)';
+    var sql2 = 'UPDATE p_com SET com = com + 1 WHERE id = (?)';
+    conn.conn.query(sql, [author, content, pc_id], function(err, result, fields){
+        if(err){console.log(err);}
+        else{
+            conn.conn.query(sql2, [pc_id], function(err, result2, fields){
+                res.redirect('/penobrol/'+p_id);
+            });
+        }
+    });  
+};
+
 exports.likesPenobrol = function(req, res){
     var clickValue = req.body.clickedValue;
     var p_id = req.params.id;
@@ -206,6 +232,7 @@ exports.likesComment = function(req, res){
     var sql4 = 'UPDATE p_com set pc_like = pc_like + 1 where id = ?';
     var sql5 = 'INSERT INTO pc_like (pc_id, u_id) VALUES (?, ?)';
     var sql6 = 'select pc_like from p_com where id = ?';
+    var sql7 = 'UPDATE p_com SET score = pc_like*.6 + com*0.4 where id = ?';
     conn.conn.query(sql, [req.session.u_id, p_id], function(err, statusCheck, fields){
         if(clickValue == 'Batal Suka'){
             conn.conn.query(sql2, p_id, function(err, update, fields){

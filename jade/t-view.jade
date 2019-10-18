@@ -28,6 +28,8 @@ html
                     a(href='/tandya') Tandya
                 br.clear
         section.main
+            if !u_id
+                a(href='/aku') Please Login first
             .title
                 dl.tview-dl
                     dt.tview-dt= topic.question
@@ -49,18 +51,13 @@ html
                         button(id="likeButton" class="tlikes" type="submit" value="Batal Suka") Batal Suka
                     else
                         button(id="likeButton" class="tlikes" type="submit" value="Suka") Suka
-                else
-                    a(href='/aku/') Please Login First
             br
             if u_id
                 form(action='tandya/'+topic.id method='post')
                       p
                         textarea(name='answer' id="comment")
                       p
-                        input(type='submit' value='submit' class="comment") 
-            else
-                div
-                    a(href='/aku') Please Login first
+                        input(type='submit' value='submit' class="comment")  
             if answers
                 .tcomment
                     dl.tcomment-dl

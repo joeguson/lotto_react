@@ -26,6 +26,7 @@ function contentSendAjax(url, data){
 }
 function commentSendAjax(target){
     var id = target.value;
+    console.log(id);
     var original = {'clickedValue' : target.innerHTML};
     original = JSON.stringify(original);
     var xhr = new XMLHttpRequest();

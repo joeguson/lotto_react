@@ -28,6 +28,8 @@ html
                     a(href='/tandya') Tandya
                 br.clear
         section.main
+            if !u_id
+                a(href='/aku') Please Login first
             .title
                 dl.pview-dl
                     dt.pview-dt= topic.title
@@ -49,8 +51,6 @@ html
                             button(id="likeButton" class="plikes" type="submit" value="Batal Suka") Batal Suka
                         else
                             button(id="likeButton" class="plikes" type="submit" value="Suka") Suka
-                    else
-                        a(href='/aku/') Please Login First
             br
             if u_id
                 form(action='penobrol/'+topic.id method='post')
@@ -58,9 +58,6 @@ html
                     textarea(name='comment' id="comment")
                   p
                     input(type='submit' value='submit' class="comment")
-            else
-                div
-                    a(href='/aku') Please Login first
             if comments
                 .pcomment
                     ul.pcomment-ul
@@ -78,4 +75,11 @@ html
                                             else
                                                 button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Suka
                                             // liked by how many
+                                    dd.p
+                                    if u_id
+                                        form(action='penobrol/'+topic.id+'/'+comments.id method='post')
+                                            p
+                                                textarea(name='ccomment' id="ccomment")
+                                            p
+                                                input(type='submit' value='submit' class="ccomment") 
         script(type="text/javascript" src="plikes.js")
