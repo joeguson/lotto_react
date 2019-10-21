@@ -28,6 +28,7 @@ exports.getViewPenobrol = function(req, res){
     var sql2 = 'SELECT * FROM p_com WHERE p_id = ?';
     var sql6 = 'SELECT * FROM hashtag where p_id = ?';
     var sql4 = 'SELECT * FROM p_like WHERE u_id = ? AND p_id = ?';
+    var sql7 = 'SELECT * FROM pc_com WHERE p_id = ?';
     
     conn.conn.query(sql1, function(err, maxValue, fields){
         if(maxValue[0].max < id){
@@ -48,35 +49,43 @@ exports.getViewPenobrol = function(req, res){
                 conn.conn.query(sql2, id, function(err, comments, fields){
                 if(err){console.log(err);}
                 else{
+                    
                     conn.conn.query(sql6, id, function(err, hashtag, fields){
                     if(err){console.log(err);}
                     else{
-                        if(content[0].public != 'p'){
-                            var idChanger = '';
-                            var idLength = (content[0].author).length;
-                            console.log(idLength);
-                            idChanger = content[0].author.substr(0,3) + '****';
-                            content[0].author = idChanger;
-                        }
-                        delete hashtag[0].id;
-                        delete hashtag[0].u_id;
-                        delete hashtag[0].p_id;
-                        delete hashtag[0].t_id;
-                        if(req.session.u_id){
-                            conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
-                                var statusCheck = 'liked';
-                                if(likeStatus === null){
-                                    statusCheck = 'yes';
+                        if(err){console.log(err);}
+                        else{
+                            conn.conn.query(sql7, id, function(err, ccomments, fields){
+                                if(content[0].public != 'p'){
+                                    var idChanger = '';
+                                    var idLength = (content[0].author).length;
+                                    console.log(idLength);
+                                    idChanger = content[0].author.substr(0,3) + '****';
+                                    content[0].author = idChanger;
+                                }
+                                delete hashtag[0].id;
+                                delete hashtag[0].u_id;
+                                delete hashtag[0].p_id;
+                                delete hashtag[0].t_id;
+                                if(req.session.u_id){
+                                    console.log(ccomments);
+                                    console.log(ccomments[0]);
+                                    console.log(ccomments[1].id);
+                                    conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
+                                        var statusCheck = 'liked';
+                                        if(likeStatus === null){
+                                            statusCheck = 'yes';
+                                        }
+                                        else{
+                                            statusCheck = 'no';
+                                        }
+                                        res.render('p-view', {topic:content[0], statusCheck:statusCheck, comments:comments, u_id:'y', hashtag:hashtag[0], ccomments:ccomments});
+                                    });
                                 }
                                 else{
-                                    statusCheck = 'no';
+                                    res.render('p-view', {topic:content[0], comments:comments, hashtag:hashtag[0], ccomments:ccomments});
                                 }
-                                res.render('p-view', {topic:content[0], statusCheck:statusCheck, comments:comments, u_id:'y', hashtag:hashtag[0]});
                             });
-                            
-                        }
-                        else{
-                            res.render('p-view', {topic:content[0], comments:comments, hashtag:hashtag[0]});
                         }
                     }
                     });
@@ -170,17 +179,30 @@ exports.postAddComment = function(req, res){
 
 exports.postAddCcomment = function(req, res){
     var author = req.session.u_id;
-    var content = req.body.ccomment;
+    var content = req.body.ccommentContent;
     var p_id = req.params.penobrol_no;
     var pc_id = req.params.comment_no;
     //when connection is more than two, divide
-    var sql = 'INSERT INTO pc_com (author, content, pc_id) VALUES (?, ?, ?)';
-    var sql2 = 'UPDATE p_com SET com = com + 1 WHERE id = (?)';
-    conn.conn.query(sql, [author, content, pc_id], function(err, result, fields){
+    console.log('ajax is in');
+    var sql = 'INSERT INTO pc_com (author, content, pc_id, p_id) VALUES (?, ?, ?, ?)';
+    var sql2 = 'UPDATE p_com SET com = com + 1 WHERE id = ?';
+    var sql3 = 'UPDATE p_com SET score = pc_like*0.6 + com*0.4 where id = ?';
+    var sql4 = 'SELECT * FROM pc_com where id = ?';
+    conn.conn.query(sql, [author, content, pc_id, p_id], function(err, result, fields){
         if(err){console.log(err);}
         else{
             conn.conn.query(sql2, [pc_id], function(err, result2, fields){
-                res.redirect('/penobrol/'+p_id);
+                if(err){console.log(err)}
+                else{
+                    conn.conn.query(sql3, pc_id, function(err, result3, fields){
+                        if(err){console.log(err)}
+                        else{
+                            conn.conn.query(sql4, result.insertId, function(err, ajaxResult, fields){
+                                res.json({"ccomment_id" : ajaxResult[0].id, "ccomment_author" : ajaxResult[0].author, "ccomment_content" : ajaxResult[0].content});
+                            });
+                        }
+                    });
+                }
             });
         }
     });  

@@ -118,6 +118,8 @@ CREATE TABLE `p_com` (
   `content` text NOT NULL,
   `date` TIMESTAMP DEFAULT NOW(),
   `pc_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `score`  int UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

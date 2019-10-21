@@ -205,11 +205,11 @@ app.post('/tAnswerlikes/:id', tandya.likesAnswer);
 app.get('/penobrol/add', penobrol.getAddPenobrol);
 app.post('/penobrol/add', penobrol.postAddPenobrol);
 app.post('/penobrol/:penobrol_no', penobrol.postAddComment);
-app.post('/penobrol/:penobrol_no/:comment_no', penobrol.postAddCcomment);
 app.get(['/penobrol'], penobrol.getPenobrol);
 app.get(['/penobrol/:penobrol_no'], penobrol.getViewPenobrol);
 app.post('/plikes/:id', penobrol.likesPenobrol);
 app.post('/pCommentlikes/:id', penobrol.likesComment);
+app.post('/penobrol/:penobrol_no/:comment_no', penobrol.postAddCcomment);
 
 /************FOR AKU************/
 app.post('/aku/login', aku.login);
