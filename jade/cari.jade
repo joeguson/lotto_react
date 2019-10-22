@@ -22,7 +22,7 @@ html
             ul
                 li
                     a(href='/aku') Aku
-                li(style='border-bottom: 2px solid yellow; opacity: .9')
+                li(style='border-bottom: 2px solid #ffff97; opacity: .9')
                     a(href='/cari') Cari
                 li
                     a(href='/penobrol') Penobrol
@@ -45,25 +45,86 @@ html
             .ad
         section.main(id='main')
             ul(id='uls')
-                - for(var i=0; i<3; i++)
+                -   var shuffleRandom = function shuffleRandom(num){
+                -       var ar = new Array();
+                -       var temp;
+                -       var rnum;
+                -       for(var j=1; j<=n; j++){ar.push(j);}
+                -       for(var i=0; i< ar.length ; i++){
+                           rnum = Math.floor(Math.random() * num);
+                           temp = ar[i]; ar[i] = ar[rnum];ar[rnum] = temp;
+                -   return ar;
+                - }
+                - var randomNum = shuffleRandom(10);
+                - for(var i=0; i<9; i++)
                     if(randomResult[i].identifier =='p')
                         li
+                            span= randomResult[i].identifier
                             dl
                                 dt
                                     a(href='/penobrol/'+randomResult[i].id)= randomResult[i].title
                                 dd= randomResult[i].content
-                                dd= randomResult[i].author
+                                if(randomResult[i].public == 'a')
+                                    - var anonim = randomResult[i].author.substr(0,3)+'****';
+                                    dd #{anonim}
+                                else
+                                    dd= randomResult[i].author
                                 dd= randomResult[i].p_view
-                                dd= randomResult[i].date
+                                - var datemaker = function(date){
+                                -   var tempdate = new Date(date);
+                                -   var nowdate = new Date();
+                                -   var year = tempdate.getFullYear();
+                                -   var month = tempdate.getMonth();
+                                -   var day = tempdate.getDate();
+                                -   var diff = nowdate - tempdate;
+                                -   if(diff > 864000000){return month+'/'+day+'/'+year;}
+                                -   else{
+                                -       if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+                                -       else{
+                                -           if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+                                -           else{
+                                -               if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
+                                -               else{return parseInt(diff/1000)+' seconds ago';}
+                                -           }
+                                -       }
+                                -   }
+                                -   }
+                                - var date_result = datemaker(randomResult[i].date);
+                                dd #{date_result}
                             span
                     else
                         li
+                            span= randomResult[i].identifier
                             dl
                                 dt
                                     a(href='/tandya/'+randomResult[i].id)= randomResult[i].question
                                 dd= randomResult[i].content
-                                dd= randomResult[i].author
+                                if(randomResult[i].public == 'a')
+                                    - var anonim = randomResult[i].author.substr(0,3)+'****';
+                                    dd #{anonim}
+                                else
+                                    dd= randomResult[i].author
                                 dd= randomResult[i].t_view
-                                dd= randomResult[i].date
+                                - var datemaker = function(date){
+                                -   var tempdate = new Date(date);
+                                -   var nowdate = new Date();
+                                -   var year = tempdate.getFullYear();
+                                -   var month = tempdate.getMonth();
+                                -   var day = tempdate.getDate();
+                                -   var diff = nowdate - tempdate;
+                                -   if(diff > 864000000){return month+'/'+day+'/'+year;}
+                                -   else{
+                                -       if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+                                -       else{
+                                -           if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+                                -           else{
+                                -               if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
+                                -               else{return parseInt(diff/1000)+' seconds ago';}
+                                -           }
+                                -       }
+                                -   }
+                                -   }
+                                - var date_result = datemaker(randomResult[i].date);
+                                dd #{date_result}
                             span
         script(type="text/javascript" src="cari.js")

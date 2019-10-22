@@ -32,8 +32,7 @@ function shuffleRandom(n){
         for(var j=1; j<=n; j++){ar.push(j);}
         for(var i=0; i< ar.length ; i++)
         {rnum = Math.floor(Math.random() *n); //난수발생
-            temp = ar[i]; ar[i] = ar[rnum];ar[rnum] = temp;
-        }
+        temp = ar[i]; ar[i] = ar[rnum];ar[rnum] = temp;}
         return ar;
 }
 
@@ -123,4 +122,20 @@ function sendAjax(url){
   });
 }
 loadMore(10);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

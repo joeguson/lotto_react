@@ -173,12 +173,15 @@ app.get('/cari/load', function(req, res){
 });
 
 app.get(['/cari','/'], function(req, res){
-    sql = '(select id, title, content, p_view from penobrol) union all (select id, question, content, t_view from tandya) order by rand() limit 5';
+    var sql = 'select * from penobrol order by rand() limit 5';
+    var sql2 = 'SELECT * FROM tandya order by rand() limit 5';
     //DO NOT SELECT *. Penobrol, tandya have different number of columns. union all will make an error.
-    conn.query(sql, function(err, randomResult, fields){
+    conn.query(sql, function(err, penobrol, fields){
         if(err){console.log(err);}
         else{
-            res.render('cari', {randomResult:randomResult});
+            conn.query(sql2, function(err, tandya, fields){
+                res.render('cari', {p_random:penobrol, t_random:tandya});
+            });
         }
         });
     });

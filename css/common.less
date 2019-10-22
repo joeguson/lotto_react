@@ -1,14 +1,22 @@
 //this common file is for body, header and nav and main tags only
 //margin order : top right bottom left;
 @bgcolor1: #f6f6f6; //for all body
-@bgcolor2: #4167e0; //for nav
-@bgcolor3: #fbfbfb; // for section
+@bgcolor2: #fbfbfb; // for section
 
-@button-color: #e5e5f2;
+@main: #4167e0; // blue main color
+@maindark: #003dad; // blue main color
+@mainlight: #7d94ff; // blue main color
+@main2: #ffff97; // blue main color
+@mainlight2: #ffffc9; // blue main color
 
+@button-color: #7d94ff;
 @font-color1: black;
 @font-color2: white;
 @font-family: 'Lato', sans-serif;
+
+@marginbottom: 20px;
+
+
 //text size & color
 @header-text-size: 30px;
 @header-text-size-big: 50px;
@@ -25,32 +33,26 @@
 
 body{width:100%; margin:0px; padding:0px; background-color: @bgcolor1;}
 
-//body - header nav
-header{width: 100%; font-size: @header-text-size; height:80px; line-height: 70px; text-align: center; font-family: @font-family;}
+//body - header nav submain main
+header{width: 100%; font-size: @header-text-size; height:100px; line-height: 90px; text-align: center; font-family: @font-family; margin-bottom: @marginbottom;}
 header a{color:@font-color1; text-decoration: none; font-family: @font-family;}
 
-nav{width:100%; margin-bottom: 20px;}
+nav{width:100%; margin-bottom: @marginbottom;}
+
+.sub-main{width:100%; margin:0 auto @marginbottom auto; box-sizing: border-box; color:@font-color1; background-color: @bgcolor1; font-family: @font-family;}
+
+.clear{clear:both;}
+
+.main{width:100%; margin:0 auto @marginbottom auto; box-sizing: border-box; padding:10px 5px; background-color: @bgcolor1; font-family: @font-family;}
+
 //nav - ul
 nav ul{list-style: none; padding:0px; margin:0px;}
 
 //ul - li
-nav ul li{width:25%; height:45px; float:left; box-sizing: border-box; text-align: center; line-height: 40px; background-color: @bgcolor2; }
+nav ul li{width:25%; height:45px; float:left; box-sizing: border-box; text-align: center; line-height: 40px; background-color: @main; }
 
 //li - a
 nav ul li a{text-decoration: none; color:@font-color2; font-size: 14px; font-family: @font-family;}
-
-.sub-main{width:100%; margin:0 auto 20px auto; box-sizing: border-box; color:@font-color1; background-color: @bgcolor1; font-family: @font-family;}
-.clear{clear:both;}
-
-.main{width:100%; margin:0 auto 40px auto; box-sizing: border-box; padding:10px 5px; background-color: @bgcolor1; font-family: @font-family;}
-
-//.main - .p-terbaru(div), .p-terkenal(div)
-.t-terbaru, .t-terkenal, .p-terbaru, .p-terkenal{width:90%; margin: 0px auto 20px auto; background-color: @bgcolor3;  box-sizing: border-box; color:@font-color1;}
-
-.p-title, .t-title{background-color: @bgcolor3; color:@font-color1; font-size: 24px; margin-bottom: 10px; font-weight: bold;}
-
-.bar{border-left: 1px solid #dbdbdb;}
-
 
 /*for bigger windows*/
 @media (min-width:768px){
