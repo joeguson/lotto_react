@@ -176,6 +176,16 @@ CREATE TABLE `user_save` (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+14.weekly
+CREATE TABLE `weekly` (
+    `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+    `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+    `t_id` int UNSIGNED NOT NULL DEFAULT 0,
+    `rank` char(5) DEFAULT 'n',
+    `date` TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 ************************************************************************************
 
 

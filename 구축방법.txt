@@ -17,6 +17,10 @@
 - npm install express-mysql-session --save
 8. install jade
 - nom install jade
+9. install node-schedule
+- npm install node-schdule
+10 install serve-favicon
+- npm install serve-favicon
 
 https://freeprog.tistory.com/168
 https://m.blog.naver.com/wlsdml1103/221159758141

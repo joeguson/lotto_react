@@ -7,6 +7,8 @@ var MySQLStore = require('express-mysql-session')(session);
 var mysql = require('mysql');
 var path = require('path')
 var favicon = require('serve-favicon');
+var schedule = require('node-schedule');
+exports.sch = schedule;
 app.use(favicon(path.join(__dirname,'css', 'logo2.png')));
 app.use(session({
     secret : 'hithere@#',
@@ -37,24 +39,13 @@ app.use("/jade", express.static('/css'));
 app.set('view engine', 'jade');
 app.set('views', './jade');
 
-var testing = require('./testing');
 var penobrol = require('./penobrol');
 var tandya = require('./tandya');
 var aku = require('./aku');
 var cari = require('./cari');
 var testing = require('./testing');
 
-app.get('/test', function(req, res){
-    var shit = [];
-    var prandom = [];
-    var sql = 'SELECT total_p, total_t FROM overview where id =1';
-    var sql2 = 'Select * from penobrol where id = ?';
-    conn.query(sql, function(err, total, f){
-        prandom = cari.randomer(total[0].total_p);
-        console.log(prandom);
-    });
-    res.render('test');
-});
+app.get('/test', testing.testing1);
 
 /************FOR CARI************/
 app.get('/cari/search', function(req, res){
@@ -196,7 +187,7 @@ app.get(['/cari','/'], function(req, res){
 app.get('/tandya/add', tandya.getAddTandya);
 app.post('/tandya/add', tandya.postAddTandya);
 app.get('/tandya', tandya.getTandya);
-app.post('/tandya/:tandya_no', tandya.postAddComment);
+app.post('/tandya/:tandya_no', tandya.postAddAnswer);
 app.get(['/tandya/:tandya_no'], tandya.getViewTandya);
 app.post('/tlikes/:id', tandya.likesTandya);
 app.post('/tAnswerlikes/:id', tandya.likesAnswer);

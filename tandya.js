@@ -21,11 +21,13 @@ exports.getViewTandya =  function(req, res){
     var id = req.params.tandya_no;
     var sql1 = 'SELECT MAX(id) AS max from tandya';
     var sql3 = 'UPDATE tandya SET t_view = t_view + 1 WHERE id = ?';
+    var sql7 = 'UPDATE tandya SET score = t_view*.2 + t_like*.5 + answer*0.3 where id = ?';
+    
     var sql = 'SELECT * FROM tandya WHERE id = ?';
-    var sql2 = 'SELECT * FROM t_ans WHERE t_id = ?';
+    var sql2 = 'SELECT * FROM t_ans WHERE t_id = ? order by score desc';
     var sql6 = 'SELECT * FROM hashtag where t_id = ?';
     var sql4 = 'Select * from t_like where u_id = ? AND t_id = ?';
-    var sql7 = 'UPDATE tandya SET score = t_view*.2 + t_like*.5 + answer*0.3 where id = ?';
+    
         
     conn.conn.query(sql1, function(err, maxValue, fields){
         if(maxValue[0].max < id){
@@ -147,7 +149,7 @@ exports.postAddTandya = function(req, res){
 };
 
 
-exports.postAddComment = function(req, res){
+exports.postAddAnswer = function(req, res){
     var author = req.session.u_id;
     var answer = req.body.answer;
     var t_id = req.params.tandya_no;
@@ -207,7 +209,10 @@ exports.likesTandya = function(req, res){
                 });    
             });
         }
-    });   
+    });
+    conn.conn.query(sql7, t_id, function(err, score, fields){
+        if(err){console.log(err);}
+    });
 };
 exports.likesAnswer = function(req, res){
     var clickValue = req.body.clickedValue;
@@ -218,6 +223,7 @@ exports.likesAnswer = function(req, res){
     var sql4 = 'UPDATE t_ans set ta_like = ta_like + 1 where id = ?';
     var sql5 = 'INSERT INTO ta_like (ta_id, u_id) VALUES (?, ?)';
     var sql6 = 'select ta_like from t_ans where id = ?';
+    var sql7 = 'UPDATE tandya SET score = t_view*.2 + t_like*.6 + answer*0.2 where id = ?';
     conn.conn.query(sql, [req.session.u_id, t_id], function(err, statusCheck, fields){
         if(clickValue == 'Batal Suka'){
             conn.conn.query(sql2, t_id, function(err, update, fields){
@@ -243,5 +249,8 @@ exports.likesAnswer = function(req, res){
                 });    
             });
         }
-    });   
+    });
+    conn.conn.query(sql7, t_id, function(err, score, fields){
+        if(err){console.log(err);}
+    });
 };
