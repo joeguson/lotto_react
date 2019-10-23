@@ -35,7 +35,6 @@ header {
 nav {
   width: 100%;
   margin-bottom: 20px;
-  background-color: #003dad;
 }
 .sub-main {
   width: 100%;
@@ -84,10 +83,10 @@ nav ul li a {
     line-height: 100px;
   }
   .sub-main {
-    width: 90%;
+    width: 85%;
   }
   .main {
-    width: 90%;
+    width: 85%;
   }
   nav ul li {
     height: 60px;

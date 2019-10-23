@@ -1,6 +1,6 @@
 //this common file is for body, header and nav and main tags only
 //margin order : top right bottom left;
-@bgcolor1: #f6f6f6; //for all body
+@bgcolor1: white; //for all body
 @bgcolor2: #fbfbfb; // for section
 
 @main: #4167e0; // blue main color
@@ -15,7 +15,7 @@
 @font-family: 'Lato', sans-serif;
 
 @marginbottom-mbl: 20px;
-@marginbottom-com: 30px;
+@marginbottom-com: 50px;
 
 //text size & color
 @header-text-size: 40px;
@@ -26,8 +26,8 @@
     border-bottom: 2px solid lightgray;
 }
 .li-border{
-    border-top: 2px solid lightgray;
-    border-bottom: 2px solid lightgray;
+    border-top: 2px solid @mainlight;
+    border-bottom: 2px solid @mainlight;
     margin-bottom: @marginbottom-mbl;
 }
 .identifier-border{
@@ -54,7 +54,7 @@
 form{width:100%;}
 
 //.search form - p, p
-input{width:100%; height:50px; margin: 0 auto; font: 100px; display: block;}
+input{width:100%; height:50px; margin: 0 auto; font: 100px; display: block; box-sizing: border-box;}
 .submit{.button();}
 
 //main - .login(div), ul(#uls)
@@ -75,12 +75,22 @@ li span{.identifier-border();}
 li dl{}
 
 //dl - dt, dd
-dl dt{width:100%; height:30px; line-height: 30px;}
-dl dd{}
+dl dt{width: 90%; height:30px; line-height: 30px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
+dd{font-style: italic; font-size: 12px;}
+dl .ddcontent{overflow: hidden; text-overflow: ellipsis; white-space:normal; font-size: 14px; line-height: 16px; height:48px; font-style: normal; margin-bottom: 5px;}
+
+//dt - a
+dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none;}
+
 
 /*for bigger windows*/
 @media (min-width:768px){
+    .ad{height:200px; margin-bottom: @marginbottom-com; font-size: 100px; line-height: 200px;}
+    form p{width:80%; margin:0 auto;}
+    login a{margin-bottom: @marginbottom-com;}
     
-    input{width: 30%; height:40px; .section-border(); margin: 0 auto; font: 50px;}
-    //section - .personal_p(div), .personal_t(div)
+    dl dt{width: 90%; height:50px; line-height: 30px; margin-bottom: 10px; font-size: 20px;}
+    dd{font-style: italic; font-size: 12px;}
+    dl .ddcontent{font-size: 16px; line-height: 20px; height:60px; font-style: normal; margin-bottom: 10px;}
+
 }

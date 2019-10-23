@@ -16,6 +16,25 @@ html
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
+    -var datemaker = function(date){
+    -var tempdate = new Date(date);
+    -var nowdate = new Date();
+    -var year = tempdate.getFullYear();
+    -var month = tempdate.getMonth();
+    -var day = tempdate.getDate();
+    -var diff = nowdate - tempdate;
+    -if(diff > 864000000){return month+'-'+day+'-'+year;}
+    -else{
+    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -else{
+    -if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+    -else{
+    -if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
+    -else{return parseInt(diff/1000)+' seconds ago';}
+    -}
+    -}
+    -}
+    -}
         header(id='header')
             a(href='/cari') BERITAMUS      
         nav(id='nav')
@@ -44,47 +63,23 @@ html
                 else
                     a(href='/aku') Login Dulu
             ul(id='uls')
-            - var datemaker = function(date){
-            -   var tempdate = new Date(date);
-            -   var nowdate = new Date();
-            -   var year = tempdate.getFullYear();
-            -   var month = tempdate.getMonth();
-            -   var day = tempdate.getDate();
-            -   var diff = nowdate - tempdate;
-            -   if(diff > 864000000){return month+'/'+day+'/'+year;}
-            -   else{
-            -       if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
-            -       else{
-            -           if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
-            -           else{
-            -               if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
-            -               else{return parseInt(diff/1000)+' seconds ago';}
-            -               }
-            -           }
-            -       }
-            -   }
-                - for(var i=0; i<6; i++)
-                    if(randoms[i].identifier =='p')
-                        li
+                -for (var i=0; i<6; i++)
+                    li
+                        if(randoms[i].identifier =='p')
                             span= randoms[i].identifier
                             dl
-                                dt(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')
-                                    a(href='/penobrol/'+randoms[i].id style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].title
-                                dd(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].content
-                                dd= randoms[i].p_view
-                                - var date_result = datemaker(randoms[i].date);
+                                dt
+                                    a(href='/penobrol/'+randoms[i].id)= randoms[i].title
+                                dd.ddcontent= randoms[i].content
+                                - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].p_view + ' views';
                                 dd #{date_result}
-                            span
-                    else
-                        li
+                        else
                             span= randoms[i].identifier
                             dl
-                                dt(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')
-                                    a(href='/tandya/'+randoms[i].id style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].question
-                                dd(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].content
-                                dd= randoms[i].t_view
-                                - var date_result = datemaker(randoms[i].date);
+                                dt
+                                    a(href='/tandya/'+randoms[i].id)= randoms[i].question
+                                    dd.ddcontent= randoms[i].content
+                                    - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].t_view + ' views';
                                 dd #{date_result}
-                            span
         section.footer(id='footer')
         script(type="text/javascript" src="cari.js")

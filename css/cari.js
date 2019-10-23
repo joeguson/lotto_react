@@ -21,7 +21,7 @@ var sub_main = document.querySelector('#sub-main');
 var main = document.querySelector('#main');
 
 window.addEventListener('scroll', function(){
-    if (document.documentElement.scrollTop*1.03 + document.documentElement.clientHeight  >= document.documentElement.scrollHeight) {
+    if (document.documentElement.scrollTop * 1.03 + document.documentElement.clientHeight  >= document.documentElement.scrollHeight) {
         loadMore();
     }
 });
@@ -35,7 +35,6 @@ function shuffleRandom(n){
         temp = ar[i]; ar[i] = ar[rnum];ar[rnum] = temp;}
         return ar;
 }
-
 function dateMaker(date){
     var tempdate = new Date(date);
     var nowdate = new Date();
@@ -44,7 +43,7 @@ function dateMaker(date){
     var day = tempdate.getDate();
     var diff = nowdate - tempdate;
     if(diff > 864000000){
-        return month+'/'+day+'/'+year;
+        return month+'-'+day+'-'+year;
     }
     else{
         if(diff > 86400000){
@@ -64,7 +63,6 @@ function dateMaker(date){
                 }
         }
     }
-    
 }
 function sendAjax(url){
     var xhr = new XMLHttpRequest();
@@ -76,7 +74,6 @@ function sendAjax(url){
         var result = JSON.parse(xhr.responseText);
         if(result.result !== 'ok') return;
         // 데이터가 있으면 결과값 표시
-        console.log(result);
         var randoms = shuffleRandom(9);
         var randomul = document.getElementById('uls');
         for(var i=0; i<9; i++){
@@ -86,36 +83,27 @@ function sendAjax(url){
             var dts = document.createElement('dt');
             var span_id = document.createElement('span');
             var dds1 = document.createElement('dd');
-            var dds2 = document.createElement('dd');
             var dds3 = document.createElement('dd');
-            var dds4 = document.createElement('dd');
-            if(result.data[randoms[i]].identifier === 'p'){
+            if(result.data[randoms[i]].identifier == 'p'){
                 as.innerHTML = result.data[randoms[i]].title;
-                as.setAttribute('style', 'display:block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;');
                 as.setAttribute('href', '/penobrol/'+result.data[randoms[i]].id);
-                span_id.innerHTML = 'P';
+                span_id.innerHTML = 'p';
                 dds1.innerHTML = result.data[randoms[i]].content;
-                dds1.setAttribute('style', 'display:block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;');
-                dds2.innerHTML = result.data[randoms[i]].author;
-                dds3.innerHTML = result.data[randoms[i]].p_view;
-                dds4.innerHTML = dateMaker(result.data[randoms[i]].date);
+                dds1.setAttribute('class', 'ddcontent');
+                dds3.innerHTML = dateMaker(result.data[randoms[i]].date) + ' / ' + result.data[randoms[i]].p_view + ' views';
             }
             else{
                 as.innerHTML = result.data[randoms[i]].question;
                 as.setAttribute('href', '/tandya/'+result.data[randoms[i]].id);
-                span_id.innerHTML = 'T';
+                span_id.innerHTML = 't';
                 dds1.innerHTML = result.data[randoms[i]].content;
-                dds1.setAttribute('style', 'display:block;');
-                dds2.innerHTML = result.data[randoms[i]].author;
-                dds3.innerHTML = result.data[randoms[i]].t_view;
-                 dds4.innerHTML = dateMaker(result.data[randoms[i]].date);
+                dds1.setAttribute('class', 'ddcontent');
+                dds3.innerHTML = dateMaker(result.data[randoms[i]].date) + ' / ' + result.data[randoms[i]].t_view + 'views';
             }
             dts.appendChild(as);
             dls.appendChild(dts);
             dls.appendChild(dds1);
-            dls.appendChild(dds2);
             dls.appendChild(dds3);
-            dls.appendChild(dds4);
             lis.appendChild(span_id);
             lis.appendChild(dls);
             randomul.appendChild(lis);
