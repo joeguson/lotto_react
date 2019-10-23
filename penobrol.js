@@ -6,14 +6,18 @@ exports.getPenobrol = function(req, res){
     var sql2 = 'SELECT * FROM penobrol ORDER BY score DESC limit 3';
     if(req.session.u_id){
         conn.conn.query(sql, function(err, dateOrder, fields){
-            //conn.conn.query(sql2, function(err, scoreOrder, fields){});
-            res.render('p', {topics:dateOrder, u_id:'y'});
+            conn.conn.query(sql2, function(err, scoreOrder, fields){
+                res.render('p', {dateTopics:dateOrder, scoreTopics:scoreOrder, u_id:'y', });
+            });
+            
         });
     }
     else{
         conn.conn.query(sql, function(err, dateOrder, fields){
-            //conn.conn.query(sql2, function(err, scoreOrder, fields){});
-            res.render('p', {topics:dateOrder});
+            conn.conn.query(sql2, function(err, scoreOrder, fields){
+                res.render('p', {dateTopics:dateOrder, scoreTopics:scoreOrder});
+            });
+            
       });
     }
 };
@@ -291,4 +295,24 @@ exports.likesComment = function(req, res){
     conn.conn.query(sql7, p_id, function(err, score, fields){
         if(err){console.log(err);}
     });
+};
+exports.warningPenobrol = function(req, res){
+    var author = req.session.u_id;
+    var content = req.body.comment;
+    var p_id = req.params.penobrol_no;
+    //when connection is more than two, divide
+    var sql = 'INSERT INTO p_com (author, content, p_id) VALUES (?, ?, ?)';
+    var sql2 = 'UPDATE penobrol SET com = com + 1 WHERE id = (?)';
+    var sql3 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
+    conn.conn.query(sql3, p_id, function(err, score, fields){
+        if(err){console.log(err);}
+    });
+    conn.conn.query(sql, [author, content, p_id], function(err, result, fields){
+        if(err){console.log(err);}
+        else{
+            conn.conn.query(sql2, [p_id], function(err, result2, fields){
+                res.redirect('/penobrol/'+p_id);
+            });
+        }
+    });  
 };

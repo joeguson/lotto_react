@@ -27,9 +27,9 @@ html
                 li
                     a(href='/tandya') Tandya
                 br.clear
-        section.main
-            if !u_id
-                a(href='/aku') Please Login first
+        section.sub-main
+            .ad Advertisement
+        section.main(id='main')
             .title
                 dl.pview-dl
                     dt.pview-dt= topic.title
@@ -43,6 +43,10 @@ html
                     if hashtag
                         -for(var n=0; n<topic.hashtagcount; n++)
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+            .saveWarnButton
+                if u_id
+                    button(class="save" type="submit" value="save" onclick="saveAjax(this);") Save
+                    button(class="warning" type="submit" value='pen'+topic.id onclick="warningAjax(this);") Warn
             .pcontent= topic.content
                 div(id="plikes" style="font-size:12px;")=topic.p_like
                 div(id="plikebuttons")
@@ -75,12 +79,16 @@ html
                                             else
                                                 button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Suka
                                             // liked by how many
+                                    dd.pcomment-dd
+                                        button(class="warning" type="submit" value='com'+c.id onclick="warningAjax(this);") Warning
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pcomment-dl2
                                                 dd.pcomment-dt= cc.content
                                                 dd.pcomment-dd= cc.author
                                                 dd.pcomment-dd= cc.date
+                                                dd.pcomment-dd
+                                                    button(class="warning" type="submit" value='ccc'+cc.id onclick="warningAjax(this);") Warning
                                     dd.pcomment-dd
                                     if u_id
                                         p

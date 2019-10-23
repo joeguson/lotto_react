@@ -31,18 +31,19 @@ html
                 br.clear
         section.sub-main
             .ad Advertisement
-        if(u_id)
+            if(u_id)
                 a.addPenobrol(href='/penobrol/add') adder
             else
-                a.addPenobrol(href='/aku') Login Dulu
-        section.main
+                a.addPenobrol(href='/aku') Login Dulu 
+        section.main(id='main')
             .p-terbaru
                 .p-title Penobrol Terbaru
                 ul
-                    each v in topics
+                    each v in dateTopics
                         li
                             dl.p-dl
                                 // dt/first dd must be display:inline
+                                //need to look into this. what the hell is precent2?
                                 dt(id='precent2')
                                     a(href='/penobrol/'+v.id)= v.title
                                 dd
@@ -60,22 +61,23 @@ html
             .p-terkenal
                 .p-title Penobrol Terkenal
                 ul
-                    each v in topics
+                    each w in scoreTopics
                         li
                             dl.p-dl
                                 // dt/first dd must be display:inline
+                                //need to look into this. what the hell is precent2?
                                 dt(id='precent2')
-                                    a(href='/penobrol/'+v.id)= v.title
+                                    a(href='/penobrol/'+w.id)= w.title
                                 dd
-                                    span.content-info= v.content
+                                    span.content-info= w.content
                                     span.bar
-                                    span.content-info comment: #{v.com}
+                                    span.content-info comment: #{w.com}
                                     span.bar
-                                    span.content-info author: #{v.author}
+                                    span.content-info author: #{w.author}
                                     span.bar          
-                                    span.content-info view: #{v.p_view}
+                                    span.content-info view: #{w.p_view}
                                     span.bar           
-                                    span.content-info date: #{v.date}
+                                    span.content-info date: #{w.date}
                                     span.bar           
-                                    span.content-info comments: #{v.com}
+                                    span.content-info comments: #{w.com}
     script(type="text/javascript" src="prank.js")

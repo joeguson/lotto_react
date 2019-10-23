@@ -30,6 +30,7 @@ html
                     a(href='/tandya') Tandya
                 br.clear
         section.sub-main(id='sub-main')
+            .ad Advertising
             .search
                     form(action='/cari/search' method='get')
                         p
@@ -39,92 +40,61 @@ html
                             input(type='submit' class="submit")
             .login
                 if user
-                    h2= 'Welcome ' + user.u_id
+                    h2= 'Hi! ' + user.u_id
                 else
                     a(href='/aku') Login Dulu
-            .ad
         section.main(id='main')
             ul(id='uls')
-                -   var shuffleRandom = function shuffleRandom(num){
-                -       var ar = new Array();
-                -       var temp;
-                -       var rnum;
-                -       for(var j=1; j<=n; j++){ar.push(j);}
-                -       for(var i=0; i< ar.length ; i++){
-                           rnum = Math.floor(Math.random() * num);
-                           temp = ar[i]; ar[i] = ar[rnum];ar[rnum] = temp;
-                -   return ar;
-                - }
-                - var randomNum = shuffleRandom(10);
-                - for(var i=0; i<9; i++)
-                    if(randomResult[i].identifier =='p')
+            - var datemaker = function(date){
+            -   var tempdate = new Date(date);
+            -   var nowdate = new Date();
+            -   var year = tempdate.getFullYear();
+            -   var month = tempdate.getMonth();
+            -   var day = tempdate.getDate();
+            -   var diff = nowdate - tempdate;
+            -   if(diff > 864000000){return month+'/'+day+'/'+year;}
+            -   else{
+            -       if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+            -       else{
+            -           if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+            -           else{
+            -               if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
+            -               else{return parseInt(diff/1000)+' seconds ago';}
+            -               }
+            -           }
+            -       }
+            -   }
+                - for(var i=0; i<6; i++)
+                    if(randoms[i].identifier =='p')
                         li
-                            span= randomResult[i].identifier
+                            span= randoms[i].identifier
                             dl
-                                dt
-                                    a(href='/penobrol/'+randomResult[i].id)= randomResult[i].title
-                                dd= randomResult[i].content
-                                if(randomResult[i].public == 'a')
-                                    - var anonim = randomResult[i].author.substr(0,3)+'****';
+                                dt(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')
+                                    a(href='/penobrol/'+randoms[i].id style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].title
+                                dd(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].content
+                                if(randoms[i].public == 'a')
+                                    - var anonim = randoms[i].author.substr(0,3)+'****';
                                     dd #{anonim}
                                 else
-                                    dd= randomResult[i].author
-                                dd= randomResult[i].p_view
-                                - var datemaker = function(date){
-                                -   var tempdate = new Date(date);
-                                -   var nowdate = new Date();
-                                -   var year = tempdate.getFullYear();
-                                -   var month = tempdate.getMonth();
-                                -   var day = tempdate.getDate();
-                                -   var diff = nowdate - tempdate;
-                                -   if(diff > 864000000){return month+'/'+day+'/'+year;}
-                                -   else{
-                                -       if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
-                                -       else{
-                                -           if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
-                                -           else{
-                                -               if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
-                                -               else{return parseInt(diff/1000)+' seconds ago';}
-                                -           }
-                                -       }
-                                -   }
-                                -   }
-                                - var date_result = datemaker(randomResult[i].date);
+                                    dd= randoms[i].author
+                                dd= randoms[i].p_view
+                                - var date_result = datemaker(randoms[i].date);
                                 dd #{date_result}
                             span
                     else
                         li
-                            span= randomResult[i].identifier
+                            span= randoms[i].identifier
                             dl
-                                dt
-                                    a(href='/tandya/'+randomResult[i].id)= randomResult[i].question
-                                dd= randomResult[i].content
-                                if(randomResult[i].public == 'a')
-                                    - var anonim = randomResult[i].author.substr(0,3)+'****';
+                                dt(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')
+                                    a(href='/tandya/'+randoms[i].id style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].question
+                                dd(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].content
+                                if(randoms[i].public == 'a')
+                                    - var anonim = randoms[i].author.substr(0,3)+'****';
                                     dd #{anonim}
                                 else
-                                    dd= randomResult[i].author
-                                dd= randomResult[i].t_view
-                                - var datemaker = function(date){
-                                -   var tempdate = new Date(date);
-                                -   var nowdate = new Date();
-                                -   var year = tempdate.getFullYear();
-                                -   var month = tempdate.getMonth();
-                                -   var day = tempdate.getDate();
-                                -   var diff = nowdate - tempdate;
-                                -   if(diff > 864000000){return month+'/'+day+'/'+year;}
-                                -   else{
-                                -       if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
-                                -       else{
-                                -           if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
-                                -           else{
-                                -               if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
-                                -               else{return parseInt(diff/1000)+' seconds ago';}
-                                -           }
-                                -       }
-                                -   }
-                                -   }
-                                - var date_result = datemaker(randomResult[i].date);
+                                    dd= randoms[i].author
+                                dd= randoms[i].t_view
+                                - var date_result = datemaker(randoms[i].date);
                                 dd #{date_result}
                             span
         script(type="text/javascript" src="cari.js")

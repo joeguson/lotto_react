@@ -6,14 +6,24 @@ exports.getTandya = function(req, res){
     var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
     if(req.session.u_id){
         conn.conn.query(sql, function(err, dateOrder, fields){
-            //conn.conn.query(sql2, function(err, scoreOrder, fields){});
-            res.render('t', {topics:dateOrder, u_id:'y'});
+            conn.conn.query(sql2, function(err, scoreOrder, fields){
+                if(err){console.log(err);}
+                else{
+                   res.render('t', {dateTopics:dateOrder, scoreTopics:scoreOrder, u_id:'y'}); 
+                }
+            });
+            
         });
     }
     else{
         conn.conn.query(sql, function(err, dateOrder, fields){
-            //conn.conn.query(sql2, function(err, scoreOrder, fields){});
-            res.render('t', {topics:dateOrder});
+            conn.conn.query(sql2, function(err, scoreOrder, fields){
+                if(err){console.log(err);}
+                else{
+                   res.render('t', {dateTopics:dateOrder, scoreTopics:scoreOrder}); 
+                }
+            });
+            
       });
     }
 };

@@ -173,14 +173,24 @@ app.get('/cari/load', function(req, res){
 });
 
 app.get(['/cari','/'], function(req, res){
-    var sql = 'select * from penobrol order by rand() limit 5';
-    var sql2 = 'SELECT * FROM tandya order by rand() limit 5';
+    var sql = 'select * from penobrol order by rand() limit 3';
+    var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
     //DO NOT SELECT *. Penobrol, tandya have different number of columns. union all will make an error.
     conn.query(sql, function(err, penobrol, fields){
         if(err){console.log(err);}
         else{
             conn.query(sql2, function(err, tandya, fields){
-                res.render('cari', {p_random:penobrol, t_random:tandya});
+                var p = JSON.parse(JSON.stringify(penobrol));
+                var t = JSON.parse(JSON.stringify(tandya));
+                p = p.concat(t);
+                var temp1 = {};
+                var temp2 = {};
+                temp1 = p[1];
+                p[1] = p[4];
+                temp2 = p[2];
+                p[2] = temp1;
+                p[4] = temp2;
+                res.render('cari', {randoms:p});
             });
         }
         });
@@ -204,6 +214,7 @@ app.get(['/penobrol/:penobrol_no'], penobrol.getViewPenobrol);
 app.post('/plikes/:id', penobrol.likesPenobrol);
 app.post('/pCommentlikes/:id', penobrol.likesComment);
 app.post('/penobrol/:penobrol_no/:comment_no', penobrol.postAddCcomment);
+app.post('/pwarning/:id', penobrol.warningPenobrol);
 
 /************FOR AKU************/
 app.post('/aku/login', aku.login);

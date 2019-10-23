@@ -58,6 +58,7 @@ CREATE TABLE `penobrol` (
   `identifier` char(2) DEFAULT 'p',
   `score`  int UNSIGNED NOT NULL DEFAULT 0,
   `hashtagcount`  int UNSIGNED NOT NULL DEFAULT 0,
+  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id),
   FULLTEXT search (title, content)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -77,6 +78,7 @@ CREATE TABLE `tandya` (
   `identifier` char(2) DEFAULT 't',
   `score`  int UNSIGNED NOT NULL DEFAULT 0,
   `hashtagcount`  int UNSIGNED NOT NULL DEFAULT 0,
+  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id),
   FULLTEXT search (question, content)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -108,6 +110,7 @@ CREATE TABLE `p_com` (
   `p_id` int UNSIGNED NOT NULL DEFAULT 0,
   `score`  int UNSIGNED NOT NULL DEFAULT 0,
   `com`  int UNSIGNED NOT NULL DEFAULT 0,
+  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -120,6 +123,7 @@ CREATE TABLE `p_com` (
   `pc_id` int UNSIGNED NOT NULL DEFAULT 0,
   `p_id` int UNSIGNED NOT NULL DEFAULT 0,
   `score`  int UNSIGNED NOT NULL DEFAULT 0,
+  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -132,6 +136,7 @@ CREATE TABLE `t_ans` (
   `ta_like` int UNSIGNED NOT NULL DEFAULT 0,
   `t_id` int UNSIGNED NOT NULL DEFAULT 0,
   `score`  int UNSIGNED NOT NULL DEFAULT 0,
+  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

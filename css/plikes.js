@@ -17,7 +17,6 @@ function contentSendAjax(url, data){
     xhr.send(original);
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
-        console.log(xhr.responseText);
         var result = JSON.parse(xhr.responseText);
         document.getElementById("plikes").innerHTML = result.p_like;
         likeButton.innerHTML = result.button;
@@ -27,7 +26,6 @@ function contentSendAjax(url, data){
 
 function commentSendAjax(comment){
     var id = comment.value;
-    console.log(id);
     var original = {'clickedValue' : comment.innerHTML};
     original = JSON.stringify(original);
     var xhr = new XMLHttpRequest();
@@ -36,7 +34,6 @@ function commentSendAjax(comment){
     xhr.send(original);
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
-        console.log(xhr.responseText);
         var result = JSON.parse(xhr.responseText);
         document.getElementById("pCommentlikes"+id).innerHTML = result.pc_like;
         comment.innerHTML = result.button;
@@ -47,8 +44,6 @@ function ccommentSendAjax(ccomment){
     var pathname = location.pathname;
     var penobrolId = pathname.split('/');
     var commentId = ccomment.name;
-    console.log(commentId);
-    console.log(penobrolId[2]);
     var original = {'ccommentContent' : ccomment.previousSibling.previousSibling.value};
     original = JSON.stringify(original);
     var xhr = new XMLHttpRequest();
@@ -57,7 +52,6 @@ function ccommentSendAjax(ccomment){
     xhr.send(original);
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
-        console.log(xhr.responseText);
         var result = JSON.parse(xhr.responseText);
         var pCcomment = document.getElementById("pCcomment"+commentId);
         var dds1 = document.createElement('dd');
@@ -67,4 +61,24 @@ function ccommentSendAjax(ccomment){
         pCcomment.append(dds1);
     });
 }
+function warningAjax(warning){
+    var id = warning.value;
+    var confirmWarning = function(){
+        return confirm("really?");
+    }
+    var confirmedValue = confirmWarning();
+    console.log(confirmedValue);
+    if(confirmedValue == true){
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/pwarning/'+id);
+        xhr.setRequestHeader('Content-type', "application/json");
+        xhr.send(original);
+        // 데이터 수신이 완료되면 표시
+        xhr.addEventListener('load', function(){
+            console.log(xhr.responseText);
+            var result = JSON.parse(xhr.responseText);
+        });
+    }
+}
+
 

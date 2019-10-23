@@ -48,18 +48,18 @@ function dateMaker(date){
     }
     else{
         if(diff > 86400000){
-            return parseInt(diff/86400000)+'days ago';
+            return parseInt(diff/86400000)+' days ago';
         }
         else{
             if(diff > 3600000){
-                return parseInt(diff/3600000)+'hours ago';
+                return parseInt(diff/3600000)+' hours ago';
             }
                 else{
                     if(diff > 60000){
-                        return parseInt(diff/60000)+'minutes ago';
+                        return parseInt(diff/60000)+' minutes ago';
                     }
                     else{
-                        return parseInt(diff/1000)+'seconds ago';
+                        return parseInt(diff/1000)+' seconds ago';
                     }
                 }
         }
@@ -91,10 +91,11 @@ function sendAjax(url){
             var dds4 = document.createElement('dd');
             if(result.data[randoms[i]].identifier === 'p'){
                 as.innerHTML = result.data[randoms[i]].title;
+                as.setAttribute('style', 'display:block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;');
                 as.setAttribute('href', '/penobrol/'+result.data[randoms[i]].id);
                 span_id.innerHTML = 'P';
                 dds1.innerHTML = result.data[randoms[i]].content;
-                dds1.setAttribute('style', 'display:block;');
+                dds1.setAttribute('style', 'display:block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;');
                 dds2.innerHTML = result.data[randoms[i]].author;
                 dds3.innerHTML = result.data[randoms[i]].p_view;
                 dds4.innerHTML = dateMaker(result.data[randoms[i]].date);
