@@ -5,7 +5,7 @@ html
         // what appears on the tab
         base(href="/")
         link(rel='stylesheet', href='common.css' type="text/css")
-        link(rel='stylesheet', href='common2.css' type="text/css")
+        //link(rel='stylesheet', href='common2.css' type="text/css")
         // links css common file
         link(rel='stylesheet', href='cari.css' type="text/css")
         // links css file
@@ -17,7 +17,7 @@ html
         // Lorem ipsum
     body
         header(id='header')
-            a(href='/cari') Beritamus      
+            a(href='/cari') BERITAMUS      
         nav(id='nav')
             ul
                 li
@@ -35,15 +35,14 @@ html
                     form(action='/cari/search' method='get')
                         p
                             input(type='text' name='search' placeholder='   Apa?')
-                        br
                         p
-                            input(type='submit' class="submit")
+                            input(type='submit' class="submit" value="Cari")
+        section.main(id='main')
             .login
                 if user
                     h2= 'Hi! ' + user.u_id
                 else
                     a(href='/aku') Login Dulu
-        section.main(id='main')
             ul(id='uls')
             - var datemaker = function(date){
             -   var tempdate = new Date(date);
@@ -72,11 +71,6 @@ html
                                 dt(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')
                                     a(href='/penobrol/'+randoms[i].id style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].title
                                 dd(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].content
-                                if(randoms[i].public == 'a')
-                                    - var anonim = randoms[i].author.substr(0,3)+'****';
-                                    dd #{anonim}
-                                else
-                                    dd= randoms[i].author
                                 dd= randoms[i].p_view
                                 - var date_result = datemaker(randoms[i].date);
                                 dd #{date_result}
@@ -88,13 +82,9 @@ html
                                 dt(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')
                                     a(href='/tandya/'+randoms[i].id style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].question
                                 dd(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap;')= randoms[i].content
-                                if(randoms[i].public == 'a')
-                                    - var anonim = randoms[i].author.substr(0,3)+'****';
-                                    dd #{anonim}
-                                else
-                                    dd= randoms[i].author
                                 dd= randoms[i].t_view
                                 - var date_result = datemaker(randoms[i].date);
                                 dd #{date_result}
                             span
+        section.footer(id='footer')
         script(type="text/javascript" src="cari.js")

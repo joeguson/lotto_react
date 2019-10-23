@@ -1,3 +1,5 @@
+//this common file is for body, header and nav and main tags only
+//margin order : top right bottom left;
 @bgcolor1: #f6f6f6; //for all body
 @bgcolor2: #fbfbfb; // for section
 
@@ -11,40 +13,70 @@
 @font-color1: black;
 @font-color2: white;
 @font-family: 'Lato', sans-serif;
+
+@marginbottom-mbl: 20px;
+@marginbottom-com: 30px;
+
 //text size & color
-@header-text-size: 30px;
+@header-text-size: 40px;
 @header-text-size-big: 50px;
 
 .section-border{
     border-top: 2px solid lightgray;
     border-bottom: 2px solid lightgray;
-    padding-top: 20px;
-    padding-bottom: 20px;
 }
-.button{
-    width: 100%; height:60px; box-sizing: border-box; font-size: 20px; background-color:@button-color; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; margin-bottom: 20px; border-style: none;
+.li-border{
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
+    margin-bottom: @marginbottom-mbl;
+}
+.identifier-border{
+    height:20px;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    padding:5px;
+    float:right;
 }
 
+.button{
+    width: 100%; height:60px; box-sizing: border-box; font-size: 20px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 60px; text-decoration: none; border-style: none;
+}
 
 *{margin:0px; padding:0px;}
 
-.search{width:100%; padding:0px; margin: 0 auto; background-color: @bgcolor1; margin-bottom: 20px;}
-.login{width:100%;}
+//sub-main - .ad(div), .search(div)
 
-//.search - input
-input{width:100%; height:50px; margin: 0 auto; font: 50px; display: block;}
+.ad {width:100%; height:150px; background-color: @bgcolor1; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
+.search{width:100%; background-color: @bgcolor1; .section-border(); font-size: 20px;}
+
+
+//.search - form
+form{width:100%;}
+
+//.search form - p, p
+input{width:100%; height:50px; margin: 0 auto; font: 100px; display: block;}
 .submit{.button();}
 
-.login h2{text-align: center;}
-.login a{.button();}
+//main - .login(div), ul(#uls)
+.login{width:100%;}
+#uls{padding: 10px; list-style: none;}
 
+
+//.login - h2, a
+.login h2{text-align: center; font-size: 20px;}
+.login a{.button(); margin-bottom: @marginbottom-mbl; }
 .clear{clear:both}
 
-#uls li{height:150px;}
+//#uls - li
+#uls li{width:100%; background-color:@bgcolor1; .li-border();}
 
-li span{border-left: 1px solid black; border-bottom: 1px solid black; float:right;}
+//li - span, dl
+li span{.identifier-border();}
+li dl{}
 
-li dd{display:inline;}
+//dl - dt, dd
+dl dt{width:100%; height:30px; line-height: 30px;}
+dl dd{}
 
 /*for bigger windows*/
 @media (min-width:768px){
