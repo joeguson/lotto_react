@@ -227,7 +227,7 @@ app.post('/aku/register', function(req, res){
     var sql = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
     var u_id = req.body.u_id;
     var result = 0;
-    conn.query(sql, u_id, function(err, check, field){
+    conn.query(sql, u_id, function(err, check, fields){
         if(parseInt(check[0].u_id) > 0){
             result = 1;
         }
