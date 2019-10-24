@@ -5,7 +5,7 @@ html
         // what appears on the tab
         base(href="/")
         link(rel='stylesheet', href='common.css' type="text/css")
-        link(rel='stylesheet', href='common2.css' type="text/css")
+        //link(rel='stylesheet', href='common2.css' type="text/css")
         // links css common file
         link(rel='stylesheet', href='aku.css' type="text/css")
         // links css file
@@ -30,7 +30,7 @@ html
                     a(href='/tandya') Tandya
                 br.clear
         section.sub-main(id='sub-main')
-            .ad Advertising
+            .ad Advertisement
         section.main(id='main')
         if user
             .p-stat
@@ -88,6 +88,7 @@ html
                     input(type='password' name='u_pw' placeholder='     Password')
                 p
                     input(type='submit' value="Login")
-            a(href='/register') Daftar
             a(href='/aku/hilang') Hilang?
+            a(href='/register') Daftar
+            
     script(type="text/javascript" src="aku.js")

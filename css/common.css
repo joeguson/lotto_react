@@ -11,7 +11,7 @@
   height: 60px;
   box-sizing: border-box;
   font-size: 20px;
-  background-color: #7d94ff;
+  background-color: #a0b3ef;
   display: inline-block;
   text-align: center;
   line-height: 40px;
@@ -65,7 +65,7 @@ nav ul li {
   box-sizing: border-box;
   text-align: center;
   line-height: 40px;
-  background-color: #003dad;
+  background-color: #203370;
 }
 nav ul li a {
   text-decoration: none;

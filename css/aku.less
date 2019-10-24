@@ -1,34 +1,41 @@
-//margin order : top right bottom left;
 @bgcolor1: #f6f6f6; //for all body
-@bgcolor2: #1976d2; //for nav
-@bgcolor3: #fbfbfb; // for section
+@bgcolor2: #fbfbfb; // for section
 
-@button-color: #e5e5f2;
+@main: #4167e0; // blue main color
+@maindark: #203370; // blue main color
+@mainlight: #a0b3ef; // blue main color
+@main2: #e0ba41; // blue main color
+@mainlight2: #efdca0; // blue main color
 
+@button-color: #a0b3ef;
 @font-color1: black;
 @font-color2: white;
+@font-family: 'Lato', sans-serif;
+
+@marginbottom-mbl: 20px;
+@marginbottom-com: 30px;
+
 
 //text size & color
-@header-text-size: 25px;
+@header-text-size: 40px;
 @header-text-size-big: 50px;
 
-*{margin:0px; padding:0px;}
+*{margin:0px; padding:0px; font-family: @font-family;}
 .section-border{
     border-top: 2px solid lightgray;
     border-bottom: 2px solid lightgray;
-    padding-top: 20px;
-    padding-bottom: 20px;
+}
+.li-border{
+    border-top: 2px solid @mainlight;
+    border-bottom: 2px solid @mainlight;
+    margin-bottom: @marginbottom-mbl;
 }
 .button{
-    width: 100%; height:50px; box-sizing: border-box; font-size: 20px; background-color:@button-color; display: inline-block; text-align: center; line-height: 50px; text-decoration: none; border-style: none; margin-bottom: 20px;
+    width: 100%; height:60px; box-sizing: border-box; font-size: 20px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 60px; text-decoration: none; border-style: none;
 }
-.button-big{
-    width: 100%; height:65px; box-sizing: border-box; font-size: 35px; background-color:@button-color; display: inline-block; text-align: center; line-height: 65px; text-decoration: none; border-style: none; margin-bottom: 20px;
-}
-
 
 //.login - .ad(div), .login(div)
-.ad{width:100%; height:100px; font: 50px; box-sizing: border-box; margin: 0px 0px 20px 0px; background-color: @bgcolor3; color:@font-color1; text-align: center; font-size: 20px; line-height: 100px;}
+.ad {width:100%; height:150px; background-color: @bgcolor1; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
 
 .login{width:100%; box-sizing: border-box; margin: 0px; background-color: @bgcolor2; .section-border();}
 
@@ -42,11 +49,11 @@ form p:nth-child(3) a{.button();}
 
 //.main - .p-stat(div) .p-penobrol(div), .p-tandya(div)
 .pic{width:20%; height:100%;}
-.p-stat {width:100%; margin-bottom: 20px; background-color: @bgcolor3; padding-left: 10px; .section-border(); box-sizing: border-box; color:@font-color1;}
+.p-stat {width:100%; margin-bottom: 20px; background-color: @bgcolor2; padding-left: 10px; .section-border(); box-sizing: border-box; color:@font-color1;}
 
-.p-penobrol {width:100%; margin-bottom: 20px; background-color: @bgcolor3; padding-left: 10px; .section-border(); box-sizing: border-box; font-size: 20px; margin-bottom: 10px; font-weight: bold;}
+.p-penobrol {width:100%; margin-bottom: 20px; background-color: @bgcolor2; padding-left: 10px; .section-border(); box-sizing: border-box; font-size: 20px; margin-bottom: 10px; font-weight: bold;}
 
-.p-tandya {width:100%; margin-bottom: 20px; background-color: @bgcolor3; padding-left: 10px; box-sizing: border-box; .section-border(); font-size: 20px; margin-bottom: 10px; font-weight: bold;}
+.p-tandya {width:100%; margin-bottom: 20px; background-color: @bgcolor2; padding-left: 10px; box-sizing: border-box; .section-border(); font-size: 20px; margin-bottom: 10px; font-weight: bold;}
 
 .clear{clear:both}
 
@@ -56,19 +63,6 @@ form p:nth-child(3) a{.button();}
 
 /*for bigger windows*/
 @media (min-width:768px){
-    input{width:50%; height:70px; border: 2px solid @button-color; margin: 0 auto; font: 50px; background-color: @bgcolor1;}
-    
-    form p:nth-child(1) input{width: 50%; height:65px; box-sizing: border-box; border: 2px solid @button-color; font-size: 40px; background-color:@bgcolor1; display: inline; color:@font-color1;}
-    
-    form p:nth-child(2) input{.button-big();}
-    form p:nth-child(3) a{.button-big();}
-    
-    .login{height:100px; width:100%; float: left; margin: 0px 0px 0px .5%;}
-    
-    .ad{height:150px; width:100%; margin: 0px .5% 0px 0px;}
-    
-    .links{padding-left:8px;}
 
-    .bar{border-left: 1px solid #dbdbdb;}
     
 }

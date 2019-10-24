@@ -5,7 +5,7 @@ html
         // what appears on the tab
         base(href="/")
         link(rel='stylesheet', href='common.css' type="text/css")
-        link(rel='stylesheet', href='common2.css' type="text/css")
+        //link(rel='stylesheet', href='common2.css' type="text/css")
         // links css common file
         link(rel="stylesheet" href="penobrol.css" type="text/css")
         // links css file
@@ -17,6 +17,25 @@ html
         // Lorem ipsum
         
     body
+    -var datemaker = function(date){
+    -var tempdate = new Date(date);
+    -var nowdate = new Date();
+    -var year = tempdate.getFullYear();
+    -var month = tempdate.getMonth();
+    -var day = tempdate.getDate();
+    -var diff = nowdate - tempdate;
+    -if(diff > 864000000){return month+'-'+day+'-'+year;}
+    -else{
+    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -else{
+    -if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+    -else{
+    -if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
+    -else{return parseInt(diff/1000)+' seconds ago';}
+    -}
+    -}
+    -}
+    -}
         header
             a(href='/tandya') Beritamus
         nav
@@ -30,55 +49,34 @@ html
                 li
                     a(href='/tandya') Tandya
                 br.clear
-        section.sub-main
+        section.sub-main(id='sub-main')
             .ad Advertisement
-            if(u_id)
-                a.addPenobrol(href='/penobrol/add') adder
-            else
-                a.addPenobrol(href='/aku') Login Dulu 
         section.main(id='main')
+            .login
+                if(u_id)
+                    a.addPenobrol(href='/penobrol/add') adder
+                else
+                    a.addPenobrol(href='/aku') Login Dulu 
             .p-terbaru
                 .p-title Penobrol Terbaru
                 ul
                     each v in dateTopics
                         li
                             dl.p-dl
-                                // dt/first dd must be display:inline
-                                //need to look into this. what the hell is precent2?
-                                dt(id='precent2')
+                                dt
                                     a(href='/penobrol/'+v.id)= v.title
-                                dd
-                                    span.content-info= v.content
-                                    span.bar
-                                    span.content-info comment: #{v.com}
-                                    span.bar
-                                    span.content-info author: #{v.author}
-                                    span.bar          
-                                    span.content-info view: #{v.p_view}
-                                    span.bar           
-                                    span.content-info date: #{v.date}
-                                    span.bar           
-                                    span.content-info comments: #{v.com}
+                                dd.ddcontent= v.content
+                                - var date_result = datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' komentar';
+                                dd #{date_result}        
             .p-terkenal
                 .p-title Penobrol Terkenal
                 ul
                     each w in scoreTopics
                         li
                             dl.p-dl
-                                // dt/first dd must be display:inline
-                                //need to look into this. what the hell is precent2?
-                                dt(id='precent2')
+                                dt
                                     a(href='/penobrol/'+w.id)= w.title
-                                dd
-                                    span.content-info= w.content
-                                    span.bar
-                                    span.content-info comment: #{w.com}
-                                    span.bar
-                                    span.content-info author: #{w.author}
-                                    span.bar          
-                                    span.content-info view: #{w.p_view}
-                                    span.bar           
-                                    span.content-info date: #{w.date}
-                                    span.bar           
-                                    span.content-info comments: #{w.com}
+                                dd.ddcontent= w.content
+                                - var date_result = datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar';
+                                dd #{date_result}        
     script(type="text/javascript" src="prank.js")

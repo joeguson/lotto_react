@@ -2,38 +2,29 @@
 * {
   margin: 0px;
   padding: 0px;
+  font-family: 'Lato', sans-serif;
 }
 .section-border {
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  padding-top: 20px;
-  padding-bottom: 20px;
+}
+.li-border {
+  border-top: 2px solid #a0b3ef;
+  border-bottom: 2px solid #a0b3ef;
+  margin-bottom: 20px;
 }
 .button {
   width: 100%;
-  height: 50px;
+  height: 60px;
   box-sizing: border-box;
   font-size: 20px;
-  background-color: #e5e5f2;
+  color: black;
+  background-color: #a0b3ef;
   display: inline-block;
   text-align: center;
-  line-height: 50px;
+  line-height: 60px;
   text-decoration: none;
   border-style: none;
-  margin-bottom: 20px;
-}
-.button-big {
-  width: 100%;
-  height: 65px;
-  box-sizing: border-box;
-  font-size: 35px;
-  background-color: #e5e5f2;
-  display: inline-block;
-  text-align: center;
-  line-height: 65px;
-  text-decoration: none;
-  border-style: none;
-  margin-bottom: 20px;
 }
 .ad {
   width: 100%;
@@ -51,24 +42,22 @@
   width: 100%;
   box-sizing: border-box;
   margin: 0px;
-  background-color: #1976d2;
+  background-color: #fbfbfb;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  padding-top: 20px;
-  padding-bottom: 20px;
 }
 .logout {
   width: 100%;
-  height: 50px;
+  height: 60px;
   box-sizing: border-box;
   font-size: 20px;
-  background-color: #e5e5f2;
+  color: black;
+  background-color: #a0b3ef;
   display: inline-block;
   text-align: center;
-  line-height: 50px;
+  line-height: 60px;
   text-decoration: none;
   border-style: none;
-  margin-bottom: 20px;
 }
 form {
   font-size: 0px;
@@ -81,37 +70,37 @@ form p:nth-child(1) input {
   width: 50%;
   height: 40px;
   box-sizing: border-box;
-  border: 2px solid #e5e5f2;
+  border: 2px solid #a0b3ef;
   font-size: 20px;
   display: inline;
   color: black;
 }
 form p:nth-child(2) input {
   width: 100%;
-  height: 50px;
+  height: 60px;
   box-sizing: border-box;
   font-size: 20px;
-  background-color: #e5e5f2;
+  color: black;
+  background-color: #a0b3ef;
   display: inline-block;
   text-align: center;
-  line-height: 50px;
+  line-height: 60px;
   text-decoration: none;
   border-style: none;
-  margin-bottom: 20px;
   margin-bottom: 80px;
 }
 form p:nth-child(3) a {
   width: 100%;
-  height: 50px;
+  height: 60px;
   box-sizing: border-box;
   font-size: 20px;
-  background-color: #e5e5f2;
+  color: black;
+  background-color: #a0b3ef;
   display: inline-block;
   text-align: center;
-  line-height: 50px;
+  line-height: 60px;
   text-decoration: none;
   border-style: none;
-  margin-bottom: 20px;
 }
 .pic {
   width: 20%;
@@ -124,8 +113,6 @@ form p:nth-child(3) a {
   padding-left: 10px;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  padding-top: 20px;
-  padding-bottom: 20px;
   box-sizing: border-box;
   color: black;
 }
@@ -136,8 +123,6 @@ form p:nth-child(3) a {
   padding-left: 10px;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  padding-top: 20px;
-  padding-bottom: 20px;
   box-sizing: border-box;
   font-size: 20px;
   margin-bottom: 10px;
@@ -151,8 +136,6 @@ form p:nth-child(3) a {
   box-sizing: border-box;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  padding-top: 20px;
-  padding-bottom: 20px;
   font-size: 20px;
   margin-bottom: 10px;
   font-weight: bold;
@@ -167,66 +150,3 @@ form p:nth-child(3) a {
   border-left: 1px solid #dbdbdb;
 }
 /*for bigger windows*/
-@media (min-width: 768px) {
-  input {
-    width: 50%;
-    height: 70px;
-    border: 2px solid #e5e5f2;
-    margin: 0 auto;
-    font: 50px;
-    background-color: #f6f6f6;
-  }
-  form p:nth-child(1) input {
-    width: 50%;
-    height: 65px;
-    box-sizing: border-box;
-    border: 2px solid #e5e5f2;
-    font-size: 40px;
-    background-color: #f6f6f6;
-    display: inline;
-    color: black;
-  }
-  form p:nth-child(2) input {
-    width: 100%;
-    height: 65px;
-    box-sizing: border-box;
-    font-size: 35px;
-    background-color: #e5e5f2;
-    display: inline-block;
-    text-align: center;
-    line-height: 65px;
-    text-decoration: none;
-    border-style: none;
-    margin-bottom: 20px;
-  }
-  form p:nth-child(3) a {
-    width: 100%;
-    height: 65px;
-    box-sizing: border-box;
-    font-size: 35px;
-    background-color: #e5e5f2;
-    display: inline-block;
-    text-align: center;
-    line-height: 65px;
-    text-decoration: none;
-    border-style: none;
-    margin-bottom: 20px;
-  }
-  .login {
-    height: 100px;
-    width: 100%;
-    float: left;
-    margin: 0px 0px 0px .5%;
-  }
-  .ad {
-    height: 150px;
-    width: 100%;
-    margin: 0px .5% 0px 0px;
-  }
-  .links {
-    padding-left: 8px;
-  }
-  .bar {
-    border-left: 1px solid #dbdbdb;
-  }
-}
