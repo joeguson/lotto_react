@@ -16,6 +16,25 @@ html
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
+    -var datemaker = function(date){
+    -var tempdate = new Date(date);
+    -var nowdate = new Date();
+    -var year = tempdate.getFullYear();
+    -var month = tempdate.getMonth();
+    -var day = tempdate.getDate();
+    -var diff = nowdate - tempdate;
+    -if(diff > 864000000){return month+'-'+day+'-'+year;}
+    -else{
+    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -else{
+    -if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+    -else{
+    -if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
+    -else{return parseInt(diff/1000)+' seconds ago';}
+    -}
+    -}
+    -}
+    -}
         header
             a(href='/aku') Beritamus
         nav
@@ -34,52 +53,32 @@ html
         section.main(id='main')
         if user
             .p-stat
-                .pic(class='clear')
-                |Penobrol    :  #{user.u_pen}
-                br
-                |Tandya     : #{user.u_tan}
-                br
-                |haipur    :  #{user.u_haipur}
-                br
-                |Last Login     : #{user.last_login}
+                p Penobrol    :  #{user.u_pen}
+                p Tandya     : #{user.u_tan}
+                p haipur    :  #{user.u_haipur}
             .p-penobrol Penobrol
                 if penobrols
                     each p in penobrols
-                        .links
-                            dl
-                                dt
-                                    a(href='/penobrol/'+p.id)= p.title
-                                    dd
-                                        span.content-info
-                                        |view : #{p.p_view}
-                                        span.bar          
-                                        span.content-info
-                                        |com : #{p.com}
-                                        span.bar           
-                                        span.content-info
-                                        |date : #{p.date}
-                                        span.bar           
-                                        span.content-info
-                                        |like : #{p.p_like}
+                        dl
+                            dt
+                                a(href='/penobrol/'+p.id)= p.title
+                                dd.content-info view : #{p.p_view}        
+                                dd.content-info com : #{p.com}       
+                                - var date_result = datemaker(p.date)
+                                dd.content-info date : #{date_result}         
+                                dd.content-info like : #{p.p_like}
             .p-tandya Tandya
                 if tandyas
                     each t in tandyas
-                        .links
-                            dl
-                                dt
-                                    a(href='/tandya/'+t.id)= t.question
-                                    dd
-                                        span.content-info
-                                        |view : #{t.t_view}
-                                        span.bar          
-                                        span.content-info
-                                        |com : #{t.com}
-                                        span.bar           
-                                        span.content-info
-                                        |date : #{t.date}
-                                        span.bar           
-                                        span.content-info
-                                        |like : #{t.t_like}
+                        dl
+                            dt
+                                a(href='/tandya/'+t.id)= t.question
+                                dd.content-info view : #{t.t_view}        
+                                dd.content-info com : #{t.com}
+                                - var date_result = datemaker(t.date)
+                                dd.content-info date : #{date_result}        
+                                dd.content-info like : #{t.t_like}
+                                
             a.logout(href= '/aku/logout') Logout!
         else
             form(action='aku/login' method='post')
@@ -87,8 +86,9 @@ html
                     input(type='text' name='u_id' placeholder='   ID')
                     input(type='password' name='u_pw' placeholder='     Password')
                 p
-                    input(type='submit' value="Login")
-            a(href='/aku/hilang') Hilang?
-            a(href='/register') Daftar
+                    input(type='submit' value="Login" id="login")
+            .daftar
+                a(href='/aku/hilang') Hilang?
+                a(href='/register') Daftar
             
     script(type="text/javascript" src="aku.js")

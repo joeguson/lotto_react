@@ -1,35 +1,84 @@
-//margin order : top right bottom left;
 @bgcolor1: #f6f6f6; //for all body
-@bgcolor2: #1976d2; //for nav
-@bgcolor3: #fbfbfb; // for section
-@bgcolor4: #bad5f1; // light main color
+@bgcolor2: #fbfbfb; // for section
 
-@button-color: #e5e5f2;
+@main: #4167e0; // blue main color
+@maindark: #203370; // blue main color
+@mainlight: #a0b3ef; // blue main color
+@main2: #e0ba41; // blue main color
+@mainlight2: #efdca0; // blue main color
 
+@button-color1: #a0b3ef;
+@button-color2: #efdca0;
 @font-color1: black;
 @font-color2: white;
 @font-family: 'Lato', sans-serif;
+
+@marginbottom-mbl: 20px;
+@marginbottom-com: 30px;
+
 //text size & color
-@header-text-size: 25px;
+@header-text-size: 40px;
 @header-text-size-big: 50px;
+*{margin:0px; padding:0px; font-family: @font-family;}
 .section-border{
     border-top: 2px solid lightgray;
     border-bottom: 2px solid lightgray;
-    padding-top: 20px;
-    padding-bottom: 20px;
+}
+.li-border{
+    border-top: 2px solid @mainlight;
+    border-bottom: 2px solid @mainlight;
+    margin-bottom: @marginbottom-mbl;
 }
 .button{
-    width: 100%; height:60px; box-sizing: border-box; font-size: 20px; background-color:@button-color; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; margin-bottom: 20px; border-style: none;
+    width: 100%; height:60px; box-sizing: border-box; font-size: 20px; background-color:@button-color1; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; margin-bottom: 20px; border-style: none;
+}
+.halfButton{
+    width: 49%; height:40px; box-sizing: border-box; font-size: 20px; background-color:@button-color2; display: inline; text-align: center; line-height: 40px; text-decoration: none; margin-bottom: 20px; border-style: none;
 }
 
-//.main - .title(div), .pcontent(div), .pcomment(div)
-.title{width:100%; box-sizing:border-box; margin-bottom: 10px; .section-border(); background-color: @bgcolor4;}
+.ad {width:100%; height:150px; background-color: @bgcolor1; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
 
-.pcontent{width:100%; margin-bottom: 10px; background-color: white; font-size: 14px; line-height: 20px; text-align: justify; padding:8px 5px 8px 5px; box-sizing: border-box; .section-border();}
+//.main - .title(div), .pcontent(div), .commentForm(form), .pcomment(div)
+.title{width:100%; box-sizing:border-box; margin-bottom: 10px; .section-border(); background-color: @main;}
+
+.pcontent{width:100%; margin-bottom: @marginbottom-mbl; background-color: white; font-size: 14px; line-height: 20px; text-align: justify; padding:10px; box-sizing: border-box; .section-border();}
+
+.commentForm{width:100%; margin-bottom: @marginbottom-mbl; .section-border();}
+
+.pcomment{width:100%; background-color:@bgcolor1; margin:0px; padding:0px; margin-bottom: @marginbottom-mbl;}
+
+//.title(div) - .saveWarnButton(div), .pview-dl(dl)
+.saveWarnButton{width:100%; box-sizing: border-box; margin:0 auto;}
+.pview-dl{width:100%; }
+
+//.pcontent(div) - #plikes(div), #plikebuttons(div)
+#plikes{font-size: 24px; text-align: center; margin-bottom: @marginbottom-mbl;}
+#plikebuttons{.button();}
+
+//.commentForm(form) - p * 2
+p{width:100%;}
+
+//.pcomment(div) - .pcomment-ul(ul)
+.pcomment-ul{padding: 10px; list-style: none;}
+
+//.saveWarnButton(div) - #save(button), #warn(button)
+#save{.halfButton();}
+#warn{.halfButton();}
+
+//.pview-dl(dl)
+
+//#plikes(div)
+//#plikebuttons(div) - #likeButton * 2
+#plikebuttons button{font-size: 24px; line-height: 60px;}
+
+//p * 2 - #comment(textarea), .comment(input)
+#comment{width:100%; margin:0 auto; }
+.comment{.button();}
+
+//.pcomment-ul(ul) - .pcomment-li(li)
+.pcomment-li{width:100%; background-color:@bgcolor1; .li-border();}
 
 form textarea{width:80%; height:100px; margin: 0px auto;}
-
-.pcomment{width:100%; background-color:@bgcolor1; margin:0px; padding:0px; margin-bottom: 10px;}
 
 //.title - .pview-dl(dl) 
 .pview-dl{width:100%; margin:0px; box-sizing: border-box;}

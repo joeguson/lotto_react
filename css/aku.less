@@ -21,6 +21,7 @@
 @header-text-size-big: 50px;
 
 *{margin:0px; padding:0px; font-family: @font-family;}
+
 .section-border{
     border-top: 2px solid lightgray;
     border-bottom: 2px solid lightgray;
@@ -34,32 +35,52 @@
     width: 100%; height:60px; box-sizing: border-box; font-size: 20px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 60px; text-decoration: none; border-style: none;
 }
 
-//.login - .ad(div), .login(div)
+//.login - .ad(div)
 .ad {width:100%; height:150px; background-color: @bgcolor1; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
+
+//(not logged in) main - form, daftar(div)
+form{width:100%; .section-border(); margin-bottom: @marginbottom-mbl;}
+.daftar{width:100%; .section-border();}
+
+//form - p * 2
+form p{width:100%;}
+
+//.daftar - a *2
+.daftar a {.button(); margin-bottom: @marginbottom-mbl;}
+
+//p(1st) - input * 2
+p input{width:100%; height:60px; box-sizing: border-box; font-size: 20px; display:inline; margin-bottom: @marginbottom-mbl; border-top: 1px solid black; border-bottom: 1px solid black;}
+
+//p(2nd) - input
+#login{.button(); margin-bottom: 0px;}
+
+//(logged in) main - .pstat, .p-penobrol, .p-tandya
+.p-stat{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px;}
+.p-penobrol{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; font-size: 20px;}
+.p-tandya{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; font-size: 20px;}
+
+//.pstat - p
+.p-stat p {font-size: 16px; font-weight: bold; line-height: 20px;}
+//.p-penobrol - dl
+.p-penobrol dl{width:100%; background-color:@bgcolor1; .li-border();}
+//.p-tandya - dl
+.p-tandya dl{width:100%; background-color:@bgcolor1; .li-border();}
+//dl - dt, dd
+dl dt{width: 90%; height:30px; line-height: 30px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
+
+dd{font-style: italic; font-size: 12px;}
+//dt - a
+dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none;}
+
 
 .login{width:100%; box-sizing: border-box; margin: 0px; background-color: @bgcolor2; .section-border();}
 
 .logout{.button();}
 
 form{font-size:0px;} //when making input tags inline, they have space between them. Cannot remove it with margin 0px;
-form p{margin:0px 0px 10px 0px; padding:0px; }
-form p:nth-child(1) input{width: 50%; height:40px; box-sizing: border-box; border: 2px solid @button-color; font-size: 20px; display: inline; color:@font-color1;}
-form p:nth-child(2) input{.button(); margin-bottom: 80px;}
-form p:nth-child(3) a{.button();}
 
-//.main - .p-stat(div) .p-penobrol(div), .p-tandya(div)
-.pic{width:20%; height:100%;}
-.p-stat {width:100%; margin-bottom: 20px; background-color: @bgcolor2; padding-left: 10px; .section-border(); box-sizing: border-box; color:@font-color1;}
+//.pic{width:20%; height:100%;}
 
-.p-penobrol {width:100%; margin-bottom: 20px; background-color: @bgcolor2; padding-left: 10px; .section-border(); box-sizing: border-box; font-size: 20px; margin-bottom: 10px; font-weight: bold;}
-
-.p-tandya {width:100%; margin-bottom: 20px; background-color: @bgcolor2; padding-left: 10px; box-sizing: border-box; .section-border(); font-size: 20px; margin-bottom: 10px; font-weight: bold;}
-
-.clear{clear:both}
-
-.links{padding-left:8px;}
-
-.bar{border-left: 1px solid #dbdbdb;}
 
 /*for bigger windows*/
 @media (min-width:768px){
