@@ -52,21 +52,18 @@ html
         section.main(id='main')
             .title
                 if u_id
-                .saveWarnButton
-                    button(class="save" type="submit" value="save" onclick="saveAjax(this)" id="save" ) Save
-                    button(class="warning" type="submit" value='pen'+topic.id onclick="warningAjax(this)" id="warn") Warn
+                
                 dl.pview-dl
-                    dt.pview-dt= topic.title
-                    dd.pview-dd= topic.author
-                    span.bar             
-                    dd.pview-dd= topic.p_view
-                    span.bar                   
+                    - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view
+                    dt.pview-dt= topic.title               
+                    dd.pview-dd #{date_result}             
                     dd.pview-dd= topic.com
-                    span.bar                 
-                    dd.pview-dd= topic.date
                     if hashtag
                         -for(var n=0; n<topic.hashtagcount; n++)
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+                    .saveWarnButton
+                    button(class="save" type="submit" value="save" onclick="saveAjax(this)" id="save" ) Save
+                    button(class="warning" type="submit" value='pen'+topic.id onclick="warningAjax(this)" id="warn") Warn
             .pcontent= topic.content
                 div(id="plikes")= topic.p_like
                 div(id="plikebuttons")
