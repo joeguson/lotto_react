@@ -58,9 +58,7 @@ html
                             input(type='submit' class="submit" value="Cari")
         section.main(id='main')
             .login
-                if user
-                    h2= 'Hi! ' + user.u_id
-                else
+                if !u_id
                     a(href='/aku') Login Dulu
             ul(id='uls')
                 -for (var i=0; i<6; i++)
