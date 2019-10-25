@@ -61,13 +61,14 @@ html
                     if hashtag
                         -for(var n=0; n<topic.hashtagcount; n++)
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
-                    .saveWarnButton
-                    button(class="save" type="submit" value="save" onclick="saveAjax(this)" id="save" ) Save
-                    button(class="warning" type="submit" value='pen'+topic.id onclick="warningAjax(this)" id="warn") Warn
+                    if u_id
+                        .saveWarnButton
+                            button(class="save" type="submit" value="save" onclick="saveAjax(this)" id="save" ) Save
+                            button(class="warning" type="submit" value='pen'+topic.id onclick="warningAjax(this)" id="warn") Warn
             .pcontent= topic.content
                 div(id="plikes")= topic.p_like
-                div(id="plikebuttons")
-                    if u_id
+                if u_id
+                    div(id="plikebuttons")
                         if statusCheck == 'yes'
                             button(id="likeButton" class="plikes" type="submit" value="Batal Suka") Batal Suka
                         else
@@ -95,7 +96,7 @@ html
                                             else
                                                 button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Suka
                                             // liked by how many
-                                    dd.pcomment-dd
+                                    if u_id
                                         button(class="warning" type="submit" value='com'+c.id onclick="warningAjax(this);") Warning
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
@@ -103,7 +104,7 @@ html
                                                 dd.pcomment-dt= cc.content
                                                 dd.pcomment-dd= cc.author
                                                 dd.pcomment-dd= cc.date
-                                                dd.pcomment-dd
+                                                if u_id
                                                     button(class="warning" type="submit" value='ccc'+cc.id onclick="warningAjax(this);") Warning
                                     dd.pcomment-dd
                                     if u_id
