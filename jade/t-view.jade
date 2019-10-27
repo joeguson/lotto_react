@@ -15,6 +15,25 @@ html
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
+    -var datemaker = function(date){
+    -var tempdate = new Date(date);
+    -var nowdate = new Date();
+    -var year = tempdate.getFullYear();
+    -var month = tempdate.getMonth();
+    -var day = tempdate.getDate();
+    -var diff = nowdate - tempdate;
+    -if(diff > 864000000){return month+'-'+day+'-'+year;}
+    -else{
+    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -else{
+    -if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+    -else{
+    -if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
+    -else{return parseInt(diff/1000)+' seconds ago';}
+    -}
+    -}
+    -}
+    -}
         header
             a(href='/tandya') Beritamus      
         nav
@@ -28,57 +47,63 @@ html
                 li(style='border-bottom: 2px solid yellow; opacity: .9')
                     a(href='/tandya') Tandya
                 br.clear
-        section.sub-main
+        section.sub-main(id='sub-main')
             .ad Advertisement
         section.main(id='main')
             .title
                 dl.tview-dl
                     dt.tview-dt= topic.question
-                    dd.tview-dd= topic.author
-                    span.bar             
-                    dd.tview-dd= topic.t_view
-                    span.bar                   
-                    dd.tview-dd= topic.answer
-                    span.bar                 
-                    dd.tview-dd= topic.date
+                    - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view
+                    dd.pview-dd #{date_result}
+                    dd.tview-dd= topic.answer        
                     if hashtag
                         -for(var n=0; n<topic.hashtagcount; n++)
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
-            .saveWarnButton
-                if u_id
-                    button(class="save" type="submit" value="save" onclick="saveAjax(this);") Save
-                    button(class="warning" type="submit" value='tan'+topic.id onclick="warningAjax(this);") Warn
+                    .saveWarnButton
+                        if u_id
+                            button(class="save" type="submit" value="save" onclick="saveAjax(this);" id="save") Save
+                            button(class="warning" type="submit" value='tan'+topic.id onclick="warningAjax(this);" id="warn") Warn
             .tcontent= topic.content
-                div(id="tlikes" style="color:black; font-size:12px;")= topic.t_like
-                div(id="tlikebuttons")
-                    if u_id
+                div(id="tlikes")= topic.t_like
+                if u_id
+                    div(id="tlikebuttons")
                         if statusCheck == 'yes'
                             button(id="likeButton" class="tlikes" type="submit" value="Batal Suka") Batal Suka
                         else
                             button(id="likeButton" class="tlikes" type="submit" value="Suka") Suka
-            br
             if u_id
-                form(action='tandya/'+topic.id method='post')
+                form(action='tandya/'+topic.id method='post' id='answerForm')
                       p
-                        textarea(name='answer' id="comment")
+                        textarea(name='answer' id="answer")
                       p
-                        input(type='submit' value='submit' class="comment")  
+                        input(type='submit' value='submit' class="answer")  
             if answers
                 .tanswer
                     ul.tanswer-ul
                         each a in answers
-                            li.tcomment-li
-                                dl.tcomment-dl
-                                    dt.tcomment-dt= a.answer
-                                    dd.tcomment-dd= a.author
-                                    dd.tcomment-dd(id="tAnswerlikes"+a.id)= a.ta_like
-                                    dd.tcomment-dd= a.date
-                                    dd.tcomment-dd
+                            li.tanswer-li
+                                dl.tanswer-dl
+                                    dt.tanswer-dt= a.answer
+                                    dd.tanswer-dd= a.author
+                                    dd.tanswer-dd(id="tAnswerlikes"+a.id)= a.ta_like
+                                    dd.tanswer-dd= a.date
+                                    dd.tanswer-dd
                                         if u_id
                                             if statusCheck == 'yes'
                                                 button(class="warning" type="submit" value=a.id onclick="warningAjax(this);") Batal Suka
                                             else
                                                 button(class="tlikes" type="submit" value=a.id onclick="answerSendAjax(this);") Suka
-                                    dd.tcomment-dd
-                                        button(class="warning" type="submit" value='ans'+a.id onclick="warningAjax(this);") Warning
+                                    each ac in acomments    
+                                        if ac.ta_id == a.id
+                                            dl.tanswer-dl2
+                                                dt.tanswer-dt= ac.content
+                                                dd.tanswer-dd= ac.author
+                                                dd.tanswer-dd= ac.date
+                                                if u_id
+                                                    button(class="warning" type="submit" value='ccc'+ac.id onclick="warningAjax(this);") Warning
+                                    dd.tanswer-dd
+                                    if u_id
+                                        p
+                                            textarea(name='acomment')
+                                            input(type='submit' name=a.id class="acomment" onclick="acommentSendAjax(this);") 
         script(type="text/javascript" src="tlikes.js")

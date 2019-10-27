@@ -1,58 +1,85 @@
-//margin order : top right bottom left;
 @bgcolor1: #f6f6f6; //for all body
-@bgcolor2: #323299; //for nav
-@bgcolor3: #fbfbfb; // for section
+@bgcolor2: #fbfbfb; // for section
+@bg:black;
 
-@button-color: #e5e5f2;
+@main: #4167e0; // blue main color
+@maindark: #203370; // blue main color
+@mainlight: #a0b3ef; // blue main color
+@main2: #e0ba41; // blue main color
+@mainlight2: #efdca0; // blue main color
 
+@button-color1: #a0b3ef;
+@button-color2: #efdca0;
 @font-color1: black;
 @font-color2: white;
+@font-family: 'Lato', sans-serif;
+
+@marginbottom-mbl: 20px;
+@marginbottom-com: 30px;
 
 //text size & color
-@header-text-size: 25px;
+@header-text-size: 40px;
 @header-text-size-big: 50px;
-
+*{margin:0px; padding:0px; font-family: @font-family;}
 .section-border{
     border-top: 2px solid lightgray;
     border-bottom: 2px solid lightgray;
-    padding-top: 20px;
-    padding-bottom: 20px;
+}
+.li-border{
+    border-top: 2px solid @mainlight;
+    border-bottom: 2px solid @mainlight;
+    margin-bottom: @marginbottom-mbl;
 }
 .button{
-    width: 100%; height:60px; box-sizing: border-box; font-size: 20px; background-color:@button-color; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; margin-bottom: 20px; border-style: none;
+    width: 100%; height:60px; box-sizing: border-box; font-size: 20px; background-color:@button-color1; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; margin-bottom: 20px; border-style: none;
+}
+.halfButton{
+    width: 49%; height:30px; box-sizing: border-box; font-size: 18px; background-color:@button-color2; display: inline; text-align: center; line-height: 30px; text-decoration: none; margin-bottom: 20px; border-style: none;
 }
 
-//.sub-main - .search(input)
+.ad {width:100%; height:150px; background-color: @bgcolor1; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
 
-.tcontent{width:90%; margin: 0 auto 10px auto; background-color: @bgcolor1; font-size: 14px; line-height: 20px; text-align: justify; box-sizing:border-box; color:@font-color1;}
+//.main - .title(div), .pcontent(div), .commentForm(form), .pcomment(div)
+.title{width:100%; box-sizing:border-box; margin-bottom: 10px; .section-border(); background-color: @main;}
 
-form textarea{width:80%; height:100px; margin: 0px auto;}
+.tcontent{width:100%; margin-bottom: @marginbottom-mbl; background-color: white; font-size: 14px; line-height: 20px; text-align: justify; padding:10px; box-sizing: border-box; .section-border();}
 
+#answerForm{width:100%; margin-bottom: @marginbottom-mbl; .section-border();}
 
-.tcomment{width:100%; background-color: white; margin:0px; padding:0px; margin-bottom: 10px;}
+.tanswer{width:100%; background-color:@bgcolor1; margin:0px; padding:0px; margin-bottom: @marginbottom-mbl;}
 
-//.title - .pview-dl(dl) 
-.tview-dl{width:100%; margin:0px; box-sizing: border-box;}
+//.title(div) - .saveWarnButton(div), .tview-dl(dl)
+.tview-dl{width:100%; padding:10px; box-sizing: border-box;}
+.saveWarnButton{width:80%; box-sizing: border-box; margin:0 auto;}
 
-//.pcomment - .pcomment-ul(ul)
-.tcomment-ul{list-style: none; margin:0px; padding: 0px 10px 0px 10px;}
+//.tcontent(div) - #tlikes(div), #tlikebuttons(div)
+#tlikes{font-size: 24px; text-align: center; margin-bottom: @marginbottom-mbl;}
+#tlikebuttons{.button();}
 
-//.pview-dl - .pview-dt(dt), .pview-dd(dd), .bar(span)
-.pview-dt{font-size:16px;}
-.pview-dd{font-size: 10px; display: inline; color:grey;}
-.bar{font-size: 5px; margin:0px; padding:0px;}
+//#answerForm(form) - p * 2
+#answerForm p{width:100%;}
 
-//.pcomment-ul - .pcomment-li(li)
-.pcomment-li{margin-top:10px; padding:0px;}
+//.tanswer(div) - .tanswer-ul(ul)
+.tanswer-ul{padding: 10px; list-style: none;}
 
-//.pcomment-li - .pcomment-dl
-.pcomment-dl{margin:0px; padding:0px; background-color: lightyellow;}
+//.saveWarnButton(div) - #save(button), #warn(button)
+#save{.halfButton();}
+#warn{.halfButton();}
 
-//.pcomment-dl - .pcomment-dt, .pcomment-dd
-.pcomment-dt{margin:0px 0px 2px 0px; padding:0px; font-size: 12px; font-weight: normal;}
-.pcomment-dd{margin:0px; padding:0px; font-size: 10px; font-weight: normal;}
+//.tview-dl(dl) - .tview-dt(dt), .tview-dd(dd)
+.tview-dt{color:@font-color2; font-size: 18px; text-align: justify;}
+.tview-dd{color:@font-color2; font-size: 14px;}
 
-button{.button();}
+//#tlikes(div)
+//#tlikebuttons(div) - #likeButton * 2
+#tlikebuttons button{font-size: 24px; line-height: 60px;}
+
+//p * 2 - #comment(textarea), .comment(input)
+#answer{width:100%; margin:0 auto; }
+.answer{.button();}
+
+//.tanswer-ul(ul) - .tanswer-li(li)
+.tanswer-li{width:100%; background-color:@bgcolor1; .li-border();}
 
 /*for bigger windows*/
 @media (min-width:768px){

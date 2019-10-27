@@ -57,7 +57,7 @@ function ccommentSendAjax(ccomment){
         var dds1 = document.createElement('dd');
         var dds2 = document.createElement('dd');
         var dds3 = document.createElement('dd');
-        dds1.innerHTML = result.ccomment_id
+        dds1.innerHTML = result.ccomment_id;
         pCcomment.append(dds1);
     });
 }

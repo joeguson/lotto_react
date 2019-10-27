@@ -70,7 +70,7 @@
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
 }
-.commentForm {
+#commentForm {
   width: 100%;
   margin-bottom: 20px;
   border-top: 2px solid lightgray;
@@ -83,15 +83,15 @@
   padding: 0px;
   margin-bottom: 20px;
 }
-.saveWarnButton {
-  width: 80%;
-  box-sizing: border-box;
-  margin: 0 auto;
-}
 .pview-dl {
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
+}
+.saveWarnButton {
+  width: 80%;
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 #plikes {
   font-size: 24px;
@@ -111,7 +111,7 @@
   margin-bottom: 20px;
   border-style: none;
 }
-p {
+#commentForm p {
   width: 100%;
 }
 .pcomment-ul {

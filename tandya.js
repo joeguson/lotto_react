@@ -37,6 +37,7 @@ exports.getViewTandya =  function(req, res){
     var sql2 = 'SELECT * FROM t_ans WHERE t_id = ? order by score desc';
     var sql6 = 'SELECT * FROM hashtag where t_id = ?';
     var sql4 = 'Select * from t_like where u_id = ? AND t_id = ?';
+    var sql5 = 'SELECT * FROM ta_com where t_id = ?';
     
         
     conn.conn.query(sql1, function(err, maxValue, fields){
@@ -59,37 +60,38 @@ exports.getViewTandya =  function(req, res){
                         if(err){console.log(err);}
                         else{
                             conn.conn.query(sql6, id, function(err, hashtag, fields){
-                                if(err){console.log(err);}
-                                else{
-                                    if(content[0].public != 'p'){
-                                        var idChanger = '';
-                                        var idLength  = (content[0].author).length;
-                                        console.log(idLength);
-                                        idChanger = content[0].author.substr(0,3) + '****';
-                                        content[0].author = idChanger;
-                                    }
-                                    delete hashtag[0].id;
-                                    delete hashtag[0].u_id;
-                                    delete hashtag[0].p_id;
-                                    delete hashtag[0].t_id;
-                                    if(req.session.u_id){
-                                        conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fileds){
-                                            var statusCheck = 'liked';
-                                            if(likeStatus === null){
-                                                statusCheck = 'yes';
+                                    if(err){console.log(err);}
+                                    else{
+                                        conn.conn.query(sql5, id, function(err, acomments, fields){
+                                            if(content[0].public != 'p'){
+                                            var idChanger = '';
+                                            var idLength  = (content[0].author).length;
+                                            console.log(idLength);
+                                            idChanger = content[0].author.substr(0,3) + '****';
+                                            content[0].author = idChanger;
+                                            }
+                                            delete hashtag[0].id;
+                                            delete hashtag[0].u_id;
+                                            delete hashtag[0].p_id;
+                                            delete hashtag[0].t_id;
+                                            if(req.session.u_id){
+                                                conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fileds){
+                                                    var statusCheck = 'liked';
+                                                    if(likeStatus === null){
+                                                        statusCheck = 'yes';
+                                                    }
+                                                    else{
+                                                        statusCheck = 'no';
+                                                    }
+                                                    res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:'y', hashtag:hashtag[0], acomments:acomments});
+                                                });
                                             }
                                             else{
-                                                statusCheck = 'no';
-                                            }
-                                            console.log(statusCheck);
-                                            res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:'y', hashtag:hashtag[0]});
+                                                res.render('t-view', {topic:content[0], answers:answers, hashtag:hashtag[0], acomments:acomments});
+                                            }    
                                         });
+                                        
                                     }
-                                    else{
-                                        res.render('t-view', {topic:content[0], answers:answers, hashtag:hashtag[0]});
-                                        console.log(hashtag[0]);
-                                    }
-                                }
                             });
                         }
                     });
@@ -184,6 +186,37 @@ exports.postAddAnswer = function(req, res){
     });
 };
 
+exports.postAddAcomment = function(req, res){
+    var author = req.session.u_id;
+    var content = req.body.acommentContent;
+    var t_id = req.params.tandya_no;
+    var ta_id = req.params.answer_no;
+    //when connection is more than two, divide
+    var sql = 'INSERT INTO ta_com (author, content, ta_id, t_id) VALUES (?, ?, ?, ?)';
+    var sql2 = 'UPDATE t_ans SET com = com + 1 WHERE id = ?';
+    var sql3 = 'UPDATE t_ans SET score = ta_like*0.6 + com*0.4 where id = ?';
+    var sql4 = 'SELECT * FROM ta_com where id = ?';
+    conn.conn.query(sql, [author, content, ta_id, t_id], function(err, result, fields){
+        if(err){console.log(err);}
+        else{
+            conn.conn.query(sql2, [ta_id], function(err, result2, fields){
+                if(err){console.log(err)}
+                else{
+                    conn.conn.query(sql3, ta_id, function(err, result3, fields){
+                        if(err){console.log(err)}
+                        else{
+                            conn.conn.query(sql4, result.insertId, function(err, ajaxResult, fields){
+                                res.json({"acomment_id" : ajaxResult[0].id, "acomment_author" : ajaxResult[0].author, "acomment_content" : ajaxResult[0].content});
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });  
+};
+
+
 exports.likesTandya = function(req, res){
     var clickValue = req.body.clickedValue;
     var t_id = req.params.id;
@@ -263,4 +296,25 @@ exports.likesAnswer = function(req, res){
     conn.conn.query(sql7, t_id, function(err, score, fields){
         if(err){console.log(err);}
     });
+};
+
+exports.warningTandya = function(req, res){
+    var author = req.session.u_id;
+    var content = req.body.comment;
+    var p_id = req.params.penobrol_no;
+    //when connection is more than two, divide
+    var sql = 'INSERT INTO p_com (author, content, p_id) VALUES (?, ?, ?)';
+    var sql2 = 'UPDATE penobrol SET com = com + 1 WHERE id = (?)';
+    var sql3 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
+    conn.conn.query(sql3, p_id, function(err, score, fields){
+        if(err){console.log(err);}
+    });
+    conn.conn.query(sql, [author, content, p_id], function(err, result, fields){
+        if(err){console.log(err);}
+        else{
+            conn.conn.query(sql2, [p_id], function(err, result2, fields){
+                res.redirect('/penobrol/'+p_id);
+            });
+        }
+    });  
 };

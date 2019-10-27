@@ -52,7 +52,6 @@ html
         section.main(id='main')
             .title
                 if u_id
-                
                 dl.pview-dl
                     - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view
                     dt.pview-dt= topic.title               
@@ -61,8 +60,8 @@ html
                     if hashtag
                         -for(var n=0; n<topic.hashtagcount; n++)
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
-                    if u_id
-                        .saveWarnButton
+                    .saveWarnButton
+                        if u_id
                             button(class="save" type="submit" value="save" onclick="saveAjax(this)" id="save" ) Save
                             button(class="warning" type="submit" value='pen'+topic.id onclick="warningAjax(this)" id="warn") Warn
             .pcontent= topic.content
@@ -96,8 +95,6 @@ html
                                             else
                                                 button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Suka
                                             // liked by how many
-                                    if u_id
-                                        button(class="warning" type="submit" value='com'+c.id onclick="warningAjax(this);") Warning
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pcomment-dl2
