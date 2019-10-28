@@ -222,7 +222,7 @@ app.get(['/tandya/:tandya_no'], tandya.getViewTandya);
 app.post('/tlikes/:id', tandya.likesTandya);
 app.post('/tAnswerlikes/:id', tandya.likesAnswer);
 app.post('/tandya/:tandya_no/:answer_no', tandya.postAddAcomment);
-app.post('/twarning/:id', tandya.warningTandya);
+app.post('/twarning/', tandya.warningTandya);
 
 /************FOR PENOBROL************/
 app.get('/penobrol/add', penobrol.getAddPenobrol);

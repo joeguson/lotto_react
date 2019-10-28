@@ -206,7 +206,7 @@ exports.postAddAcomment = function(req, res){
                         if(err){console.log(err)}
                         else{
                             conn.conn.query(sql4, result.insertId, function(err, ajaxResult, fields){
-                                res.json({"acomment_id" : ajaxResult[0].id, "acomment_author" : ajaxResult[0].author, "acomment_content" : ajaxResult[0].content});
+                                res.json({"acomment_id" : ajaxResult[0].id, "acomment_author" : ajaxResult[0].author, "acomment_content" : ajaxResult[0].content, "acomment_date" : ajaxResult[0].date});
                             });
                         }
                     });
@@ -299,22 +299,25 @@ exports.likesAnswer = function(req, res){
 };
 
 exports.warningTandya = function(req, res){
-    var author = req.session.u_id;
-    var content = req.body.comment;
-    var p_id = req.params.penobrol_no;
-    //when connection is more than two, divide
-    var sql = 'INSERT INTO p_com (author, content, p_id) VALUES (?, ?, ?)';
-    var sql2 = 'UPDATE penobrol SET com = com + 1 WHERE id = (?)';
-    var sql3 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
-    conn.conn.query(sql3, p_id, function(err, score, fields){
-        if(err){console.log(err);}
-    });
-    conn.conn.query(sql, [author, content, p_id], function(err, result, fields){
+    console.log(req.body);
+    var t_id = parseInt(req.body.warnedT);
+    var ta_id = parseInt(req.body.warnedA);
+    var tac_id = parseInt(req.body.warnedC);
+    var sql = '';
+    switch(req.body.warnedItem){
+        case "tan":
+            sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES (?, ?, 0, 0)';
+            break;
+        case "ans":
+            sql = 'INSERT INTO warning (u_id, ta_id) VALUES(?, ?, ?, 0)';
+            break;
+        case "tac":
+            sql = 'INSERT INTO warning (u_id, tac_id) VALUES(?, ?, ?, ?)';
+    }
+    conn.conn.query(sql, [req.session.u_id, t_id, ta_id, tac_id], function(err, warned, fields){
         if(err){console.log(err);}
         else{
-            conn.conn.query(sql2, [p_id], function(err, result2, fields){
-                res.redirect('/penobrol/'+p_id);
-            });
+            res.json({"result":"warned"});
         }
-    });  
+    });
 };

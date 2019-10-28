@@ -59,10 +59,10 @@ html
                     if hashtag
                         -for(var n=0; n<topic.hashtagcount; n++)
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
-                    .saveWarnButton
-                        if u_id
+                    if u_id
+                        .saveWarnButton
                             button(class="save" type="submit" value="save" onclick="saveAjax(this);" id="save") Save
-                            button(class="warning" type="submit" value='tan'+topic.id onclick="warningAjax(this);" id="warn") Warn
+                            button(class="warning" type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') Warn
             .tcontent= topic.content
                 div(id="tlikes")= topic.t_like
                 if u_id
@@ -82,7 +82,7 @@ html
                     ul.tanswer-ul
                         each a in answers
                             li.tanswer-li
-                                dl.tanswer-dl
+                                dl.tanswer-dl(id='tAnswer'+a.id)
                                     dt.tanswer-dt= a.answer
                                     dd.tanswer-dd= a.author
                                     dd.tanswer-dd(id="tAnswerlikes"+a.id)= a.ta_like
@@ -90,20 +90,23 @@ html
                                     dd.tanswer-dd
                                         if u_id
                                             if statusCheck == 'yes'
-                                                button(class="warning" type="submit" value=a.id onclick="warningAjax(this);") Batal Suka
+                                                button(class="tlikes" type="submit" value=a.id onclick="answerSendAjax(this);") Batal Suka
                                             else
                                                 button(class="tlikes" type="submit" value=a.id onclick="answerSendAjax(this);") Suka
+                                    dd.tanswer-dd
+                                        if u_id
+                                            button(class="warning" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') Warn
                                     each ac in acomments    
                                         if ac.ta_id == a.id
                                             dl.tanswer-dl2
-                                                dt.tanswer-dt= ac.content
-                                                dd.tanswer-dd= ac.author
-                                                dd.tanswer-dd= ac.date
-                                                if u_id
-                                                    button(class="warning" type="submit" value='ccc'+ac.id onclick="warningAjax(this);") Warning
+                                                dt.acomment-dt= ac.content
+                                                dd.acomment-dd= ac.author
+                                                dd.acomment-dd= ac.date
+                                                    if u_id
+                                                        button(class="warning" type="submit" value='tac/'+topic.id+'/'+a.id+'/'+ac.id onclick="warningAjax(this);" id="warn/"+'tac/'+topic.id+'/'+a.id+'/'+ac.id) Warn
                                     dd.tanswer-dd
-                                    if u_id
-                                        p
-                                            textarea(name='acomment')
-                                            input(type='submit' name=a.id class="acomment" onclick="acommentSendAjax(this);") 
+                                        if u_id
+                                            p
+                                                textarea(name='acomment')
+                                                input(type='submit' name=a.id class="acomment" onclick="acommentSendAjax(this);") 
         script(type="text/javascript" src="tlikes.js")

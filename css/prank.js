@@ -25,7 +25,6 @@
 //  });
 //}
 
-
 function textScroll(scroll_el_id) {
     this.objElement = document.getElementById(scroll_el_id);
     this.objElement.style.position = 'relative';

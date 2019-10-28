@@ -200,10 +200,10 @@ exports.postAddCcomment = function(req, res){
                 if(err){console.log(err)}
                 else{
                     conn.conn.query(sql3, pc_id, function(err, result3, fields){
-                        if(err){console.log(err)}
+                        if(err){console.log(err);}
                         else{
                             conn.conn.query(sql4, result.insertId, function(err, ajaxResult, fields){
-                                res.json({"ccomment_id" : ajaxResult[0].id, "ccomment_author" : ajaxResult[0].author, "ccomment_content" : ajaxResult[0].content});
+                                res.json({"ccomment_id" : ajaxResult[0].id, "ccomment_author" : ajaxResult[0].author, "ccomment_content" : ajaxResult[0].content, "ccomment_date" : ajaxResult[0].date});
                             });
                         }
                     });

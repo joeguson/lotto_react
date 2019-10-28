@@ -57,8 +57,12 @@ function ccommentSendAjax(ccomment){
         var dds1 = document.createElement('dd');
         var dds2 = document.createElement('dd');
         var dds3 = document.createElement('dd');
-        dds1.innerHTML = result.ccomment_id;
+        dds1.innerHTML = result.ccomment_author;
+        dds2.innerHTML = result.ccomment_content;
+        dds3.innerHTML = result.ccomment_date;
         pCcomment.append(dds1);
+        pCcomment.append(dds2);
+        pCcomment.append(dds3);
     });
 }
 function warningAjax(warning){

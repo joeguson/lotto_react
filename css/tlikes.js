@@ -44,7 +44,7 @@ function answerSendAjax(answer){
 
 function acommentSendAjax(acomment){
     var pathname = location.pathname;
-    var tandyalId = pathname.split('/');
+    var tandyaId = pathname.split('/');
     var answerId = acomment.name;
     var original = {'acommentContent' : acomment.previousSibling.previousSibling.value};
     original = JSON.stringify(original);
@@ -55,30 +55,42 @@ function acommentSendAjax(acomment){
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
         var result = JSON.parse(xhr.responseText);
-        var tAcomment = document.getElementById("tAcomment"+answerId);
+        console.log(result);
+        var tAcomment = document.getElementById("tAnswer"+answerId);
         var dds1 = document.createElement('dd');
         var dds2 = document.createElement('dd');
         var dds3 = document.createElement('dd');
-        dds1.innerHTML = result.acomment_id;
+        dds1.innerHTML = result.acomment_author;
+        dds2.innerHTML = result.acomment_content;
+        dds3.innerHTML = result.acomment_date;
         tAcomment.append(dds1);
+        tAcomment.append(dds2);
+        tAcomment.append(dds3);
     });
 }
 function warningAjax(warning){
-    var id = warning.value;
+    var warningValue = warning.value.split("/");
+    console.log(warning.value);
+    console.log(warningValue);
     var confirmWarning = function(){
         return confirm("really?");
-    }
+    };
     var confirmedValue = confirmWarning();
     console.log(confirmedValue);
+    var original = {'warnedItem' : warningValue[0], "warnedT" : warningValue[1], "warnedA" : warningValue[2], "warnedC" : warningValue[3]};
+    original = JSON.stringify(original);
     if(confirmedValue == true){
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/twarning/'+id);
+        xhr.open('POST', '/twarning/');
         xhr.setRequestHeader('Content-type', "application/json");
         xhr.send(original);
         // 데이터 수신이 완료되면 표시
         xhr.addEventListener('load', function(){
-            console.log(xhr.responseText);
             var result = JSON.parse(xhr.responseText);
+            console.log(result);
+            if(result.result == "warned"){
+                document.getElementById('warn/'+warning.value).setAttribute('style', 'background-color:gray;');
+            }
         });
     }
 }

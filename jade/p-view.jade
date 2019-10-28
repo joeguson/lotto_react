@@ -60,10 +60,10 @@ html
                     if hashtag
                         -for(var n=0; n<topic.hashtagcount; n++)
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
-                    .saveWarnButton
-                        if u_id
+                    if u_id
+                        .saveWarnButton
                             button(class="save" type="submit" value="save" onclick="saveAjax(this)" id="save" ) Save
-                            button(class="warning" type="submit" value='pen'+topic.id onclick="warningAjax(this)" id="warn") Warn
+                            button(class="warning" type="submit" value='pen/'+topic.id onclick="warningAjax(this)" id="warn") Warn
             .pcontent= topic.content
                 div(id="plikes")= topic.p_like
                 if u_id
@@ -83,7 +83,7 @@ html
                     ul.pcomment-ul
                         each c in comments
                             li.pcomment-li
-                                dl.pcomment-dl
+                                dl.pcomment-dl(id='pCcomment'+c.id)
                                     dt.pcomment-dt= c.content
                                     dd.pcomment-dd= c.autor
                                     dd.pcomment-dd(id="pCommentlikes"+c.id)=c.pc_like
@@ -94,18 +94,20 @@ html
                                                 button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Batal Suka
                                             else
                                                 button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Suka
-                                            // liked by how many
+                                    dd.pcomment-dd
+                                        button(class="warning" type="submit" value='com/'+cc.id onclick="warningAjax(this);") Warning
+                                    
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pcomment-dl2
                                                 dd.pcomment-dt= cc.content
                                                 dd.pcomment-dd= cc.author
                                                 dd.pcomment-dd= cc.date
-                                                if u_id
-                                                    button(class="warning" type="submit" value='ccc'+cc.id onclick="warningAjax(this);") Warning
+                                                    if u_id
+                                                        button(class="warning" type="submit" value='pcc/'+cc.id onclick="warningAjax(this);") Warning
                                     dd.pcomment-dd
-                                    if u_id
-                                        p
-                                            textarea(name='ccomment')
-                                            input(type='submit' name=c.id class="ccomment" onclick="ccommentSendAjax(this);") 
+                                        if u_id
+                                            p
+                                                textarea(name='ccomment')
+                                                input(type='submit' name=c.id class="ccomment" onclick="ccommentSendAjax(this);") 
         script(type="text/javascript" src="plikes.js")
