@@ -223,6 +223,8 @@ app.post('/tlikes/:id', tandya.likesTandya);
 app.post('/tAnswerlikes/:id', tandya.likesAnswer);
 app.post('/tandya/:tandya_no/:answer_no', tandya.postAddAcomment);
 app.post('/twarning/', tandya.warningTandya);
+//app.get(['/tandya/:tandya_no/edit'], tandya.getEditTandya);
+//app.post(['/tandya/:tandya_no/edit'], tandya.postEditTandya);
 
 /************FOR PENOBROL************/
 app.get('/penobrol/add', penobrol.getAddPenobrol);
@@ -233,7 +235,12 @@ app.get(['/penobrol/:penobrol_no'], penobrol.getViewPenobrol);
 app.post('/plikes/:id', penobrol.likesPenobrol);
 app.post('/pCommentlikes/:id', penobrol.likesComment);
 app.post('/penobrol/:penobrol_no/:comment_no', penobrol.postAddCcomment);
-app.post('/pwarning/:id', penobrol.warningPenobrol);
+app.post('/pwarning/', penobrol.warningPenobrol);
+//app.get(['/penobrol/:penobrol_no/edit'], penobrol.getEditPenobrol);
+//app.post(['/penobrol/:penobrol_no/edit'], penobrol.postEditPenobrol);
+//app.get(['/pcomment/:pcomment_no/edit'], penobrol.getEditPcomment);
+//app.post(['/pcomment/:pcomment_no/edit'], penobrol.postEditPcomment);
+//app.get(['/pcomment/:pcomment_no/edit'], penobrol.getEditPcomment);
 
 /************FOR AKU************/
 app.post('/aku/login', aku.login);

@@ -62,8 +62,9 @@ html
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
                     if u_id
                         .saveWarnButton
-                            button(class="save" type="submit" value="save" onclick="saveAjax(this)" id="save" ) Save
-                            button(class="warning" type="submit" value='pen/'+topic.id onclick="warningAjax(this)" id="warn") Warn
+                            if u_id == topic.author
+                                a(href='/penobrol/'+topic.id+'/edit') Edit
+                            button(class="warning" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') Warn
             .pcontent= topic.content
                 div(id="plikes")= topic.p_like
                 if u_id
@@ -95,8 +96,10 @@ html
                                             else
                                                 button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Suka
                                     dd.pcomment-dd
-                                        button(class="warning" type="submit" value='com/'+cc.id onclick="warningAjax(this);") Warning
-                                    
+                                        button(class="warning" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') Warning
+                                        if u_id == c.author
+                                            a(href='/pcomment/'+topic.id+'/edit') Edit
+                                            a(href='/pcomment/'+topic.id+'/edit') Edit
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pcomment-dl2
@@ -104,7 +107,7 @@ html
                                                 dd.pcomment-dd= cc.author
                                                 dd.pcomment-dd= cc.date
                                                     if u_id
-                                                        button(class="warning" type="submit" value='pcc/'+cc.id onclick="warningAjax(this);") Warning
+                                                        button(class="warning" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) Warning
                                     dd.pcomment-dd
                                         if u_id
                                             p

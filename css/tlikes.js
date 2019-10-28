@@ -70,8 +70,6 @@ function acommentSendAjax(acomment){
 }
 function warningAjax(warning){
     var warningValue = warning.value.split("/");
-    console.log(warning.value);
-    console.log(warningValue);
     var confirmWarning = function(){
         return confirm("really?");
     };
@@ -87,9 +85,11 @@ function warningAjax(warning){
         // 데이터 수신이 완료되면 표시
         xhr.addEventListener('load', function(){
             var result = JSON.parse(xhr.responseText);
-            console.log(result);
             if(result.result == "warned"){
-                document.getElementById('warn/'+warning.value).setAttribute('style', 'background-color:gray;');
+                alert('terima kasih');
+            }
+            else{
+                alert('sudah di warn');
             }
         });
     }

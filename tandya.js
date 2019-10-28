@@ -75,7 +75,7 @@ exports.getViewTandya =  function(req, res){
                                             delete hashtag[0].p_id;
                                             delete hashtag[0].t_id;
                                             if(req.session.u_id){
-                                                conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fileds){
+                                                conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
                                                     var statusCheck = 'liked';
                                                     if(likeStatus === null){
                                                         statusCheck = 'yes';
@@ -83,7 +83,7 @@ exports.getViewTandya =  function(req, res){
                                                     else{
                                                         statusCheck = 'no';
                                                     }
-                                                    res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:'y', hashtag:hashtag[0], acomments:acomments});
+                                                    res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:req.session.u_id, hashtag:hashtag[0], acomments:acomments});
                                                 });
                                             }
                                             else{
@@ -299,25 +299,46 @@ exports.likesAnswer = function(req, res){
 };
 
 exports.warningTandya = function(req, res){
-    console.log(req.body);
     var t_id = parseInt(req.body.warnedT);
     var ta_id = parseInt(req.body.warnedA);
     var tac_id = parseInt(req.body.warnedC);
     var sql = '';
-    switch(req.body.warnedItem){
-        case "tan":
-            sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES (?, ?, 0, 0)';
-            break;
-        case "ans":
-            sql = 'INSERT INTO warning (u_id, ta_id) VALUES(?, ?, ?, 0)';
-            break;
-        case "tac":
-            sql = 'INSERT INTO warning (u_id, tac_id) VALUES(?, ?, ?, ?)';
-    }
-    conn.conn.query(sql, [req.session.u_id, t_id, ta_id, tac_id], function(err, warned, fields){
+    var checking_sql = 'select u_id, t_id, ta_id, tac_id from warning where u_id = ? AND t_id = ? AND ta_id = ? AND tac_id = ?';
+    conn.conn.query(checking_sql, [req.session.u_id, t_id, ta_id, tac_id], function(err, checking, fields){
         if(err){console.log(err);}
         else{
-            res.json({"result":"warned"});
+            if(checking.length){
+                res.json({"result":"alreadywarned"});
+            }
+            else{
+                switch(req.body.warnedItem){
+                    case "tan":
+                        sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES (?, ?, 0, 0)';
+                        break;
+                    case "ans":
+                        sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES(?, ?, ?, 0)';
+                        break;
+                    case "tac":
+                        sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES(?, ?, ?, ?)';
+                }
+                conn.conn.query(sql, [req.session.u_id, t_id, ta_id, tac_id], function(err, warned, fields){
+                    if(err){console.log(err);}
+                    else{
+                        res.json({"result":"warned"});
+                    }
+                });
+                
+            }
         }
     });
+};
+
+exports.getEditTandya = function(req, res){
+    var sql = 'select * from tandya order by date desc limit 3';
+    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
+};
+
+exports.postEditTandya = function(req, res){
+    var sql = 'select * from tandya order by date desc limit 3';
+    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
 };

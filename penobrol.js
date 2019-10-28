@@ -81,7 +81,7 @@ exports.getViewPenobrol = function(req, res){
                                         else{
                                             statusCheck = 'no';
                                         }
-                                        res.render('p-view', {topic:content[0], statusCheck:statusCheck, comments:comments, u_id:'y', hashtag:hashtag[0], ccomments:ccomments});
+                                        res.render('p-view', {topic:content[0], statusCheck:statusCheck, comments:comments, u_id:req.session.u_id, hashtag:hashtag[0], ccomments:ccomments});
                                     });
                                 }
                                 else{
@@ -297,22 +297,56 @@ exports.likesComment = function(req, res){
     });
 };
 exports.warningPenobrol = function(req, res){
-    var author = req.session.u_id;
-    var content = req.body.comment;
-    var p_id = req.params.penobrol_no;
-    //when connection is more than two, divide
-    var sql = 'INSERT INTO p_com (author, content, p_id) VALUES (?, ?, ?)';
-    var sql2 = 'UPDATE penobrol SET com = com + 1 WHERE id = (?)';
-    var sql3 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
-    conn.conn.query(sql3, p_id, function(err, score, fields){
-        if(err){console.log(err);}
-    });
-    conn.conn.query(sql, [author, content, p_id], function(err, result, fields){
+    var p_id = parseInt(req.body.warnedP);
+    var pc_id = parseInt(req.body.warnedC);
+    var pcc_id = parseInt(req.body.warnedCc);
+    var sql = '';
+    var checking_sql = 'select u_id, p_id, pc_id, pcc_id from warning WHERE u_id = ? AND p_id = ? AND pc_id = ? AND pcc_id = ?';
+    conn.conn.query(checking_sql, [req.session.u_id, p_id, pc_id, pcc_id], function(err, checking, fields){
         if(err){console.log(err);}
         else{
-            conn.conn.query(sql2, [p_id], function(err, result2, fields){
-                res.redirect('/penobrol/'+p_id);
-            });
+            if(checking.length){
+                res.json({"result":"alreadywarned"});
+            }
+            else{
+                switch(req.body.warnedItem){
+                    case "pen":
+                        sql = 'INSERT INTO warning (u_id, p_id, pc_id, pcc_id) VALUES (?, ?, 0, 0)';
+                        break;
+                    case "com":
+                        sql = 'INSERT INTO warning (u_id, p_id, pc_id, pcc_id) VALUES(?, ?, ?, 0)';
+                        break;
+                    case "pcc":
+                        sql = 'INSERT INTO warning (u_id, p_id, pc_id, pcc_id) VALUES(?, ?, ?, ?)';
+                }
+                conn.conn.query(sql, [req.session.u_id, p_id, pc_id, pcc_id], function(err, warned, fields){
+                    if(err){console.log(err);}
+                    else{
+                        res.json({"result":"warned"});
+                    }
+                });
+                
+            }
         }
-    });  
+    });
+};
+
+exports.getEditPenobrol = function(req, res){
+    var sql = 'select * from tandya order by date desc limit 3';
+    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
+};
+
+exports.postEditPenobrol = function(req, res){
+    var sql = 'select * from tandya order by date desc limit 3';
+    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
+};
+
+exports.getEditPcomment = function(req, res){
+    var sql = 'select * from tandya order by date desc limit 3';
+    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
+};
+
+exports.postEditPcomment = function(req, res){
+    var sql = 'select * from tandya order by date desc limit 3';
+    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
 };
