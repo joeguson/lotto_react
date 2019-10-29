@@ -61,7 +61,8 @@ html
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
                     if u_id
                         .saveWarnButton
-                            button(class="save" type="submit" value="save" onclick="saveAjax(this);" id="save") Save
+                            if u_id == topic.author
+                                a(href='/tandya/'+topic.id+'/edit') Edit
                             button(class="warning" type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') Warn
             .tcontent= topic.content
                 div(id="tlikes")= topic.t_like
@@ -96,6 +97,8 @@ html
                                     dd.tanswer-dd
                                         if u_id
                                             button(class="warning" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') Warn
+                                            if u_id == c.author
+                                                a(href='/pcomment/'+topic.id+'/edit') Edit
                                     each ac in acomments    
                                         if ac.ta_id == a.id
                                             dl.tanswer-dl2

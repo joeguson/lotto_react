@@ -59,11 +59,11 @@ html
                     dd.pview-dd= topic.com
                     if hashtag
                         -for(var n=0; n<topic.hashtagcount; n++)
-                            a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+                            a= '#' + hashtag[Object.keys(hashtag)[n]] + ' ' 
                     if u_id
                         .saveWarnButton
                             if u_id == topic.author
-                                a(href='/penobrol/'+topic.id+'/edit') Edit
+                                a(href='/pedit/'+topic.id) Edit
                             button(class="warning" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') Warn
             .pcontent= topic.content
                 div(id="plikes")= topic.p_like
@@ -96,10 +96,9 @@ html
                                             else
                                                 button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Suka
                                     dd.pcomment-dd
-                                        button(class="warning" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') Warning
+                                        button(class="warning" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') Warn
                                         if u_id == c.author
-                                            a(href='/pcomment/'+topic.id+'/edit') Edit
-                                            a(href='/pcomment/'+topic.id+'/edit') Edit
+                                            a(href='/pcomment/edit/'+c.id) Edit
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pcomment-dl2

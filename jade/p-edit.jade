@@ -1,0 +1,62 @@
+doctype html
+html
+    head
+        title beritamus
+        // what appears on the tab
+        base(href="/")
+        link(rel='stylesheet', href='common.css' type="text/css")
+        // links css common file
+        link(rel="stylesheet" href="penobrol_add.css" type="text/css")
+        // links css file
+        link(href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet")
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')    
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        // iphone에서 어플식으로 저장가능
+        // Lorem ipsum
+    body
+    -var hashtagcount = edit_content.hashtagcount;
+    -var hashtagmaker = function(hashtag_object){
+    -var hashtagArray = [];
+    -var hashtag_temp = '';
+    -hashtagArray[0] = hashtag_object.ht1;
+    -hashtagArray[1] = hashtag_object.ht2;
+    -hashtagArray[2] = hashtag_object.ht3;
+    -hashtagArray[3] = hashtag_object.ht4;
+    -hashtagArray[4] = hashtag_object.ht5;
+    -hashtagArray[5] = hashtag_object.ht6;
+    -hashtagArray[6] = hashtag_object.ht7;
+    -for(var i = 0; i<hashtagcount; i++){hashtag_temp= hashtag_temp + '#'+hashtagArray[i]+' ';}
+    -return hashtag_temp;
+    -}
+    -var hashtag_final = hashtagmaker(hashtags);
+        header
+            a(href='/penobrol') Beritamus      
+        nav
+            ul
+                li
+                    a(href='/aku') Aku
+                li
+                    a(href='/cari') Cari
+                li(style='border-bottom: 2px solid yellow; opacity: .9')
+                    a(href='/penobrol') Penobrol
+                li
+                    a(href='/tandya') Tandya
+                br.clear
+        article
+            form(action='/pedit/'+edit_content.id method='post')
+                p 
+                    input(type='text' name='title' placeholder='title' class="title" value=edit_content.title)
+                p
+                    label
+                        input(type='radio' value='p' name="public" checked)
+                        |public
+                    label
+                        input(type='radio' value='a' name="public")
+                        |anonim  
+                p
+                    textarea(name='content' class="content")= edit_content.content
+                p
+                    input(type='text' name='hashtag' class="hashtag" value= "#{hashtag_final}")
+                p
+                    input(type='submit' class="submit")

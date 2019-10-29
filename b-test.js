@@ -236,11 +236,8 @@ app.post('/plikes/:id', penobrol.likesPenobrol);
 app.post('/pCommentlikes/:id', penobrol.likesComment);
 app.post('/penobrol/:penobrol_no/:comment_no', penobrol.postAddCcomment);
 app.post('/pwarning/', penobrol.warningPenobrol);
-//app.get(['/penobrol/:penobrol_no/edit'], penobrol.getEditPenobrol);
-//app.post(['/penobrol/:penobrol_no/edit'], penobrol.postEditPenobrol);
-//app.get(['/pcomment/:pcomment_no/edit'], penobrol.getEditPcomment);
-//app.post(['/pcomment/:pcomment_no/edit'], penobrol.postEditPcomment);
-//app.get(['/pcomment/:pcomment_no/edit'], penobrol.getEditPcomment);
+app.get(['/pedit/:penobrol_no'], penobrol.getEditPenobrol);
+app.post(['/pedit/:penobrol_no'], penobrol.postEditPenobrol);
 
 /************FOR AKU************/
 app.post('/aku/login', aku.login);
