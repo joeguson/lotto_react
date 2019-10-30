@@ -98,7 +98,7 @@ html
                                     dd.pcomment-dd
                                         button(class="warning" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') Warn
                                         if u_id == c.author
-                                            a(href='/pcomment/edit/'+c.id) Edit
+                                            a(href='/pcedit/'+topic.id+'/'+c.id) Edit
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pcomment-dl2

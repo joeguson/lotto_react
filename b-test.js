@@ -238,6 +238,8 @@ app.post('/penobrol/:penobrol_no/:comment_no', penobrol.postAddCcomment);
 app.post('/pwarning/', penobrol.warningPenobrol);
 app.get(['/pedit/:penobrol_no'], penobrol.getEditPenobrol);
 app.post(['/pedit/:penobrol_no'], penobrol.postEditPenobrol);
+app.get(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.getEditPcomment);
+app.post(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.postEditPcomment);
 
 /************FOR AKU************/
 app.post('/aku/login', aku.login);

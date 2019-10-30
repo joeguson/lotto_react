@@ -210,6 +210,15 @@ CREATE TABLE `warning` (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+16. Haipur
+CREATE TABLE `hair` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `u_id` varchar(50) NOT NULL,
+    `amount` int UNSIGNED NOT NULL DEFAULT 0,
+    `content` varchar(255) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 16. err_message
 CREATE TABLE `err_message` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,

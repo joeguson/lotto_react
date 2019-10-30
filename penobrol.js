@@ -396,11 +396,39 @@ exports.postEditPenobrol = function(req, res){
 };
 
 exports.getEditPcomment = function(req, res){
-    var sql = 'select * from tandya order by date desc limit 3';
-    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
+    var pc_id = req.params.pcomment_no;
+    var p_id = req.params.penobrol_no;
+    var sql = 'select * from p_com where id = ?';
+    var sql2 = 'select * from penobrol where id = ?';
+    var sql3 = 'select * from hashtag where p_id = ?';
+    conn.conn.query(sql, pc_id, function(err, pcomment, fields){
+        if(err){console.log(err);}
+        else{
+            conn.conn.query(sql2, p_id, function(err, penobrol, fields){
+                if(err){console.log(err);}
+                else{
+                    conn.conn.query(sql3, p_id, function(err, hashtag, fields){
+                        delete hashtag[0].id;
+                        delete hashtag[0].u_id;
+                        delete hashtag[0].p_id;
+                        delete hashtag[0].t_id;
+                        res.render('pc-edit', {u_id:'y', topic:penobrol[0], edit_content:pcomment[0], hashtag:hashtag[0]});
+                    });
+                }
+            });
+        }
+    });
 };
 
 exports.postEditPcomment = function(req, res){
-    var sql = 'select * from tandya order by date desc limit 3';
-    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
+    var content = req.body.comment;
+    var p_id = req.params.penobrol_no;
+    var pc_id = req.params.pcomment_no;
+    var sql = 'UPDATE p_com SET content = ?, changed_date = now() where id = ? AND p_id = ?';
+    conn.conn.query(sql, [content, pc_id, p_id], function(err, updated, fields){
+        if(err){console.log(err);}
+        else{
+            res.redirect('/penobrol/'+p_id);
+        }
+    });
 };

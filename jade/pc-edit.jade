@@ -1,0 +1,69 @@
+doctype html
+html
+    head
+        title beritamus
+        // what appears on the tab
+        base(href="/")
+        link(rel='stylesheet', href='common.css' type="text/css")
+        // links css common file
+        link(rel="stylesheet" href="penobrol_view.css" type="text/css")
+        // links css file
+        link(href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet")
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')    
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        // iphone에서 어플식으로 저장가능
+        // Lorem ipsum
+    body
+    -var datemaker = function(date){
+    -var tempdate = new Date(date);
+    -var nowdate = new Date();
+    -var year = tempdate.getFullYear();
+    -var month = tempdate.getMonth();
+    -var day = tempdate.getDate();
+    -var diff = nowdate - tempdate;
+    -if(diff > 864000000){return month+'-'+day+'-'+year;}
+    -else{
+    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -else{
+    -if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+    -else{
+    -if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
+    -else{return parseInt(diff/1000)+' seconds ago';}
+    -}
+    -}
+    -}
+    -}
+        header
+            a(href='/penobrol') Beritamus      
+        nav
+            ul
+                li
+                    a(href='/aku') Aku
+                li
+                    a(href='/cari') Cari
+                li(style='border-bottom: 2px solid yellow; opacity: .9')
+                    a(href='/penobrol') Penobrol
+                li
+                    a(href='/tandya') Tandya
+                br.clear
+        section.main(id='main')
+            .title
+                if u_id
+                dl.pview-dl
+                    - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view
+                    dt.pview-dt= topic.title               
+                    dd.pview-dd #{date_result}             
+                    dd.pview-dd= topic.com
+                    if hashtag
+                        -for(var n=0; n<topic.hashtagcount; n++)
+                            a= '#' + hashtag[Object.keys(hashtag)[n]] + ' ' 
+            .pcontent= topic.content
+                div(id="plikes")= topic.p_like
+            if u_id
+                form(action='/pcedit/'+topic.id+'/'+edit_content.id method='post' id='commentForm')
+                  p
+                    textarea(name='comment' id="comment")= edit_content.content
+                  p
+                    input(type='submit' value='submit' class="comment")
+        script(type="text/javascript" src="plikes.js")
