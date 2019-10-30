@@ -55,11 +55,12 @@ html
             .p-stat
                 p Penobrol    :  #{user.u_pen}
                 p Tandya     : #{user.u_tan}
-                p haipur    :  #{user.u_haipur}
+                p Haipur    :  #{user.u_haipur}
             .p-penobrol Penobrol
                 if penobrols
                     each p in penobrols
-                        dl
+                        -var plink = 'penobrol/'+p.id
+                        dl(onclick ='location.href="#{plink}"')
                             dt
                                 a(href='/penobrol/'+p.id)= p.title
                                 dd.content-info view : #{p.p_view}        
@@ -70,11 +71,12 @@ html
             .p-tandya Tandya
                 if tandyas
                     each t in tandyas
-                        dl
+                        -var tlink = 'tandya/'+t.id
+                        dl(onclick ='location.href="#{tlink}"')
                             dt
                                 a(href='/tandya/'+t.id)= t.question
                                 dd.content-info view : #{t.t_view}        
-                                dd.content-info com : #{t.com}
+                                dd.content-info jawaban : #{t.answer}
                                 - var date_result = datemaker(t.date)
                                 dd.content-info date : #{date_result}        
                                 dd.content-info like : #{t.t_like}
@@ -90,5 +92,5 @@ html
             .daftar
                 a(href='/aku/hilang') Hilang?
                 a(href='/register') Daftar
-            
+        section.footer(id='footer') kontak : joe.guson@beritamus.com
     script(type="text/javascript" src="aku.js")

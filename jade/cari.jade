@@ -65,7 +65,8 @@ html
                     li
                         if(randoms[i].identifier =='p')
                             span= randoms[i].identifier
-                            dl
+                            -var plink = 'penobrol/'+randoms[i].id
+                            dl(onclick ='location.href="#{plink}"')
                                 dt
                                     a(href='/penobrol/'+randoms[i].id)= randoms[i].title
                                 dd.ddcontent= randoms[i].content
@@ -73,11 +74,11 @@ html
                                 dd #{date_result}
                         else
                             span= randoms[i].identifier
-                            dl
+                            -var tlink = 'tandya/'+randoms[i].id
+                            dl(onclick ='location.href="#{tlink}"')
                                 dt
                                     a(href='/tandya/'+randoms[i].id)= randoms[i].question
                                     dd.ddcontent= randoms[i].content
                                     - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].t_view + ' views';
                                 dd #{date_result}
-        section.footer(id='footer')
         script(type="text/javascript" src="cari.js")

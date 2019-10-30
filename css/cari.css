@@ -116,6 +116,9 @@ li span {
   padding: 5px;
   float: right;
 }
+li dl {
+  cursor: pointer;
+}
 dl dt {
   width: 90%;
   height: 30px;
@@ -146,6 +149,7 @@ dt a {
   white-space: nowrap;
   color: #4167e0;
   text-decoration: none;
+  display: block;
 }
 /*for bigger windows*/
 @media (min-width: 768px) {

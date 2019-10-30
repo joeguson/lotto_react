@@ -334,11 +334,106 @@ exports.warningTandya = function(req, res){
 };
 
 exports.getEditTandya = function(req, res){
-    var sql = 'select * from tandya order by date desc limit 3';
-    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
+    var t_id = req.params.tandya_no;
+    var sql = 'select * from tandya where id = ?';
+    var sql2 = 'select * from hashtag where t_id = ? AND u_id = ?';
+    conn.conn.query(sql, t_id, function(err, edit, fields){
+        if(err){console.log(err);}
+        else{
+            conn.conn.query(sql2, [t_id, req.session.u_id], function(err, hashtags, fields){
+                if(err){console.log(err);}
+                res.render('t-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
+            });
+        }
+    });
 };
 
 exports.postEditTandya = function(req, res){
-    var sql = 'select * from tandya order by date desc limit 3';
-    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
+    var question = req.body.question;
+    var content = req.body.content;
+    var rawhashtags = req.body.hashtag;
+    var hashtagCount = 0;
+    var t_id = req.params.tandya_no;
+    while(rawhashtags.indexOf(' ')>=0){
+        rawhashtags = rawhashtags.replace(' ', "");
+    }
+    var hashtags = rawhashtags.split('#');
+    hashtagCount = hashtags.length;
+    var perfecthashtag = function (array){
+        array.splice(0, 1);
+        if(array.length > 7){
+            while(array.length > 7){
+                array.splice(7, 1);
+            }
+        }
+        else if(array.length < 7){
+            while(array.length < 7){
+                array.push(' ');
+            }  
+        }
+        return array;
+    };
+    var finalhastag = perfecthashtag(hashtags);
+    //for inserts
+    var sql = 'UPDATE tandya SET question = ?, content = ?, hashtagcount = ?, public = ? where id = ?';
+    var sql4 = 'UPDATE hashtag SET ht1 = ?,  ht2 = ?, ht3 = ?, ht4 = ?, ht5 = ?, ht6 = ?, ht7 = ? where t_id = ? AND u_id = ?';
+    //for updates
+    var sql2 = 'UPDATE tandya set changed_date = now() WHERE id = ?';
+    
+    //update connection
+    conn.conn.query(sql2, [t_id], function(err, update, fields){
+        if(err){console.log(err);}
+      });
+    //insert connection
+    conn.conn.query(sql, [question, content, hashtagCount, public, t_id], function(err, result, fields){
+        if(err){console.log(err);}
+        else{
+            conn.conn.query(sql4, [finalhastag[0], finalhastag[1], finalhastag[2], finalhastag[3], finalhastag[4], finalhastag[5], finalhastag[6], t_id, req.session.u_id], function(err, hashtag, fields){
+                if(err){console.log(err);}
+                else{
+                    res.redirect('/tandya/'+t_id);
+                }
+            }); 
+        }
+    });
 };
+
+exports.getEditTanswer = function(req, res){
+    var ta_id = req.params.tanswer_no;
+    var t_id = req.params.tandya_no;
+    var sql = 'select * from t_ans where id = ?';
+    var sql2 = 'select * from tandya where id = ?';
+    var sql3 = 'select * from hashtag where t_id = ?';
+    conn.conn.query(sql, ta_id, function(err, tanswer, fields){
+        if(err){console.log(err);}
+        else{
+            conn.conn.query(sql2, t_id, function(err, tandya, fields){
+                if(err){console.log(err);}
+                else{
+                    conn.conn.query(sql3, t_id, function(err, hashtag, fields){
+                        delete hashtag[0].id;
+                        delete hashtag[0].u_id;
+                        delete hashtag[0].p_id;
+                        delete hashtag[0].t_id;
+                        res.render('ta-edit', {u_id:'y', topic:tandya[0], edit_content:tanswer[0], hashtag:hashtag[0]});
+                    });
+                }
+            });
+        }
+    });
+};
+
+exports.postEditTanswer = function(req, res){
+    var content = req.body.answer;
+    var t_id = req.params.tandya_no;
+    var ta_id = req.params.tanswer_no;
+    var sql = 'UPDATE t_ans SET answer = ?, changed_date = now() where id = ? AND t_id = ?';
+    conn.conn.query(sql, [content, ta_id, t_id], function(err, updated, fields){
+        if(err){console.log(err);}
+        else{
+            res.redirect('/tandya/'+t_id);
+        }
+    });
+};
+
+

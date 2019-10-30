@@ -60,8 +60,9 @@ html
                 .t-title Tandya Terbaru
                 ul
                     each v in dateTopics
-                        li    
-                            dl.t-dl
+                        li
+                            -var tlink = 'tandya/'+v.id
+                            dl.t-dl(onclick ='location.href="#{tlink}"')
                                 dt
                                     a(href='/tandya/'+v.id)= v.question
                                 dd.ddcontent= v.content
@@ -71,12 +72,15 @@ html
                 .t-title Tandya Terkenal               
                 ul
                     each w in scoreTopics
-                        li    
-                            dl.t-dl
+                        li
+                            -var tlink = 'tandya/'+w.id
+                            dl.t-dl(onclick ='location.href="#{tlink}"')
                                 dt
                                     a(href='/tandya/'+w.id)= w.question
                                 dd.ddcontent= w.content
                                 - var date_result = datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' jawaban';
                                 dd #{date_result}      
-        section.footer(id='footer')
+        section.footer(id='footer') 
+            p kontak : joe.guson@beritamus.com
+            p Beritamus
         //script(type="text/javascript" src="prank.js")

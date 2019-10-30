@@ -6,7 +6,7 @@ html
         base(href="/")
         link(rel='stylesheet', href='common.css' type="text/css")
         // links css common file
-        link(rel="stylesheet" href="penobrol_view.css" type="text/css")
+        link(rel="stylesheet" href="tandya_view.css" type="text/css")
         // links css file
         link(href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet")
         meta(charset='UTF-8')
@@ -35,34 +35,34 @@ html
     -}
     -}
         header
-            a(href='/penobrol') Beritamus      
+            a(href='/tandya') Beritamus      
         nav
             ul
                 li
                     a(href='/aku') Aku
                 li
                     a(href='/cari') Cari
-                li(style='border-bottom: 2px solid yellow; opacity: .9')
-                    a(href='/penobrol') Penobrol
                 li
+                    a(href='/penobrol') Penobrol
+                li(style='border-bottom: 2px solid yellow; opacity: .9')
                     a(href='/tandya') Tandya
                 br.clear
         section.main(id='main')
             .title
-                dl.pview-dl
-                    - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view
-                    dt.pview-dt= topic.title               
-                    dd.pview-dd #{date_result}             
-                    dd.pview-dd= topic.com
+                dl.tview-dl
+                    dt.tview-dt= topic.question
+                    - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view
+                    dd.pview-dd #{date_result}
+                    dd.tview-dd= topic.answer        
                     if hashtag
                         -for(var n=0; n<topic.hashtagcount; n++)
-                            a= '#' + hashtag[Object.keys(hashtag)[n]] + ' ' 
-            .pcontent= topic.content
-                div(id="plikes")= topic.p_like
+                            a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+            .tcontent= topic.content
+                div(id="tlikes")= topic.t_like
             if u_id
-                form(action='/pcedit/'+topic.id+'/'+edit_content.id method='post' id='commentForm')
-                  p
-                    textarea(name='comment' id="comment")= edit_content.content
-                  p
-                    input(type='submit' value='submit' class="comment")
-        script(type="text/javascript" src="plikes.js")
+                form(action='/taedit/'+topic.id+'/'+edit_content.id method='post' id='answerForm')
+                      p
+                        textarea(name='answer' id="answer")= edit_content.answer
+                      p
+                        input(type='submit' value='submit' class="answer")
+        script(type="text/javascript" src="tlikes.js")

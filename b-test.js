@@ -223,8 +223,10 @@ app.post('/tlikes/:id', tandya.likesTandya);
 app.post('/tAnswerlikes/:id', tandya.likesAnswer);
 app.post('/tandya/:tandya_no/:answer_no', tandya.postAddAcomment);
 app.post('/twarning/', tandya.warningTandya);
-//app.get(['/tandya/:tandya_no/edit'], tandya.getEditTandya);
-//app.post(['/tandya/:tandya_no/edit'], tandya.postEditTandya);
+app.get(['/tedit/:tandya_no'], tandya.getEditTandya);
+app.post(['/tedit/:tandya_no'], tandya.postEditTandya);
+app.get(['/taedit/:tandya_no/:tanswer_no'], tandya.getEditTanswer);
+app.post(['/taedit/:tandya_no/:tanswer_no'], tandya.postEditTanswer);
 
 /************FOR PENOBROL************/
 app.get('/penobrol/add', penobrol.getAddPenobrol);

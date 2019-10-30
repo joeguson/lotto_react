@@ -94,6 +94,9 @@
   border-bottom: 2px solid #a0b3ef;
   margin-bottom: 20px;
 }
+.t-dl {
+  cursor: pointer;
+}
 dl dt {
   width: 90%;
   height: 30px;

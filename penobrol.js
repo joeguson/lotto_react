@@ -138,6 +138,8 @@ exports.postAddPenobrol = function(req, res){
     //for updates
     var sql2 = 'UPDATE users set u_pen= u_pen + 1 WHERE u_id = ?';
     var sql3 = 'UPDATE overview SET total_p = total_p +1 WHERE id = 1';
+    var sql_haipur = '';
+    var sql_u_haipur = '';
     
     //update connection
     conn.conn.query(sql3, function(err, update, fields){
@@ -146,6 +148,22 @@ exports.postAddPenobrol = function(req, res){
     conn.conn.query(sql2, [author], function(err, update, fields){
         if(err){console.log(err);}
       });
+    if(public == 'p'){
+        sql_haipur = 'INSERT INTO haipur (u_id, amount, content) VALUES (?, -1000, "added a public penobrol")';
+        sql_u_haipur = 'UPDATE users set u_haipur = u_haipur - 1000 where u_id = ?';
+    }
+    else{
+        sql_haipur = 'INSERT INTO haipur (u_id, amount, content) VALUES (?, -1200, "added a anonim penobrol")';
+        sql_u_haipur = 'UPDATE users set u_haipur = u_haipur - 1200 where u_id = ?';
+    }
+    conn.conn.query(sql_haipur, author, function(err, haipur, fields){
+        if(err){console.log(err);}
+        else{
+            conn.conn.query(sql_u_haipur, author, function(err, u_haipur, fields){
+               if(err){console.log(err);} 
+            });
+        }
+    });
     //insert connection
     conn.conn.query(sql, [author, title, content, hashtagCount, public], function(err, result, fields){
         if(err){console.log(err);}
@@ -168,8 +186,20 @@ exports.postAddComment = function(req, res){
     var sql = 'INSERT INTO p_com (author, content, p_id) VALUES (?, ?, ?)';
     var sql2 = 'UPDATE penobrol SET com = com + 1 WHERE id = (?)';
     var sql3 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
+    var sql4 = 'INSERT INTO haipur(u_id, amount, content) VALUES (?, 300, "added a comment")';
+    var sql5 = 'UPDATE users set u_haipur = u_haipur + 300 where u_id = ?';
     conn.conn.query(sql3, p_id, function(err, score, fields){
         if(err){console.log(err);}
+        else{
+            conn.conn.query(sql4, author, function(err, haipur, fields){
+               if(err){console.log(err);}
+                else{
+                    conn.conn.query(sql5, author, function(err, u_haipur, fields){
+                       if(err){console.log(err);} 
+                    });
+                }
+            });
+        }
     });
     conn.conn.query(sql, [author, content, p_id], function(err, result, fields){
         if(err){console.log(err);}
@@ -348,7 +378,6 @@ exports.postEditPenobrol = function(req, res){
     var title = req.body.title;
     var content = req.body.content;
     var rawhashtags = req.body.hashtag;
-    var public = req.body.public;
     var hashtagCount = 0;
     var p_id = req.params.penobrol_no;
     while(rawhashtags.indexOf(' ')>=0){

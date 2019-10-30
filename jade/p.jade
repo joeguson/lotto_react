@@ -36,7 +36,7 @@ html
     -}
     -}
         header
-            a(href='/tandya') Beritamus
+            a(href='/penobrol') Beritamus
         nav
             ul
                 li
@@ -61,7 +61,8 @@ html
                 ul
                     each v in dateTopics
                         li
-                            dl.p-dl
+                            -var plink = 'penobrol/'+v.id
+                            dl.p-dl(onclick ='location.href="#{plink}"')
                                 dt
                                     a(href='/penobrol/'+v.id)= v.title
                                 dd.ddcontent= v.content
@@ -72,10 +73,12 @@ html
                 ul
                     each w in scoreTopics
                         li
-                            dl.p-dl
+                            -var plink = 'penobrol/'+w.id
+                            dl.p-dl(onclick ='location.href="#{plink}"')
                                 dt
                                     a(href='/penobrol/'+w.id)= w.title
                                 dd.ddcontent= w.content
                                 - var date_result = datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar';
-                                dd #{date_result}        
+                                dd #{date_result}   
+        section.footer(id='footer') kontak : joe.guson@beritamus.com
     //script(type="text/javascript" src="prank.js")

@@ -6,7 +6,7 @@ html
         base(href="/")
         link(rel='stylesheet', href='common.css' type="text/css")
         // links css common file
-        link(rel="stylesheet" href="penobrol_add.css" type="text/css")
+        link(rel="stylesheet" href="tandya_add.css" type="text/css")
         // links css file
         link(href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet")
         meta(charset='UTF-8')
@@ -38,18 +38,21 @@ html
                     a(href='/aku') Aku
                 li
                     a(href='/cari') Cari
-                li(style='border-bottom: 2px solid yellow; opacity: .9')
-                    a(href='/penobrol') Penobrol
                 li
+                    a(href='/penobrol') Penobrol
+                li(style='border-bottom: 2px solid yellow; opacity: .9')
                     a(href='/tandya') Tandya
                 br.clear
+        section.sub-main
+            .search-p       
+            .ad
         article
-            form(action='/pedit/'+edit_content.id method='post')
-                p 
-                    input(type='text' name='title' placeholder='title' class="title" value=edit_content.title) 
+            form(action='/tedit/'+edit_content.id method='post')
+                p
+                    input(type='text' name='question' placeholder='title' class="title" value=edit_content.question)
                 p
                     textarea(name='content' class="content")= edit_content.content
                 p
-                    input(type='text' name='hashtag' class="hashtag" value= "#{hashtag_final}")
+                    input(type='text' name='hashtag' class="hashtag" value="#{hashtag_final}")
                 p
                     input(type='submit' class="submit")

@@ -73,7 +73,7 @@ input{width:100%; height:50px; margin: 0 auto; font: 100px; display: block; box-
 
 //li - span, dl
 li span{.identifier-border();}
-li dl{}
+li dl{cursor: pointer;}
 
 //dl - dt, dd
 dl dt{width: 90%; height:30px; line-height: 30px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
@@ -81,7 +81,7 @@ dd{font-style: italic; font-size: 12px;}
 dl .ddcontent{overflow: hidden; text-overflow: ellipsis; white-space:normal; font-size: 14px; line-height: 16px; height:48px; font-style: normal; margin-bottom: 5px;}
 
 //dt - a
-dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none;}
+dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none; display:block;}
 
 /*for bigger windows*/
 @media (min-width:768px){
