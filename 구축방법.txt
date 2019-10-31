@@ -1,6 +1,6 @@
 설치 항목들
-1. pkg install node
-2. 
+1. curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+2. sudo apt-get install -y nodejs
 
 1. 디렉토리 하나를 만든다 (beritamus-test)
 2. npm init을 통해 하나의 프로젝트로써의 역할을 할 수 있게 한다
@@ -16,7 +16,7 @@
 7. 해당 directory에 mysql-session설치
 - npm install express-mysql-session --save
 8. install jade
-- nom install jade
+- npm install jade
 9. install node-schedule
 - npm install node-schdule
 10 install serve-favicon
