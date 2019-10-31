@@ -12,8 +12,8 @@
 //});
 //// Initially load some items.
 //loadMore();
-var loadMore = function(number) {
-    sendAjax('/cari/load', number);
+var loadMore = function() {
+    sendAjax('/cari/load');
 };
 var header = document.querySelector('#header');
 var nav = document.querySelector('#nav');
@@ -74,9 +74,9 @@ function sendAjax(url){
         var result = JSON.parse(xhr.responseText);
         if(result.result !== 'ok') return;
         // 데이터가 있으면 결과값 표시
-        var randoms = shuffleRandom(9);
+        var randoms = shuffleRandom(6);
         var randomul = document.getElementById('uls');
-        for(var i=0; i<9; i++){
+        for(var i=0; i<6; i++){
             var lis = document.createElement('li');
             var as = document.createElement('a');
             var dls = document.createElement('dl');
@@ -110,4 +110,4 @@ function sendAjax(url){
         }
   });
 }
-loadMore(10);
+loadMore();
