@@ -85,13 +85,13 @@ html
             a.logout(href= '/aku/logout') Logout!
         else
             form(action='aku/login' method='post')
-                p
-                    input(type='text' name='u_id' placeholder='   ID')
-                    input(type='password' name='u_pw' placeholder='     Password')
-                p
-                    input(type='submit' value="Login" id="login")
+                input(type='text' name='u_id' placeholder='    ID' id="input_id")
+                input(type='password' name='u_pw' placeholder='    Password' id="input_pw")
+                input(type='submit' value="Login" id="login")
             .daftar
-                a(href='/aku/hilang') Hilang?
-                a(href='/register') Daftar
+                span(id="hilang")
+                    a(href='/aku/hilang') Hilang
+                span(id="daftar")
+                    a(href='/register') Daftar
         section.footer(id='footer') kontak : joe.guson@beritamus.com
     script(type="text/javascript" src="aku.js")
