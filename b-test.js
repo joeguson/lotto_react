@@ -156,8 +156,8 @@ app.get('/cari/search', function(req, res){
     }
 });
 app.get('/cari/load', function(req, res){
-    sql = 'SELECT * FROM penobrol order by rand() limit 5';
-    sql2 = 'SELECT * FROM tandya order by rand() limit 5';
+    sql = 'SELECT * FROM penobrol order by rand() limit 3';
+    sql2 = 'SELECT * FROM tandya order by rand() limit 3';
     conn.query(sql, function(err, penobrol, fields){
         conn.query(sql2, function(err, tandya, fields){
             if(err){console.log(err);}
