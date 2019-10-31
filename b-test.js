@@ -265,6 +265,6 @@ app.post('/aku/register', function(req, res){
         res.json(responseData);
     }); 
 });
-app.listen(80, function(){
-  console.log('Connected, 80 port!');
+app.listen(3000, function(){
+  console.log('Connected, 3000 port!');
 });
