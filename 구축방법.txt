@@ -21,6 +21,8 @@
 - npm install node-schdule
 10 install serve-favicon
 - npm install serve-favicon
+11 install nodemailer
+- npm install nodemailer
 
 https://freeprog.tistory.com/168
 https://m.blog.naver.com/wlsdml1103/221159758141
