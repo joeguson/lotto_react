@@ -21,7 +21,6 @@ exports.getPenobrol = function(req, res){
       });
     }
 };
-
 exports.getViewPenobrol = function(req, res){
     var id = req.params.penobrol_no;
     var sql1 = 'SELECT MAX(id) AS max from penobrol';

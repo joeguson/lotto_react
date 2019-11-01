@@ -1,11 +1,11 @@
-@bgcolor1: #f6f6f6; //for all body
-@bgcolor2: #fbfbfb; // for section
+@bgcolor1: #ebedf2; //for all body(grey)
+@bgcolor2: #ffffff; // for section
 
 @main: #4167e0; // blue main color
 @maindark: #203370; // blue main color
 @mainlight: #a0b3ef; // blue main color
 @main2: #e0ba41; // blue main color
-@mainlight2: #efdca0; // blue main color
+@mainlight2: #fffff0; // blue main color
 
 @button-color: #a0b3ef;
 @font-color1: black;
@@ -27,24 +27,27 @@
     border-bottom: 2px solid lightgray;
 }
 .li-border{
-    border-top: 2px solid @mainlight;
-    border-bottom: 2px solid @mainlight;
-    margin-bottom: @marginbottom-mbl;
+    border-top: 1px solid @mainlight;
+    border-bottom: 1px solid @mainlight;
+    margin-bottom: 10px;
+    border-top-right-radius: 5px;
 }
 .button{
     width: 100%; height:45px; box-sizing: border-box; font-size: 20px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 45px; text-decoration: none; border-style: none;
 }
 
 //.login - .ad(div)
-.ad {width:100%; height:150px; background-color: @bgcolor1; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
+.ad {width:100%; height:150px; background-color: @bgcolor2; font-size: 50px; line-height: 140px; text-align: center; .section-border();}
 
-//(not logged in) main - form, daftar(div)
+//(not logged in) main - form, daftar(div),
 form{width:85%; margin: 0 auto @marginbottom-mbl auto;}
-.daftar{width:85%; margin: 0 auto @marginbottom-mbl auto; text-align: center;}
+.daftar{width:85%; margin: 0 auto @marginbottom-mbl*2 auto; text-align: center;}
+
 
 //form - #input_id(input), #input_pw(input), #login(input)
-#input_id{width:100%; height:45px; border-radius: 10px; border: 1px solid @main; margin-bottom: 10px; font-size: 20px;}
-#input_pw{width:100%; height:45px; border-radius: 10px; border: 1px solid @main; margin-bottom: @marginbottom-mbl; font-size: 20px;}
+#input_id{width:100%; height:45px; border-radius: 10px; border: 1px solid @main; margin-bottom: 20px; font-size: 20px;}
+#input_pw{width:100%; height:45px; border-radius: 10px; border: 1px solid @main; margin-bottom: 30px; font-size: 20px;}
+.message{width:85%; font-size: 20px; margin: 0 auto @marginbottom-mbl; text-align: center;}
 #login{width:100%; height:35px; border-radius: 10px; border: 1px solid @main;}
 
 //.daftar - #hilang(p), #daftar(p)
@@ -55,22 +58,27 @@ form{width:85%; margin: 0 auto @marginbottom-mbl auto;}
 #login{.button(); margin-bottom: 0px;}
 
 //(logged in) main - .pstat, .p-penobrol, .p-tandya
-.p-stat{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px;}
-.p-penobrol{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; font-size: 20px;}
-.p-tandya{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; font-size: 20px;}
+.p-stat{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; background-color: @bgcolor2;}
+.p-penobrol{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; background-color: @bgcolor2;}
+.p-tandya{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; background-color: @bgcolor2;}
 
 //.pstat - p
-.p-stat p {font-size: 16px; font-weight: bold; line-height: 20px;}
-//.p-penobrol - dl
-.p-penobrol dl{width:100%; background-color:@bgcolor1; .li-border(); cursor: pointer;}
-//.p-tandya - dl
-.p-tandya dl{width:100%; background-color:@bgcolor1; .li-border(); cursor: pointer;}
-//dl - dt, dd
-dl dt{width: 90%; height:30px; line-height: 30px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
+.p-stat p {font-size: 18px; font-weight: bold; line-height: 30px;}
+//.p-penobrol - p, dl
+.p-penobrol p{font-size: 20px; line-height: 30px; margin-bottom: 15px}
+.p-penobrol dl{width:95%; margin: 0 auto; background-color:@mainlight2; .li-border(); cursor: pointer; padding:5px;}
 
-dd{font-style: italic; font-size: 12px;}
+//.p-tandya - p, dl
+.p-tandya p{font-size: 20px; line-height: 30px; margin-bottom: 15px;}
+.p-tandya dl{width:95%; margin: 0 auto; background-color:@mainlight2; .li-border(); cursor: pointer; padding:5px;}
+
+//dl - dt, dd
+dl dt{width: 90%; height:30px; line-height: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
+
+dd{font-style: italic; font-size: 12px; display: inline;}
+
 //dt - a
-dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none;}
+dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none; font-size: 16px;}
 
 
 .login{width:100%; box-sizing: border-box; margin: 0px; background-color: @bgcolor2; .section-border();}

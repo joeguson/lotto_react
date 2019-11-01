@@ -54,42 +54,37 @@ html
         section.main(id='main')
         if user
             .p-stat
-                p Penobrol    :  #{user.u_pen}
-                p Tandya     : #{user.u_tan}
-                p Haipur    :  #{user.u_haipur}
-            .p-penobrol Penobrol
+                p Penobrolku    :  #{user.u_pen}
+                p Tandyaku     : #{user.u_tan}
+                p Haipurku    :  #{user.u_haipur}
+            .p-penobrol 
+                p Penobrol
                 if penobrols
                     each p in penobrols
                         -var plink = 'penobrol/'+p.id
                         dl(onclick ='location.href="#{plink}"')
                             dt
                                 a(href='/penobrol/'+p.id)= p.title
-                                dd.content-info view : #{p.p_view}        
-                                dd.content-info com : #{p.com}       
-                                - var date_result = datemaker(p.date)
-                                dd.content-info date : #{date_result}         
-                                dd.content-info like : #{p.p_like}
-            .p-tandya Tandya
+                            - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / kommen: ' + p.com + ' / suka: ' + p.p_like
+                            dd.content-info date: #{date_result}         
+            .p-tandya 
+                p Tandya
                 if tandyas
                     each t in tandyas
                         -var tlink = 'tandya/'+t.id
                         dl(onclick ='location.href="#{tlink}"')
                             dt
                                 a(href='/tandya/'+t.id)= t.question
-                                dd.content-info view : #{t.t_view}        
-                                dd.content-info jawaban : #{t.answer}
-                                - var date_result = datemaker(t.date)
-                                dd.content-info date : #{date_result}        
-                                dd.content-info like : #{t.t_like}
-                                
+                            - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / jawaban: ' + t.answer + ' / suka: ' + t.t_like
+                            dd.content-info date: #{date_result}        
             a.logout(href= '/aku/logout') Logout!
         else
             form(action='aku/login' method='post')
                 input(type='text' name='u_id' placeholder='    ID' id="input_id")
                 input(type='password' name='u_pw' placeholder='    Password' id="input_pw")
+                if message
+                    p.message= message
                 input(type='submit' value="Login" id="login")
-            if message
-                p= message
             .daftar
                 span(id="hilang")
                     a(href='/aku/hilang') Hilang

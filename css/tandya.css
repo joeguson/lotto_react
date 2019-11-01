@@ -29,7 +29,7 @@
 .ad {
   width: 100%;
   height: 150px;
-  background-color: #f6f6f6;
+  background-color: #ebedf2;
   font-size: 50px;
   line-height: 140px;
   text-align: center;
@@ -46,7 +46,7 @@
   padding: 10px;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  background-color: #f6f6f6;
+  background-color: #ebedf2;
   box-sizing: border-box;
 }
 .t-terbaru {
@@ -70,7 +70,7 @@
   clear: both;
 }
 .t-title {
-  background-color: #f6f6f6;
+  background-color: #ebedf2;
   font-size: 24px;
   margin-bottom: 20px;
 }
@@ -82,14 +82,14 @@
 }
 .t-terbaru ul li {
   width: 100%;
-  background-color: #f6f6f6;
+  background-color: #ebedf2;
   border-top: 2px solid #a0b3ef;
   border-bottom: 2px solid #a0b3ef;
   margin-bottom: 20px;
 }
 .t-terkenal ul li {
   width: 100%;
-  background-color: #f6f6f6;
+  background-color: #ebedf2;
   border-top: 2px solid #a0b3ef;
   border-bottom: 2px solid #a0b3ef;
   margin-bottom: 20px;

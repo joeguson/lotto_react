@@ -42,7 +42,7 @@
 .ad {
   width: 100%;
   height: 150px;
-  background-color: #f6f6f6;
+  background-color: #ebedf2;
   font-size: 50px;
   line-height: 140px;
   text-align: center;
@@ -78,7 +78,7 @@
 }
 .tanswer {
   width: 100%;
-  background-color: #f6f6f6;
+  background-color: #ebedf2;
   margin: 0px;
   padding: 0px;
   margin-bottom: 20px;
@@ -176,7 +176,7 @@
 }
 .tanswer-li {
   width: 100%;
-  background-color: #f6f6f6;
+  background-color: #ebedf2;
   border-top: 2px solid #a0b3ef;
   border-bottom: 2px solid #a0b3ef;
   margin-bottom: 20px;
