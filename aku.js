@@ -1,6 +1,6 @@
 var conn = require('./b-test');
 var nodemailer = require('nodemailer');
-var key = require('beritamus-admin-2ff0df5d17ca.json');
+var key = require('./beritamus-admin-2ff0df5d17ca.json');
 
 function codeMaker(){
     var ar = [];
