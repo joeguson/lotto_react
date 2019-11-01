@@ -15,6 +15,7 @@
 var loadMore = function() {
     sendAjax('/cari/load');
 };
+
 var header = document.querySelector('#header');
 var nav = document.querySelector('#nav');
 var sub_main = document.querySelector('#sub-main');
@@ -29,7 +30,7 @@ function shuffleRandom(n){
         var ar = new Array();
         var temp;
         var rnum;
-        for(var j=1; j<=n; j++){ar.push(j);}
+        for(var j=0; j<n; j++){ar.push(j);}
         for(var i=0; i< ar.length ; i++)
         {rnum = Math.floor(Math.random() *n); //난수발생
         temp = ar[i]; ar[i] = ar[rnum];ar[rnum] = temp;}
@@ -87,7 +88,7 @@ function sendAjax(url){
             if(result.data[randoms[i]].identifier == 'p'){
                 as.innerHTML = result.data[randoms[i]].title;
                 as.setAttribute('href', '/penobrol/'+result.data[randoms[i]].id);
-                span_id.innerHTML = 'p';
+                span_id.innerHTML = 'P';
                 dds1.innerHTML = result.data[randoms[i]].content;
                 dds1.setAttribute('class', 'ddcontent');
                 dds3.innerHTML = dateMaker(result.data[randoms[i]].date) + ' / ' + result.data[randoms[i]].p_view + ' views';
@@ -95,7 +96,7 @@ function sendAjax(url){
             else{
                 as.innerHTML = result.data[randoms[i]].question;
                 as.setAttribute('href', '/tandya/'+result.data[randoms[i]].id);
-                span_id.innerHTML = 't';
+                span_id.innerHTML = 'T';
                 dds1.innerHTML = result.data[randoms[i]].content;
                 dds1.setAttribute('class', 'ddcontent');
                 dds3.innerHTML = dateMaker(result.data[randoms[i]].date) + ' / ' + result.data[randoms[i]].t_view + 'views';
@@ -110,4 +111,3 @@ function sendAjax(url){
         }
   });
 }
-loadMore();

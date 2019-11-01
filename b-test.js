@@ -182,36 +182,24 @@ app.get(['/cari','/'], function(req, res){
     conn.query(sql, function(err, penobrol, fields){
         if(err){console.log(err);}
         else{
-            if(req.session.u_id){
-                conn.query(sql2, function(err, tandya, fields){
-                    var p = JSON.parse(JSON.stringify(penobrol));
-                    var t = JSON.parse(JSON.stringify(tandya));
-                    p = p.concat(t);
-                    var temp1 = {};
-                    var temp2 = {};
-                    temp1 = p[1];
-                    p[1] = p[4];
-                    temp2 = p[2];
-                    p[2] = temp1;
-                    p[4] = temp2;
+            conn.query(sql2, function(err, tandya, fields){
+                var p = JSON.parse(JSON.stringify(penobrol));
+                var t = JSON.parse(JSON.stringify(tandya));
+                p = p.concat(t);
+                var temp1 = {};
+                var temp2 = {};
+                temp1 = p[1];
+                p[1] = p[4];
+                temp2 = p[2];
+                p[2] = temp1;
+                p[4] = temp2;
+                if(req.session.u_id){
                     res.render('cari', {randoms:p, u_id:'y'});
-                });
-            }
-            else{
-                conn.query(sql2, function(err, tandya, fields){
-                    var p = JSON.parse(JSON.stringify(penobrol));
-                    var t = JSON.parse(JSON.stringify(tandya));
-                    p = p.concat(t);
-                    var temp1 = {};
-                    var temp2 = {};
-                    temp1 = p[1];
-                    p[1] = p[4];
-                    temp2 = p[2];
-                    p[2] = temp1;
-                    p[4] = temp2;
+                }
+                else{
                     res.render('cari', {randoms:p});
-                });
-            }
+                }
+            });
         }
         });
     });

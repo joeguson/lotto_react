@@ -1,19 +1,19 @@
 var authenticator1 = '';
 var authenticator2 = '';
 var authenticator3 = '';
+var authenticator4 = '';
 var sex = '';
+var userIdCheck = RegExp(/^[A-Za-z0-9_\-]{4,20}$/);
+var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
 
 document.getElementById('u_id').addEventListener('change', function(){
     var v = document.getElementById('u_id').value;
-    if(v.length < 3){
-        document.getElementById("idchecker").innerHTML = 'Terlalu pendek';
-    }
-    else if(data.indexOf(' ')>=0){
-        document.getElementById("idchecker").innerHTML = 'tidak boleh / ada space bar';
-        authenticator1 = '';
+    console.log(userIdCheck.test(v));
+    if(userIdCheck.test(v)){
+        sendAjax('/aku/register', v);
     }
     else{
-        sendAjax('/aku/register', v);
+        document.getElementById("idchecker").innerHTML = 'maaf, pakai yang lain';
     }
 });
 function sendAjax(url, data){
@@ -29,24 +29,23 @@ function sendAjax(url, data){
      if(result.result !== 'ok') return;
      // 데이터가 있으면 결과값 표시
       if(parseInt(result.u_id) > 0){
-        document.getElementById("idchecker").innerHTML = 'tidak boleh';
+        document.getElementById("idchecker").innerHTML = 'maaf, sudah di pakai';
           authenticator1 = '';
         }
-
       else{
         document.getElementById("idchecker").innerHTML = 'silakan';
-          authenticator1 = '1';
+        authenticator1 = '1';
       }
   });
 }
 document.getElementById('u_pw').addEventListener('change', function(){
     var v = document.getElementById('u_pw').value;
     if(v.length > 7){
-        document.getElementById("pwchecker").innerHTML = 'perfect please repeat below';
+        document.getElementById("pwchecker").innerHTML = 'bagus!';
         authenticator2 = '1';
     }
     else{
-        document.getElementById("pwchecker").innerHTML = 'too short';
+        document.getElementById("pwchecker").innerHTML = 'maaf, terlalu pendek';
         authenticator2 = '';
 
     }
@@ -55,11 +54,11 @@ document.getElementById('u_pw2').addEventListener('change', function(){
     var v = document.getElementById('u_pw').value;
     var a = document.getElementById('u_pw2').value;
     if(v == a && v.length > 7){
-        document.getElementById("pwchecker").innerHTML = 'perfect please proceed';
+        document.getElementById("pwchecker").innerHTML = 'Silakan lanjutkan';
         authenticator3 = '1';
     }
     else{
-        document.getElementById("pwchecker").innerHTML = 'pass word does not match';
+        document.getElementById("pwchecker").innerHTML = 'Tidak sama';
         authenticator3 = '';
     }
 });
@@ -83,18 +82,33 @@ document.getElementById('girl').addEventListener('click', function(){
     var gender = document.getElementById('gender');
     gender.setAttribute('value', 'F');
 });
+
 document.getElementById('email').addEventListener('focus', function(){
-    var authenticate = authenticator1+authenticator2+authenticator3
-    var submit = document.getElementById('submit');
-    if(authenticate == '111' && (sex.length)>0){
-        submit.style.visibility = 'visible';
-        submit.style.width = '100%';
-    }
-    else{
-        submit.style.visibility = 'hidden';
-        submit.style.width = '0%';
-    }   
+    var userEmail = document.getElementById('email').value;
+    if(emailCheck.test(userEmail) === true){
+        authenticator4 = '1';
+    } 
 });
+//var authenticate = authenticator1+authenticator2+authenticator3+authenticator4;
+//
+//function CheckboxCheck(checkbox){
+//    var submit = document.getElementById('submit');
+//    if(checkbox.checked && authenticate == '1111' && sex.length > 0){
+//        console.log("The check box is checked");
+//        submit.style.visibility = 'visible';
+//        submit.style.width = '100%';
+//    }
+//    else{
+//        console.log("The check box is not checked.");
+//        submit.style.visibility = 'hidden';
+//        submit.style.width = '0%';
+//    }
+//}
+//
+//document.getElementById('check').addEventListener('change', function(){
+//    CheckboxCheck();
+//});
+ 
 
 
 

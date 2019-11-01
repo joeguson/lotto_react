@@ -37,7 +37,10 @@ html
                 p
                     input(type='text' name='email' id='email' value='beritamus@emailAnda.com' required)
                 p
-                    input(type='submit' value='submit' id='submit' style="visibility: hidden; width:0px;")
+                    input(type="checkbox" value="check" id='check' onclick="CheckboxCheck(this)") 
+                    span I understand all the contents uploaded will become property of Beritamus and I agree to use them. 
+                p
+                    input(type='submit' value='' id='submit' style="visibility: hidden; width:0px;")
         
         a(href='/cari') go back
         script(type="text/javascript" src="register.js")

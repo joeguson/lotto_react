@@ -27,7 +27,6 @@ exports.getViewPenobrol = function(req, res){
     var sql1 = 'SELECT MAX(id) AS max from penobrol';
     var sql3 = 'UPDATE penobrol SET p_view = p_view + 1 WHERE id = ?';
     var sql5 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
-
     var sql = 'SELECT * FROM penobrol WHERE id = ?';
     var sql2 = 'SELECT * FROM p_com WHERE p_id = ? order by score desc';
     var sql6 = 'SELECT * FROM hashtag where p_id = ?';
@@ -96,7 +95,6 @@ exports.getViewPenobrol = function(req, res){
         }
     });
 };
-
 exports.getAddPenobrol = function(req, res){
     if(req.session.u_id){
         res.render('p-add', {u_id:'y'});
