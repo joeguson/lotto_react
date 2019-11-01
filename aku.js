@@ -1,6 +1,6 @@
 var conn = require('./b-test');
 var nodemailer = require('nodemailer');
-var key = require('../beritamus-code/beritamus-admin-2ff0df5d17ca.json');
+var key = require('beritamus-admin-2ff0df5d17ca.json');
 
 function codeMaker(){
     var ar = [];
@@ -155,7 +155,7 @@ exports.postDaftar = function(req, res){
         from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
         to: u_email,                     // 수신 메일 주소
         subject: 'Email Verikasi Dari Beritamus',   // 제목
-        html: '<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://localhost:3000/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
+        html: '<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://beritamus.com/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
     };
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
