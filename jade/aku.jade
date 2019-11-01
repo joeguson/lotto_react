@@ -88,10 +88,12 @@ html
                 input(type='text' name='u_id' placeholder='    ID' id="input_id")
                 input(type='password' name='u_pw' placeholder='    Password' id="input_pw")
                 input(type='submit' value="Login" id="login")
+            if message
+                p= message
             .daftar
                 span(id="hilang")
                     a(href='/aku/hilang') Hilang
                 span(id="daftar")
-                    a(href='/register') Daftar
+                    a(href='/daftar') Daftar
         section.footer(id='footer') kontak : joe.guson@beritamus.com
     script(type="text/javascript" src="aku.js")

@@ -20,13 +20,13 @@ html
     body
         h1 Daftar
         article
-            form(action='/register' method='post')
+            form(action='/daftar' method='post')
                 p
-                    input(type='text' id="u_id" name='u_id' placeholder='What interesting ID do you want?' required)
+                    input(type='text' id="u_id" name='u_id' placeholder='ID Anda' required)
                 .idchecker(id="idchecker")
                 p
-                    input(type='password' id = 'u_pw' name='u_pw' placeholder='Put your secret password' required)
-                    input(type='password' id = 'u_pw2' placeholder='Put your secret password')
+                    input(type='password' id = 'u_pw' name='u_pw' placeholder='Password Anda' required)
+                    input(type='password' id = 'u_pw2' placeholder='Cek Password Anda')
                 .idchecker(id="pwchecker")
                 p
                     input(type='date' name='birthday' value='2019-08-31' required)

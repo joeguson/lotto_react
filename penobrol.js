@@ -368,7 +368,14 @@ exports.getEditPenobrol = function(req, res){
         else{
             conn.conn.query(sql2, [p_id, req.session.u_id], function(err, hashtags, fields){
                 if(err){console.log(err);}
-                res.render('p-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
+                else{
+                    if(req.session.u_id == edit[0].author){
+                        res.render('p-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
+                    }
+                    else{
+                        res.send('hi');
+                    }
+                }
             });
         }
     });
@@ -441,7 +448,17 @@ exports.getEditPcomment = function(req, res){
                         delete hashtag[0].u_id;
                         delete hashtag[0].p_id;
                         delete hashtag[0].t_id;
-                        res.render('pc-edit', {u_id:'y', topic:penobrol[0], edit_content:pcomment[0], hashtag:hashtag[0]});
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            if(req.session.u_id == pcomment[0].author){
+                                res.render('pc-edit', {u_id:'y', topic:penobrol[0], edit_content:pcomment[0], hashtag:hashtag[0]});
+                            }
+                            else{
+                                res.send('hi');
+                            }
+                        }
                     });
                 }
             });

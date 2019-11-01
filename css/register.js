@@ -6,7 +6,11 @@ var sex = '';
 document.getElementById('u_id').addEventListener('change', function(){
     var v = document.getElementById('u_id').value;
     if(v.length < 3){
-        document.getElementById("idchecker").innerHTML = 'terlalu pendek';
+        document.getElementById("idchecker").innerHTML = 'Terlalu pendek';
+    }
+    else if(data.indexOf(' ')>=0){
+        document.getElementById("idchecker").innerHTML = 'tidak boleh / ada space bar';
+        authenticator1 = '';
     }
     else{
         sendAjax('/aku/register', v);
@@ -28,10 +32,7 @@ function sendAjax(url, data){
         document.getElementById("idchecker").innerHTML = 'tidak boleh';
           authenticator1 = '';
         }
-      else if(data.indexOf(' ')>=0){
-          document.getElementById("idchecker").innerHTML = 'tidak boleh / ada space bar';
-          authenticator1 = '';
-      }
+
       else{
         document.getElementById("idchecker").innerHTML = 'silakan';
           authenticator1 = '1';

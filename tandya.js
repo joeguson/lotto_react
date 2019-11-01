@@ -342,7 +342,14 @@ exports.getEditTandya = function(req, res){
         else{
             conn.conn.query(sql2, [t_id, req.session.u_id], function(err, hashtags, fields){
                 if(err){console.log(err);}
-                res.render('t-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
+                else{
+                    if(req.session.u_id == edit[0].author){
+                        res.render('t-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
+                    }
+                    else{
+                        res.send('hi');
+                    }
+                }
             });
         }
     });
@@ -415,7 +422,16 @@ exports.getEditTanswer = function(req, res){
                         delete hashtag[0].u_id;
                         delete hashtag[0].p_id;
                         delete hashtag[0].t_id;
-                        res.render('ta-edit', {u_id:'y', topic:tandya[0], edit_content:tanswer[0], hashtag:hashtag[0]});
+                        if(err){console.log(err);}
+                        else{
+                            if(req.session.u_id == tanswer[0].author){
+                                res.render('ta-edit', {u_id:'y', topic:tandya[0], edit_content:tanswer[0], hashtag:hashtag[0]});  
+                            }
+                            else{
+                                res.send('hi');
+                            } 
+                        }
+                        
                     });
                 }
             });

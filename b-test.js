@@ -2,6 +2,7 @@
 var express = require('express');
 var nodemailer = require('nodemailer');
 var router = express.Router();
+exports.router = router;
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -247,11 +248,12 @@ app.post(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.postEditPcomment);
 
 /************FOR AKU************/
 app.post('/aku/login', aku.login);
-app.get(['/aku', '/aku/login'], aku.welcome);
+app.get(['/aku'], aku.welcome);
 app.get('/aku/logout', aku.logout);
 app.get('/aku/hilang', aku.hilang);
-app.post('/register', aku.postRegister);
-app.get('/register', aku.getRegister);
+app.post('/daftar', aku.postDaftar);
+app.get('/daftar', aku.getDaftar);
+app.get('/daftar/auth/', aku.getDaftarAuth);
 app.post('/aku/register', function(req, res){
     var sql = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
     var u_id = req.body.u_id;
@@ -267,59 +269,11 @@ app.post('/aku/register', function(req, res){
         res.json(responseData);
     }); 
 });
+
 app.listen(3000, function(){
   console.log('Connected, 3000 port!');
 });
 
-
-function codeMaker(){
-    var ar = [];
-    var final_code = '';
-    var temp;
-    var rnum;
-    for(var j=1; j<=9; j++){ar.push(j);}
-    for(var i=0; i< ar.length ; i++)
-    {
-        rnum = Math.floor(Math.random() *9); //난수발생
-        temp = String(ar[i]); 
-        ar[i] = String(ar[rnum]);
-        ar[rnum] = temp;
-    }
-    final_code = ar[0]+ar[1]+ar[2]+ar[3]+ar[4]+ar[5];
-    return final_code;
-}
-
-
-router.post("/nodemailer", function(req, res, next){
-    let email = req.body.email; //사용자의 이메일 계정
-
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-        user: 'admin@beritamus.com',  // gmail 계정 아이디를 입력
-        pass: 'La&5ha5P'          // gmail 계정의 비밀번호를 입력
-        }
-});
-
-    let mailOptions = {
-        from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
-        to: email ,                     // 수신 메일 주소
-        subject: 'Sending Email using Node.js',   // 제목
-        html: 
-            '<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<p><a href="http://localhost:3000/></a></p>'
-    };
-
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        }
-        else {
-          console.log('Email sent: ' + info.response);
-        }
-    });
-
-    res.redirect("/");
-});
 
 
 
