@@ -21,6 +21,7 @@ html
     -var tempdate = new Date(date);
     -var nowdate = new Date();
     -var year = tempdate.getFullYear();
+    -var year = tempdate.getFullYear();
     -var month = tempdate.getMonth();
     -var day = tempdate.getDate();
     -var diff = nowdate - tempdate;
@@ -35,6 +36,12 @@ html
     -}
     -}
     -}
+    -}
+    -var anonimmaker = function(username){
+    -var idChanger = '';
+    -var idLength = (username).length;
+    -idChanger = username.substr(0,3) + '****';
+    -return idChanger;
     -}
         header
             a(href='/tandya') Beritamus
@@ -67,7 +74,10 @@ html
                                 dt
                                     a(href='/tandya/'+v.id)= v.question
                                 dd.ddcontent= v.content
-                                - var date_result = datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' jawaban';
+                                if v.public == 'a'
+                                    - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' jawaban'
+                                else
+                                    - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' komentar'
                                 dd #{date_result}
             .t-terkenal
                 .t-title Tandya Terkenal               
@@ -79,7 +89,10 @@ html
                                 dt
                                     a(href='/tandya/'+w.id)= w.question
                                 dd.ddcontent= w.content
-                                - var date_result = datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' jawaban';
+                                if w.public == 'a'
+                                    - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' jawaban'
+                                else
+                                    - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' jawaban'
                                 dd #{date_result}      
         section.footer(id='footer') 
             p kontak : joe.guson@beritamus.com

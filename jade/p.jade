@@ -37,6 +37,12 @@ html
     -}
     -}
     -}
+    -var anonimmaker = function(username){
+    -var idChanger = '';
+    -var idLength = (username).length;
+    -idChanger = username.substr(0,3) + '****';
+    -return idChanger;
+    -}
         header
             a(href='/penobrol') Beritamus
         nav
@@ -68,7 +74,10 @@ html
                                 dt
                                     a(href='/penobrol/'+v.id)= v.title
                                 dd.ddcontent= v.content
-                                - var date_result = datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' komentar';
+                                if v.public == 'a'
+                                    - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' komentar'
+                                else
+                                    - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' komentar'
                                 dd #{date_result}        
             .p-terkenal
                 .p-title Penobrol Terkenal
@@ -80,7 +89,10 @@ html
                                 dt
                                     a(href='/penobrol/'+w.id)= w.title
                                 dd.ddcontent= w.content
-                                - var date_result = datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar';
+                                if w.public == 'a'
+                                    - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar'
+                                else
+                                    - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar'
                                 dd #{date_result}   
         section.footer(id='footer') kontak : joe.guson@beritamus.com
     //script(type="text/javascript" src="prank.js")

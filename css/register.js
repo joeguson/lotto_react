@@ -13,7 +13,7 @@ document.getElementById('u_id').addEventListener('change', function(){
         sendAjax('/aku/register', v);
     }
     else{
-        document.getElementById("idchecker").innerHTML = 'maaf, pakai yang lain';
+        document.getElementById("idchecker").innerHTML = 'maaf, minta pakai yang lain';
     }
 });
 function sendAjax(url, data){
@@ -29,7 +29,7 @@ function sendAjax(url, data){
      if(result.result !== 'ok') return;
      // 데이터가 있으면 결과값 표시
       if(parseInt(result.u_id) > 0){
-        document.getElementById("idchecker").innerHTML = 'maaf, sudah di pakai';
+        document.getElementById("idchecker").innerHTML = 'maaf, sudah dipakai';
           authenticator1 = '';
         }
       else{

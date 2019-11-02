@@ -20,6 +20,7 @@ html
     -var tempdate = new Date(date);
     -var nowdate = new Date();
     -var year = tempdate.getFullYear();
+    -var year = tempdate.getFullYear();
     -var month = tempdate.getMonth();
     -var day = tempdate.getDate();
     -var diff = nowdate - tempdate;
@@ -34,6 +35,12 @@ html
     -}
     -}
     -}
+    -}
+    -var anonimmaker = function(username){
+    -var idChanger = '';
+    -var idLength = (username).length;
+    -idChanger = username.substr(0,3) + '****';
+    -return idChanger;
     -}
         header
             a(href='/tandya') Beritamus      
@@ -54,7 +61,10 @@ html
             .title
                 dl.tview-dl
                     dt.tview-dt= topic.question
-                    - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view
+                    if topic.public == 'a'
+                        - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
+                    else
+                        - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
                     dd.pview-dd #{date_result}
                     dd.tview-dd= topic.answer        
                     if hashtag
@@ -86,9 +96,12 @@ html
                             li.tanswer-li
                                 dl.tanswer-dl(id='tAnswer'+a.id)
                                     dt.tanswer-dt= a.answer
-                                    dd.tanswer-dd= a.author
+                                    if topic.public == 'a'
+                                        - var date_result2 = 'by '+ anonimmaker(a.author) + ' /  '+datemaker(a.date)+' / ' + 'kommentar : ' + a.com
+                                    else
+                                        - var date_result2 = 'by '+ a.author + ' /  '+datemaker(a.date)+' / ' + 'kommentar : ' + a.com
+                                    dd.tanswer-dd #{date_result2}
                                     dd.tanswer-dd(id="tAnswerlikes"+a.id)= a.ta_like
-                                    dd.tanswer-dd= a.date
                                     dd.tanswer-dd
                                         if u_id
                                             if statusCheck == 'yes'
@@ -104,8 +117,11 @@ html
                                         if ac.ta_id == a.id
                                             dl.tanswer-dl2
                                                 dt.acomment-dt= ac.content
-                                                dd.acomment-dd= ac.author
-                                                dd.acomment-dd= ac.date
+                                                if topic.public == 'a'
+                                                    - var date_result3 = 'by '+ anonimmaker(ac.author) + ' /  '+datemaker(ac.date)
+                                                else
+                                                    - var date_result3 = 'by '+ ac.author + ' / '+datemaker(ac.date)
+                                                dd.acomment-dd #{date_result3}
                                                     if u_id
                                                         button(class="warning" type="submit" value='tac/'+topic.id+'/'+a.id+'/'+ac.id onclick="warningAjax(this);" id="warn/"+'tac/'+topic.id+'/'+a.id+'/'+ac.id) Warn
                                     dd.tanswer-dd

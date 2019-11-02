@@ -58,12 +58,6 @@ exports.getViewPenobrol = function(req, res){
                         if(err){console.log(err);}
                         else{
                             conn.conn.query(sql7, id, function(err, ccomments, fields){
-                                if(content[0].public != 'p'){
-                                    var idChanger = '';
-                                    var idLength = (content[0].author).length;
-                                    idChanger = content[0].author.substr(0,3) + '****';
-                                    content[0].author = idChanger;
-                                }
                                 delete hashtag[0].id;
                                 delete hashtag[0].u_id;
                                 delete hashtag[0].p_id;
@@ -134,14 +128,10 @@ exports.postAddPenobrol = function(req, res){
     var sql4 = 'INSERT INTO hashtag (p_id, u_id, ht1, ht2, ht3, ht4, ht5, ht6, ht7) VALUES (?, ?, ?);';
     //for updates
     var sql2 = 'UPDATE users set u_pen= u_pen + 1 WHERE u_id = ?';
-    var sql3 = 'UPDATE overview SET total_p = total_p +1 WHERE id = 1';
     var sql_haipur = '';
     var sql_u_haipur = '';
     
     //update connection
-    conn.conn.query(sql3, function(err, update, fields){
-        if(err){console.log(err);}
-    });
     conn.conn.query(sql2, [author], function(err, update, fields){
         if(err){console.log(err);}
       });

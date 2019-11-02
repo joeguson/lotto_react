@@ -63,13 +63,6 @@ exports.getViewTandya =  function(req, res){
                                     if(err){console.log(err);}
                                     else{
                                         conn.conn.query(sql5, id, function(err, acomments, fields){
-                                            if(content[0].public != 'p'){
-                                            var idChanger = '';
-                                            var idLength  = (content[0].author).length;
-                                            console.log(idLength);
-                                            idChanger = content[0].author.substr(0,3) + '****';
-                                            content[0].author = idChanger;
-                                            }
                                             delete hashtag[0].id;
                                             delete hashtag[0].u_id;
                                             delete hashtag[0].p_id;

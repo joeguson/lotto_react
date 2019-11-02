@@ -20,6 +20,7 @@ html
     -var tempdate = new Date(date);
     -var nowdate = new Date();
     -var year = tempdate.getFullYear();
+    -var year = tempdate.getFullYear();
     -var month = tempdate.getMonth();
     -var day = tempdate.getDate();
     -var diff = nowdate - tempdate;
@@ -34,6 +35,12 @@ html
     -}
     -}
     -}
+    -}
+    -var anonimmaker = function(username){
+    -var idChanger = '';
+    -var idLength = (username).length;
+    -idChanger = username.substr(0,3) + '****';
+    -return idChanger;
     -}
         header
             a(href='/penobrol') Beritamus      
@@ -54,7 +61,10 @@ html
             .title
                 if u_id
                 dl.pview-dl
-                    - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view
+                    if topic.public == 'a'
+                        - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + 'kommentar : ' + topic.com
+                    else
+                        - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + 'kommentar : ' + topic.com
                     dt.pview-dt= topic.title               
                     dd.pview-dd #{date_result}             
                     dd.pview-dd= topic.com
@@ -87,9 +97,12 @@ html
                             li.pcomment-li
                                 dl.pcomment-dl(id='pCcomment'+c.id)
                                     dt.pcomment-dt= c.content
-                                    dd.pcomment-dd= c.autor
+                                    if topic.public == 'a'
+                                        - var date_result2 = 'by '+ anonimmaker(c.author) + ' /  '+datemaker(c.date)+' / ' + 'kommentar : ' + c.com
+                                    else
+                                        - var date_result2 = 'by '+ c.author + ' /  '+datemaker(c.date)+' / ' + 'kommentar : ' + c.com
+                                    dd.pcomment-dd #{date_result2}
                                     dd.pcomment-dd(id="pCommentlikes"+c.id)=c.pc_like
-                                    dd.pcomment-dd= c.date
                                     dd.pcomment-dd
                                         if u_id
                                             if statusCheck == 'yes'
@@ -97,15 +110,19 @@ html
                                             else
                                                 button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Suka
                                     dd.pcomment-dd
-                                        button(class="warning" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') Warn
+                                        if u_id
+                                            button(class="warning" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') Warn
                                         if u_id == c.author
                                             a(href='/pcedit/'+topic.id+'/'+c.id) Edit
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pcomment-dl2
                                                 dd.pcomment-dt= cc.content
-                                                dd.pcomment-dd= cc.author
-                                                dd.pcomment-dd= cc.date
+                                                if topic.public == 'a'
+                                                    - var date_result3 = 'by '+ anonimmaker(cc.author) + ' /  '+datemaker(cc.date)
+                                                else
+                                                    - var date_result3 = 'by '+ cc.author + ' / '+datemaker(cc.date)
+                                                dd.pcomment-dd #{date_result3}
                                                     if u_id
                                                         button(class="warning" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) Warning
                                     dd.pcomment-dd
