@@ -177,40 +177,32 @@ app.get('/cari/load', function(req, res){
 });
 
 app.get(['/cari','/'], function(req, res){
-    fs.readFile('static.html', function(err, data){
-        if(err){
-            console.log(error);
-        }else{
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.end(data);
+    var sql = 'select * from penobrol order by rand() limit 3';
+    var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
+    //DO NOT SELECT *. Penobrol, tandya have different number of columns. union all will make an error.
+    conn.query(sql, function(err, penobrol, fields){
+        if(err){console.log(err);}
+        else{
+            conn.query(sql2, function(err, tandya, fields){
+                var p = JSON.parse(JSON.stringify(penobrol));
+                var t = JSON.parse(JSON.stringify(tandya));
+                p = p.concat(t);
+                var temp1 = {};
+                var temp2 = {};
+                temp1 = p[1];
+                p[1] = p[4];
+                temp2 = p[2];
+                p[2] = temp1;
+                p[4] = temp2;
+                if(req.session.u_id){
+                    res.render('cari', {randoms:p, u_id:'y', ad: req.deliverAd});
+                }
+                else{
+                    res.render('cari', {randoms:p, ad: req.deliverAd});
+                }
+            });
         }
     });
-//    var sql = 'select * from penobrol order by rand() limit 3';
-//    var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
-//    //DO NOT SELECT *. Penobrol, tandya have different number of columns. union all will make an error.
-//    conn.query(sql, function(err, penobrol, fields){
-//        if(err){console.log(err);}
-//        else{
-//            conn.query(sql2, function(err, tandya, fields){
-//                var p = JSON.parse(JSON.stringify(penobrol));
-//                var t = JSON.parse(JSON.stringify(tandya));
-//                p = p.concat(t);
-//                var temp1 = {};
-//                var temp2 = {};
-//                temp1 = p[1];
-//                p[1] = p[4];
-//                temp2 = p[2];
-//                p[2] = temp1;
-//                p[4] = temp2;
-//                if(req.session.u_id){
-//                    res.render('cari', {randoms:p, u_id:'y', ad: req.deliverAd});
-//                }
-//                else{
-//                    res.render('cari', {randoms:p, ad: req.deliverAd});
-//                }
-//            });
-//        }
-//    });
 });
 /************FOR TANDYA************/
 app.get('/tandya/add', tandya.getAddTandya);
@@ -266,7 +258,7 @@ app.post('/aku/register', function(req, res){
     }); 
 });
 
-app.listen(80, function(){
+app.listen(3000, function(){
   console.log('Connected, 80 port!');
 });
 
