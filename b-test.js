@@ -32,6 +32,31 @@ var conn = mysql.createConnection(
       database : 'beritamus'
     }
 );
+var modPackage = require('./package');
+var fs = require('fs');
+
+exports.version = modPackage.version;
+exports.name = "adSense";
+exports.title = "AdSense";
+exports.sizes = ["728x90","336x280","320x100","300x600","300x250"];
+exports.settings = [{
+	name: "adclient",
+	title: "AD Client",
+	type: "text",
+	placeholder: "ca-pub-8830254782781844",
+	defaults: "ca-pub-8830254782781844",
+}];
+exports.bannerSettings = [{
+	name: "adslot",
+	title: "AdSense slot",
+	type: "text",
+	placeholder: "1234567890",
+	defaults: "1234567890",
+}];
+
+
+
+
 conn.connect();
 exports.conn = conn;
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -194,10 +219,10 @@ app.get(['/cari','/'], function(req, res){
                 p[2] = temp1;
                 p[4] = temp2;
                 if(req.session.u_id){
-                    res.render('cari', {randoms:p, u_id:'y'});
+                    res.render('cari', {randoms:p, u_id:'y', ad: req.deliverAd});
                 }
                 else{
-                    res.render('cari', {randoms:p});
+                    res.render('cari', {randoms:p, ad: req.deliverAd});
                 }
             });
         }
