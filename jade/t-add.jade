@@ -32,9 +32,9 @@ html
             .search-p       
             .ad
         article
-            form(action='/tandya/add' method='post')
+            form(action='/tandya/add' method='post' onsubmit='return checksubmit();')
                 p
-                    input(type='text' name='question' placeholder='title' class="title")
+                    input(type='text' name='question' placeholder='title' class="title" id="title")
                 p
                     label
                         input(type='radio' value='p' name="public" checked)
@@ -43,8 +43,20 @@ html
                         input(type='radio' value='a' name="public")
                         |anonim  
                 p
-                    textarea(name='content' class="content")
+                    textarea(name='content' class="content" id="content")
                 p
                     input(type='text' name='hashtag' placeholder='#cinta' class="hashtag")
                 p
                     input(type='submit' class="submit")
+                script.
+                    function checksubmit(){
+                        if(title.value.length < 5){
+                            alert('judulnya harus lebih dari 5 alphabet');
+                            return false;
+                        }
+                        if(content.value.length < 5){
+                            alert('kontennya harus lebih dari 5 alphabet');
+                            return false;
+                        }
+                        return true;
+                    }

@@ -39,13 +39,13 @@
 .ad {width:100%; height:150px; background-color: @bgcolor1; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
 
 //.main - .title(div), .pcontent(div), .commentForm(form), .pcomment(div)
-.title{width:100%; box-sizing:border-box; margin-bottom: 10px; .section-border(); background-color: @main;}
+.title{width:100%; box-sizing:border-box; .section-border(); background-color: @main;}
 
-.pcontent{width:100%; margin-bottom: @marginbottom-mbl; background-color: white; font-size: 14px; line-height: 20px; text-align: justify; padding:10px; box-sizing: border-box; .section-border();}
+.pcontent{width:100%; margin-bottom: @marginbottom-mbl; background-color: @bgcolor2; font-size: 14px; line-height: 20px; text-align: justify; padding:10px; box-sizing: border-box; .section-border();}
 
 #commentForm{width:100%; margin-bottom: @marginbottom-mbl; .section-border();}
 
-.pcomment{width:100%; background-color:@bgcolor1; margin:0px; padding:0px; margin-bottom: @marginbottom-mbl;}
+.pcomment{width:100%; background-color:@bgcolor2; margin:0px; padding:10px; margin-bottom: @marginbottom-mbl; box-sizing: border-box;}
 
 //.title(div) - .saveWarnButton(div), .pview-dl(dl)
 .pview-dl{width:100%; padding:10px; box-sizing: border-box;}
@@ -59,15 +59,15 @@
 #commentForm p{width:100%;}
 
 //.pcomment(div) - .pcomment-ul(ul)
-.pcomment-ul{padding: 10px; list-style: none;}
+.pcomment-ul{padding: 5px; list-style: none;}
 
 //.saveWarnButton(div) - #save(button), #warn(button)
 #save{.halfButton();}
 #warn{.halfButton();}
 
 //.pview-dl(dl) - .pview-dt(dt), .pview-dd(dd)
-.pview-dt{color:@font-color2; font-size: 18px; text-align: justify;}
-.pview-dd{color:@font-color2; font-size: 14px;}
+.pview-dt{color:@font-color2; font-size: 16px; text-align: justify; margin-bottom: 10px;}
+.pview-dd{color:@font-color2; font-size: 12px; margin-bottom: 5px;}
 
 //#plikes(div)
 //#plikebuttons(div) - #likeButton * 2
@@ -78,8 +78,19 @@
 .comment{.button();}
 
 //.pcomment-ul(ul) - .pcomment-li(li)
-.pcomment-li{width:100%; background-color:@bgcolor1; .li-border();}
+.pcomment-li{width:100%; background-color:@mainlight2; .li-border();}
 
+//.pcomment-li - .pcomment-dl(dl)
+.pcomment-dl{padding:5px;}
+
+//.pcomment-dl(dl) - .pcomment-dt(dt), .pcomment-dd(dd), .pccomment-dl(dl)
+.pcomment-dt{font-size: 14px; font-weight: bold;}
+.pcomment-dd{font-size: 12px; font-style: italic;}
+.pccomment-dl{padding:0 0 5px 20px;}
+
+//.pccomment-dl - .pccomment-dt(dt), .pccomment-dd(dd)
+.pccomment-dt{font-size: 13px; font-weight: bold;}
+.pccomment-dd{font-size: 10px; font-style: italic;}
 
 /*for bigger windows*/
 @media (min-width:768px){

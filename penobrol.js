@@ -23,70 +23,75 @@ exports.getPenobrol = function(req, res){
 };
 exports.getViewPenobrol = function(req, res){
     var id = req.params.penobrol_no;
-    var sql1 = 'SELECT MAX(id) AS max from penobrol';
-    var sql3 = 'UPDATE penobrol SET p_view = p_view + 1 WHERE id = ?';
-    var sql5 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
-    var sql = 'SELECT * FROM penobrol WHERE id = ?';
-    var sql2 = 'SELECT * FROM p_com WHERE p_id = ? order by score desc';
-    var sql6 = 'SELECT * FROM hashtag where p_id = ?';
-    var sql4 = 'SELECT * FROM p_like WHERE u_id = ? AND p_id = ?';
-    var sql7 = 'SELECT * FROM pc_com WHERE p_id = ?';
-    
-    conn.conn.query(sql1, function(err, maxValue, fields){
-        if(maxValue[0].max < id){
-            res.send('/penobrol/belumadakonten'); //change to redirect and make a file
-        }
-        else{
-            conn.conn.query(sql3, id, function(err, views, fields){
-                if(err){console.log(err);}
-                else{
-                    conn.conn.query(sql5, id, function(err, score, fields){
-                        if(err){console.log(err);}
-                    });
-                }
-            });
-            conn.conn.query(sql, id, function(err, content, fields){
-            if(err){console.log(err);}
+    var checkId = /^[0-9]+$/;
+    if(checkId.test(id)){
+        var sql1 = 'SELECT MAX(id) AS max from penobrol';
+        var sql3 = 'UPDATE penobrol SET p_view = p_view + 1 WHERE id = ?';
+        var sql5 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
+        var sql = 'SELECT * FROM penobrol WHERE id = ?';
+        var sql2 = 'SELECT * FROM p_com WHERE p_id = ? order by score desc';
+        var sql6 = 'SELECT * FROM hashtag where p_id = ?';
+        var sql4 = 'SELECT * FROM p_like WHERE u_id = ? AND p_id = ?';
+        var sql7 = 'SELECT * FROM pc_com WHERE p_id = ?';
+        conn.conn.query(sql1, function(err, maxValue, fields){
+            if(maxValue[0].max < id){
+                res.redirect('/penobrol/'); //change to redirect and make a file
+            }
             else{
-                conn.conn.query(sql2, id, function(err, comments, fields){
-                if(err){console.log(err);}
-                else{
-                    
-                    conn.conn.query(sql6, id, function(err, hashtag, fields){
+                conn.conn.query(sql3, id, function(err, views, fields){
                     if(err){console.log(err);}
                     else{
+                        conn.conn.query(sql5, id, function(err, score, fields){
+                            if(err){console.log(err);}
+                        });
+                    }
+                });
+                conn.conn.query(sql, id, function(err, content, fields){
+                if(err){console.log(err);}
+                else{
+                    conn.conn.query(sql2, id, function(err, comments, fields){
+                    if(err){console.log(err);}
+                    else{
+
+                        conn.conn.query(sql6, id, function(err, hashtag, fields){
                         if(err){console.log(err);}
                         else{
-                            conn.conn.query(sql7, id, function(err, ccomments, fields){
-                                delete hashtag[0].id;
-                                delete hashtag[0].u_id;
-                                delete hashtag[0].p_id;
-                                delete hashtag[0].t_id;
-                                if(req.session.u_id){
-                                    conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
-                                        var statusCheck = 'liked';
-                                        if(likeStatus === null){
-                                            statusCheck = 'yes';
-                                        }
-                                        else{
-                                            statusCheck = 'no';
-                                        }
-                                        res.render('p-view', {topic:content[0], statusCheck:statusCheck, comments:comments, u_id:req.session.u_id, hashtag:hashtag[0], ccomments:ccomments});
-                                    });
-                                }
-                                else{
-                                    res.render('p-view', {topic:content[0], comments:comments, hashtag:hashtag[0], ccomments:ccomments});
-                                }
-                            });
+                            if(err){console.log(err);}
+                            else{
+                                conn.conn.query(sql7, id, function(err, ccomments, fields){
+                                    delete hashtag[0].id;
+                                    delete hashtag[0].u_id;
+                                    delete hashtag[0].p_id;
+                                    delete hashtag[0].t_id;
+                                    if(req.session.u_id){
+                                        conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
+                                            var statusCheck = 'liked';
+                                            if(likeStatus === null){
+                                                statusCheck = 'yes';
+                                            }
+                                            else{
+                                                statusCheck = 'no';
+                                            }
+                                            res.render('p-view', {topic:content[0], statusCheck:statusCheck, comments:comments, u_id:req.session.u_id, hashtag:hashtag[0], ccomments:ccomments});
+                                        });
+                                    }
+                                    else{
+                                        res.render('p-view', {topic:content[0], comments:comments, hashtag:hashtag[0], ccomments:ccomments});
+                                    }
+                                });
+                            }
                         }
+                        });
                     }
                     });
                 }
                 });
             }
-            });
-        }
-    });
+        });
+    }
+    else{
+        res.redirect('/penobrol/');
+    }
 };
 exports.getAddPenobrol = function(req, res){
     if(req.session.u_id){
@@ -372,6 +377,7 @@ exports.postEditPenobrol = function(req, res){
     var title = req.body.title;
     var content = req.body.content;
     var rawhashtags = req.body.hashtag;
+    var public = req.body.public;
     var hashtagCount = 0;
     var p_id = req.params.penobrol_no;
     while(rawhashtags.indexOf(' ')>=0){

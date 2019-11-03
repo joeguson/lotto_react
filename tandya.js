@@ -29,69 +29,72 @@ exports.getTandya = function(req, res){
 };
 exports.getViewTandya =  function(req, res){
     var id = req.params.tandya_no;
-    var sql1 = 'SELECT MAX(id) AS max from tandya';
-    var sql3 = 'UPDATE tandya SET t_view = t_view + 1 WHERE id = ?';
-    var sql7 = 'UPDATE tandya SET score = t_view*.2 + t_like*.5 + answer*0.3 where id = ?';
-    
-    var sql = 'SELECT * FROM tandya WHERE id = ?';
-    var sql2 = 'SELECT * FROM t_ans WHERE t_id = ? order by score desc';
-    var sql6 = 'SELECT * FROM hashtag where t_id = ?';
-    var sql4 = 'Select * from t_like where u_id = ? AND t_id = ?';
-    var sql5 = 'SELECT * FROM ta_com where t_id = ?';
-    
-        
-    conn.conn.query(sql1, function(err, maxValue, fields){
-        if(maxValue[0].max < id){
-            res.send('/tandya/belumadakonten'); //change to redirect and make a file
-        }
-        else{
-            conn.conn.query(sql3, [id], function(err, views, fields){
-                if(err){console.log(err);}
-                else{
-                    conn.conn.query(sql7, id, function(err, score, fields){
-                        if(err){console.log(err);}
-                    });
-                }
-            });
-            conn.conn.query(sql, id, function(err, content, fields){
-                if(err){console.log(err);}
-                else{
-                    conn.conn.query(sql2, id, function(err, answers, fields){
-                        if(err){console.log(err);}
-                        else{
-                            conn.conn.query(sql6, id, function(err, hashtag, fields){
-                                    if(err){console.log(err);}
-                                    else{
-                                        conn.conn.query(sql5, id, function(err, acomments, fields){
-                                            delete hashtag[0].id;
-                                            delete hashtag[0].u_id;
-                                            delete hashtag[0].p_id;
-                                            delete hashtag[0].t_id;
-                                            if(req.session.u_id){
-                                                conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
-                                                    var statusCheck = 'liked';
-                                                    if(likeStatus === null){
-                                                        statusCheck = 'yes';
-                                                    }
-                                                    else{
-                                                        statusCheck = 'no';
-                                                    }
-                                                    res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:req.session.u_id, hashtag:hashtag[0], acomments:acomments});
-                                                });
-                                            }
-                                            else{
-                                                res.render('t-view', {topic:content[0], answers:answers, hashtag:hashtag[0], acomments:acomments});
-                                            }    
-                                        });
-                                        
-                                    }
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
+    var checkId = /^[0-9]+$/;
+    if(checkId.test(id)){
+        var sql1 = 'SELECT MAX(id) AS max from tandya';
+        var sql3 = 'UPDATE tandya SET t_view = t_view + 1 WHERE id = ?';
+        var sql7 = 'UPDATE tandya SET score = t_view*.2 + t_like*.5 + answer*0.3 where id = ?';
+        var sql = 'SELECT * FROM tandya WHERE id = ?';
+        var sql2 = 'SELECT * FROM t_ans WHERE t_id = ? order by score desc';
+        var sql6 = 'SELECT * FROM hashtag where t_id = ?';
+        var sql4 = 'Select * from t_like where u_id = ? AND t_id = ?';
+        var sql5 = 'SELECT * FROM ta_com where t_id = ?';
+        conn.conn.query(sql1, function(err, maxValue, fields){
+            if(maxValue[0].max < id){
+                res.redirect('/tandya'); //change to redirect and make a file
+            }
+            else{
+                conn.conn.query(sql3, [id], function(err, views, fields){
+                    if(err){console.log(err);}
+                    else{
+                        conn.conn.query(sql7, id, function(err, score, fields){
+                            if(err){console.log(err);}
+                        });
+                    }
+                });
+                conn.conn.query(sql, id, function(err, content, fields){
+                    if(err){console.log(err);}
+                    else{
+                        conn.conn.query(sql2, id, function(err, answers, fields){
+                            if(err){console.log(err);}
+                            else{
+                                conn.conn.query(sql6, id, function(err, hashtag, fields){
+                                        if(err){console.log(err);}
+                                        else{
+                                            conn.conn.query(sql5, id, function(err, acomments, fields){
+                                                delete hashtag[0].id;
+                                                delete hashtag[0].u_id;
+                                                delete hashtag[0].p_id;
+                                                delete hashtag[0].t_id;
+                                                if(req.session.u_id){
+                                                    conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
+                                                        var statusCheck = 'liked';
+                                                        if(likeStatus === null){
+                                                            statusCheck = 'yes';
+                                                        }
+                                                        else{
+                                                            statusCheck = 'no';
+                                                        }
+                                                        res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:req.session.u_id, hashtag:hashtag[0], acomments:acomments});
+                                                    });
+                                                }
+                                                else{
+                                                    res.render('t-view', {topic:content[0], answers:answers, hashtag:hashtag[0], acomments:acomments});
+                                                }    
+                                            });
+
+                                        }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+    else{
+        res.redirect('/tandya');
+    }
 };
 
 exports.getAddTandya = function(req, res){
@@ -352,6 +355,7 @@ exports.postEditTandya = function(req, res){
     var question = req.body.question;
     var content = req.body.content;
     var rawhashtags = req.body.hashtag;
+    var public = req.body.public;
     var hashtagCount = 0;
     var t_id = req.params.tandya_no;
     while(rawhashtags.indexOf(' ')>=0){

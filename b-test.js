@@ -203,7 +203,6 @@ app.get(['/cari','/'], function(req, res){
         }
         });
     });
-
 /************FOR TANDYA************/
 app.get('/tandya/add', tandya.getAddTandya);
 app.post('/tandya/add', tandya.postAddTandya);
@@ -262,18 +261,8 @@ app.listen(3000, function(){
   console.log('Connected, 80 port!');
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.all('*', function(req, res){
+   res.redirect('cari'); 
+});
 
 

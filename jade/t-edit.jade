@@ -47,12 +47,40 @@ html
             .search-p       
             .ad
         article
-            form(action='/tedit/'+edit_content.id method='post')
+            form(action='/tedit/'+edit_content.id method='post' onsubmit='return checksubmit();')
                 p
-                    input(type='text' name='question' placeholder='title' class="title" value=edit_content.question)
+                    input(type='text' name='question' placeholder='title' class="title" id="title" value=edit_content.question)
                 p
-                    textarea(name='content' class="content")= edit_content.content
+                    if edit_content.public == p
+                        label
+                            input(type='radio' value='p' name="public" checked)
+                            |public
+                        label
+                            input(type='radio' value='a' name="public")
+                            |anonim
+                    else
+                        label
+                            input(type='radio' value='p' name="public" )
+                            |public
+                        label
+                            input(type='radio' value='a' name="public" checked)
+                            |anonim
+                
+                p
+                    textarea(name='content' class="content" id="content")= edit_content.content
                 p
                     input(type='text' name='hashtag' class="hashtag" value="#{hashtag_final}")
                 p
                     input(type='submit' class="submit")
+                script.
+                    function checksubmit(){
+                        if(title.value.length < 5){
+                            alert('judulnya harus lebih dari 5 alphabet');
+                            return false;
+                        }
+                        if(content.value.length < 5){
+                            alert('kontennya harus lebih dari 5 alphabet');
+                            return false;
+                        }
+                        return true;
+                    }

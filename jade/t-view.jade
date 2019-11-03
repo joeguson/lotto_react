@@ -61,28 +61,28 @@ html
             .title
                 dl.tview-dl
                     dt.tview-dt= topic.question
+                    dd.tview-dd= topic.content
                     if topic.public == 'a'
                         - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
                     else
                         - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
-                    dd.pview-dd #{date_result}
-                    dd.tview-dd= topic.answer        
-                    if hashtag
-                        -for(var n=0; n<topic.hashtagcount; n++)
-                            a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+                    dd.tview-dd #{date_result}
+                    dd.tview-dd
+                        if hashtag
+                            -for(var n=0; n<topic.hashtagcount; n++)
+                                a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
                     if u_id
                         .saveWarnButton
                             if u_id == topic.author
                                 a(href='/tedit/'+topic.id) Edit
                             button(class="warning" type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') Warn
-            .tcontent= topic.content
-                div(id="tlikes")= topic.t_like
-                if u_id
-                    div(id="tlikebuttons")
-                        if statusCheck == 'yes'
-                            button(id="likeButton" class="tlikes" type="submit" value="Batal Suka") Batal Suka
-                        else
-                            button(id="likeButton" class="tlikes" type="submit" value="Suka") Suka
+            div(id="tlikes")= topic.t_like
+            if u_id
+                div(id="tlikebuttons")
+                    if statusCheck == 'yes'
+                        button(id="likeButton" class="tlikes" type="submit" value="Batal Suka") Batal Suka
+                    else
+                        button(id="likeButton" class="tlikes" type="submit" value="Suka") Suka
             if u_id
                 form(action='tandya/'+topic.id method='post' id='answerForm')
                       p

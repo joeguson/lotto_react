@@ -53,7 +53,6 @@
 .title {
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 10px;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
   background-color: #4167e0;
@@ -61,7 +60,7 @@
 .pcontent {
   width: 100%;
   margin-bottom: 20px;
-  background-color: white;
+  background-color: #ffffff;
   font-size: 14px;
   line-height: 20px;
   text-align: justify;
@@ -78,10 +77,11 @@
 }
 .pcomment {
   width: 100%;
-  background-color: #ebedf2;
+  background-color: #ffffff;
   margin: 0px;
-  padding: 0px;
+  padding: 10px;
   margin-bottom: 20px;
+  box-sizing: border-box;
 }
 .pview-dl {
   width: 100%;
@@ -115,7 +115,7 @@
   width: 100%;
 }
 .pcomment-ul {
-  padding: 10px;
+  padding: 5px;
   list-style: none;
 }
 #save {
@@ -146,12 +146,14 @@
 }
 .pview-dt {
   color: white;
-  font-size: 18px;
+  font-size: 16px;
   text-align: justify;
+  margin-bottom: 10px;
 }
 .pview-dd {
   color: white;
-  font-size: 14px;
+  font-size: 12px;
+  margin-bottom: 5px;
 }
 #plikebuttons button {
   font-size: 24px;
@@ -176,10 +178,32 @@
 }
 .pcomment-li {
   width: 100%;
-  background-color: #ebedf2;
+  background-color: #fffff0;
   border-top: 2px solid #a0b3ef;
   border-bottom: 2px solid #a0b3ef;
   margin-bottom: 20px;
+}
+.pcomment-dl {
+  padding: 5px;
+}
+.pcomment-dt {
+  font-size: 14px;
+  font-weight: bold;
+}
+.pcomment-dd {
+  font-size: 12px;
+  font-style: italic;
+}
+.pccomment-dl {
+  padding: 0 0 5px 20px;
+}
+.pccomment-dt {
+  font-size: 13px;
+  font-weight: bold;
+}
+.pccomment-dd {
+  font-size: 10px;
+  font-style: italic;
 }
 /*for bigger windows*/
 @media (min-width: 768px) {

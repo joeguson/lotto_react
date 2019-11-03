@@ -66,11 +66,11 @@ html
                     else
                         - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + 'kommentar : ' + topic.com
                     dt.pview-dt= topic.title               
-                    dd.pview-dd #{date_result}             
-                    dd.pview-dd= topic.com
-                    if hashtag
-                        -for(var n=0; n<topic.hashtagcount; n++)
-                            a= '#' + hashtag[Object.keys(hashtag)[n]] + ' ' 
+                    dd.pview-dd #{date_result}
+                    dd.pview-dd
+                        if hashtag
+                            -for(var n=0; n<topic.hashtagcount; n++)
+                                a= '#' + hashtag[Object.keys(hashtag)[n]] + ' ' 
                     if u_id
                         .saveWarnButton
                             if u_id == topic.author
@@ -95,12 +95,13 @@ html
                     ul.pcomment-ul
                         each c in comments
                             li.pcomment-li
-                                dl.pcomment-dl(id='pCcomment'+c.id)
-                                    dt.pcomment-dt= c.content
+                                dl.pcomment-dl(id='pComment'+c.id)
                                     if topic.public == 'a'
-                                        - var date_result2 = 'by '+ anonimmaker(c.author) + ' /  '+datemaker(c.date)+' / ' + 'kommentar : ' + c.com
+                                        - var commentStart = '@'+ anonimmaker(topic.author)+" \""+c.content+"\""
                                     else
-                                        - var date_result2 = 'by '+ c.author + ' /  '+datemaker(c.date)+' / ' + 'kommentar : ' + c.com
+                                        - var commentStart = '@'+ topic.author+" \""+c.content+"\""
+                                    dt.pcomment-dt #{commentStart}
+                                    - var date_result2 = 'by : '+c.author+' / '+datemaker(c.date)+' / kommentar : ' + c.com
                                     dd.pcomment-dd #{date_result2}
                                     dd.pcomment-dd(id="pCommentlikes"+c.id)=c.pc_like
                                     dd.pcomment-dd
@@ -116,13 +117,14 @@ html
                                             a(href='/pcedit/'+topic.id+'/'+c.id) Edit
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
-                                            dl.pcomment-dl2
-                                                dd.pcomment-dt= cc.content
+                                            dl.pccomment-dl
                                                 if topic.public == 'a'
-                                                    - var date_result3 = 'by '+ anonimmaker(cc.author) + ' /  '+datemaker(cc.date)
+                                                    - var ccommentStart = '@'+ anonimmaker(c.author)+" \""+cc.content+"\""
                                                 else
-                                                    - var date_result3 = 'by '+ cc.author + ' / '+datemaker(cc.date)
-                                                dd.pcomment-dd #{date_result3}
+                                                    - var ccommentStart = '@'+ c.author+" \""+cc.content+"\""
+                                                dt.pccomment-dt #{ccommentStart}
+                                                    - var date_result3 = 'by : ' + cc.author + ' / '+datemaker(cc.date)
+                                                dd.pccomment-dd #{date_result3}
                                                     if u_id
                                                         button(class="warning" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) Warning
                                     dd.pcomment-dd

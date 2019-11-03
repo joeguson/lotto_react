@@ -40,14 +40,21 @@ html
                         input(type='radio' value='a' name="public")
                         |anonim  
                 p
-                    textarea(name='content' class="content")
+                    textarea(name='content' class="content" id="content")
                 p
                     input(type='text' name='hashtag' placeholder='#cinta' class="hashtag")
                 p
                     input(type='submit' class="submit")
                 script.
                     function checksubmit(){
-                        console.log(title.value);
-                        return false;
+                        if(title.value.length < 5){
+                            alert('judulnya harus lebih dari 5 alphabet');
+                            return false;
+                        }
+                        if(content.value.length < 5){
+                            alert('kontennya harus lebih dari 5 alphabet');
+                            return false;
+                        }
+                        return true;
                     }
             
