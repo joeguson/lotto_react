@@ -11,6 +11,7 @@ var mysql = require('mysql');
 var path = require('path')
 var favicon = require('serve-favicon');
 var schedule = require('node-schedule');
+var fs = require('fs');
 exports.sch = schedule;
 app.use(favicon(path.join(__dirname,'css', 'logo2.png')));
 app.use(session({
@@ -32,38 +33,13 @@ var conn = mysql.createConnection(
       database : 'beritamus'
     }
 );
-var modPackage = require('./package');
-var fs = require('fs');
-
-exports.version = modPackage.version;
-exports.name = "adSense";
-exports.title = "AdSense";
-exports.sizes = ["728x90","336x280","320x100","300x600","300x250"];
-exports.settings = [{
-	name: "adclient",
-	title: "AD Client",
-	type: "text",
-	placeholder: "ca-pub-8830254782781844",
-	defaults: "ca-pub-8830254782781844",
-}];
-exports.bannerSettings = [{
-	name: "adslot",
-	title: "AdSense slot",
-	type: "text",
-	placeholder: "1234567890",
-	defaults: "1234567890",
-}];
-
-
-
-
 conn.connect();
 exports.conn = conn;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.locals.pretty = true;
 app.use(express.static('css'));
-app.use("/jade", express.static('/css'));
+app.use("/jade", express.static('/'));
 app.set('view engine', 'jade');
 app.set('views', './jade');
 
@@ -201,33 +177,41 @@ app.get('/cari/load', function(req, res){
 });
 
 app.get(['/cari','/'], function(req, res){
-    var sql = 'select * from penobrol order by rand() limit 3';
-    var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
-    //DO NOT SELECT *. Penobrol, tandya have different number of columns. union all will make an error.
-    conn.query(sql, function(err, penobrol, fields){
-        if(err){console.log(err);}
-        else{
-            conn.query(sql2, function(err, tandya, fields){
-                var p = JSON.parse(JSON.stringify(penobrol));
-                var t = JSON.parse(JSON.stringify(tandya));
-                p = p.concat(t);
-                var temp1 = {};
-                var temp2 = {};
-                temp1 = p[1];
-                p[1] = p[4];
-                temp2 = p[2];
-                p[2] = temp1;
-                p[4] = temp2;
-                if(req.session.u_id){
-                    res.render('cari', {randoms:p, u_id:'y', ad: req.deliverAd});
-                }
-                else{
-                    res.render('cari', {randoms:p, ad: req.deliverAd});
-                }
-            });
+    fs.readFile('static.html', function(err, data){
+        if(err){
+            console.log(error);
+        }else{
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end(data);
         }
-        });
     });
+//    var sql = 'select * from penobrol order by rand() limit 3';
+//    var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
+//    //DO NOT SELECT *. Penobrol, tandya have different number of columns. union all will make an error.
+//    conn.query(sql, function(err, penobrol, fields){
+//        if(err){console.log(err);}
+//        else{
+//            conn.query(sql2, function(err, tandya, fields){
+//                var p = JSON.parse(JSON.stringify(penobrol));
+//                var t = JSON.parse(JSON.stringify(tandya));
+//                p = p.concat(t);
+//                var temp1 = {};
+//                var temp2 = {};
+//                temp1 = p[1];
+//                p[1] = p[4];
+//                temp2 = p[2];
+//                p[2] = temp1;
+//                p[4] = temp2;
+//                if(req.session.u_id){
+//                    res.render('cari', {randoms:p, u_id:'y', ad: req.deliverAd});
+//                }
+//                else{
+//                    res.render('cari', {randoms:p, ad: req.deliverAd});
+//                }
+//            });
+//        }
+//    });
+});
 /************FOR TANDYA************/
 app.get('/tandya/add', tandya.getAddTandya);
 app.post('/tandya/add', tandya.postAddTandya);
