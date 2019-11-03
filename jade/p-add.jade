@@ -29,9 +29,9 @@ html
                     a(href='/tandya') Tandya
                 br.clear
         article
-            form(action='/penobrol/add' method='post')
+            form(action='/penobrol/add' method='post' onsubmit='return checksubmit();')
                 p 
-                    input(type='text' name='title' placeholder='title' class="title")
+                    input(type='text' name='title' placeholder='title' class="title" id="title")
                 p
                     label
                         input(type='radio' value='p' name="public" checked)
@@ -45,3 +45,9 @@ html
                     input(type='text' name='hashtag' placeholder='#cinta' class="hashtag")
                 p
                     input(type='submit' class="submit")
+                script.
+                    function checksubmit(){
+                        console.log(title.value);
+                        return false;
+                    }
+            
