@@ -17,7 +17,6 @@ function contentSendAjax(url, data){
     xhr.send(original);
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
-        console.log(xhr.responseText);
         var result = JSON.parse(xhr.responseText);
         document.getElementById("tlikes").innerHTML = result.t_like;
         likeButton.innerHTML = result.button;
@@ -35,7 +34,6 @@ function answerSendAjax(answer){
     xhr.send(original);
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
-        console.log(xhr.responseText);
         var result = JSON.parse(xhr.responseText);
         document.getElementById("tAnswerlikes"+id).innerHTML = result.ta_like;
         answer.innerHTML = result.button;
@@ -55,7 +53,6 @@ function acommentSendAjax(acomment){
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
         var result = JSON.parse(xhr.responseText);
-        console.log(result);
         var tAcomment = document.getElementById("tAnswer"+answerId);
         var dds1 = document.createElement('dd');
         var dds2 = document.createElement('dd');
@@ -74,7 +71,6 @@ function warningAjax(warning){
         return confirm("really?");
     };
     var confirmedValue = confirmWarning();
-    console.log(confirmedValue);
     var original = {'warnedItem' : warningValue[0], "warnedT" : warningValue[1], "warnedA" : warningValue[2], "warnedC" : warningValue[3]};
     original = JSON.stringify(original);
     if(confirmedValue == true){

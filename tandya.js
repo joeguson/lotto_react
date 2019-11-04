@@ -39,6 +39,7 @@ exports.getViewTandya =  function(req, res){
         var sql6 = 'SELECT * FROM hashtag where t_id = ?';
         var sql4 = 'Select * from t_like where u_id = ? AND t_id = ?';
         var sql5 = 'SELECT * FROM ta_com where t_id = ?';
+        var sql8 = 'SELECT * FROM ta_like where t_id = ?';
         conn.conn.query(sql1, function(err, maxValue, fields){
             if(maxValue[0].max < id){
                 res.redirect('/tandya'); //change to redirect and make a file

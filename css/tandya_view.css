@@ -170,6 +170,13 @@
 .acomment-dl:nth-child(odd) {
   background-color: #eaeffd;
 }
+.tAnswerlikes {
+  font-size: 14px;
+  color: red;
+}
+#answerButton {
+  float: right;
+}
 .acomment-dt {
   font-size: 13px;
   font-weight: bold;
@@ -177,6 +184,9 @@
 .acomment-dd {
   font-size: 10px;
   font-style: italic;
+}
+.tanswer-dt a {
+  float: right;
 }
 #tlikebuttons button {
   font-size: 24px;
@@ -208,6 +218,13 @@
   font-size: 20px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+}
+.dummy {
+  width: 5px;
+  float: right;
+}
+.warning {
+  float: right;
 }
 /*for bigger windows*/
 @media (min-width: 768px) {

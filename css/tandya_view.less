@@ -85,11 +85,15 @@
 .tanswer-dd{font-size: 12px; font-style: italic;border-bottom: 1px solid lightgray; display: inline; background-color: white;}
 .acomment-dl{padding:0 0 5px 20px; margin:5px;}
 .acomment-dl:nth-child(odd){background-color: @mainlightest;}
+.tAnswerlikes{font-size: 14px; color:red;}
+#answerButton{float:right;}
 
 //.acomment-dl - .acomment-dt(dt), .acomment-dd(dd)
 .acomment-dt{font-size: 13px; font-weight: bold;}
 .acomment-dd{font-size: 10px; font-style: italic;}
 
+//.tanswer-dt(dt) - a
+.tanswer-dt a{float:right;}
 
 //#tlikes(div)
 //#tlikebuttons(div) - #likeButton * 2
@@ -98,7 +102,9 @@
 //p * 2 - #comment(textarea), .comment(input)
 #answer{width:100%; margin:0 auto; border: 1px solid @main; .border-radius(); height:50px;}
 .answer{.button(); width: 100%; height:45px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 20px; .border-radius();}
+.dummy{width:5px; float: right;}
 
+.warning{float:right;}
 
 /*for bigger windows*/
 @media (min-width:768px){

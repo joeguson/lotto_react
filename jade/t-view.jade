@@ -20,18 +20,17 @@ html
     -var tempdate = new Date(date);
     -var nowdate = new Date();
     -var year = tempdate.getFullYear();
-    -var year = tempdate.getFullYear();
     -var month = tempdate.getMonth();
     -var day = tempdate.getDate();
     -var diff = nowdate - tempdate;
     -if(diff > 864000000){return month+'-'+day+'-'+year;}
     -else{
-    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -if(diff > 86400000){return parseInt(diff/86400000)+' hari yang lalu';}
     -else{
-    -if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+    -if(diff > 3600000){return parseInt(diff/3600000)+' jam yang lalu';}
     -else{
-    -if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
-    -else{return parseInt(diff/1000)+' seconds ago';}
+    -if(diff > 60000){return parseInt(diff/60000)+' menit yang lalu';}
+    -else{return parseInt(diff/1000)+' detik yang lalu';}
     -}
     -}
     -}
@@ -98,24 +97,27 @@ html
                         each a in answers
                             li.tanswer-li
                                 dl.tanswer-dl(id='tAnswer'+a.id)
-                                    dt.tanswer-dt= a.answer
                                     if topic.public == 'a'
-                                        - var date_result2 = 'by '+ anonimmaker(a.author) + ' /  '+datemaker(a.date)+' / ' + 'kommentar : ' + a.com
+                                        - var answerStart = '@'+ anonimmaker(topic.author)+" \""+a.answer+"\""
                                     else
-                                        - var date_result2 = 'by '+ a.author + ' /  '+datemaker(a.date)+' / ' + 'kommentar : ' + a.com
+                                        - var answerStart = '@'+ topic.author+" \""+a.answer+"\""
+                                    dt.tanswer-dt #{answerStart}
+                                        if u_id == a.author
+                                            a(href='/taedit/'+topic.id+'/'+a.id) Edit
+                                    if topic.public == 'a'
+                                        - var date_result2 = 'by '+ anonimmaker(a.author) + ' /  '+datemaker(a.date)+' / kommentar : ' + a.com+ ' / suka : '
+                                    else
+                                        - var date_result2 = 'by '+ a.author + ' / '+datemaker(a.date)+' / kommentar : ' + a.com + ' / suka : '
                                     dd.tanswer-dd #{date_result2}
-                                    dd.tanswer-dd(id="tAnswerlikes"+a.id)= a.ta_like
-                                    dd.tanswer-dd
+                                    dd.tanswer-dd(id="tAnswerlikes"+a.id class="tAnswerlikes")= a.ta_like
+                                    dd.tanswer-dd(id="answerButton")
                                         if u_id
                                             if statusCheck == 'yes'
                                                 button(class="tlikes" type="submit" value=a.id onclick="answerSendAjax(this);") Batal Suka
                                             else
                                                 button(class="tlikes" type="submit" value=a.id onclick="answerSendAjax(this);") Suka
-                                    dd.tanswer-dd
-                                        if u_id
-                                            button(class="warning" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') Warn
-                                            if u_id == a.author
-                                                a(href='/taedit/'+topic.id+'/'+a.id) Edit
+                                            span(class="dummy")
+                                            button(class="warning" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') Warn   
                                     each ac in acomments    
                                         if ac.ta_id == a.id
                                             dl.acomment-dl
