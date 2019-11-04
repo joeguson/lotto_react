@@ -119,13 +119,13 @@ html
                                     each ac in acomments    
                                         if ac.ta_id == a.id
                                             dl.acomment-dl
-                                                - var acommentStart = '- "'+ac.content+"\""
+                                                - var acommentStart = '- "'+ac.content+'"'
                                                 dt.acomment-dt #{acommentStart}
                                                 if topic.public == 'a'
                                                     - var date_result3 = 'by : ' + anonimmaker(ac.author) + ' / '+datemaker(ac.date)
                                                 else
                                                     - var date_result3 = 'by : ' + ac.author + ' / '+datemaker(ac.date)
-                                                    dd.acomment-dd #{date_result3}
+                                                dd.acomment-dd #{date_result3}
                                                     if u_id
                                                         button(class="warning" type="submit" value='tac/'+topic.id+'/'+a.id+'/'+ac.id onclick="warningAjax(this);" id="warn/"+'tac/'+topic.id+'/'+a.id+'/'+ac.id) Warn
                                     dd.tanswer-dd

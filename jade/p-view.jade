@@ -118,13 +118,13 @@ html
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pccomment-dl
-                                                - var ccommentStart = '- "'+cc.content+"\""
+                                                - var ccommentStart = '- "'+cc.content+'"'
                                                 dt.pccomment-dt #{ccommentStart}
                                                 if topic.public == 'a'
                                                     - var date_result3 = 'by : ' + anonimmaker(cc.author) + ' / '+datemaker(cc.date)
                                                 else
                                                     - var date_result3 = 'by : ' + cc.author + ' / '+datemaker(cc.date)
-                                                    dd.pccomment-dd #{date_result3}
+                                                dd.pccomment-dd #{date_result3}
                                                     if u_id
                                                         button(class="warning" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) Warning
                                     dd.pcomment-dd
