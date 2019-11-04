@@ -60,23 +60,26 @@ html
         section.main(id='main')
             .title
                 dl.tview-dl
-                    dt.tview-dt= topic.question
-                    dd.tview-dd= topic.content
-                    if topic.public == 'a'
-                        - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
-                    else
-                        - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
-                    dd.tview-dd #{date_result}
-                    dd.tview-dd
-                        if hashtag
-                            -for(var n=0; n<topic.hashtagcount; n++)
-                                a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+                    dt.tview-dt
+                        span Q : 
+                        span= topic.question
+                    .tview-div(id="content")= topic.content
                     if u_id
                         .saveWarnButton
                             if u_id == topic.author
                                 a(href='/tedit/'+topic.id) Edit
                             button(class="warning" type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') Warn
-            div(id="tlikes")= topic.t_like
+                    div(id="tlikes")= topic.t_like
+                    .tview-div
+                        if topic.public == 'a'
+                            - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
+                        else
+                            - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
+                        dd.tview-dd
+                            if hashtag
+                                -for(var n=0; n<topic.hashtagcount; n++)
+                                    a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+                        dd.tview-dd #{date_result}
             if u_id
                 div(id="tlikebuttons")
                     if statusCheck == 'yes'
@@ -115,13 +118,14 @@ html
                                                 a(href='/taedit/'+topic.id+'/'+a.id) Edit
                                     each ac in acomments    
                                         if ac.ta_id == a.id
-                                            dl.tanswer-dl2
-                                                dt.acomment-dt= ac.content
+                                            dl.acomment-dl
+                                                - var acommentStart = '- "'+ac.content+"\""
+                                                dt.acomment-dt #{acommentStart}
                                                 if topic.public == 'a'
-                                                    - var date_result3 = 'by '+ anonimmaker(ac.author) + ' /  '+datemaker(ac.date)
+                                                    - var date_result3 = 'by : ' + anonimmaker(ac.author) + ' / '+datemaker(ac.date)
                                                 else
-                                                    - var date_result3 = 'by '+ ac.author + ' / '+datemaker(ac.date)
-                                                dd.acomment-dd #{date_result3}
+                                                    - var date_result3 = 'by : ' + ac.author + ' / '+datemaker(ac.date)
+                                                    dd.acomment-dd #{date_result3}
                                                     if u_id
                                                         button(class="warning" type="submit" value='tac/'+topic.id+'/'+a.id+'/'+ac.id onclick="warningAjax(this);" id="warn/"+'tac/'+topic.id+'/'+a.id+'/'+ac.id) Warn
                                     dd.tanswer-dd

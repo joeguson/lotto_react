@@ -1,41 +1,56 @@
 @bgcolor1: #ebedf2; //for all body(grey)
 @bgcolor2: #ffffff; // for section
 
-@main: #4167e0; // blue main color
-@maindark: #203370; // blue main color
-@mainlight: #a0b3ef; // blue main color
-@main2: #e0ba41; // blue main color
-@mainlight2: #fffff0; // blue main color
+@main: #2e60f4; // blue main color
+@maindark: #2043aa; // blue main color
+@maindarker: #122661; // blue main color
+@maindarkest: #040918; // blue main color
+@mainlight: #6c8ff7; // blue main color
+@mainlighter: #abbffa; // blue main color
+@mainlightest: #eaeffd; // blue main color
 
-@button-color1: #a0b3ef;
-@button-color2: #efdca0;
+@main2: #faff93; // blue main color
+@mainlighter2: #fbffb3; // blue main color
+@mainlightest2: #fdffd3; // blue main color
+
+@button-color: #a0b3ef;
 @font-color1: black;
 @font-color2: white;
 @font-family: 'Lato', sans-serif;
 
-@marginbottom-mbl: 20px;
+@marginbottom-mbl: 10px;
 @marginbottom-com: 30px;
+
 
 //text size & color
 @header-text-size: 40px;
 @header-text-size-big: 50px;
-*{margin:0px; padding:0px; font-family: @font-family;}
+
 .section-border{
     border-top: 2px solid lightgray;
     border-bottom: 2px solid lightgray;
 }
 .li-border{
-    border-top: 2px solid @mainlight;
-    border-bottom: 2px solid @mainlight;
+    border-top: 1px solid @mainlight;
+    border-bottom: 1px solid @mainlight;
     margin-bottom: @marginbottom-mbl;
 }
-.button{
-    width: 100%; height:60px; box-sizing: border-box; font-size: 20px; background-color:@button-color1; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; margin-bottom: 20px; border-style: none;
-}
-.halfButton{
-    width: 49%; height:30px; box-sizing: border-box; font-size: 18px; background-color:@button-color2; display: inline; text-align: center; line-height: 30px; text-decoration: none; margin-bottom: 20px; border-style: none;
+.identifier-border{
+    height:20px;
+    padding:5px;
+    float:right;
+    color:@mainlight;
 }
 
+.button{
+    width: 100%; height:45px; box-sizing: border-box; font-size: 20px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 45px; text-decoration: none; border-style: none; margin: 0px auto 10px auto;
+}
+
+.border-radius{border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
+.halfButton{
+    width: 49%; height:30px; box-sizing: border-box; font-size: 18px; background-color:@button-color; display: inline; text-align: center; line-height: 30px; text-decoration: none; margin-bottom: 20px; border-style: none;
+}
+*{margin:0px; padding:0px;}
 .ad {width:100%; height:150px; background-color: @bgcolor1; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
 
 //.main - .title(div), .pcontent(div), .commentForm(form), .pcomment(div)
@@ -45,7 +60,7 @@
 
 #commentForm{width:100%; margin-bottom: @marginbottom-mbl; .section-border();}
 
-.pcomment{width:100%; background-color:@bgcolor2; margin:0px; padding:10px; margin-bottom: @marginbottom-mbl; box-sizing: border-box;}
+.pcomment{width:100%; background-color:@bgcolor2; margin:0px; padding:5px; margin-bottom: @marginbottom-mbl; box-sizing: border-box;.section-border();}
 
 //.title(div) - .saveWarnButton(div), .pview-dl(dl)
 .pview-dl{width:100%; padding:10px; box-sizing: border-box;}
@@ -78,16 +93,16 @@
 .comment{.button();}
 
 //.pcomment-ul(ul) - .pcomment-li(li)
-.pcomment-li{width:100%; background-color:@mainlight2; .li-border();}
+.pcomment-li{width:100%; background-color:white; .li-border(); box-sizing: border-box;}
 
 //.pcomment-li - .pcomment-dl(dl)
-.pcomment-dl{padding:5px;}
+.pcomment-dl{padding:5px 10px;}
 
 //.pcomment-dl(dl) - .pcomment-dt(dt), .pcomment-dd(dd), .pccomment-dl(dl)
-.pcomment-dt{font-size: 14px; font-weight: bold;}
-.pcomment-dd{font-size: 12px; font-style: italic;}
-.pccomment-dl{padding:0 0 5px 20px;}
-
+.pcomment-dt{font-size: 14px; font-weight: bold; background-color: white;}
+.pcomment-dd{font-size: 12px; font-style: italic;border-bottom: 1px solid lightgray; display: inline; background-color: white;}
+.pccomment-dl{padding:0 0 5px 20px; margin:5px;}
+.pccomment-dl:nth-child(odd){background-color: @mainlightest;}
 //.pccomment-dl - .pccomment-dt(dt), .pccomment-dd(dd)
 .pccomment-dt{font-size: 13px; font-weight: bold;}
 .pccomment-dd{font-size: 10px; font-style: italic;}

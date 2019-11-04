@@ -5,8 +5,6 @@ html
         // what appears on the tab
         base(href="/")
         link(rel='stylesheet', href='common.css' type="text/css")
-        link(rel='stylesheet', href='common2.css' type="text/css")
-        // links css common file
         link(rel='stylesheet', href='cari.css' type="text/css")
         // links css file
         link(href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet")
@@ -17,6 +15,25 @@ html
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
+    -var datemaker = function(date){
+    -var tempdate = new Date(date);
+    -var nowdate = new Date();
+    -var year = tempdate.getFullYear();
+    -var month = tempdate.getMonth();
+    -var day = tempdate.getDate();
+    -var diff = nowdate - tempdate;
+    -if(diff > 864000000){return month+'-'+day+'-'+year;}
+    -else{
+    -if(diff > 86400000){return parseInt(diff/86400000)+' hari yang lalu';}
+    -else{
+    -if(diff > 3600000){return parseInt(diff/3600000)+' jam yang lalu';}
+    -else{
+    -if(diff > 60000){return parseInt(diff/60000)+' menit yang lalu';}
+    -else{return parseInt(diff/1000)+' detik yang lalu';}
+    -}
+    -}
+    -}
+    -}
         header(id='header')
             a(href='/cari') Beritamus      
         nav(id='nav')
@@ -33,24 +50,32 @@ html
         section.sub-main(id='sub-main')
             .ad Advertising
             .search
-                    form(action='/cari/search' method='get')
-                        p
-                            input(type='text' name='search' placeholder='   What do you want?')
-                        br
-                        p
-                            input(type='submit')
+                form(action='/cari/search' method='get')
+                    input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
+                    p
+                        input(type='submit' class="submit" value="Cari")
             .login
-                if user
-                    h2= 'Hi! ' + user.u_id
-                else
+                if !user
                     a(href='/aku') Login Dulu
         section.main(id='main')
-            if result
-                each v in result
-                    ul
+            ul(id='uls')
+                if result
+                    each v in result
                         li
-                            if v.identifier == 'p'
-                                a(href='/penobrol/'+v.id)= v.title
+                            if(v.identifier =='p')
+                                -var plink = 'penobrol/'+v.id
+                                dl(onclick ='location.href="#{plink}"')
+                                    dt
+                                        a(href='/penobrol/'+v.id)= v.title
+                                    dd.ddcontent= v.content
+                                    - var date_result = datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / '+v.com + ' komentar';
+                                    dd #{date_result}
                             else
-                                a(href='/tandya/'+v.id)= v.question
-        script(type="text/javascript" src="cari.js")
+                                -var tlink = 'tandya/'+v.id
+                                dl(onclick ='location.href="#{tlink}"')
+                                    dt
+                                        a(href='/tandya/'+v.id)= v.question
+                                    dd.ddcontent= v.content
+                                    - var date_result = datemaker(v.date) + ' / ' + v.t_view + ' views'+ ' / '+v.answer + ' jawaban';
+                                    dd #{date_result}
+                else

@@ -28,12 +28,12 @@ html
     -var diff = nowdate - tempdate;
     -if(diff > 864000000){return month+'-'+day+'-'+year;}
     -else{
-    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -if(diff > 86400000){return parseInt(diff/86400000)+' hari yang lalu';}
     -else{
-    -if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+    -if(diff > 3600000){return parseInt(diff/3600000)+' jam yang lalu';}
     -else{
-    -if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
-    -else{return parseInt(diff/1000)+' seconds ago';}
+    -if(diff > 60000){return parseInt(diff/60000)+' menit yang lalu';}
+    -else{return parseInt(diff/1000)+' detik yang lalu';}
     -}
     -}
     -}
@@ -54,33 +54,31 @@ html
         section.sub-main(id='sub-main')
             .ad Advertising
             .search
-                    form(action='/cari/search' method='get')
-                        input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
-                        p
-                            input(type='submit' class="submit" value="Cari")
+                form(action='/cari/search' method='get')
+                    input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
+                    p
+                        input(type='submit' class="submit" value="Cari")
         section.main(id='main')
-            .login
-                if !u_id
-                    a(href='/aku') Login Dulu
             ul(id='uls')
                 -for (var i=0; i<6; i++)
                     li
                         if(randoms[i].identifier =='p')
-                            span= randoms[i].identifier
                             -var plink = 'penobrol/'+randoms[i].id
                             dl(onclick ='location.href="#{plink}"')
                                 dt
                                     a(href='/penobrol/'+randoms[i].id)= randoms[i].title
                                 dd.ddcontent= randoms[i].content
-                                - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].p_view + ' views';
+                                - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].p_view + ' views' + ' / '+randoms[i].com + ' komentar';
                                 dd #{date_result}
                         else
-                            span= randoms[i].identifier
                             -var tlink = 'tandya/'+randoms[i].id
                             dl(onclick ='location.href="#{tlink}"')
                                 dt
                                     a(href='/tandya/'+randoms[i].id)= randoms[i].question
-                                    dd.ddcontent= randoms[i].content
-                                    - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].t_view + ' views';
+                                dd.ddcontent= randoms[i].content
+                                - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].t_view + ' views'+ ' / '+randoms[i].answer + ' jawaban';
                                 dd #{date_result}
+                .login
+                    if !u_id
+                        a(href='/aku') Login Dulu
         script(type="text/javascript" src="cari.js")

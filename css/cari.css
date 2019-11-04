@@ -4,16 +4,15 @@
   border-bottom: 2px solid lightgray;
 }
 .li-border {
-  border-top: 2px solid #a0b3ef;
-  border-bottom: 2px solid #a0b3ef;
-  margin-bottom: 20px;
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
+  margin-bottom: 10px;
 }
 .identifier-border {
   height: 20px;
-  border-left: 1px solid black;
-  border-bottom: 1px solid black;
   padding: 5px;
   float: right;
+  color: #6c8ff7;
 }
 .button {
   width: 100%;
@@ -29,6 +28,10 @@
   border-style: none;
   margin: 0px auto 10px auto;
 }
+.border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
 * {
   margin: 0px;
   padding: 0px;
@@ -42,13 +45,11 @@
   text-align: center;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .search {
   width: 100%;
   background-color: #ebedf2;
-  border-top: 2px solid lightgray;
-  border-bottom: 2px solid lightgray;
   font-size: 20px;
 }
 form {
@@ -59,10 +60,11 @@ form {
 input {
   width: 100%;
   height: 45px;
-  border-radius: 10px;
-  border: 1px solid #4167e0;
+  border: 1px solid #2e60f4;
   margin: 0px auto 10px auto;
   font-size: 20px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .submit {
   width: 100%;
@@ -79,26 +81,12 @@ input {
   margin: 0px auto 10px auto;
 }
 .login {
-  width: 100%;
-  height: 45px;
-  box-sizing: border-box;
-  font-size: 20px;
-  color: black;
-  background-color: #a0b3ef;
-  display: inline-block;
-  text-align: center;
-  line-height: 45px;
-  text-decoration: none;
-  border-style: none;
-  margin: 0px auto 10px auto;
+  width: 85%;
+  margin: 0 auto;
 }
 #uls {
   padding: 10px;
   list-style: none;
-}
-.login h2 {
-  text-align: center;
-  font-size: 20px;
 }
 .login a {
   width: 100%;
@@ -113,32 +101,31 @@ input {
   text-decoration: none;
   border-style: none;
   margin: 0px auto 10px auto;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .clear {
   clear: both;
 }
 #uls li {
   width: 100%;
-  background-color: #ebedf2;
-  border-top: 2px solid #a0b3ef;
-  border-bottom: 2px solid #a0b3ef;
-  margin-bottom: 20px;
-}
-li span {
-  height: 20px;
-  border-left: 1px solid black;
-  border-bottom: 1px solid black;
+  background-color: #ffffff;
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
+  margin-bottom: 10px;
   padding: 5px;
-  float: right;
+  box-sizing: border-box;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 li dl {
   cursor: pointer;
 }
 dl dt {
   width: 90%;
-  height: 30px;
-  line-height: 30px;
+  height: 20px;
+  line-height: 20px;
   margin-bottom: 5px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -153,9 +140,9 @@ dl .ddcontent {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
-  font-size: 14px;
-  line-height: 16px;
-  height: 48px;
+  font-size: 12px;
+  line-height: 14px;
+  height: 28px;
   font-style: normal;
   margin-bottom: 5px;
 }
@@ -163,7 +150,7 @@ dt a {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #4167e0;
+  color: #2e60f4;
   text-decoration: none;
   display: block;
 }

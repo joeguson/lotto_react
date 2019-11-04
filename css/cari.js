@@ -48,18 +48,18 @@ function dateMaker(date){
     }
     else{
         if(diff > 86400000){
-            return parseInt(diff/86400000)+' days ago';
+            return parseInt(diff/86400000)+' hari yang lalu';
         }
         else{
             if(diff > 3600000){
-                return parseInt(diff/3600000)+' hours ago';
+                return parseInt(diff/3600000)+' jam yang lalu';
             }
                 else{
                     if(diff > 60000){
-                        return parseInt(diff/60000)+' minutes ago';
+                        return parseInt(diff/60000)+' menit yang lalu';
                     }
                     else{
-                        return parseInt(diff/1000)+' seconds ago';
+                        return parseInt(diff/1000)+' detik yang lalu';
                     }
                 }
         }
@@ -88,24 +88,21 @@ function sendAjax(url){
             if(result.data[randoms[i]].identifier == 'p'){
                 as.innerHTML = result.data[randoms[i]].title;
                 as.setAttribute('href', '/penobrol/'+result.data[randoms[i]].id);
-                span_id.innerHTML = 'P';
                 dds1.innerHTML = result.data[randoms[i]].content;
                 dds1.setAttribute('class', 'ddcontent');
-                dds3.innerHTML = dateMaker(result.data[randoms[i]].date) + ' / ' + result.data[randoms[i]].p_view + ' views';
+                dds3.innerHTML = dateMaker(result.data[randoms[i]].date) + ' / ' + result.data[randoms[i]].p_view + ' views' + ' / '+result.data[randoms[i]].com+' komentar';
             }
             else{
                 as.innerHTML = result.data[randoms[i]].question;
                 as.setAttribute('href', '/tandya/'+result.data[randoms[i]].id);
-                span_id.innerHTML = 'T';
                 dds1.innerHTML = result.data[randoms[i]].content;
                 dds1.setAttribute('class', 'ddcontent');
-                dds3.innerHTML = dateMaker(result.data[randoms[i]].date) + ' / ' + result.data[randoms[i]].t_view + 'views';
+                dds3.innerHTML = dateMaker(result.data[randoms[i]].date) + ' / ' + result.data[randoms[i]].t_view + ' views'+ ' / '+result.data[randoms[i]].answer+' jawaban';
             }
             dts.appendChild(as);
             dls.appendChild(dts);
             dls.appendChild(dds1);
             dls.appendChild(dds3);
-            lis.appendChild(span_id);
             lis.appendChild(dls);
             randomul.appendChild(lis);
         }

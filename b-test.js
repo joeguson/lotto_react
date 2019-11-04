@@ -152,7 +152,6 @@ app.get('/cari/search', function(req, res){
                             temp --;
                         }
                     }
-                    console.log(cari_result);
                     res.render('cari-result', {result:cari_result});
                 });
             });
@@ -195,10 +194,10 @@ app.get(['/cari','/'], function(req, res){
                 p[2] = temp1;
                 p[4] = temp2;
                 if(req.session.u_id){
-                    res.render('cari', {randoms:p, u_id:'y', ad: req.deliverAd});
+                    res.render('cari', {randoms:p, u_id:'y'});
                 }
                 else{
-                    res.render('cari', {randoms:p, ad: req.deliverAd});
+                    res.render('cari', {randoms:p});
                 }
             });
         }
@@ -258,7 +257,7 @@ app.post('/aku/register', function(req, res){
     }); 
 });
 
-app.listen(80, function(){
+app.listen(3000, function(){
   console.log('Connected, 80 port!');
 });
 

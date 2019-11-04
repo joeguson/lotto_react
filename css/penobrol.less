@@ -1,18 +1,20 @@
-@bgcolor1: #f6f6f6; //for all body
-@bgcolor2: #fbfbfb; // for section
+@bgcolor1: #ebedf2; //for all body(grey)
+@bgcolor2: #ffffff; // for section
 
-@main: #4167e0; // blue main color
-@maindark: #203370; // blue main color
-@mainlight: #a0b3ef; // blue main color
-@main2: #e0ba41; // blue main color
-@mainlight2: #efdca0; // blue main color
+@main: #2e60f4; // blue main color
+@maindark: #2043aa; // blue main color
+@maindarker: #122661; // blue main color
+@maindarkest: #040918; // blue main color
+@mainlight: #6c8ff7; // blue main color
+@mainlighter: #abbffa; // blue main color
+@mainlightest: #eaeffd; // blue main color
 
 @button-color: #a0b3ef;
 @font-color1: black;
 @font-color2: white;
 @font-family: 'Lato', sans-serif;
 
-@marginbottom-mbl: 20px;
+@marginbottom-mbl: 10px;
 @marginbottom-com: 30px;
 
 
@@ -27,25 +29,33 @@
     border-bottom: 2px solid lightgray;
 }
 .li-border{
-    border-top: 2px solid @mainlight;
-    border-bottom: 2px solid @mainlight;
+    border-top: 1px solid @mainlight;
+    border-bottom: 1px solid @mainlight;
     margin-bottom: @marginbottom-mbl;
 }
-.button{
-    width: 100%; height:60px; box-sizing: border-box; font-size: 20px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 60px; text-decoration: none; border-style: none;
+.identifier-border{
+    height:20px;
+    padding:5px;
+    float:right;
+    color:@mainlight;
 }
+
+.button{
+    width: 100%; height:45px; box-sizing: border-box; font-size: 20px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 45px; text-decoration: none; border-style: none; margin: 0px auto 10px auto;
+}
+.border-radius{border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
 
 //.sub-main - .ad(div)
 
 .ad {width:100%; height:150px; background-color: @bgcolor1; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
 
 //.main - .login(div), .p-terbaru(div), .p-terkenal(div)
-.login{width:100%;}
+.login{width:85%; margin:0 auto;}
 .p-terbaru, .p-terkenal{width:100%; padding:10px; .section-border(); background-color: @bgcolor1; box-sizing: border-box;}
 .p-terbaru{margin-bottom: @marginbottom-mbl;}
 
 //.login(div) - a.addPenobrol
-.login a{.button(); margin-bottom: @marginbottom-mbl; }
+.login a{.button(); margin-bottom: @marginbottom-mbl; .border-radius();}
 .clear{clear:both}
 
 //.p-terabaru(div), .p-terkenal(div) - .p-title(div), ul * 2
@@ -54,16 +64,16 @@
 .p-terkenal ul{list-style: none;}
 
 //ul - li
-.p-terbaru ul li{width:100%; background-color:@bgcolor1; .li-border();}
-.p-terkenal ul li{width:100%; background-color:@bgcolor1; .li-border();}
+.p-terbaru ul li{width:100%; background-color:@bgcolor2; .li-border(); .border-radius(); padding:5px; box-sizing: border-box;}
+.p-terkenal ul li{width:100%; background-color:@bgcolor2; .li-border(); .border-radius(); padding:5px; box-sizing: border-box;}
 
 //li - dl.p-dl
 .p-dl{cursor: pointer;}
 
 //dl.p-dl - dt, dd
-dl dt{width: 90%; height:30px; line-height: 30px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
+dl dt{width: 90%; height:20px; line-height: 20px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
 dd{font-style: italic; font-size: 12px;}
-dl .ddcontent{overflow: hidden; text-overflow: ellipsis; white-space:normal; font-size: 14px; line-height: 16px; height:48px; font-style: normal; margin-bottom: 5px;}
+dl .ddcontent{overflow: hidden; text-overflow: ellipsis; white-space:normal; font-size: 12px; line-height: 14px; height:28px; font-style: normal; margin-bottom: 5px;}
 
 //dt - a
 dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none;}

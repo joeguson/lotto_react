@@ -9,9 +9,9 @@
   border-bottom: 2px solid lightgray;
 }
 .li-border {
-  border-top: 2px solid #a0b3ef;
-  border-bottom: 2px solid #a0b3ef;
-  margin-bottom: 20px;
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
+  margin-bottom: 10px;
 }
 .button {
   width: 100%;
@@ -39,53 +39,45 @@
   margin-bottom: 20px;
   border-style: none;
 }
+.border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
 .ad {
   width: 100%;
   height: 150px;
-  background-color: #ebedf2;
+  background-color: #ffffff;
   font-size: 50px;
   line-height: 140px;
   text-align: center;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .title {
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 10px;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  background-color: #4167e0;
-}
-.tcontent {
-  width: 100%;
-  margin-bottom: 20px;
-  background-color: white;
-  font-size: 14px;
-  line-height: 20px;
-  text-align: justify;
-  padding: 10px;
-  box-sizing: border-box;
-  border-top: 2px solid lightgray;
-  border-bottom: 2px solid lightgray;
+  background-color: #ebedf2;
 }
 #answerForm {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
 }
 .tanswer {
   width: 100%;
-  background-color: #ebedf2;
+  background-color: #ffffff;
   margin: 0px;
-  padding: 0px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border-top: 2px solid lightgray;
+  border-bottom: 2px solid lightgray;
 }
 .tview-dl {
   width: 100%;
-  padding: 10px;
   box-sizing: border-box;
 }
 .saveWarnButton {
@@ -96,7 +88,7 @@
 #tlikes {
   font-size: 24px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 #tlikebuttons {
   width: 100%;
@@ -115,7 +107,6 @@
   width: 100%;
 }
 .tanswer-ul {
-  padding: 10px;
   list-style: none;
 }
 #save {
@@ -146,12 +137,67 @@
 }
 .tview-dt {
   color: white;
-  font-size: 18px;
+  font-size: 16px;
   text-align: justify;
+  background-color: #2e60f4;
+  padding: 10px;
+}
+#content {
+  background-color: #eaeffd;
+  color: black;
+  font-size: 14px;
+  text-align: justify;
+  padding: 10px;
+  font-style: normal;
+}
+.tview-div {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #2e60f4;
 }
 .tview-dd {
   color: white;
+  font-style: italic;
+  font-size: 12px;
+}
+.tanswer-li {
+  width: 100%;
+  background-color: white;
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+.tanswer-dl {
+  padding: 5px 10px;
+}
+.tanswer-dt {
   font-size: 14px;
+  font-weight: bold;
+  background-color: white;
+}
+.tanswer-dd {
+  font-size: 12px;
+  font-style: italic;
+  border-bottom: 1px solid lightgray;
+  display: inline;
+  background-color: white;
+}
+.acomment-dl {
+  padding: 0 0 5px 20px;
+  margin: 5px;
+}
+.acomment-dl:nth-child(odd) {
+  background-color: #eaeffd;
+}
+.acomment-dt {
+  font-size: 13px;
+  font-weight: bold;
+}
+.acomment-dd {
+  font-size: 10px;
+  font-style: italic;
 }
 #tlikebuttons button {
   font-size: 24px;
@@ -173,13 +219,6 @@
   text-decoration: none;
   margin-bottom: 20px;
   border-style: none;
-}
-.tanswer-li {
-  width: 100%;
-  background-color: #ebedf2;
-  border-top: 2px solid #a0b3ef;
-  border-bottom: 2px solid #a0b3ef;
-  margin-bottom: 20px;
 }
 /*for bigger windows*/
 @media (min-width: 768px) {
