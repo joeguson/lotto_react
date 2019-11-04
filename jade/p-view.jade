@@ -26,11 +26,11 @@ html
     -var diff = nowdate - tempdate;
     -if(diff > 864000000){return month+'-'+day+'-'+year;}
     -else{
-    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -if(diff > 86400000){return parseInt(diff/86400000)+' hari yang lalu';}
     -else{
-    -if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+    -if(diff > 3600000){return parseInt(diff/3600000)+' jam yang lalu';}
     -else{
-    -if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
+    -if(diff > 60000){return parseInt(diff/60000)+' menit yang lalu';}
     -else{return parseInt(diff/1000)+' seconds ago';}
     -}
     -}
@@ -42,6 +42,7 @@ html
     -idChanger = username.substr(0,3) + '****';
     -return idChanger;
     -}
+    -var commentLikeChecker = function(likeObject, cId, userId){for(var i = 0; i<likeObject.length; i++){if(likeObject[i].pc_id == cId && likeObject[i].u_id == userId){return true;}}return false;}
         header
             a(href='/penobrol') Beritamus      
         nav
@@ -62,9 +63,9 @@ html
                 if u_id
                 dl.pview-dl
                     if topic.public == 'a'
-                        - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + 'kommentar : ' + topic.com
+                        - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' kommentar : ' 
                     else
-                        - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + 'kommentar : ' + topic.com
+                        - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' kommentar : ' 
                     dt.pview-dt= topic.title               
                     dd.pview-dd
                         if hashtag
@@ -79,7 +80,6 @@ html
             .pcontent= topic.content
                 div(id="plikes")= topic.p_like
                 if u_id
-                    div(id="plikebuttons")
                         if statusCheck == 'yes'
                             button(id="likeButton" class="plikes" type="submit" value="Batal Suka") Batal Suka
                         else
@@ -101,20 +101,23 @@ html
                                     else
                                         - var commentStart = '@'+ topic.author+" \""+c.content+"\""
                                     dt.pcomment-dt #{commentStart}
-                                    - var date_result2 = 'by : '+c.author+' / '+datemaker(c.date)+' / kommentar : ' + c.com
+                                        if u_id == c.author
+                                            a(href='/pcedit/'+topic.id+'/'+c.id) Edit
+                                    if topic.public == 'a'        
+                                        - var date_result2 = 'by : '+anonimmaker(c.author)+' / '+datemaker(c.date)+' / '+c.com+' kommentar / suka : '
+                                    else
+                                        - var date_result2 = 'by : '+c.author+' / '+datemaker(c.date)+' / ' +c.com+' kommentar / suka : '
                                     dd.pcomment-dd #{date_result2}
                                     dd.pcomment-dd(id="pCommentlikes"+c.id)=c.pc_like
-                                    dd.pcomment-dd
-                                        if u_id
-                                            if statusCheck == 'yes'
-                                                button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Batal Suka
+                                    if u_id
+                                        dd.pcomment-dd
+                                            if(commentLikeChecker(clikeStatus, c.id, u_id))
+                                                button(class="plikes" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Batal Suka
                                             else
-                                                button(class="plikes" type="submit" value=c.id onclick="commentSendAjax(this);") Suka
+                                                button(class="plikes" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Suka
                                     dd.pcomment-dd
                                         if u_id
                                             button(class="warning" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') Warn
-                                        if u_id == c.author
-                                            a(href='/pcedit/'+topic.id+'/'+c.id) Edit
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pccomment-dl

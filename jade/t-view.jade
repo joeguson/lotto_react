@@ -15,6 +15,7 @@ html
         script(data-ad-client="ca-pub-8830254782781844" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
+       
     body
     -var datemaker = function(date){
     -var tempdate = new Date(date);
@@ -41,6 +42,7 @@ html
     -idChanger = username.substr(0,3) + '****';
     -return idChanger;
     -}
+    -var answerLikeChecker = function(likeObject, aId, userId){for(var i = 0; i<likeObject.length; i++){if(likeObject[i].ta_id == aId && likeObject[i].u_id == userId){return true;}}return false;} 
         header
             a(href='/tandya') Beritamus      
         nav
@@ -105,17 +107,17 @@ html
                                         if u_id == a.author
                                             a(href='/taedit/'+topic.id+'/'+a.id) Edit
                                     if topic.public == 'a'
-                                        - var date_result2 = 'by '+ anonimmaker(a.author) + ' /  '+datemaker(a.date)+' / kommentar : ' + a.com+ ' / suka : '
+                                        - var date_result2 = 'by '+ anonimmaker(a.author) + ' /  '+datemaker(a.date)+' / '+a.com+' jawaban / suka : '
                                     else
-                                        - var date_result2 = 'by '+ a.author + ' / '+datemaker(a.date)+' / kommentar : ' + a.com + ' / suka : '
+                                        - var date_result2 = 'by '+ a.author + ' / '+datemaker(a.date)+' / kommentar : ' + a.com +' jawaban / suka : '
                                     dd.tanswer-dd #{date_result2}
                                     dd.tanswer-dd(id="tAnswerlikes"+a.id class="tAnswerlikes")= a.ta_like
                                     dd.tanswer-dd(id="answerButton")
                                         if u_id
-                                            if statusCheck == 'yes'
-                                                button(class="tlikes" type="submit" value=a.id onclick="answerSendAjax(this);") Batal Suka
+                                            if(answerLikeChecker(alikeStatus, a.id, u_id))
+                                                button(class="tlikes" type="submit" value=topic.id+'/'+a.id onclick="answerSendAjax(this);") Batal Suka
                                             else
-                                                button(class="tlikes" type="submit" value=a.id onclick="answerSendAjax(this);") Suka
+                                                button(class="tlikes" type="submit" value=topic.id+'/'+a.id onclick="answerSendAjax(this);") Suka
                                             span(class="dummy")
                                             button(class="warning" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') Warn   
                                     each ac in acomments    

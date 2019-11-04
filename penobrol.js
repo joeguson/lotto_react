@@ -1,6 +1,14 @@
 var conn = require('./b-test');
 
 /************FOR PENOBROL************/
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 exports.getPenobrol = function(req, res){
     var sql = 'SELECT * from penobrol order by date desc limit 3';
     var sql2 = 'SELECT * FROM penobrol ORDER BY score DESC limit 3';
@@ -33,6 +41,7 @@ exports.getViewPenobrol = function(req, res){
         var sql6 = 'SELECT * FROM hashtag where p_id = ?';
         var sql4 = 'SELECT * FROM p_like WHERE u_id = ? AND p_id = ?';
         var sql7 = 'SELECT * FROM pc_com WHERE p_id = ?';
+        var sql8 = 'SELECT * FROM pc_like where u_id = ? AND p_id = ?';
         conn.conn.query(sql1, function(err, maxValue, fields){
             if(maxValue[0].max < id){
                 res.redirect('/penobrol/'); //change to redirect and make a file
@@ -65,14 +74,23 @@ exports.getViewPenobrol = function(req, res){
                                     delete hashtag[0].t_id;
                                     if(req.session.u_id){
                                         conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
-                                            var statusCheck = 'liked';
-                                            if(likeStatus === null){
-                                                statusCheck = 'yes';
-                                            }
+                                            if(err){console.log(err);}
                                             else{
-                                                statusCheck = 'no';
+                                                conn.conn.query(sql8, [req.session.u_id, id], function(err, clikeStatus, fields){
+                                                    if(err){console.log(err);}
+                                                    else{
+                                                        var statusCheck = '';
+                                                        if(isEmpty(likeStatus)){
+                                                            statusCheck = 'no';
+                                                        }
+                                                        else{
+                                                            statusCheck = 'yes';
+                                                        }
+                                                        res.render('p-view', {topic:content[0], statusCheck:statusCheck, comments:comments, u_id:req.session.u_id, hashtag:hashtag[0], ccomments:ccomments, clikeStatus:clikeStatus});
+                                                    }   
+                                                });
+                                                    
                                             }
-                                            res.render('p-view', {topic:content[0], statusCheck:statusCheck, comments:comments, u_id:req.session.u_id, hashtag:hashtag[0], ccomments:ccomments});
                                         });
                                     }
                                     else{
@@ -278,21 +296,22 @@ exports.likesPenobrol = function(req, res){
 
 exports.likesComment = function(req, res){
     var clickValue = req.body.clickedValue;
-    var p_id = req.params.id;
+    var p_id = req.body.p_id;
+    var pc_id = req.body.pc_id;
     var sql = 'SELECT * FROM pc_like WHERE u_id = ? AND pc_id = ?';
     var sql2 = 'UPDATE p_com set pc_like = pc_like - 1 where id = ?';
-    var sql3 = 'DELETE FROM pc_like WHERE u_id = ? AND pc_id = ?';
+    var sql3 = 'DELETE FROM pc_like WHERE u_id = ? AND pc_id = ? AND p_id';
     var sql4 = 'UPDATE p_com set pc_like = pc_like + 1 where id = ?';
-    var sql5 = 'INSERT INTO pc_like (pc_id, u_id) VALUES (?, ?)';
+    var sql5 = 'INSERT INTO pc_like (pc_id, u_id, p_id) VALUES (?, ?, ?)';
     var sql6 = 'select pc_like from p_com where id = ?';
     var sql7 = 'UPDATE p_com SET score = pc_like*.6 + com*0.4 where id = ?';
-    conn.conn.query(sql, [req.session.u_id, p_id], function(err, statusCheck, fields){
+    conn.conn.query(sql, [req.session.u_id, pc_id], function(err, statusCheck, fields){
         if(clickValue == 'Batal Suka'){
-            conn.conn.query(sql2, p_id, function(err, update, fields){
-                conn.conn.query(sql3, [req.session.u_id, p_id], function(err, deleting, fields){
+            conn.conn.query(sql2, pc_id, function(err, update, fields){
+                conn.conn.query(sql3, [req.session.u_id, pc_id, p_id], function(err, deleting, fields){
                     if(err){console.log(err);}
                     else{
-                        conn.conn.query(sql6, p_id, function(err, ajaxresult, fields){
+                        conn.conn.query(sql6, pc_id, function(err, ajaxresult, fields){
                             res.json({"pc_like" : ajaxresult[0].pc_like, "button" : "Suka"});
                         });
                     }
@@ -300,11 +319,11 @@ exports.likesComment = function(req, res){
             });
         }
         else{
-            conn.conn.query(sql4, p_id, function(err, update, fields){
-                conn.conn.query(sql5, [p_id, req.session.u_id], function(err, inserting, fields){
+            conn.conn.query(sql4, pc_id, function(err, update, fields){
+                conn.conn.query(sql5, [pc_id, req.session.u_id, p_id], function(err, inserting, fields){
                     if(err){console.log(err);}
                     else{
-                        conn.conn.query(sql6, p_id, function(err, ajaxresult, fields){
+                        conn.conn.query(sql6, pc_id, function(err, ajaxresult, fields){
                             res.json({"pc_like" : ajaxresult[0].pc_like, "button" : "Batal Suka"});
                         });
                     }

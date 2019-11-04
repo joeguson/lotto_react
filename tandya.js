@@ -1,6 +1,14 @@
 var conn = require('./b-test');
 
 /************FOR TANDYA************/
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 exports.getTandya = function(req, res){
     var sql = 'select * from tandya order by date desc limit 3';
     var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
@@ -39,7 +47,7 @@ exports.getViewTandya =  function(req, res){
         var sql6 = 'SELECT * FROM hashtag where t_id = ?';
         var sql4 = 'Select * from t_like where u_id = ? AND t_id = ?';
         var sql5 = 'SELECT * FROM ta_com where t_id = ?';
-        var sql8 = 'SELECT * FROM ta_like where t_id = ?';
+        var sql8 = 'SELECT * FROM ta_like where u_id = ? AND t_id = ?';
         conn.conn.query(sql1, function(err, maxValue, fields){
             if(maxValue[0].max < id){
                 res.redirect('/tandya'); //change to redirect and make a file
@@ -63,25 +71,37 @@ exports.getViewTandya =  function(req, res){
                                         if(err){console.log(err);}
                                         else{
                                             conn.conn.query(sql5, id, function(err, acomments, fields){
-                                                delete hashtag[0].id;
-                                                delete hashtag[0].u_id;
-                                                delete hashtag[0].p_id;
-                                                delete hashtag[0].t_id;
-                                                if(req.session.u_id){
-                                                    conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
-                                                        var statusCheck = 'liked';
-                                                        if(likeStatus === null){
-                                                            statusCheck = 'yes';
-                                                        }
-                                                        else{
-                                                            statusCheck = 'no';
-                                                        }
-                                                        res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:req.session.u_id, hashtag:hashtag[0], acomments:acomments});
-                                                    });
-                                                }
+                                                if(err){console.log(err);}
                                                 else{
-                                                    res.render('t-view', {topic:content[0], answers:answers, hashtag:hashtag[0], acomments:acomments});
-                                                }    
+                                                    delete hashtag[0].id;
+                                                    delete hashtag[0].u_id;
+                                                    delete hashtag[0].p_id;
+                                                    delete hashtag[0].t_id;
+                                                    if(req.session.u_id){
+                                                        conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
+                                                            if(err){console.log(err);}
+                                                            else{
+                                                                conn.conn.query(sql8, [req.session.u_id, id], function(err, alikeStatus, fields){
+                                                                    if(err){console.log(err);}
+                                                                    else{
+                                                                        var statusCheck = '';
+                                                                        if(isEmpty(likeStatus)){
+                                                                            statusCheck = 'no';
+                                                                        }
+                                                                        else{
+                                                                            statusCheck = 'yes';
+                                                                        }
+                                                                        res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:req.session.u_id, hashtag:hashtag[0], acomments:acomments, alikeStatus:alikeStatus});
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+                                                    }
+                                                    else{
+                                                        res.render('t-view', {topic:content[0], answers:answers, hashtag:hashtag[0], acomments:acomments});
+                                                    }
+                                                }
+                                                    
                                             });
 
                                         }
@@ -256,21 +276,22 @@ exports.likesTandya = function(req, res){
 };
 exports.likesAnswer = function(req, res){
     var clickValue = req.body.clickedValue;
-    var t_id = req.params.id;
+    var t_id = req.body.t_id;
+    var ta_id = req.body.ta_id;
     var sql = 'SELECT * FROM ta_like WHERE u_id = ? AND ta_id = ?';
     var sql2 = 'UPDATE t_ans set ta_like = ta_like - 1 where id = ?';
-    var sql3 = 'DELETE FROM ta_like WHERE u_id = ? AND ta_id = ?';
+    var sql3 = 'DELETE FROM ta_like WHERE u_id = ? AND ta_id = ? AND t_id';
     var sql4 = 'UPDATE t_ans set ta_like = ta_like + 1 where id = ?';
-    var sql5 = 'INSERT INTO ta_like (ta_id, u_id) VALUES (?, ?)';
+    var sql5 = 'INSERT INTO ta_like (ta_id, u_id, t_id) VALUES (?, ?, ?)';
     var sql6 = 'select ta_like from t_ans where id = ?';
     var sql7 = 'UPDATE tandya SET score = t_view*.2 + t_like*.6 + answer*0.2 where id = ?';
-    conn.conn.query(sql, [req.session.u_id, t_id], function(err, statusCheck, fields){
+    conn.conn.query(sql, [req.session.u_id, ta_id], function(err, statusCheck, fields){
         if(clickValue == 'Batal Suka'){
-            conn.conn.query(sql2, t_id, function(err, update, fields){
-                conn.conn.query(sql3, [req.session.u_id, t_id], function(err, deleting, fields){
+            conn.conn.query(sql2, ta_id, function(err, update, fields){
+                conn.conn.query(sql3, [req.session.u_id, ta_id, t_id], function(err, deleting, fields){
                     if(err){console.log(err);}
                     else{
-                        conn.conn.query(sql6, t_id, function(err, ajaxresult, fields){
+                        conn.conn.query(sql6, ta_id, function(err, ajaxresult, fields){
                             res.json({"ta_like" : ajaxresult[0].ta_like, "button" : "Suka"});
                         });
                     }
@@ -278,11 +299,11 @@ exports.likesAnswer = function(req, res){
             });
         }
         else{
-            conn.conn.query(sql4, t_id, function(err, update, fields){
-                conn.conn.query(sql5, [t_id, req.session.u_id], function(err, inserting, fields){
+            conn.conn.query(sql4, ta_id, function(err, update, fields){
+                conn.conn.query(sql5, [ta_id, req.session.u_id, t_id], function(err, inserting, fields){
                     if(err){console.log(err);}
                     else{
-                        conn.conn.query(sql6, t_id, function(err, ajaxresult, fields){
+                        conn.conn.query(sql6, ta_id, function(err, ajaxresult, fields){
                             res.json({"ta_like" : ajaxresult[0].ta_like, "button" : "Batal Suka"});
                         });
                     }

@@ -25,17 +25,17 @@ function contentSendAjax(url, data){
 }
 
 function commentSendAjax(comment){
-    var id = comment.value;
-    var original = {'clickedValue' : comment.innerHTML};
+    var id = comment.value.split("/");
+    var original = {'clickedValue' : comment.innerHTML, 'p_id':id[0], 'pc_id':id[1]};
     original = JSON.stringify(original);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/pCommentlikes/'+id);
+    xhr.open('POST', '/pCommentlikes/'+id[1]);
     xhr.setRequestHeader('Content-type', "application/json");
     xhr.send(original);
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
         var result = JSON.parse(xhr.responseText);
-        document.getElementById("pCommentlikes"+id).innerHTML = result.pc_like;
+        document.getElementById("pCommentlikes"+id[1]).innerHTML = result.pc_like;
         comment.innerHTML = result.button;
     });
 }
