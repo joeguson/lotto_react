@@ -25,19 +25,22 @@
   text-decoration: none;
   margin-bottom: 20px;
   border-style: none;
+  border-image-width: none;
 }
 .halfButton {
-  width: 49%;
+  width: 50%;
   height: 30px;
   box-sizing: border-box;
   font-size: 18px;
-  background-color: #efdca0;
-  display: inline;
+  background-color: #fbffb3;
+  display: inline-block;
   text-align: center;
   line-height: 30px;
   text-decoration: none;
   margin-bottom: 20px;
+  border: 0px;
   border-style: none;
+  border-image-width: none;
 }
 .border-radius {
   border-top-right-radius: 5px;
@@ -64,8 +67,6 @@
 #answerForm {
   width: 100%;
   margin-bottom: 10px;
-  border-top: 2px solid lightgray;
-  border-bottom: 2px solid lightgray;
 }
 .tanswer {
   width: 100%;
@@ -81,16 +82,16 @@
   box-sizing: border-box;
 }
 .saveWarnButton {
-  width: 80%;
-  box-sizing: border-box;
+  width: 100%;
   margin: 0 auto;
 }
 #tlikes {
   font-size: 24px;
   text-align: center;
   margin-bottom: 10px;
+  color: red;
 }
-#tlikebuttons {
+#likeButton {
   width: 100%;
   height: 60px;
   box-sizing: border-box;
@@ -102,38 +103,14 @@
   text-decoration: none;
   margin-bottom: 20px;
   border-style: none;
+  border-image-width: none;
 }
 #answerForm p {
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
 }
 .tanswer-ul {
   list-style: none;
-}
-#save {
-  width: 49%;
-  height: 30px;
-  box-sizing: border-box;
-  font-size: 18px;
-  background-color: #efdca0;
-  display: inline;
-  text-align: center;
-  line-height: 30px;
-  text-decoration: none;
-  margin-bottom: 20px;
-  border-style: none;
-}
-#warn {
-  width: 49%;
-  height: 30px;
-  box-sizing: border-box;
-  font-size: 18px;
-  background-color: #efdca0;
-  display: inline;
-  text-align: center;
-  line-height: 30px;
-  text-decoration: none;
-  margin-bottom: 20px;
-  border-style: none;
 }
 .tview-dt {
   color: white;
@@ -141,6 +118,7 @@
   text-align: justify;
   background-color: #2e60f4;
   padding: 10px;
+  line-height: 20px;
 }
 #content {
   background-color: #eaeffd;
@@ -149,6 +127,7 @@
   text-align: justify;
   padding: 10px;
   font-style: normal;
+  line-height: 20px;
 }
 .tview-div {
   width: 100%;
@@ -206,12 +185,14 @@
 #answer {
   width: 100%;
   margin: 0 auto;
+  border: 1px solid #2e60f4;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 50px;
 }
 .answer {
-  width: 100%;
   height: 60px;
   box-sizing: border-box;
-  font-size: 20px;
   background-color: #a0b3ef;
   display: inline-block;
   text-align: center;
@@ -219,6 +200,14 @@
   text-decoration: none;
   margin-bottom: 20px;
   border-style: none;
+  border-image-width: none;
+  width: 100%;
+  height: 45px;
+  border: 1px solid #2e60f4;
+  margin: 0px auto 10px auto;
+  font-size: 20px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 /*for bigger windows*/
 @media (min-width: 768px) {

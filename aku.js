@@ -31,7 +31,6 @@ exports.login = function(req, res){
              conn.conn.query(sql,[u_id], function(err, users, fields){ //회원의 모든 정보를 불러온다
                 if(err){console.log(err);}
                 else{
-                    console.log(users[0]);
                     if(users[0].verification === 1){
                         if(users[0].u_id == u_id && users[0].u_pw == u_pw){ //아이디와 비밀번호가 맞다면
                              conn.conn.query(sql3, [u_id], function(err, login, fields){ //update를 한 후에 정보를 넘김
@@ -91,8 +90,6 @@ exports.getDaftarAuth = function(req, res){
     conn.conn.query(sql, email, function(err, verify, fields){
         if(verify[0]){
             if(verify[0].vcode == code){
-                console.log('hi2');
-                console.log('yes!');
                 sql2 = 'UPDATE users set verification = true where email = ?';
                 conn.conn.query(sql2, email, function(err, verified, fields){
                     if(err){console.log(err);}
