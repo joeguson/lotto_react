@@ -3,8 +3,8 @@
   font-family: 'Lato', sans-serif;
 }
 .section-border {
-  border-top: 2px solid lightgray;
-  border-bottom: 2px solid lightgray;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
 }
 .button {
   width: 100%;
@@ -53,8 +53,8 @@ nav {
   font-size: 50px;
   line-height: 140px;
   text-align: center;
-  border-top: 2px solid lightgray;
-  border-bottom: 2px solid lightgray;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
   margin-bottom: 20px;
 }
 .main {

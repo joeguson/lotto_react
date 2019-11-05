@@ -76,7 +76,7 @@ html
                                 dd.ddcontent= randoms[i].content
                                 - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].t_view + ' views'+ ' / '+randoms[i].answer + ' jawaban';
                                 dd #{date_result}
-                .login
-                    if !u_id
+                if !u_id
+                    .login
                         a(href='/aku') Login Dulu
         script(type="text/javascript" src="cari.js")

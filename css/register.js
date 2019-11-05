@@ -5,10 +5,10 @@ var authenticator4 = '';
 var sex = '';
 var userIdCheck = RegExp(/^[A-Za-z0-9_\-]{4,20}$/);
 var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+var checkboxValue;
 
 document.getElementById('u_id').addEventListener('change', function(){
     var v = document.getElementById('u_id').value;
-    console.log(userIdCheck.test(v));
     if(userIdCheck.test(v)){
         sendAjax('/aku/register', v);
     }
@@ -45,9 +45,8 @@ document.getElementById('u_pw').addEventListener('change', function(){
         authenticator2 = '1';
     }
     else{
-        document.getElementById("pwchecker").innerHTML = 'maaf, terlalu pendek';
+        document.getElementById("pwchecker").innerHTML = 'maaf, terlalu pendek. harus lebih dari 7 huruf';
         authenticator2 = '';
-
     }
 });
 document.getElementById('u_pw2').addEventListener('change', function(){
@@ -89,6 +88,28 @@ document.getElementById('email').addEventListener('focus', function(){
         authenticator4 = '1';
     } 
 });
+
+function checksubmit(){
+    if(authenticator1+authenticator2+authenticator3+authenticator4 == '1111'){
+        if(sex){
+            if(checkboxValue=== true){
+                return true;
+            }
+            else{return false;}
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
+}
+
+function checkboxCheck(target){
+    checkboxValue = target.checked;
+}
+
 //var authenticate = authenticator1+authenticator2+authenticator3+authenticator4;
 //
 //function CheckboxCheck(checkbox){

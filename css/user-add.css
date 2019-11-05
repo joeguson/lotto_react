@@ -2,47 +2,126 @@
 .section-border {
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  padding-top: 20px;
-  padding-bottom: 20px;
+}
+.li-border {
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
+  margin-bottom: 10px;
+}
+.identifier-border {
+  height: 20px;
+  padding: 5px;
+  float: right;
+  color: #6c8ff7;
 }
 .button {
-  width: 100%;
-  height: 60px;
+  width: 90%;
+  height: 45px;
   box-sizing: border-box;
-  font-size: 20px;
-  background-color: #e5e5f2;
+  font-size: 16px;
+  color: black;
+  background-color: #a0b3ef;
   display: inline-block;
   text-align: center;
-  line-height: 40px;
+  line-height: 45px;
+  text-decoration: none;
+  border-style: none;
+  margin: 0px auto 10px auto;
+}
+.border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.halfButton {
+  width: 49%;
+  height: 30px;
+  box-sizing: border-box;
+  font-size: 18px;
+  background-color: #a0b3ef;
+  display: inline;
+  text-align: center;
+  line-height: 30px;
   text-decoration: none;
   margin-bottom: 20px;
   border-style: none;
 }
+* {
+  margin: 0px;
+  padding: 0px;
+}
 h1 {
   text-align: center;
   margin: 50px auto 20px auto;
+  color: #2e60f4;
 }
 article {
   width: 100%;
-  margin-top: 100px;
+  margin-top: 50px;
   text-align: center;
 }
 p {
-  width: 100%;
+  width: 90%;
+  margin: 5px auto 10px auto;
 }
 input {
   width: 100%;
-  height: 50px;
+  height: 40px;
   box-sizing: border-box;
   text-align: center;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 1px solid #2e60f4;
+}
+#u_pw {
+  margin-bottom: 1px;
 }
 .sex {
   width: 49%;
-  height: 50px;
+  height: 30px;
   padding: 0px;
   box-sizing: border-box;
   display: inline;
   border-style: none;
+}
+#check {
+  width: 10%;
+  display: inline;
+  height: 16px;
+  margin: 0px;
+}
+p span {
+  color: #2043aa;
+  font-size: 12px;
+}
+#submit {
+  width: 90%;
+  height: 45px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: black;
+  background-color: #a0b3ef;
+  display: inline-block;
+  text-align: center;
+  line-height: 45px;
+  text-decoration: none;
+  border-style: none;
+  margin: 0px auto 10px auto;
+}
+body a {
+  width: 90%;
+  height: 45px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: black;
+  background-color: #a0b3ef;
+  display: inline-block;
+  text-align: center;
+  line-height: 45px;
+  text-decoration: none;
+  border-style: none;
+  margin: 0px auto 10px auto;
+  margin: 20px auto 5px auto;
+  display: block;
 }
 /*for bigger windows*/
 @media (min-width: 768px) {

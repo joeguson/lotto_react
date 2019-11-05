@@ -20,7 +20,7 @@ html
     body
         h1 Daftar
         article
-            form(action='/daftar' method='post')
+            form(action='/daftar' method='post' onsubmit='return checksubmit();')
                 p
                     input(type='text' id="u_id" name='u_id' placeholder='ID Anda' required)
                 .idchecker(id="idchecker")
@@ -37,10 +37,9 @@ html
                 p
                     input(type='text' name='email' id='email' value='beritamus@emailAnda.com' required)
                 p
-                    input(type="checkbox" value="check" id='check' onclick="CheckboxCheck(this)") 
+                    input(type="checkbox" value="check" id='check' onclick="checkboxCheck(this)") 
                     span I understand all the contents uploaded will become property of Beritamus and I agree to use them. 
                 p
-                    input(type='submit' value='' id='submit' style="visibility: hidden; width:0px;")
-        
-        a(href='/cari') go back
+                    input(type='submit' value='Daftar' id='submit')
+        a(href='/cari') kembalik
         script(type="text/javascript" src="register.js")
