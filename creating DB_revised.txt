@@ -10,214 +10,233 @@ grant all privileges on beritamus.* to 'root'@'localhost' identified by 'TlqkfEn
 1. Users Table
 
 CREATE TABLE `users` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `u_id` varchar(50) NOT NULL,
   `u_pw` varchar(200) NOT NULL,
-  `u_bday` TIMESTAMP DEFAULT NOW(),
-  `u_pen` int UNSIGNED NOT NULL DEFAULT 0,
-  `u_tan` int UNSIGNED NOT NULL DEFAULT 0,
-  `last_login` TIMESTAMP DEFAULT 0,
-  `present_login` TIMESTAMP DEFAULT NOW(),  
-  `u_level` varchar(100) NOT NULL DEFAULT 'KAMUS',
-  `u_haipur` int UNSIGNED NOT NULL DEFAULT 10000,
-  `sex` CHAR(2) NOT NULL DEFAULT 'n',
+  `u_bday` timestamp NOT NULL DEFAULT NOW(),
+  `u_pen` int unsigned NOT NULL DEFAULT '0',
+  `u_tan` int unsigned NOT NULL DEFAULT '0',
+  `present_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `u_level` varchar(100) NOT NULL DEFAULT 'Kosa Kata',
+  `u_haipur` int unsigned NOT NULL DEFAULT '10000',
+  `sex` char(2) NOT NULL DEFAULT 'n',
   `email` varchar(255) NOT NULL,
-  `verification` boolean NOT NULL DEFAULT false,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `vcode` varchar(10) DEFAULT NULL,
+  `verification` tinyint(1) NOT NULL DEFAULT '0',
+  `verify_date` timestamp NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-2.user_save
-CREATE TABLE `user_save` (
-    `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-    `u_id` varchar(50) NOT NULL,
-    `p_id` int UNSIGNED NOT NULL DEFAULT 0,
-    `t_id` int UNSIGNED NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+2. Weekly Table
+
+CREATE TABLE `weekly` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `gold_p` int unsigned NOT NULL DEFAULT 0,
+  `silver_p` int unsigned NOT NULL DEFAULT 0,
+  `bronze_p` int unsigned NOT NULL DEFAULT 0,
+  `gold_t` int unsigned NOT NULL DEFAULT 0,
+  `silver_t` int unsigned NOT NULL DEFAULT 0,
+  `bronze_t` int unsigned NOT NULL DEFAULT 0,  
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
 
 3. Penobrol Table (fulltext index 2개 추가)
 
 CREATE TABLE `penobrol` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `content` text NOT NULL,
   `public` char(2) DEFAULT 'p',
   `author` varchar(50) NOT NULL,
-  `date` TIMESTAMP DEFAULT NOW(),
-  `changed_date` TIMESTAMP DEFAULT 0,
-  `identifier` char(2) DEFAULT 'P',
-  `com`  int UNSIGNED NOT NULL DEFAULT 0,
-  `p_view` int UNSIGNED NOT NULL DEFAULT 0,
-  `p_like`  int UNSIGNED NOT NULL DEFAULT 0,
-  `score`  DECIMAL(11,2) NOT NULL DEFAULT 0,
-  `hashtagcount`  int UNSIGNED NOT NULL DEFAULT 0,
-  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (id),
-  FULLTEXT search (title, content)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-여기서 test 필요 title, content에서 search 해봐야함
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `changed_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `p_view` int unsigned NOT NULL DEFAULT '0',
+  `com` int unsigned NOT NULL DEFAULT '0',
+  `p_like` int unsigned NOT NULL DEFAULT '0',
+  `identifier` char(2) DEFAULT 'p',
+  `score` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `hashtagcount` int unsigned NOT NULL DEFAULT '0',
+  `warning` int unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  FULLTEXT KEY `title` (`title`),
+  FULLTEXT KEY `content` (`content`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-4. tandya
+4. Tandya Table (fulltext index 2개 추가)
+
 CREATE TABLE `tandya` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `question` varchar(255) NOT NULL,
   `content` text NOT NULL,
   `public` char(2) DEFAULT 'p',
   `author` varchar(50) NOT NULL,
-  `date` TIMESTAMP DEFAULT NOW(),
-  `changed_date` TIMESTAMP DEFAULT 0,
-  `identifier` char(2) DEFAULT 'T',
-  `answer`  int UNSIGNED NOT NULL DEFAULT 0,
-  `t_view` int UNSIGNED NOT NULL DEFAULT 0,
-  `t_like`  int UNSIGNED NOT NULL DEFAULT 0,
-  `score`  int UNSIGNED NOT NULL DEFAULT 0,
-  `hashtagcount`  int UNSIGNED NOT NULL DEFAULT 0,
-  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (id),
-  FULLTEXT search (question, content)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `t_view` int unsigned NOT NULL DEFAULT '0',
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `changed_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `answer` int unsigned NOT NULL DEFAULT '0',
+  `t_like` int unsigned NOT NULL DEFAULT '0',
+  `identifier` char(2) DEFAULT 't',
+  `score` int unsigned NOT NULL DEFAULT '0',
+  `hashtagcount` int unsigned NOT NULL DEFAULT '0',
+  `chosen1` int unsigned NOT NULL DEFAULT '0',
+  `chosen2` int unsigned NOT NULL DEFAULT '0',
+  `warning` int unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  FULLTEXT KEY `question` (`question`),
+  FULLTEXT KEY `content` (`content`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 5. p_like
 
 CREATE TABLE `p_like` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `p_id` int UNSIGNED NOT NULL DEFAULT 0,
   `u_id` varchar(50) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 6.t_like
+
 CREATE TABLE `t_like` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `t_id` int UNSIGNED NOT NULL DEFAULT 0,
   `u_id` varchar(50) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 7. p_com
+
 CREATE TABLE `p_com` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `p_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `p_id` int UNSIGNED NOT NULL DEFAULT '0',
   `author` varchar(50) NOT NULL,
   `content` text NOT NULL,
-  `date` TIMESTAMP DEFAULT NOW(),
-  `changed_date` TIMESTAMP DEFAULT 0,
-  `pc_like` int UNSIGNED NOT NULL DEFAULT 0,
-  `com`  int UNSIGNED NOT NULL DEFAULT 0,
-  `score`  int UNSIGNED NOT NULL DEFAULT 0,
-  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `changed_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `com` int UNSIGNED NOT NULL DEFAULT '0',
+  `pc_like` int UNSIGNED NOT NULL DEFAULT '0',
+  `score` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `warning` int UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 8.t_ans
+
 CREATE TABLE `t_ans` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `t_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `t_id` int UNSIGNED NOT NULL DEFAULT '0',
   `author` varchar(50) NOT NULL,
   `answer` text NOT NULL,
-  `date` TIMESTAMP DEFAULT NOW(),
-  `changed_date` TIMESTAMP DEFAULT 0,
-  `ta_like` int UNSIGNED NOT NULL DEFAULT 0,
-  `com`  int UNSIGNED NOT NULL DEFAULT 0,
-  `score`  int UNSIGNED NOT NULL DEFAULT 0,
-  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `changed_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `com` int(10) unsigned NOT NULL DEFAULT '0',
+  `ta_like` int(10) unsigned NOT NULL DEFAULT '0',
+  `score` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `warning` int UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 9. pc_com
-- CREATE TABLE `pc_com` (
+
+CREATE TABLE `pc_com` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `p_id` int UNSIGNED NOT NULL DEFAULT 0,
-  `pc_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `p_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `pc_id` int UNSIGNED NOT NULL DEFAULT '0',
   `author` varchar(50) NOT NULL,
   `content` text NOT NULL,
-  `date` TIMESTAMP DEFAULT NOW(),
-  `changed_date` TIMESTAMP DEFAULT 0,
-  `score`  int UNSIGNED NOT NULL DEFAULT 0,
-  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `warning` int UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 10. ta_com
-- CREATE TABLE `ta_com` (
+
+CREATE TABLE `ta_com` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `t_id` int UNSIGNED NOT NULL DEFAULT 0,
-  `ta_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `t_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `ta_id` int UNSIGNED NOT NULL DEFAULT '0',
   `author` varchar(50) NOT NULL,
   `content` text NOT NULL,
-  `date` TIMESTAMP DEFAULT NOW(),
-  `changed_date` TIMESTAMP DEFAULT 0,
-  `score`  int UNSIGNED NOT NULL DEFAULT 0,
-  `warning`  int UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `warning` int UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 11. pc_like
+
 CREATE TABLE `pc_like` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `pc_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `p_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `pc_id` int UNSIGNED NOT NULL DEFAULT '0',
   `u_id` varchar(50) NOT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 12.ta_like
+
 CREATE TABLE `ta_like` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `ta_id` int UNSIGNED NOT NULL DEFAULT 0,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `t_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `ta_id` int UNSIGNED NOT NULL DEFAULT '0',
   `u_id` varchar(50) NOT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 13.hashtag
+
 CREATE TABLE `hashtag` (
-    `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-    `u_id` varchar(50) NOT NULL,
-    `p_id` int UNSIGNED NOT NULL DEFAULT 0,
-    `t_id` int UNSIGNED NOT NULL DEFAULT 0, 
-    `ht1` varchar(100) DEFAULT '',
-    `ht2` varchar(100) DEFAULT '',
-    `ht3` varchar(100) DEFAULT '',
-    `ht4` varchar(100) DEFAULT '',
-    `ht5` varchar(100) DEFAULT '',
-    `ht6` varchar(100) DEFAULT '',
-    `ht7` varchar(100) DEFAULT '',
-    PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `u_id` varchar(50) NOT NULL,
+  `p_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `t_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `ht1` varchar(100) DEFAULT '',
+  `ht2` varchar(100) DEFAULT '',
+  `ht3` varchar(100) DEFAULT '',
+  `ht4` varchar(100) DEFAULT '',
+  `ht5` varchar(100) DEFAULT '',
+  `ht6` varchar(100) DEFAULT '',
+  `ht7` varchar(100) DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-14. weekly
-CREATE TABLE `weekly` (
-    `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-    `date` TIMESTAMP DEFAULT NOW(),
-    `gold_p` int UNSIGNED NOT NULL DEFAULT 0,
-    `silver_p` int UNSIGNED NOT NULL DEFAULT 0,
-    `bronze_p` int UNSIGNED NOT NULL DEFAULT 0,
-    `gold_t` int UNSIGNED NOT NULL DEFAULT 0,
-    `silver_t` int UNSIGNED NOT NULL DEFAULT 0,
-    `bronze_t` int UNSIGNED NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+14. warning
 
-15. warning
 CREATE TABLE `warning` (
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `u_id` varchar(50) NOT NULL,
-    `p_id` int UNSIGNED NOT NULL DEFAULT 0,
-    `t_id` int UNSIGNED NOT NULL DEFAULT 0,
-    `pc_id` int UNSIGNED NOT NULL DEFAULT 0,
-    `ta_id` int UNSIGNED NOT NULL DEFAULT 0,
-    `pcc_id` int UNSIGNED NOT NULL DEFAULT 0,
-    `tac_id` int UNSIGNED NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `u_id` varchar(50) NOT NULL,
+  `p_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `t_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `pc_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `ta_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `pcc_id` int UNSIGNED NOT NULL DEFAULT '0',
+  `tac_id` int UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-16. Haipur
-CREATE TABLE `hair` (
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `u_id` varchar(50) NOT NULL,
-    `amount` int UNSIGNED NOT NULL DEFAULT 0,
-    `content` varchar(255) NOT NULL,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+15. haipur
+
+CREATE TABLE `haipur` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `u_id` varchar(50) NOT NULL,
+  `amount` int UNSIGNED NOT NULL DEFAULT '0',
+  `content` varchar(255) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+16. search_string
+
+CREATE TABLE `search_string` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `u_id` varchar(50) DEFAULT 'stranger',
+  `search_string` varchar(255) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
 
 16. err_message
 CREATE TABLE `err_message` (
