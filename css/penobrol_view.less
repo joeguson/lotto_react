@@ -51,23 +51,21 @@
     width: 49%; height:30px; box-sizing: border-box; font-size: 18px; background-color:@button-color; display: inline; text-align: center; line-height: 30px; text-decoration: none; margin-bottom: 20px; border-style: none;
 }
 *{margin:0px; padding:0px;}
-.ad {width:100%; height:150px; background-color: @bgcolor1; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
 
 //.main - .title(div), .pcontent(div), .commentForm(form), .pcomment(div)
 .title{width:100%; box-sizing:border-box; .section-border(); background-color: @main;}
 
 .pcontent{width:100%; margin-bottom: @marginbottom-mbl; background-color: @bgcolor2; font-size: 14px; line-height: 20px; text-align: justify; padding:10px; box-sizing: border-box; .section-border();}
 
-#commentForm{width:100%; margin-bottom: @marginbottom-mbl; .section-border();}
+#commentForm{width:95%; margin: 0px auto @marginbottom-mbl auto;}
 
 .pcomment{width:100%; background-color:@bgcolor2; margin:0px; padding:5px; margin-bottom: @marginbottom-mbl; box-sizing: border-box;.section-border();}
 
-//.title(div) - .saveWarnButton(div), .pview-dl(dl)
+//.title(div) - .pview-dl(dl)
 .pview-dl{width:100%; padding:10px; box-sizing: border-box;}
-.saveWarnButton{width:80%; box-sizing: border-box; margin:0 auto;}
 
 //.pcontent(div) - #plikes(div), #plikebuttons(div)
-#plikes{font-size: 24px; text-align: center; margin-bottom: @marginbottom-mbl;}
+#plikes{font-size: 24px; text-align: center; margin: @marginbottom-mbl 0px; color:red;}
 #plikebuttons{.button();}
 
 //#commentForm(form) - p * 2
@@ -83,14 +81,15 @@
 //.pview-dl(dl) - .pview-dt(dt), .pview-dd(dd)
 .pview-dt{color:@font-color2; font-size: 16px; text-align: justify; margin-bottom: 10px;}
 .pview-dd{color:@font-color2; font-size: 12px; margin-bottom: 5px;}
+.edit{float:right; text-decoration: none; color:white;}
 
 //#plikes(div)
 //#plikebuttons(div) - #likeButton * 2
 #plikebuttons button{font-size: 24px; line-height: 60px;}
 
 //p * 2 - #comment(textarea), .comment(input)
-#comment{width:100%; margin:0 auto; }
-.comment{.button();}
+#comment{width:100%; margin:0 auto; border: 1px solid @main; .border-radius(); height:80px;}
+.comment{.button(); width: 100%; height:45px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 20px; .border-radius();}
 
 //.pcomment-ul(ul) - .pcomment-li(li)
 .pcomment-li{width:100%; background-color:white; .li-border(); box-sizing: border-box;}
@@ -99,13 +98,24 @@
 .pcomment-dl{padding:5px 10px;}
 
 //.pcomment-dl(dl) - .pcomment-dt(dt), .pcomment-dd(dd), .pccomment-dl(dl)
-.pcomment-dt{font-size: 14px; font-weight: bold; background-color: white;}
+.pcomment-dt{font-size: 14px; font-weight: bold; background-color: white; margin-bottom: 5px;}
 .pcomment-dd{font-size: 12px; font-style: italic;border-bottom: 1px solid lightgray; display: inline; background-color: white;}
 .pccomment-dl{padding:0 0 5px 20px; margin:5px;}
 .pccomment-dl:nth-child(odd){background-color: @mainlightest;}
+.pCommentlikes{font-size: 14px; color:red;}
+#commentButton{float:right;}
+
 //.pccomment-dl - .pccomment-dt(dt), .pccomment-dd(dd)
 .pccomment-dt{font-size: 13px; font-weight: bold;}
 .pccomment-dd{font-size: 10px; font-style: italic;}
+.ccomment{width:100%; text-align: right; margin:5px 0px;}
+
+//.pcomment-dt - a
+.pcomment-dt a{float:right;}
+
+.ccomment textarea{width:80%; margin:0 auto; border: 1px solid @main; .border-radius();}
+.dummy{width:3px; float: right;}
+.warning{float:right;}
 
 /*for bigger windows*/
 @media (min-width:768px){

@@ -42,25 +42,24 @@
     width: 50%; height:30px; box-sizing: border-box; font-size: 18px; background-color:@mainlighter2; display: inline-block; text-align: center; line-height: 30px; text-decoration: none; margin-bottom: 20px; border: 0px; border-style: none; border-image-width: none;
 }
 .border-radius{border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
-.ad {width:100%; height:150px; background-color: @bgcolor2; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
 
 //.main - .title(div), .commentForm(form), .pcomment(div)
 .title{width:100%; box-sizing:border-box; .section-border(); background-color: @bgcolor1;}
 
-#answerForm{width:100%; margin-bottom: @marginbottom-mbl; }
+#answerForm{width:95%; margin: 0px auto @marginbottom-mbl auto;}
 
 .tanswer{width:100%; background-color:@bgcolor2; margin:0px; margin-bottom: @marginbottom-mbl; box-sizing: border-box;.section-border();}
 
-//.title(div) - .saveWarnButton(div), .tview-dl(dl)
+//.title(div) - .tview-dl(dl)
 .tview-dl{width:100%; box-sizing: border-box;}
-.saveWarnButton{width:100%; margin:0 auto;}
+
 
 //.tcontent(div) - #tlikes(div), #tlikebuttons(div)
 #tlikes{font-size: 24px; text-align: center; margin-bottom: @marginbottom-mbl; color:red;}
 #likeButton{.button();}
 
 //#answerForm(form) - p * 2
-#answerForm p{width:90%; margin:0 auto;}
+#answerForm p{width:100%;}
 
 //.tanswer(div) - .tanswer-ul(ul)
 .tanswer-ul{list-style: none;}
@@ -73,7 +72,7 @@
 #content{background-color:@mainlightest; color: black; font-size: 14px; text-align: justify; padding:10px; font-style:normal; line-height: 20px;}
 .tview-div{width:100%; padding: 10px; box-sizing: border-box; background-color: @main; }
 .tview-dd{color:white; font-style: italic; font-size: 12px;}
-
+.edit{float:right; text-decoration: none; color:white; font-style: normal;}
 //.tanswer-ul(ul) - .tanswer-li(li)
 .tanswer-li{width:100%; background-color:white; .li-border(); box-sizing: border-box;}
 
@@ -91,7 +90,7 @@
 //.acomment-dl - .acomment-dt(dt), .acomment-dd(dd)
 .acomment-dt{font-size: 13px; font-weight: bold;}
 .acomment-dd{font-size: 10px; font-style: italic;}
-
+.acomment{width:100%; text-align: right; margin:5px 0px;}
 //.tanswer-dt(dt) - a
 .tanswer-dt a{float:right;}
 
@@ -100,10 +99,11 @@
 #tlikebuttons button{font-size: 24px; line-height: 60px;}
 
 //p * 2 - #comment(textarea), .comment(input)
-#answer{width:100%; margin:0 auto; border: 1px solid @main; .border-radius(); height:50px;}
+#answer{width:100%; margin:0 auto; border: 1px solid @main; .border-radius(); height:80px;}
 .answer{.button(); width: 100%; height:45px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 20px; .border-radius();}
-.dummy{width:5px; float: right;}
 
+.acomment textarea{width:80%; margin:0 auto; border: 1px solid @main; .border-radius();}
+.dummy{width:3px; float: right;}
 .warning{float:right;}
 
 /*for bigger windows*/

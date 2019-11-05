@@ -20,17 +20,18 @@ html
     -var tempdate = new Date(date);
     -var nowdate = new Date();
     -var year = tempdate.getFullYear();
+    -var year = tempdate.getFullYear();
     -var month = tempdate.getMonth();
     -var day = tempdate.getDate();
     -var diff = nowdate - tempdate;
     -if(diff > 864000000){return month+'-'+day+'-'+year;}
     -else{
-    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -if(diff > 86400000){return parseInt(diff/86400000)+' hari yang lalu';}
     -else{
-    -if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
+    -if(diff > 3600000){return parseInt(diff/3600000)+' jam yang lalu';}
     -else{
-    -if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
-    -else{return parseInt(diff/1000)+' seconds ago';}
+    -if(diff > 60000){return parseInt(diff/60000)+' menit yang lalu';}
+    -else{return parseInt(diff/1000)+' detik yang lalu';}
     -}
     -}
     -}
@@ -64,7 +65,7 @@ html
                         dl(onclick ='location.href="#{plink}"')
                             dt
                                 a(href='/penobrol/'+p.id)= p.title
-                            - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / kommen: ' + p.com + ' / suka: ' + p.p_like
+                            - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / ' + p.com +' kommen'+' / suka: ' + p.p_like
                             dd.content-info date: #{date_result}         
             .p-tandya 
                 p Tandya

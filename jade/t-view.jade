@@ -20,17 +20,18 @@ html
     -var tempdate = new Date(date);
     -var nowdate = new Date();
     -var year = tempdate.getFullYear();
+    -var year = tempdate.getFullYear();
     -var month = tempdate.getMonth();
     -var day = tempdate.getDate();
     -var diff = nowdate - tempdate;
-    -if(diff > 864000000){return month+'-'+day+'-'+year;}
+    -if(diff > 864000000){return month+'-'+day;}
     -else{
-    -if(diff > 86400000){return parseInt(diff/86400000)+' hari yang lalu';}
+    -if(diff > 86400000){return parseInt(diff/86400000)+' hari lalu';}
     -else{
-    -if(diff > 3600000){return parseInt(diff/3600000)+' jam yang lalu';}
+    -if(diff > 3600000){return parseInt(diff/3600000)+' jam lalu';}
     -else{
-    -if(diff > 60000){return parseInt(diff/60000)+' menit yang lalu';}
-    -else{return parseInt(diff/1000)+' detik yang lalu';}
+    -if(diff > 60000){return parseInt(diff/60000)+' menit lalu';}
+    -else{return parseInt(diff/1000)+' detik lalu';}
     -}
     -}
     -}
@@ -80,11 +81,10 @@ html
                                 -for(var n=0; n<topic.hashtagcount; n++)
                                     a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
                         dd.tview-dd #{date_result}
-                    if u_id
-                        .saveWarnButton
                             if u_id == topic.author
-                                a(href='/tedit/'+topic.id class='halfButton') Edit
-                            button(class='halfButton' type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') Warn
+                                a(href='/tedit/'+topic.id class='edit') Edit
+                    if u_id
+                        button(class='halfButton' type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') Warn
             
             if u_id
                 form(action='tandya/'+topic.id method='post' id='answerForm')
@@ -106,11 +106,11 @@ html
                                         if u_id == a.author
                                             a(href='/taedit/'+topic.id+'/'+a.id) Edit
                                     if topic.public == 'a'
-                                        - var date_result2 = 'by '+ anonimmaker(a.author) + ' /  '+datemaker(a.date)+' / '+a.com+' jawaban / suka : '
+                                        - var date_result2 = 'by '+ anonimmaker(a.author) + ' /  '+datemaker(a.date)+' / '+a.com+' komen / suka : '
                                     else
-                                        - var date_result2 = 'by '+ a.author + ' / '+datemaker(a.date)+' / kommentar : ' + a.com +' jawaban / suka : '
+                                        - var date_result2 = 'by '+ a.author + ' / '+datemaker(a.date)+' / ' + a.com +' komen / suka : '
                                     dd.tanswer-dd #{date_result2}
-                                    dd.tanswer-dd(id="tAnswerlikes"+a.id class="tAnswerlikes")= a.ta_like
+                                    dd.tanswer-dd(id="tAnswerlikes"+a.id class="tAnswerlikes")= a.ta_like 
                                     dd.tanswer-dd(id="answerButton")
                                         if u_id
                                             if(answerLikeChecker(alikeStatus, a.id, u_id))
@@ -118,7 +118,12 @@ html
                                             else
                                                 button(class="tlikes" type="submit" value=topic.id+'/'+a.id onclick="answerSendAjax(this);") Suka
                                             span(class="dummy")
-                                            button(class="warning" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') Warn   
+                                            button(class="warning" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') Warn
+                                    dd.tanswer-dd
+                                        if u_id
+                                            .acomment
+                                                textarea(name='acomment')
+                                                input(type='submit' name=a.id onclick="acommentSendAjax(this);" value="komen")        
                                     each ac in acomments    
                                         if ac.ta_id == a.id
                                             dl.acomment-dl
@@ -131,9 +136,5 @@ html
                                                 dd.acomment-dd #{date_result3}
                                                     if u_id
                                                         button(class="warning" type="submit" value='tac/'+topic.id+'/'+a.id+'/'+ac.id onclick="warningAjax(this);" id="warn/"+'tac/'+topic.id+'/'+a.id+'/'+ac.id) Warn
-                                    dd.tanswer-dd
-                                        if u_id
-                                            p
-                                                textarea(name='acomment')
-                                                input(type='submit' name=a.id class="acomment" onclick="acommentSendAjax(this);") 
+                                    
         script(type="text/javascript" src="tlikes.js")

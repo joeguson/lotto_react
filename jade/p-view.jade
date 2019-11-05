@@ -23,14 +23,14 @@ html
     -var month = tempdate.getMonth();
     -var day = tempdate.getDate();
     -var diff = nowdate - tempdate;
-    -if(diff > 864000000){return month+'-'+day+'-'+year;}
+    -if(diff > 864000000){return month+'-'+day;}
     -else{
-    -if(diff > 86400000){return parseInt(diff/86400000)+' hari yang lalu';}
+    -if(diff > 86400000){return parseInt(diff/86400000)+' hari lalu';}
     -else{
-    -if(diff > 3600000){return parseInt(diff/3600000)+' jam yang lalu';}
+    -if(diff > 3600000){return parseInt(diff/3600000)+' jam lalu';}
     -else{
-    -if(diff > 60000){return parseInt(diff/60000)+' menit yang lalu';}
-    -else{return parseInt(diff/1000)+' seconds ago';}
+    -if(diff > 60000){return parseInt(diff/60000)+' menit lalu';}
+    -else{return parseInt(diff/1000)+' detik lalu';}
     -}
     -}
     -}
@@ -62,21 +62,20 @@ html
                 if u_id
                 dl.pview-dl
                     if topic.public == 'a'
-                        - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' kommentar : ' 
+                        - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
                     else
-                        - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' kommentar : ' 
+                        - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
                     dt.pview-dt= topic.title               
                     dd.pview-dd
                         if hashtag
                             -for(var n=0; n<topic.hashtagcount; n++)
                                 a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
                     dd.pview-dd #{date_result}
-                    if u_id
-                        .saveWarnButton
-                            if u_id == topic.author
-                                a(href='/pedit/'+topic.id) Edit
-                            button(class="warning" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') Warn
+                        if u_id == topic.author
+                            a(href='/pedit/'+topic.id class='edit') Edit
             .pcontent= topic.content
+                if u_id
+                    button(class="warning" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') Warn
                 div(id="plikes")= topic.p_like
                 if u_id
                         if statusCheck == 'yes'
@@ -103,35 +102,35 @@ html
                                         if u_id == c.author
                                             a(href='/pcedit/'+topic.id+'/'+c.id) Edit
                                     if topic.public == 'a'        
-                                        - var date_result2 = 'by : '+anonimmaker(c.author)+' / '+datemaker(c.date)+' / '+c.com+' kommentar / suka : '
+                                        - var date_result2 = 'by '+anonimmaker(c.author)+' / '+datemaker(c.date)+' / '+c.com+' komen / suka : '
                                     else
-                                        - var date_result2 = 'by : '+c.author+' / '+datemaker(c.date)+' / ' +c.com+' kommentar / suka : '
+                                        - var date_result2 = 'by '+c.author+' / '+datemaker(c.date)+' / ' +c.com+' komen / suka : '
                                     dd.pcomment-dd #{date_result2}
-                                    dd.pcomment-dd(id="pCommentlikes"+c.id)=c.pc_like
-                                    if u_id
-                                        dd.pcomment-dd
+                                    dd.pcomment-dd(id="pCommentlikes"+c.id class="pCommentlikes")=c.pc_like
+                                    dd.pcomment-dd(id="commentButton")
+                                        if u_id
                                             if(commentLikeChecker(clikeStatus, c.id, u_id))
                                                 button(class="plikes" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Batal Suka
                                             else
                                                 button(class="plikes" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Suka
+                                            span(class="dummy")    
+                                            button(class="warning" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') Warn
                                     dd.pcomment-dd
                                         if u_id
-                                            button(class="warning" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') Warn
+                                            .ccomment
+                                                textarea(name='ccomment')
+                                                input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="komen")
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pccomment-dl
                                                 - var ccommentStart = '- "'+cc.content+'"'
                                                 dt.pccomment-dt #{ccommentStart}
                                                 if topic.public == 'a'
-                                                    - var date_result3 = 'by : ' + anonimmaker(cc.author) + ' / '+datemaker(cc.date)
+                                                    - var date_result3 = 'by ' + anonimmaker(cc.author) + ' / '+datemaker(cc.date)
                                                 else
-                                                    - var date_result3 = 'by : ' + cc.author + ' / '+datemaker(cc.date)
+                                                    - var date_result3 = 'by ' + cc.author + ' / '+datemaker(cc.date)
                                                 dd.pccomment-dd #{date_result3}
                                                     if u_id
-                                                        button(class="warning" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) Warning
-                                    dd.pcomment-dd
-                                        if u_id
-                                            p
-                                                textarea(name='ccomment')
-                                                input(type='submit' name=c.id class="ccomment" onclick="ccommentSendAjax(this);") 
+                                                        button(class="warning" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) Warn
+                                     
         script(type="text/javascript" src="plikes.js")
