@@ -60,7 +60,7 @@ html
         section.main(id='main')
             .login
                 if(u_id)
-                    a.addPenobrol(href='/penobrol/add') adder
+                    a.addPenobrol(href='/penobrol/add') What is Your story?
                 else
                     a.addPenobrol(href='/aku') Login Dulu 
             .p-terbaru
@@ -93,5 +93,7 @@ html
                                 else
                                     - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar'
                                 dd #{date_result}   
-        section.footer(id='footer') kontak : joe.guson@beritamus.com
+        section.footer(id='footer') 
+            p contact : admin@beritamus.com
+            p www.beritamus.com
     //script(type="text/javascript" src="prank.js")

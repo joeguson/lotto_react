@@ -54,7 +54,7 @@
 
 //.main - .title(div), .pcontent(div), .commentForm(form), .pcomment(div)
 .title{width:100%; box-sizing:border-box; .section-border(); background-color: @main;}
-.pcontent{width:100%; margin-bottom: @marginbottom-mbl; background-color: @bgcolor2; text-align: justify; padding:0px 10px 30px 10px; box-sizing: border-box; .section-border();}
+.pcontent{width:100%; margin-bottom: @marginbottom-mbl; background-color: @bgcolor2; text-align: justify; padding:10px 10px 30px 10px; box-sizing: border-box; .section-border();}
 .commentForm{width:95%; margin: 0px auto @marginbottom-mbl auto;}
 .pcomment{width:100%; background-color:@bgcolor2; margin:0px; padding:5px; margin-bottom: @marginbottom-mbl; box-sizing: border-box;.section-border();}
 
@@ -66,7 +66,7 @@
 .warn{display:block; width:100%; text-align: right; padding:0;}
 .content{font-size: 16px; line-height: 20px; margin-bottom: @marginbottom-mbl;}
 .plike{font-size: 24px; text-align: center; margin: @marginbottom-mbl*2 0px; color:red;}
-.plikeButton{width:40%; background-color: red; border-radius: 20px; height:30px; color: white; line-height: 30px; margin:0px auto; display: block;}
+.plikeButton{width:40%; background-color: red; border-radius: 20px; height:30px; color: white; line-height: 30px; margin:0px auto; display: block; border:1px solid red;}
 
 //.commentForm(form) - p * 2
 .commentForm p{width:100%;}
@@ -106,9 +106,10 @@
 
 //.pcomment-dd - .pclike(span), .pclikeButton(button), .dummy(span), .pcWarnButton(button)
 .pclike{font-size: 14px; color:red; font-style: italic;}
-.pclikeButton{float:right; background-color: red; color:white; border:0px; border-radius: 5px;}
-.dummy{float:right; width:5px;}
-.pcWarnButton{float:right; background-color: @main2; border:0px; border-radius: 5px;}
+.commentButton{float:right;}
+.pclikeButton{background-color: red; color:white; border:0px; border-radius: 3px;}
+.pcWarnButton{background-color: @main2; border:0px; border-radius: 3px; float:right;}
+.dummy{width:5px; float:right;}
 
 //.ccommentForm - .pccInput(textarea), .pccInputButton(button)
 .pccInput{width:100%; padding:5px; margin:0 auto; border: 1px solid @main; .border-radius(); height:30px; font-size: 12px; box-sizing:border-box;}
@@ -119,9 +120,7 @@
 .pccomment-dt{font-size: 13px; font-weight: bold;}
 .pccomment-dd{font-size: 10px; font-style: italic;}
 
-//.pcomment-dt - a
-.pcomment-dt a{float:right;}
-
+.pccWarnButton{float:right; background-color: @main2; border:0px; border-radius: 5px;}
 
 /*for bigger windows*/
 @media (min-width:768px){
@@ -141,7 +140,6 @@
     
     .pview-dt{color:@font-color2; font-size: 24px; margin-bottom: 15px;}
     .pview-dd{color:@font-color2; font-size: 16px; margin-bottom: 10px;}
-    .edit{float:right; text-decoration: none; color:white;}
     
     .pwarnButton{font-size: 14px;} 
     
@@ -157,9 +155,9 @@
     .pcomment-dd{font-size: 14px;}
     .pccomment-dl{padding:10px 0 10px 20px; margin:5px;}
     
-    .pclike{font-size: 16px; color:red; font-style: italic;}
-    .pclikeButton{float:right; background-color: red; color:white; border:0px; border-radius: 5px;}
-    .dummy{float:right; width:5px;}
+    .pclike{font-size: 16px;}
+    .pclikeButton{background-color: red; color:white; border:0px; border-radius: 5px;}
+    .dummy{float:right; width:10px;}
     .pcWarnButton{float:right; background-color: @main2; border:0px; border-radius: 5px;}
 
     .pccInput{width:100%; padding:10px; margin:0 auto; height:60px; font-size: 14px;}

@@ -59,82 +59,82 @@ html
         section.sub-main(id='sub-main')
             //.ad Advertisement
         section.main(id='main')
-            .title
-                dl.tview-dl
-                    dt.tview-dt
-                        span Q : 
-                        span= topic.question
-                    .tview-div(id="content")= topic.content
-                    div(id="tlikes")= topic.t_like
-                    if u_id
-                        if statusCheck == 'yes'
-                            button(id="likeButton" class="tlikes" type="submit" value="Batal Suka") Batal Suka
-                        else
-                            button(id="likeButton" class="tlikes" type="submit" value="Suka") Suka
-                    .tview-div
-                        if topic.public == 'a'
-                            - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
-                        else
-                            - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
-                        dd.tview-dd
-                            if hashtag
-                                -for(var n=0; n<topic.hashtagcount; n++)
-                                    a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
-                        dd.tview-dd #{date_result}
-                            if u_id == topic.author
-                                a(href='/tedit/'+topic.id class='edit') Edit
-                    if u_id
-                        button(class='halfButton' type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') Warn
-            
+            .ttitle-div
+                span Q : #{topic.question}
+            .tcontent-div
+                if u_id
+                    p(class= "warn")
+                        button(class="twarnButton" type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') !Warn
+                p(class="content")= topic.content
+                div(id="tlike" class="tlike")= topic.t_like
+                if u_id
+                    if statusCheck == 'yes'
+                        button(id="tlikeButton" class="tlikeButton" type="submit" value="Batal Suka") Batal Suka
+                    else
+                        button(id="tlikeButton" class="tlikeButton" type="submit" value="Suka") Suka
+            .tdetail-div
+                if topic.public == 'a'
+                    - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
+                else
+                    - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
+                if hashtag    
+                    p
+                        -for(var n=0; n<topic.hashtagcount; n++)
+                            a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+                p #{date_result}
+                    if u_id == topic.author
+                        a(href='/tedit/'+topic.id class='edit') Edit
             if u_id
-                form(action='tandya/'+topic.id method='post' id='answerForm')
+                form(action='tandya/'+topic.id method='post' class='answerForm')
                       p
-                        textarea(name='answer' id="answer")
+                        textarea(name='answer' id="answer" class="taInput")
                       p
-                        input(type='submit' value='submit' class="answer")  
+                        input(type='submit' value='submit' class="taInputButton")
             if answers
                 .tanswer
                     ul.tanswer-ul
                         each a in answers
                             li.tanswer-li
-                                dl.tanswer-dl(id='tAnswer'+a.id)
+                                dl.tanswer-dl
                                     if topic.public == 'a'
-                                        - var answerStart = '@'+ anonimmaker(topic.author)+" \""+a.answer+"\""
+                                        - var answerStart = '@'+ anonimmaker(topic.author)
                                     else
-                                        - var answerStart = '@'+ topic.author+" \""+a.answer+"\""
-                                    dt.tanswer-dt #{answerStart}
+                                        - var answerStart = '@'+ topic.author
+                                    .tanswer-start #{answerStart}
                                         if u_id == a.author
                                             a(href='/taedit/'+topic.id+'/'+a.id) Edit
+                                    dt.tanswer-dt "#{a.answer}"
                                     if topic.public == 'a'
-                                        - var date_result2 = 'by '+ anonimmaker(a.author) + ' /  '+datemaker(a.date)+' / '+a.com+' komen / suka : '
+                                        - var date_result2 = 'by '+ anonimmaker(a.author) + ' /  '+datemaker(a.date)+' / suka : '
                                     else
-                                        - var date_result2 = 'by '+ a.author + ' / '+datemaker(a.date)+' / ' + a.com +' komen / suka : '
+                                        - var date_result2 = 'by '+ a.author + ' / '+datemaker(a.date)+' / suka : '
                                     dd.tanswer-dd #{date_result2}
-                                    dd.tanswer-dd(id="tAnswerlikes"+a.id class="tAnswerlikes")= a.ta_like 
-                                    dd.tanswer-dd(id="answerButton")
+                                        span.talike(id="tAnswerlikes"+a.id)= a.ta_like 
                                         if u_id
-                                            if(answerLikeChecker(alikeStatus, a.id, u_id))
-                                                button(class="tlikes" type="submit" value=topic.id+'/'+a.id onclick="answerSendAjax(this);") Batal Suka
-                                            else
-                                                button(class="tlikes" type="submit" value=topic.id+'/'+a.id onclick="answerSendAjax(this);") Suka
-                                            span(class="dummy")
-                                            button(class="warning" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') Warn
-                                    dd.tanswer-dd
-                                        if u_id
-                                            .acomment
-                                                textarea(name='acomment')
-                                                input(type='submit' name=a.id onclick="acommentSendAjax(this);" value="komen")        
+                                            span.answerButton
+                                                if(answerLikeChecker(alikeStatus, a.id, u_id))
+                                                    button(class="talikeButton" type="submit" value=topic.id+'/'+a.id onclick="answerSendAjax(this);") Batal Suka
+                                                else
+                                                    button(class="talikeButton" type="submit" value=topic.id+'/'+a.id onclick="answerSendAjax(this);") Suka
+                                                span.dummy
+                                                button(class="taWarnButton" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') !Warn
+                                    if u_id    
+                                        .acommentForm
+                                            textarea(name='acomment' class="tacInput")
+                                            input(type='submit' name=a.id onclick="acommentSendAjax(this);" value="komen" class="tacInputButton")        
                                     each ac in acomments    
                                         if ac.ta_id == a.id
-                                            dl.acomment-dl
+                                            dl.tacomment-dl
                                                 - var acommentStart = '- "'+ac.content+'"'
-                                                dt.acomment-dt #{acommentStart}
+                                                dt.tacomment-dt #{acommentStart}
                                                 if topic.public == 'a'
                                                     - var date_result3 = 'by : ' + anonimmaker(ac.author) + ' / '+datemaker(ac.date)
                                                 else
                                                     - var date_result3 = 'by : ' + ac.author + ' / '+datemaker(ac.date)
-                                                dd.acomment-dd #{date_result3}
+                                                dd.tacomment-dd #{date_result3}
                                                     if u_id
-                                                        button(class="warning" type="submit" value='tac/'+topic.id+'/'+a.id+'/'+ac.id onclick="warningAjax(this);" id="warn/"+'tac/'+topic.id+'/'+a.id+'/'+ac.id) Warn
-                                    
+                                                        button(class="tacWarnButton" type="submit" value='tac/'+topic.id+'/'+a.id+'/'+ac.id onclick="warningAjax(this);" id="warn/"+'tac/'+topic.id+'/'+a.id+'/'+ac.id) ! Warn
+        section.footer(id='footer') 
+            p contact : admin@beritamus.com
+            p www.beritamus.com                            
         script(type="text/javascript" src="tlikes.js")

@@ -61,7 +61,7 @@
   margin-bottom: 10px;
   background-color: #ffffff;
   text-align: justify;
-  padding: 0px 10px 30px 10px;
+  padding: 10px 10px 30px 10px;
   box-sizing: border-box;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
@@ -111,6 +111,7 @@
   line-height: 30px;
   margin: 0px auto;
   display: block;
+  border: 1px solid red;
 }
 .commentForm p {
   width: 100%;
@@ -220,22 +221,24 @@
   color: red;
   font-style: italic;
 }
-.pclikeButton {
+.commentButton {
   float: right;
+}
+.pclikeButton {
   background-color: red;
   color: white;
   border: 0px;
-  border-radius: 5px;
-}
-.dummy {
-  float: right;
-  width: 5px;
+  border-radius: 3px;
 }
 .pcWarnButton {
-  float: right;
   background-color: #faff93;
   border: 0px;
-  border-radius: 5px;
+  border-radius: 3px;
+  float: right;
+}
+.dummy {
+  width: 5px;
+  float: right;
 }
 .pccInput {
   width: 100%;
@@ -273,8 +276,11 @@
   font-size: 10px;
   font-style: italic;
 }
-.pcomment-dt a {
+.pccWarnButton {
   float: right;
+  background-color: #faff93;
+  border: 0px;
+  border-radius: 5px;
 }
 /*for bigger windows*/
 @media (min-width: 768px) {
@@ -332,11 +338,6 @@
     font-size: 16px;
     margin-bottom: 10px;
   }
-  .edit {
-    float: right;
-    text-decoration: none;
-    color: white;
-  }
   .pwarnButton {
     font-size: 14px;
   }
@@ -378,11 +379,8 @@
   }
   .pclike {
     font-size: 16px;
-    color: red;
-    font-style: italic;
   }
   .pclikeButton {
-    float: right;
     background-color: red;
     color: white;
     border: 0px;
@@ -390,7 +388,7 @@
   }
   .dummy {
     float: right;
-    width: 5px;
+    width: 10px;
   }
   .pcWarnButton {
     float: right;

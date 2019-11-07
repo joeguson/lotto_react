@@ -1,4 +1,4 @@
-var likeButton = document.getElementById('likeButton');
+var likeButton = document.getElementById('tlikeButton');
 
 likeButton.addEventListener('click', function(){
     //var v = parseInt(document.getElementById('plikes').innerHTML);
@@ -18,7 +18,7 @@ function contentSendAjax(url, data){
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
         var result = JSON.parse(xhr.responseText);
-        document.getElementById("tlikes").innerHTML = result.t_like;
+        document.getElementById("tlike").innerHTML = result.t_like;
         likeButton.innerHTML = result.button;
         likeButton.setAttribute('value', result.button);
     });

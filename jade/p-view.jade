@@ -66,8 +66,8 @@ html
                     else
                         - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
                     dt.pview-dt= topic.title
-                    dd.pview-dd.hashtag
-                        if hashtag
+                    if hashtag    
+                        dd.pview-dd.hashtag
                             -for(var n=0; n<topic.hashtagcount; n++)
                                 a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
                     dd.pview-dd #{date_result}
@@ -111,12 +111,13 @@ html
                                     dd.pcomment-dd #{date_result2}
                                         span.pclike(id="pCommentlikes"+c.id)=c.pc_like
                                         if u_id
-                                            if(commentLikeChecker(clikeStatus, c.id, u_id))
-                                                button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Batal Suka
-                                            else
-                                                button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Suka
-                                            span(class="dummy")    
-                                            button(class="pcWarnButton" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') !Warn
+                                            span.commentButton
+                                                if(commentLikeChecker(clikeStatus, c.id, u_id))
+                                                    button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Batal Suka
+                                                else
+                                                    button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Suka
+                                                span.dummy    
+                                                button(class="pcWarnButton" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') !Warn
                                     if u_id
                                         .ccommentForm
                                             textarea(name='ccomment' class="pccInput")
@@ -132,6 +133,8 @@ html
                                                     - var date_result3 = 'by ' + cc.author + ' / '+datemaker(cc.date)
                                                 dd.pccomment-dd #{date_result3}
                                                     if u_id
-                                                        button(class="warning" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) !Warn
-                                     
+                                                        button(class="pccWarnButton" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) !Warn
+        section.footer(id='footer') 
+            p contact : admin@beritamus.com
+            p www.beritamus.com
         script(type="text/javascript" src="plikes.js")
