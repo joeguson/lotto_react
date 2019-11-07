@@ -130,16 +130,16 @@ exports.postAddTandya = function(req, res){
     var author = req.session.u_id;
     var content = req.body.content;
     var question = req.body.question;
-    var hashtags = req.body.hashtag;
+    var rawhashtags = req.body.hashtag;
     var hashtagCount = 0;
     var public = req.body.public;
-    while(hashtags.indexOf(' ')>=0){
-        hashtags.replace(' ', '');
+    while(rawhashtags.indexOf(' ')>=0){
+        rawhashtags = rawhashtags.replace(' ', "");
     }
-    var hashtag = hashtags.split('#');
-    hashtagCount = hashtag.length;
+    var hashtags = rawhashtags.split('#');
+    hashtags.splice(0,1);
+    hashtagCount = hashtags.length;
     var perfecthashtag = function (array){
-        array.splice(0, 1);
         if(array.length > 7){
             while(array.length > 7){
                 array.splice(7, 1);
@@ -147,36 +147,50 @@ exports.postAddTandya = function(req, res){
         }
         else if(array.length < 7){
             while(array.length < 7){
-                array.push('DEFAULT');
+                array.push(' ');
             }  
         }
         return array;
     };
-    var finalhastag = perfecthashtag(hashtag);
+    var finalhastag = perfecthashtag(hashtags);
     var sql = 'INSERT INTO tandya (author, question, content, hashtagcount, public) VALUES (?, ?, ?, ?, ?)';
     var sql4 = 'INSERT INTO hashtag (t_id, u_id, ht1, ht2, ht3, ht4, ht5, ht6, ht7) VALUES (?, ?, ?);';
-    var sql2 = 'UPDATE users set u_tan = u_tan + 1 WHERE u_id = ?';
-    var sql3 = 'UPDATE overview SET total_t = total_t +1 WHERE id = 1';
+    var sql2='UPDATE users set u_tan= u_tan + 1 WHERE u_id = ?';
+    var sql_haipur = '';
+    var sql_u_haipur = '';
+    
+    if(public == 'p'){
+        sql_haipur = 'INSERT INTO haipur (u_id, amount, content) VALUES (?, -1000, "added a public tandya")';
+        sql_u_haipur = 'UPDATE users set u_haipur = u_haipur - 1000 where u_id = ?';
+    }
+    else{
+        sql_haipur = 'INSERT INTO haipur (u_id, amount, content) VALUES (?, -1200, "added a anonim tandya")';
+        sql_u_haipur = 'UPDATE users set u_haipur = u_haipur - 1200 where u_id = ?';
+    }
     //update connection
-    conn.conn.query(sql3, function(err, update, fields){
-        if(err){console.log(err);}
-    });
     conn.conn.query(sql2, [author], function(err, update, fields){
         if(err){console.log(err);}
       });
+    conn.conn.query(sql_haipur, author, function(err, haipur, fields){
+        if(err){console.log(err);}
+        else{
+            conn.conn.query(sql_u_haipur, author, function(err, u_haipur, fields){
+               if(err){console.log(err);} 
+            });
+        }
+    });
     //insert connection
     conn.conn.query(sql, [author, question, content, hashtagCount, public], function(err, result, fields){
-          if(err){console.log(err);}
-          else{
+        if(err){console.log(err);}
+        else{
             conn.conn.query(sql4, [result.insertId, author, finalhastag], function(err, hashtag, fields){
                 if(err){console.log(err);}
                 else{ res.redirect('/tandya/'+result.insertId);
                 }
-           });
-          }
+            });
+        }
     });
 };
-
 
 exports.postAddAnswer = function(req, res){
     var author = req.session.u_id;

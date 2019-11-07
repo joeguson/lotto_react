@@ -19,17 +19,17 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     store: new MySQLStore({
-        host     : '112.157.39.243',
-        user     : 'root',
-        password : 'TlqkfEnfgdjqhk1@',
+        host     : 'beritamus-db01.cqtxhcf9tkke.ap-southeast-1.rds.amazonaws.com',
+        user     : 'beritamusdb',
+        password : 'TlqkfEnfgdjqhk$$',
         database : 'beritamus'
     })
 }));
 var conn = mysql.createConnection(
     {
-      host     : '112.157.39.243',
-      user     : 'root',
-      password : 'TlqkfEnfgdjqhk1@',
+      host     : 'beritamus-db01.cqtxhcf9tkke.ap-southeast-1.rds.amazonaws.com',
+      user     : 'beritamusdb',
+      password : 'TlqkfEnfgdjqhk$$',
       database : 'beritamus'
     }
 );
@@ -186,15 +186,17 @@ app.get(['/cari','/'], function(req, res){
                 var p = JSON.parse(JSON.stringify(penobrol));
                 var t = JSON.parse(JSON.stringify(tandya));
                 p = p.concat(t);
-                var temp1 = {};
-                var temp2 = {};
-                temp1 = p[1];
-                p[1] = p[4];
-                temp2 = p[2];
-                p[2] = temp1;
-                p[4] = temp2;
+                if(p.length > 5){
+                    var temp1 = {};
+                    var temp2 = {};
+                    temp1 = p[1];
+                    p[1] = p[4];
+                    temp2 = p[2];
+                    p[2] = temp1;
+                    p[4] = temp2;
+                }
                 if(req.session.u_id){
-                    res.render('cari', {randoms:p, u_id:'y'});
+                    res.render('cari', {randoms:p, u_id:'req.session.u_id'});
                 }
                 else{
                     res.render('cari', {randoms:p});
@@ -257,7 +259,7 @@ app.post('/aku/register', function(req, res){
     }); 
 });
 
-app.listen(80, function(){
+app.listen(3000, function(){
   console.log('Connected, 80 port!');
 });
 

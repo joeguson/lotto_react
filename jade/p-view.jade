@@ -43,7 +43,7 @@ html
     -}
     -var commentLikeChecker = function(likeObject, cId, userId){for(var i = 0; i<likeObject.length; i++){if(likeObject[i].pc_id == cId && likeObject[i].u_id == userId){return true;}}return false;}
         header
-            a(href='/penobrol') Beritamus      
+            a(href='/penobrol') Beritamus
         nav
             ul
                 li
@@ -56,7 +56,7 @@ html
                     a(href='/tandya') Tandya
                 br.clear
         section.sub-main(id='sub-main')
-            .ad Advertisement
+            //.ad Advertisement
         section.main(id='main')
             .title
                 if u_id
@@ -65,61 +65,62 @@ html
                         - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
                     else
                         - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
-                    dt.pview-dt= topic.title               
-                    dd.pview-dd
+                    dt.pview-dt= topic.title
+                    dd.pview-dd.hashtag
                         if hashtag
                             -for(var n=0; n<topic.hashtagcount; n++)
                                 a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
                     dd.pview-dd #{date_result}
                         if u_id == topic.author
                             a(href='/pedit/'+topic.id class='edit') Edit
-            .pcontent= topic.content
+            .pcontent
                 if u_id
-                    button(class="warning" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') Warn
-                div(id="plikes")= topic.p_like
+                    p(class="warn")
+                        button(class="pwarnButton" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') !Warn
+                p(class="content")= topic.content
+                div(id="plike" class="plike")= topic.p_like
                 if u_id
                         if statusCheck == 'yes'
-                            button(id="likeButton" class="plikes" type="submit" value="Batal Suka") Batal Suka
+                            button(id="plikeButton" class="plikeButton" type="submit" value="Batal Suka") Batal Suka
                         else
-                            button(id="likeButton" class="plikes" type="submit" value="Suka") Suka
+                            button(id="plikeButton" class="plikeButton" type="submit" value="Suka") Suka
             if u_id
-                form(action='penobrol/'+topic.id method='post' id='commentForm')
+                form(action='penobrol/'+topic.id method='post' class='commentForm')
                   p
-                    textarea(name='comment' id="comment")
+                    textarea(name='comment' class="pcInput")
                   p
-                    input(type='submit' value='submit' class="comment")
+                    input(type='submit' value='comment' class="pcInputButton")
             if comments
                 .pcomment
                     ul.pcomment-ul
                         each c in comments
                             li.pcomment-li
-                                dl.pcomment-dl(id='pComment'+c.id)
+                                dl.pcomment-dl
                                     if topic.public == 'a'
-                                        - var commentStart = '@'+ anonimmaker(topic.author)+" \""+c.content+"\""
+                                        - var commentStart = '@'+ anonimmaker(topic.author)
                                     else
-                                        - var commentStart = '@'+ topic.author+" \""+c.content+"\""
-                                    dt.pcomment-dt #{commentStart}
+                                        - var commentStart = '@'+ topic.author
+                                    .pcomment-start #{commentStart}
                                         if u_id == c.author
                                             a(href='/pcedit/'+topic.id+'/'+c.id) Edit
+                                    dt.pcomment-dt "#{c.content}"
                                     if topic.public == 'a'        
-                                        - var date_result2 = 'by '+anonimmaker(c.author)+' / '+datemaker(c.date)+' / '+c.com+' komen / suka : '
+                                        - var date_result2 = 'by '+anonimmaker(c.author)+' / '+datemaker(c.date)+' / suka : '
                                     else
-                                        - var date_result2 = 'by '+c.author+' / '+datemaker(c.date)+' / ' +c.com+' komen / suka : '
+                                        - var date_result2 = 'by '+c.author+' / '+datemaker(c.date)+' / suka : '
                                     dd.pcomment-dd #{date_result2}
-                                    dd.pcomment-dd(id="pCommentlikes"+c.id class="pCommentlikes")=c.pc_like
-                                    dd.pcomment-dd(id="commentButton")
+                                        span.pclike(id="pCommentlikes"+c.id)=c.pc_like
                                         if u_id
                                             if(commentLikeChecker(clikeStatus, c.id, u_id))
-                                                button(class="plikes" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Batal Suka
+                                                button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Batal Suka
                                             else
-                                                button(class="plikes" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Suka
+                                                button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Suka
                                             span(class="dummy")    
-                                            button(class="warning" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') Warn
-                                    dd.pcomment-dd
-                                        if u_id
-                                            .ccomment
-                                                textarea(name='ccomment')
-                                                input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="komen")
+                                            button(class="pcWarnButton" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') !Warn
+                                    if u_id
+                                        .ccommentForm
+                                            textarea(name='ccomment' class="pccInput")
+                                            input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="komen" class="pccInputButton")
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
                                             dl.pccomment-dl
@@ -131,6 +132,6 @@ html
                                                     - var date_result3 = 'by ' + cc.author + ' / '+datemaker(cc.date)
                                                 dd.pccomment-dd #{date_result3}
                                                     if u_id
-                                                        button(class="warning" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) Warn
+                                                        button(class="warning" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) !Warn
                                      
         script(type="text/javascript" src="plikes.js")

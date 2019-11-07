@@ -48,18 +48,18 @@ function dateMaker(date){
     }
     else{
         if(diff > 86400000){
-            return parseInt(diff/86400000)+' hari yang lalu';
+            return parseInt(diff/86400000)+' days ago';
         }
         else{
             if(diff > 3600000){
-                return parseInt(diff/3600000)+' jam yang lalu';
+                return parseInt(diff/3600000)+' hours ago';
             }
                 else{
                     if(diff > 60000){
-                        return parseInt(diff/60000)+' menit yang lalu';
+                        return parseInt(diff/60000)+' minutes ago';
                     }
                     else{
-                        return parseInt(diff/1000)+' detik yang lalu';
+                        return parseInt(diff/1000)+' seconds ago';
                     }
                 }
         }
@@ -75,9 +75,9 @@ function sendAjax(url){
         var result = JSON.parse(xhr.responseText);
         if(result.result !== 'ok') return;
         // 데이터가 있으면 결과값 표시
-        var randoms = shuffleRandom(6);
+        var randoms = shuffleRandom(result.data.length);
         var randomul = document.getElementById('uls');
-        for(var i=0; i<6; i++){
+        for(var i=0; i<result.data.length; i++){
             var lis = document.createElement('li');
             var as = document.createElement('a');
             var dls = document.createElement('dl');

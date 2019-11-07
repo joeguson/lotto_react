@@ -28,13 +28,10 @@ html
                 li(style='border-bottom: 2px solid yellow; opacity: .9')
                     a(href='/tandya') Tandya
                 br.clear
-        section.sub-main
-            .search-p       
-            .ad
         article
             form(action='/tandya/add' method='post' onsubmit='return checksubmit();')
                 p
-                    input(type='text' name='question' placeholder='title' class="title" id="title")
+                    input(type='text' name='question' placeholder='title' class="title" id="title" required)
                 p
                     label
                         input(type='radio' value='p' name="public" checked)
@@ -43,9 +40,9 @@ html
                         input(type='radio' value='a' name="public")
                         |anonim  
                 p
-                    textarea(name='content' class="content" id="content")
+                    textarea(name='content' class="content" id="content" required)
                 p
-                    input(type='text' name='hashtag' placeholder='#cinta' class="hashtag")
+                    input(type='text' name='hashtag' placeholder='#cinta / max 7 hashtags' class="hashtag")
                 p
                     input(type='submit' class="submit")
                 script.

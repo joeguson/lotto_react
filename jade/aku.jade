@@ -50,7 +50,7 @@ html
                     a(href='/tandya') Tandya
                 br.clear
         section.sub-main(id='sub-main')
-            .ad Advertisement
+            //.ad Advertisement
         section.main(id='main')
         if user
             .p-stat
@@ -87,8 +87,10 @@ html
                 input(type='submit' value="Login" id="login")
             .daftar
                 span(id="hilang")
-                    a(href='/aku/hilang') Hilang
+                    a Forgot
                 span(id="daftar")
-                    a(href='/daftar') Daftar
-        section.footer(id='footer') kontak : joe.guson@beritamus.com
+                    a(href='/daftar') Sing Up
+        section.footer(id='footer') 
+            p kontak : admin@beritamus.com
+            p www.beritamus.com
     script(type="text/javascript" src="aku.js")

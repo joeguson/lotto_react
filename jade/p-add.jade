@@ -31,16 +31,16 @@ html
         article
             form(action='/penobrol/add' method='post' onsubmit='return checksubmit();')
                 p 
-                    input(type='text' name='title' placeholder='title' class="title" id="title")
+                    input(type='text' name='title' placeholder='title' class="title" id="title" required)
                 p
                     label
                         input(type='radio' value='p' name="public" checked)
                         |public
                     label
                         input(type='radio' value='a' name="public")
-                        |anonim  
+                        |anonymous  
                 p
-                    textarea(name='content' class="content" id="content")
+                    textarea(name='content' class="content" id="content" required)
                 p
                     input(type='text' name='hashtag' placeholder='#cinta' class="hashtag")
                 p

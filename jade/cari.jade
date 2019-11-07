@@ -50,33 +50,34 @@ html
                     a(href='/tandya') Tandya
                 br.clear
         section.sub-main(id='sub-main')
-            .ad Advertising
+            //.ad Advertising
             .search
                 form(action='/cari/search' method='get')
                     input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
                     p
                         input(type='submit' class="submit" value="Cari")
         section.main(id='main')
-            ul(id='uls')
-                -for (var i=0; i<6; i++)
-                    li
-                        if(randoms[i].identifier =='p')
-                            -var plink = 'penobrol/'+randoms[i].id
-                            dl(onclick ='location.href="#{plink}"')
-                                dt
-                                    a(href='/penobrol/'+randoms[i].id)= randoms[i].title
-                                dd.ddcontent= randoms[i].content
-                                - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].p_view + ' views' + ' / '+randoms[i].com + ' komentar';
-                                dd #{date_result}
-                        else
-                            -var tlink = 'tandya/'+randoms[i].id
-                            dl(onclick ='location.href="#{tlink}"')
-                                dt
-                                    a(href='/tandya/'+randoms[i].id)= randoms[i].question
-                                dd.ddcontent= randoms[i].content
-                                - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].t_view + ' views'+ ' / '+randoms[i].answer + ' jawaban';
-                                dd #{date_result}
-                if !u_id
-                    .login
-                        a(href='/aku') Login Dulu
+            if randoms
+                ul(id='uls')
+                    -for(var i=0; i<randoms.length; i++)
+                        li
+                            if(randoms[i].identifier =='p')
+                                -var plink = 'penobrol/'+randoms[i].id
+                                dl(onclick ='location.href="#{plink}"')
+                                    dt
+                                        a(href='/penobrol/'+randoms[i].id)= randoms[i].title
+                                    dd.ddcontent= randoms[i].content
+                                    - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].p_view + ' views' + ' / '+randoms[i].com + ' komentar';
+                                    dd #{date_result}
+                            else
+                                -var tlink = 'tandya/'+randoms[i].id
+                                dl(onclick ='location.href="#{tlink}"')
+                                    dt
+                                        a(href='/tandya/'+randoms[i].id)= randoms[i].question
+                                    dd.ddcontent= randoms[i].content
+                                    - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].t_view + ' views'+ ' / '+randoms[i].answer + ' jawaban';
+                                    dd #{date_result}
+                    if !u_id
+                        .login
+                            a(href='/aku') Login Dulu
         script(type="text/javascript" src="cari.js")
