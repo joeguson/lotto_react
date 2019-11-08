@@ -1,4 +1,4 @@
-var conn = require('./b-test');
+var conn = require('./b');
 exports.randomer = function(n){
         var ar = new Array();
         var temp;

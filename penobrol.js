@@ -1,4 +1,4 @@
-var conn = require('./b-test');
+var conn = require('./b');
 
 /************FOR PENOBROL************/
 function isEmpty(obj) {

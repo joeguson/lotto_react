@@ -19,17 +19,17 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     store: new MySQLStore({
-        host     : '112.157.39.243',
-        user     : 'beritamus',
-        password : 'TlqkfEnfgdjqhk1@',
+        host     : 'beritamus-db01.cqtxhcf9tkke.ap-southeast-1.rds.amazonaws.com',
+        user     : 'beritamusdb',
+        password : 'TlqkfEnfgdjqhk$$',
         database : 'beritamus'
     })
 }));
 var conn = mysql.createConnection(
     {
-      host     : '112.157.39.243',
-      user     : 'beritamus',
-      password : 'TlqkfEnfgdjqhk1@',
+      host     : 'beritamus-db01.cqtxhcf9tkke.ap-southeast-1.rds.amazonaws.com',
+      user     : 'beritamusdb',
+      password : 'TlqkfEnfgdjqhk$$',
       database : 'beritamus'
     }
 );

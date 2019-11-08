@@ -1,4 +1,4 @@
-var conn = require('./b-test');
+var conn = require('./b');
 
 /************FOR TANDYA************/
 function isEmpty(obj) {
