@@ -156,29 +156,11 @@ exports.postAddTandya = function(req, res){
     var sql = 'INSERT INTO tandya (author, question, content, hashtagcount, public) VALUES (?, ?, ?, ?, ?)';
     var sql4 = 'INSERT INTO hashtag (t_id, u_id, ht1, ht2, ht3, ht4, ht5, ht6, ht7) VALUES (?, ?, ?);';
     var sql2='UPDATE users set u_tan= u_tan + 1 WHERE u_id = ?';
-    var sql_haipur = '';
-    var sql_u_haipur = '';
-    
-    if(public == 'p'){
-        sql_haipur = 'INSERT INTO haipur (u_id, amount, content) VALUES (?, -1000, "added a public tandya")';
-        sql_u_haipur = 'UPDATE users set u_haipur = u_haipur - 1000 where u_id = ?';
-    }
-    else{
-        sql_haipur = 'INSERT INTO haipur (u_id, amount, content) VALUES (?, -1200, "added a anonim tandya")';
-        sql_u_haipur = 'UPDATE users set u_haipur = u_haipur - 1200 where u_id = ?';
-    }
+
     //update connection
     conn.conn.query(sql2, [author], function(err, update, fields){
         if(err){console.log(err);}
       });
-    conn.conn.query(sql_haipur, author, function(err, haipur, fields){
-        if(err){console.log(err);}
-        else{
-            conn.conn.query(sql_u_haipur, author, function(err, u_haipur, fields){
-               if(err){console.log(err);} 
-            });
-        }
-    });
     //insert connection
     conn.conn.query(sql, [author, question, content, hashtagCount, public], function(err, result, fields){
         if(err){console.log(err);}

@@ -61,8 +61,16 @@ form{width:85%; margin: 0 auto @marginbottom-mbl auto;}
 .p-penobrol{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; background-color: @bgcolor2;}
 .p-tandya{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; background-color: @bgcolor2;}
 
-//.pstat - p
-.p-stat p {font-size: 18px; font-weight: bold; line-height: 30px;}
+//.p-stat - .likeHeading(p), .likeStat(div)
+.p-stat p {font-size: 18px; line-height: 30px; box-sizing: border-box;}
+.likeStat{width:100%; box-sizing: border-box; padding: 5px;}
+.likeStat:nth-child(2){border-top:1px solid lightgray}
+.likeStat .likeSpan:first-child{border-right:1px solid lightgray}
+.likeSpan{width:50%; box-sizing: border-box; display: inline-block; text-align: center;}
+.likeHeading{margin-bottom: 5px; color:@main;}
+.likeCount{width:100%; box-sizing: border-box; text-align: center; color:red; font-size: 20px}
+
+
 //.p-penobrol - p, dl
 .p-penobrol p{font-size: 20px; line-height: 30px; margin-bottom: 15px}
 .p-penobrol dl{width:95%; margin: 0 auto; background-color:@mainlight2; .li-border(); cursor: pointer; padding:5px;}

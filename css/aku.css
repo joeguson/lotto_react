@@ -121,8 +121,36 @@ form {
 }
 .p-stat p {
   font-size: 18px;
-  font-weight: bold;
   line-height: 30px;
+  box-sizing: border-box;
+}
+.likeStat {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+}
+.likeStat:nth-child(2) {
+  border-top: 1px solid lightgray;
+}
+.likeStat .likeSpan:first-child {
+  border-right: 1px solid lightgray;
+}
+.likeSpan {
+  width: 50%;
+  box-sizing: border-box;
+  display: inline-block;
+  text-align: center;
+}
+.likeHeading {
+  margin-bottom: 5px;
+  color: #4167e0;
+}
+.likeCount {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  color: red;
+  font-size: 20px;
 }
 .p-penobrol p {
   font-size: 20px;

@@ -52,44 +52,55 @@ html
         section.sub-main(id='sub-main')
             //.ad Advertisement
         section.main(id='main')
-        if user
-            .p-stat
-                p Penobrolku    :  #{user.u_pen}
-                p Tandyaku     : #{user.u_tan}
-                p Haipurku    :  #{user.u_haipur}
-            .p-penobrol 
-                p Penobrol
-                if penobrols
-                    each p in penobrols
-                        -var plink = 'penobrol/'+p.id
-                        dl(onclick ='location.href="#{plink}"')
-                            dt
-                                a(href='/penobrol/'+p.id)= p.title
-                            - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / ' + p.com +' kommen'+' / suka: ' + p.p_like
-                            dd.content-info date: #{date_result}         
-            .p-tandya 
-                p Tandya
-                if tandyas
-                    each t in tandyas
-                        -var tlink = 'tandya/'+t.id
-                        dl(onclick ='location.href="#{tlink}"')
-                            dt
-                                a(href='/tandya/'+t.id)= t.question
-                            - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / jawaban: ' + t.answer + ' / suka: ' + t.t_like
-                            dd.content-info date: #{date_result}        
-            a.logout(href= '/aku/logout') Logout!
-        else
-            form(action='aku/login' method='post')
-                input(type='text' name='u_id' placeholder='    ID' id="input_id")
-                input(type='password' name='u_pw' placeholder='    Password' id="input_pw")
-                if message
-                    p.message= message
-                input(type='submit' value="Login" id="login")
-            .daftar
-                span(id="hilang")
-                    a Forgot
-                span(id="daftar")
-                    a(href='/daftar') Sing Up
+            if user
+                .p-stat
+                    .likeStat
+                        span.likeSpan
+                            p.likeHeading Penobrol
+                            p.likeCount 90
+                        span.likeSpan
+                            p.likeHeading Tandya
+                            p.likeCount 73
+                    .likeStat
+                        span.likeSpan 
+                            p.likeHeading Comment
+                            p.likeCount 32
+                        span.likeSpan 
+                            p.likeHeading Answer
+                            p.likeCount 890
+                .p-penobrol
+                    p Penobrol
+                    if penobrols
+                        each p in penobrols
+                            -var plink = 'penobrol/'+p.id
+                            dl(onclick ='location.href="#{plink}"')
+                                dt
+                                    a(href='/penobrol/'+p.id)= p.title
+                                - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / ' + p.com +' kommen'+' / suka: ' + p.p_like
+                                dd.content-info date: #{date_result}         
+                .p-tandya 
+                    p Tandya
+                    if tandyas
+                        each t in tandyas
+                            -var tlink = 'tandya/'+t.id
+                            dl(onclick ='location.href="#{tlink}"')
+                                dt
+                                    a(href='/tandya/'+t.id)= t.question
+                                - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / jawaban: ' + t.answer + ' / suka: ' + t.t_like
+                                dd.content-info date: #{date_result}        
+                a.logout(href= '/aku/logout') Logout!
+            else
+                form(action='aku/login' method='post')
+                    input(type='text' name='u_id' placeholder='    ID' id="input_id")
+                    input(type='password' name='u_pw' placeholder='    Password' id="input_pw")
+                    if message
+                        p.message= message
+                    input(type='submit' value="Login" id="login")
+                .daftar
+                    span(id="hilang")
+                        a Forgot
+                    span(id="daftar")
+                        a(href='/daftar') Sing Up
         section.footer(id='footer') 
             p contact : admin@beritamus.com
             p www.beritamus.com

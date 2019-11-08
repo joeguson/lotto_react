@@ -47,7 +47,7 @@
   padding: 10px;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
-  background-color: #ebedf2;
+  background-color: #ffffff;
   box-sizing: border-box;
 }
 .t-terbaru {
@@ -74,7 +74,7 @@
   clear: both;
 }
 .t-title {
-  background-color: #ebedf2;
+  background-color: #ffffff;
   font-size: 24px;
   margin-bottom: 10px;
 }

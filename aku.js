@@ -25,7 +25,7 @@ exports.login = function(req, res){
     var u_pw = req.body.u_pw;
     var sql = 'SELECT * FROM users WHERE u_id = ?';
     var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
-    var sql3 = 'UPDATE users SET last_login = NOW(), u_haipur = u_haipur+100 WHERE u_id = ?';
+    var sql3 = 'UPDATE users SET last_login = NOW() WHERE u_id = ?';
     conn.conn.query(sql2, [u_id], function(err, counts, fields){
         if(counts[0].u_id){ //만약 로그인 하려는 id가 있다면
              conn.conn.query(sql,[u_id], function(err, users, fields){ //회원의 모든 정보를 불러온다
@@ -152,7 +152,7 @@ exports.postDaftar = function(req, res){
         from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
         to: u_email,                     // 수신 메일 주소
         subject: 'Email Verikasi Dari Beritamus',   // 제목
-        html: '<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://beritamus.com/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
+        html: '<p>Welcome To Beritamus!</p>'+'<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://beritamus.com/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
     };
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
