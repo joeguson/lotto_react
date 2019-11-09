@@ -12,7 +12,9 @@ var path = require('path')
 var favicon = require('serve-favicon');
 var schedule = require('node-schedule');
 var fs = require('fs');
+var useragent = require('express-useragent');
 exports.sch = schedule;
+app.use(useragent.express());
 app.use(favicon(path.join(__dirname,'css', 'logo2.png')));
 app.use(session({
     secret : 'hithere@#',
@@ -87,75 +89,63 @@ app.get('/cari/search', function(req, res){
         });
     }
     else{
-        if(cari.indexOf(' ')>0){//more than one word, no hashtag -content, title, question 에서 검색
-            var sql = 'SELECT * FROM penobrol AS result WHERE MATCH(title) AGAINST(?)';
-            var sql2 = 'SELECT * FROM penobrol AS result WHERE MATCH(content) AGAINST(?)';
-            var sql3 = 'SELECT * FROM tandya AS result WHERE MATCH(question) AGAINST(?)';
-            var sql4 = 'SELECT * FROM tandya AS result WHERE MATCH(content) AGAINST(?)';
-            conn.query(sql, cari, function(err, penobrol_t, f){
-                conn.query(sql2, cari, function(err, penobrol_c, f){
-                    conn.query(sql3, cari, function(err, tandya_q, f){
-                        conn.query(sql4, cari, function(err, tandya_c, f){
-                            //one result has mnay children. need to seperate them.
-                            if(penobrol_t.length>0){
-                                var temp1 = penobrol_t.length -1;
-                                while(temp1 >= 0){
-                                    cari_result.push(JSON.parse(JSON.stringify(penobrol_t[temp1])));
-                                    temp1 --;
-                                }
+        var sql4 = 'SELECT * FROM penobrol AS result WHERE MATCH(title) AGAINST(?)';
+        var sql5 = 'SELECT * FROM penobrol AS result WHERE MATCH(content) AGAINST(?)';
+        var sql6 = 'SELECT * FROM tandya AS result WHERE MATCH(question) AGAINST(?)';
+        var sql7 = 'SELECT * FROM tandya AS result WHERE MATCH(content) AGAINST(?)';
+        conn.query(sql4, cari, function(err, penobrol_t, f){
+            conn.query(sql5, cari, function(err, penobrol_c, f){
+                conn.query(sql6, cari, function(err, tandya_q, f){
+                    conn.query(sql7, cari, function(err, tandya_c, f){
+                        //one result has mnay children. need to seperate them.
+                        if(penobrol_t.length>0){
+                            var temp1 = penobrol_t.length -1;
+                            while(temp1 >= 0){
+                                cari_result.push(JSON.parse(JSON.stringify(penobrol_t[temp1])));
+                                temp1 --;
                             }
-                            if(penobrol_c.length>0){
-                                var temp2 = penobrol_c.length -1;
-                                while(temp2 >= 0){
-                                    cari_result.push(JSON.parse(JSON.stringify(penobrol_c[temp2])));
-                                    temp2 --;
-                                }
+                        }
+                        if(penobrol_c.length>0){
+                            var temp2 = penobrol_c.length -1;
+                            while(temp2 >= 0){
+                                cari_result.push(JSON.parse(JSON.stringify(penobrol_c[temp2])));
+                                temp2 --;
                             }
-                            if(tandya_q.length>0){
-                                var temp3 = tandya_q.length -1;
-                                while(temp3 >= 0){
-                                    cari_result.push(JSON.parse(JSON.stringify(tandya_q[temp3])));
-                                    temp3 --;
-                                }
+                        }
+                        if(tandya_q.length>0){
+                            var temp3 = tandya_q.length -1;
+                            while(temp3 >= 0){
+                                cari_result.push(JSON.parse(JSON.stringify(tandya_q[temp3])));
+                                temp3 --;
                             }
-                            if(tandya_c.length>0){
-                                var temp4 = tandya_c.length -1;
-                                while(temp4 >= 0){
-                                    cari_result.push(JSON.parse(JSON.stringify(tandya_c[temp4])));
-                                    temp4 --;
-                                }
+                        }
+                        if(tandya_c.length>0){
+                            var temp4 = tandya_c.length -1;
+                            while(temp4 >= 0){
+                                cari_result.push(JSON.parse(JSON.stringify(tandya_c[temp4])));
+                                temp4 --;
                             }
-                            res.render('cari-result', {result:cari_result});
-                        });    
+                        }
+                        res.render('cari-result', {result:cari_result});
                     });    
-                });
-            
+                });    
             });
-        }
-        else{//just one word, no hashtag - title, question, hashtag에서 검색
-            //like? match? will be used.
-            var sql = 'SELECT * FROM penobrol WHERE content LIKE "%"?"%";';
-            var sql2 = 'SELECT * FROM tandya WHERE content LIKE "%"?"%";';
-            conn.query(sql, cari, function(err, penobrol, f){
-                conn.query(sql2, cari, function(err, tandya, f){
-                    if(penobrol.length>0){
-                        var temp1 = penobrol.length -1;
-                        while(temp1 >= 0){
-                            cari_result.push(JSON.parse(JSON.stringify(penobrol[temp1])));
-                            temp1 --;
-                        }
-                    }
-                    if(tandya.length>0){
-                        var temp = tandya.length -1;
-                        while(temp >= 0){
-                            cari_result.push(JSON.parse(JSON.stringify(tandya[temp])));
-                            temp --;
-                        }
-                    }
-                    res.render('cari-result', {result:cari_result});
-                });
-            });
-        }
+
+        });
+    }
+    var searchStringSql = '';
+    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+    if(req.session.u_id){
+        searchStringSql = 'INSERT INTO search_string (u_id, search_string, ipAddress) VALUES (?, ?, INET_ATON(?))';
+        conn.query(searchStringSql,[req.session.u_id, cari, ipAddress], function(err, searchStringResult, field){
+            if(err){console.log(err);}    
+        });
+    }
+    else{
+        searchStringSql = 'INSERT INTO search_string (search_string, ipAddress) VALUES (?, INET_ATON(?))';
+        conn.query(searchStringSql, [cari, ipAddress], function(err, searchStringResult, field){
+            if(err){console.log(err);}    
+        });
     }
 });
 app.get('/cari/load', function(req, res){
@@ -176,6 +166,7 @@ app.get('/cari/load', function(req, res){
 });
 
 app.get(['/cari','/'], function(req, res){
+    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
     var sql = 'select * from penobrol order by rand() limit 3';
     var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
     //DO NOT SELECT *. Penobrol, tandya have different number of columns. union all will make an error.
@@ -204,6 +195,19 @@ app.get(['/cari','/'], function(req, res){
             });
         }
     });
+    var sql3 = '';
+    if(req.session.u_id){
+        sql3 = 'INSERT INTO access_info(u_id, ipAddress, browser) VALUES(?, INET_ATON(?), ?)';
+        conn.query(sql3, [req.session.u_id, ipAddress, req.headers['user-agent']], function(err, access, fields){
+            if(err){console.log(err);}    
+        });
+    }
+    else{
+        sql3 = 'INSERT INTO access_info(ipAddress, browser) VALUES(?, INET_ATON(?), ?)';
+        conn.query(sql3, [ipAddress, req.headers['user-agent']], function(err, access, fields){
+            if(err){console.log(err);}    
+        });
+    }
 });
 /************FOR TANDYA************/
 app.get('/tandya/add', tandya.getAddTandya);
@@ -259,7 +263,11 @@ app.post('/aku/register', function(req, res){
     }); 
 });
 
-app.listen(3000, function(){
+var weekly = schedule.scheduleJob({second: 30, dayOfWeek: 0}, function(){
+  console.log('Time for tea!');
+});
+
+app.listen(3000, '0.0.0.0', function(){
   console.log('Connected, 80 port!');
 });
 

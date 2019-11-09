@@ -237,6 +237,16 @@ CREATE TABLE `search_string` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
+17. user_access
+
+CREATE TABLE `access_info` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `u_id` varchar(50) DEFAULT 'stranger',
+  `ipAddress` int unsigned DEFAULT 0,
+  `browser` varchar(255) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 16. err_message
 CREATE TABLE `err_message` (
