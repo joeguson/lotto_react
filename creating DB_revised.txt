@@ -248,6 +248,16 @@ CREATE TABLE `access_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
+17. daily_count
+
+CREATE TABLE `daily_count` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `visitCount` int UNSIGNED NOT NULL DEFAULT '0',
+  `loginCount` int UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
 16. err_message
 CREATE TABLE `err_message` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,

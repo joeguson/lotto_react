@@ -2,6 +2,7 @@
 var express = require('express');
 var nodemailer = require('nodemailer');
 var router = express.Router();
+var cookieParser = require('cookie-parser');
 exports.router = router;
 var app = express();
 var bodyParser = require('body-parser');
@@ -44,12 +45,16 @@ app.use(express.static('css'));
 app.use("/jade", express.static('/'));
 app.set('view engine', 'jade');
 app.set('views', './jade');
+app.use(cookieParser());
 
 var penobrol = require('./penobrol');
 var tandya = require('./tandya');
 var aku = require('./aku');
 var cari = require('./cari');
 var testing = require('./testing');
+
+var todayCount = 1;
+var todayCountsql = 'INSERT INTO daily_count (visitCount) VALUES (?)';
 
 app.get('/test', testing.testing1);
 
@@ -166,6 +171,12 @@ app.get('/cari/load', function(req, res){
 });
 
 app.get(['/cari','/'], function(req, res){
+    var todayDate = new Date();
+    var todayDay = todayDate.getDate();
+    if(parseInt(req.cookies.visitDate) !== todayDay){
+        todayCount++;
+    }
+    res.cookie('visitDate', todayDay, {maxAge: 86400000, httpOnly: true });
     var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
     var sql = 'select * from penobrol order by rand() limit 3';
     var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
@@ -203,11 +214,13 @@ app.get(['/cari','/'], function(req, res){
         });
     }
     else{
-        sql3 = 'INSERT INTO access_info(ipAddress, browser) VALUES(?, INET_ATON(?), ?)';
+        sql3 = 'INSERT INTO access_info(ipAddress, browser) VALUES(INET_ATON(?), ?)';
         conn.query(sql3, [ipAddress, req.headers['user-agent']], function(err, access, fields){
             if(err){console.log(err);}    
         });
     }
+    
+    
 });
 /************FOR TANDYA************/
 app.get('/tandya/add', tandya.getAddTandya);
@@ -263,9 +276,19 @@ app.post('/aku/register', function(req, res){
     }); 
 });
 
-var weekly = schedule.scheduleJob({second: 30, dayOfWeek: 0}, function(){
+var weeklyUpdate = schedule.scheduleJob({dayOfWeek: 6}, function(){
   console.log('Time for tea!');
 });
+
+var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, function(){
+    conn.query(todayCountsql, todayCount, function(err, updateCount, field){
+        if(err){console.log(err);}
+        else{
+            todayCount = 1;
+        }
+    });
+});
+
 
 app.listen(3000, '0.0.0.0', function(){
   console.log('Connected, 80 port!');
