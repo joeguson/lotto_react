@@ -18,11 +18,13 @@
 8. install jade
 - npm install jade
 9. install node-schedule
-- npm install node-schdule
+- npm install node-schedule
 10 install serve-favicon
 - npm install serve-favicon
 11 install nodemailer
 - npm install nodemailer
+12. install cookie-parser
+- npm install cookie-parser
 
 https://freeprog.tistory.com/168
 https://m.blog.naver.com/wlsdml1103/221159758141
