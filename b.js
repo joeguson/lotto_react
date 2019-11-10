@@ -280,6 +280,10 @@ var weeklyUpdate = schedule.scheduleJob({dayOfWeek: 6}, function(){
   console.log('Time for tea!');
 });
 
+var testingSchedule = schedule.scheduleJob({second: 6}, function(){
+  console.log('Time for tea!');
+});
+
 var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, function(){
     conn.query(todayCountsql, todayCount, function(err, updateCount, field){
         if(err){console.log(err);}
@@ -290,7 +294,7 @@ var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, fu
 });
 
 
-app.listen(80, '0.0.0.0', function(){
+app.listen(3000, '0.0.0.0', function(){
   console.log('Connected, 80 port!');
 });
 
