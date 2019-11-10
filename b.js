@@ -54,7 +54,7 @@ var cari = require('./cari');
 var testing = require('./testing');
 
 var todayCount = 1;
-var todayCountsql = 'INSERT INTO daily_count (visitCount) VALUES (?)';
+
 
 app.get('/test', testing.testing1);
 
@@ -284,6 +284,7 @@ var testingSchedule = schedule.scheduleJob({second: 6}, function(){
   console.log('Time for tea!');
 });
 
+var todayCountsql = 'INSERT INTO daily_count (visitCount) VALUES (?)';
 var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, function(){
     conn.query(todayCountsql, todayCount, function(err, updateCount, field){
         if(err){console.log(err);}

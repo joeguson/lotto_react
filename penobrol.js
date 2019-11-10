@@ -35,7 +35,7 @@ exports.getViewPenobrol = function(req, res){
     if(checkId.test(id)){
         var sql1 = 'SELECT MAX(id) AS max from penobrol';
         var sql3 = 'UPDATE penobrol SET p_view = p_view + 1 WHERE id = ?';
-        var sql5 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
+        var sql5 = 'UPDATE penobrol SET score = (com *.3 + p_like*.7)/p_view * 100 where id = ?';
         var sql = 'SELECT * FROM penobrol WHERE id = ?';
         var sql2 = 'SELECT * FROM p_com WHERE p_id = ? order by score desc';
         var sql6 = 'SELECT * FROM hashtag where p_id = ?';
@@ -177,7 +177,7 @@ exports.postAddComment = function(req, res){
     //when connection is more than two, divide
     var sql = 'INSERT INTO p_com (author, content, p_id) VALUES (?, ?, ?)';
     var sql2 = 'UPDATE penobrol SET com = com + 1 WHERE id = (?)';
-    var sql3 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
+    var sql3 = 'UPDATE penobrol SET score = (com *.3 + p_like*.7)/p_view * 100 where id = ?';
     conn.conn.query(sql3, p_id, function(err, score, fields){
         if(err){console.log(err);}
     });
@@ -199,7 +199,7 @@ exports.postAddCcomment = function(req, res){
     //when connection is more than two, divide
     var sql = 'INSERT INTO pc_com (author, content, pc_id, p_id) VALUES (?, ?, ?, ?)';
     var sql2 = 'UPDATE p_com SET com = com + 1 WHERE id = ?';
-    var sql3 = 'UPDATE p_com SET score = pc_like*0.6 + com*0.4 where id = ?';
+    var sql3 = 'UPDATE p_com SET score = pc_like*0.7 + com*0.3 where id = ?';
     var sql4 = 'SELECT * FROM pc_com where id = ?';
     conn.conn.query(sql, [author, content, pc_id, p_id], function(err, result, fields){
         if(err){console.log(err);}
@@ -227,7 +227,7 @@ exports.likesPenobrol = function(req, res){
     var sql = 'SELECT * FROM p_like WHERE u_id = ? AND p_id = ?';
     var sql2 = 'UPDATE penobrol set p_like = p_like - 1 where id = ?';
     var sql4 = 'UPDATE penobrol set p_like = p_like + 1 where id = ?';
-    var sql7 = 'UPDATE penobrol SET score = p_view*.2 + p_like*.6 + com*0.2 where id = ?';
+    var sql7 = 'UPDATE penobrol SET score = (com *.3 + p_like*.7)/p_view * 100 where id = ?';
     
     var sql3 = 'DELETE FROM p_like WHERE u_id = ? AND p_id = ?';
     var sql5 = 'INSERT INTO p_like (p_id, u_id) VALUES (?, ?)';
@@ -274,7 +274,7 @@ exports.likesComment = function(req, res){
     var sql4 = 'UPDATE p_com set pc_like = pc_like + 1 where id = ?';
     var sql5 = 'INSERT INTO pc_like (pc_id, u_id, p_id) VALUES (?, ?, ?)';
     var sql6 = 'select pc_like from p_com where id = ?';
-    var sql7 = 'UPDATE p_com SET score = pc_like*.6 + com*0.4 where id = ?';
+    var sql7 = 'UPDATE p_com SET score = pc_like*0.7 + com*0.3 where id = ?';
     conn.conn.query(sql, [req.session.u_id, pc_id], function(err, statusCheck, fields){
         if(clickValue == 'Batal Suka'){
             conn.conn.query(sql2, pc_id, function(err, update, fields){

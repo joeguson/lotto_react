@@ -41,7 +41,7 @@ exports.getViewTandya =  function(req, res){
     if(checkId.test(id)){
         var sql1 = 'SELECT MAX(id) AS max from tandya';
         var sql3 = 'UPDATE tandya SET t_view = t_view + 1 WHERE id = ?';
-        var sql7 = 'UPDATE tandya SET score = t_view*.2 + t_like*.5 + answer*0.3 where id = ?';
+        var sql7 = 'UPDATE tandya SET score = (answer *.3 + t_like*.7)/t_view * 100 where id = ?';
         var sql = 'SELECT * FROM tandya WHERE id = ?';
         var sql2 = 'SELECT * FROM t_ans WHERE t_id = ? order by score desc';
         var sql6 = 'SELECT * FROM hashtag where t_id = ?';
@@ -180,7 +180,7 @@ exports.postAddAnswer = function(req, res){
     var t_id = req.params.tandya_no;
     var sql = 'INSERT INTO t_ans (author, answer, t_id) VALUES (?, ?, ?)';
     var sql2 = 'UPDATE tandya SET answer = answer + 1 WHERE id = (?)';
-    var sql3 = 'UPDATE tandya SET score = t_view*.2 + t_like*.5 + answer*0.3 where id = ?';
+    var sql3 = 'UPDATE tandya SET score = (answer *.3 + t_like*.7)/t_view * 100 where id = ?';
     conn.conn.query(sql, [author, answer, t_id], function(err, result, fields){
         if(err){console.log(err);}
         else{
@@ -207,7 +207,7 @@ exports.postAddAcomment = function(req, res){
     //when connection is more than two, divide
     var sql = 'INSERT INTO ta_com (author, content, ta_id, t_id) VALUES (?, ?, ?, ?)';
     var sql2 = 'UPDATE t_ans SET com = com + 1 WHERE id = ?';
-    var sql3 = 'UPDATE t_ans SET score = ta_like*0.6 + com*0.4 where id = ?';
+    var sql3 = 'UPDATE tandya SET score = com*.3 + ta_like*.7 where id = ?';
     var sql4 = 'SELECT * FROM ta_com where id = ?';
     conn.conn.query(sql, [author, content, ta_id, t_id], function(err, result, fields){
         if(err){console.log(err);}
@@ -239,7 +239,7 @@ exports.likesTandya = function(req, res){
     var sql4 = 'UPDATE tandya set t_like = t_like + 1 where id = ?';
     var sql5 = 'INSERT INTO t_like (t_id, u_id) VALUES (?, ?)';
     var sql6 = 'select t_like from tandya where id = ?';
-    var sql7 = 'UPDATE tandya SET score = t_view*.2 + t_like*.6 + answer*0.2 where id = ?';
+    var sql7 = 'UPDATE tandya SET score = (answer *.3 + t_like*.7)/t_view * 100 where id = ?';
     conn.conn.query(sql, [req.session.u_id, t_id], function(err, statusCheck, fields){
         if(clickValue == 'Batal Suka'){
             conn.conn.query(sql2, t_id, function(err, update, fields){
@@ -280,7 +280,7 @@ exports.likesAnswer = function(req, res){
     var sql4 = 'UPDATE t_ans set ta_like = ta_like + 1 where id = ?';
     var sql5 = 'INSERT INTO ta_like (ta_id, u_id, t_id) VALUES (?, ?, ?)';
     var sql6 = 'select ta_like from t_ans where id = ?';
-    var sql7 = 'UPDATE tandya SET score = t_view*.2 + t_like*.6 + answer*0.2 where id = ?';
+    var sql7 = 'UPDATE tandya SET score = com*.3 + ta_like*.7 where id = ?';
     conn.conn.query(sql, [req.session.u_id, ta_id], function(err, statusCheck, fields){
         if(clickValue == 'Batal Suka'){
             conn.conn.query(sql2, ta_id, function(err, update, fields){
