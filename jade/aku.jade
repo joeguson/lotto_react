@@ -24,14 +24,14 @@ html
     -var month = tempdate.getMonth();
     -var day = tempdate.getDate();
     -var diff = nowdate - tempdate;
-    -if(diff > 864000000){return month+'-'+day+'-'+year;}
+    -if(diff > 864000000){return month+'-'+day;}
     -else{
-    -if(diff > 86400000){return parseInt(diff/86400000)+' hari yang lalu';}
+    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
     -else{
-    -if(diff > 3600000){return parseInt(diff/3600000)+' jam yang lalu';}
+    -if(diff > 3600000){return parseInt(diff/3600000)+' h ago';}
     -else{
-    -if(diff > 60000){return parseInt(diff/60000)+' menit yang lalu';}
-    -else{return parseInt(diff/1000)+' detik yang lalu';}
+    -if(diff > 60000){return parseInt(diff/60000)+' min ago';}
+    -else{return parseInt(diff/1000)+' sec ago';}
     -}
     -}
     -}
@@ -54,20 +54,21 @@ html
         section.main(id='main')
             if user
                 .p-stat
+                    -var likeCountChecker = function(num){if(num){return num;}else{return 0;}}
                     .likeStat
                         span.likeSpan
                             p.likeHeading Penobrol
-                            p.likeCount #{totalp_like}
+                            p.likeCount #{likeCountChecker(totalp_like.totalp_like)}
                         span.likeSpan
                             p.likeHeading Tandya
-                            p.likeCount #{totalt_like}
+                            p.likeCount #{likeCountChecker(totalt_like.totalt_like)}
                     .likeStat
                         span.likeSpan 
                             p.likeHeading Comment
-                            p.likeCount #{totalpc_like}
+                            p.likeCount #{likeCountChecker(totalpc_like.totalpc_like)}
                         span.likeSpan 
                             p.likeHeading Answer
-                            p.likeCount #{totalta_like}
+                            p.likeCount #{likeCountChecker(totalta_like.totalta_like)}
                 .p-penobrol
                     p Penobrol
                     if penobrols

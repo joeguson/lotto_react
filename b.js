@@ -274,7 +274,7 @@ app.post('/aku/register', function(req, res){
     }); 
 });
 
-var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfWeek: 6}, function(){
+var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfWeek: 0}, function(){
     var dateFrom = new Date();
     var dateTo = new Date();
     dateFrom.setDate(dateFrom.getDate() - 6);
@@ -316,10 +316,6 @@ var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfW
     });
 });
 
-var testingSchedule = schedule.scheduleJob({second: 6}, function(){
-  console.log('Time for tea!');
-});
-
 var todayCountsql = 'INSERT INTO daily_count (visitCount) VALUES (?)';
 var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, function(){
     conn.query(todayCountsql, todayCount, function(err, updateCount, field){
@@ -329,7 +325,6 @@ var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, fu
         }
     });
 });
-
 
 app.listen(80, '0.0.0.0', function(){
   console.log('Connected, 80 port!');

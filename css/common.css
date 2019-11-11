@@ -73,6 +73,8 @@ nav {
   line-height: 26px;
   margin-top: 40px;
   padding: 10px 0px;
+  position: relative;
+  bottom: 0;
 }
 header a {
   color: #2e60f4;

@@ -52,14 +52,14 @@ function dateMaker(date){
         }
         else{
             if(diff > 3600000){
-                return parseInt(diff/3600000)+' hours ago';
+                return parseInt(diff/3600000)+' h ago';
             }
                 else{
                     if(diff > 60000){
-                        return parseInt(diff/60000)+' minutes ago';
+                        return parseInt(diff/60000)+' min ago';
                     }
                     else{
-                        return parseInt(diff/1000)+' seconds ago';
+                        return parseInt(diff/1000)+' sec ago';
                     }
                 }
         }
