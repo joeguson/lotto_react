@@ -73,10 +73,13 @@ exports.getViewTandya =  function(req, res){
                                             conn.conn.query(sql5, id, function(err, acomments, fields){
                                                 if(err){console.log(err);}
                                                 else{
-                                                    delete hashtag[0].id;
-                                                    delete hashtag[0].u_id;
-                                                    delete hashtag[0].p_id;
-                                                    delete hashtag[0].t_id;
+                                                    console.log('hashtag : ' + hashtag.length);
+                                                    if(hashtag.length>=1){
+                                                        delete hashtag[0].id;
+                                                        delete hashtag[0].u_id;
+                                                        delete hashtag[0].p_id;
+                                                        delete hashtag[0].t_id;
+                                                    }
                                                     if(req.session.u_id){
                                                         conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
                                                             if(err){console.log(err);}
@@ -358,7 +361,12 @@ exports.getEditTandya = function(req, res){
                 if(err){console.log(err);}
                 else{
                     if(req.session.u_id == edit[0].author){
-                        res.render('t-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
+                        if(hashtags.length>=1){
+                            res.render('t-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
+                        }
+                        else{
+                            res.render('t-edit', {u_id:'y', edit_content:edit[0]});
+                        }
                     }
                     else{
                         res.send('hi');

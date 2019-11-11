@@ -92,8 +92,8 @@ html
                 a.logout(href= '/aku/logout') Logout!
             else
                 form(action='aku/login' method='post')
-                    input(type='text' name='u_id' placeholder='    ID' id="input_id")
-                    input(type='password' name='u_pw' placeholder='    Password' id="input_pw")
+                    input(type='text' name='u_id' placeholder='  ID' id="input_id")
+                    input(type='password' name='u_pw' placeholder='  Password' id="input_pw")
                     if message
                         p.message= message
                     input(type='submit' value="Login" id="login")

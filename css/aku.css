@@ -43,6 +43,7 @@ form {
   border: 1px solid #4167e0;
   margin-bottom: 20px;
   font-size: 20px;
+  padding: 5px 10px;
 }
 #input_pw {
   width: 100%;
@@ -51,6 +52,7 @@ form {
   border: 1px solid #4167e0;
   margin-bottom: 30px;
   font-size: 20px;
+  padding: 5px 10px;
 }
 .message {
   width: 85%;

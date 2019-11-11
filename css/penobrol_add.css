@@ -7,20 +7,35 @@
 }
 .button {
   width: 100%;
-  height: 60px;
+  height: 45px;
   box-sizing: border-box;
   font-size: 20px;
-  background-color: #e5e5f2;
+  color: black;
+  background-color: #abbffa;
   display: inline-block;
   text-align: center;
-  line-height: 40px;
+  line-height: 45px;
   text-decoration: none;
-  margin-bottom: 20px;
   border-style: none;
+  margin: 0px auto 10px auto;
+}
+.border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 article {
   width: 100%;
   background-color: #ffffff;
+}
+input {
+  border: 1px solid lightgray;
+  font-size: 16px;
+  padding: 5px;
+}
+textarea {
+  border: 1px solid lightgray;
+  font-size: 16px;
+  padding: 10px;
 }
 form p:nth-child(1) {
   text-align: center;
@@ -29,6 +44,9 @@ form p:nth-child(2) {
   text-align: center;
 }
 form p:nth-child(3) {
+  text-align: center;
+}
+form p:nth-child(4) {
   text-align: center;
 }
 .title {
@@ -45,41 +63,22 @@ form p:nth-child(3) {
 }
 .submit {
   width: 100%;
-  height: 60px;
+  height: 45px;
   box-sizing: border-box;
   font-size: 20px;
-  background-color: #e5e5f2;
+  color: black;
+  background-color: #abbffa;
   display: inline-block;
   text-align: center;
-  line-height: 40px;
+  line-height: 45px;
   text-decoration: none;
-  margin-bottom: 20px;
   border-style: none;
+  margin: 0px auto 10px auto;
+  width: 90%;
+  margin: 0 auto;
+  display: block;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  line-height: 16px;
 }
 /*for bigger windows*/
-@media (min-width: 768px) {
-  .main {
-    width: 90%;
-  }
-  .pview-dt {
-    font-size: 18px;
-  }
-  .pview-dd {
-    font-size: 12px;
-  }
-  .pcontent {
-    width: 90%;
-    margin: 0px auto;
-    font-size: 16px;
-  }
-  .pcomment {
-    width: 90%;
-    margin: 0px auto;
-  }
-  .pcomment-dt {
-    font-size: 14px;
-  }
-  .pcomment-dd {
-    font-size: 12px;
-  }
-}

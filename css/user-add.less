@@ -59,6 +59,7 @@ p{width:90%; margin: 5px auto 10px auto;}
 
 input{width:100%; height: 40px;  box-sizing: border-box; text-align: center; .border-radius(); border:1px solid @main;}
 
+.idchecker{color:red;}
 
 #u_pw{margin-bottom: 1px;}
 .sex{width:49%; height:30px; padding:0px; box-sizing: border-box; display: inline; border-style: none;}
@@ -66,18 +67,16 @@ input{width:100%; height: 40px;  box-sizing: border-box; text-align: center; .bo
 p span{color:@maindark; font-size: 12px;}
 #submit{.button();}
 
-body a{.button(); margin: 20px auto 5px auto; display: block;}
+body a{margin: 20px auto 5px auto; display: block; width: 80%; height:45px; box-sizing: border-box; font-size: 16px; color: @font-color1; background-color:@button-color; text-align: center; line-height: 45px; text-decoration: none; border-style: none; .border-radius();}
 
 
 /*for bigger windows*/
 @media (min-width:768px){
-    header{font-size: @header-text-size-big; height:120px; line-height: 100px;}
-    //ul - li
-    nav ul li{height:60px; box-sizing: border-box; text-align: center;line-height: 60px;}
-    nav ul li:hover{opacity: .7;}
-    //li - a
-    nav ul li a{font-size: 20px;}
-    .sub-main{width:90%;}
-    .main{width:90%;}
+    p{width:60%; margin: 5px auto 30px auto;}
     
+    input{width:100%; height: 60px;  box-sizing: border-box; text-align: center; .border-radius(); border:1px solid @main; font-size: 20px;}
+    
+    .sex{width:49%; height:50px; padding:0px; box-sizing: border-box; display: inline; border-style: none;}
+    
+    body a{margin: 20px auto 5px auto; display: block; width: 50%; height:45px; box-sizing: border-box; font-size: 16px; color: @font-color1; background-color:@button-color; text-align: center; line-height: 45px; text-decoration: none; border-style: none;}
 }

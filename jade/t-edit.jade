@@ -65,8 +65,9 @@ html
                 
                 p
                     textarea(name='content' class="content" id="content")= edit_content.content
-                p
-                    input(type='text' name='hashtag' class="hashtag" value="#{hashtag_final}")
+                if hashtags
+                    p
+                        input(type='text' name='hashtag' class="hashtag" value="#{hashtag_final}")
                 p
                     input(type='submit' class="submit")
                 script.

@@ -15,6 +15,7 @@ html
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
+    -if hashtag{
     -var hashtagcount = edit_content.hashtagcount;
     -var hashtagmaker = function(hashtag_object){
     -var hashtagArray = [];
@@ -28,6 +29,7 @@ html
     -hashtagArray[6] = hashtag_object.ht7;
     -for(var i = 0; i<hashtagcount; i++){hashtag_temp= hashtag_temp + '#'+hashtagArray[i]+' ';}
     -return hashtag_temp;
+    -}
     -}
     -var hashtag_final = hashtagmaker(hashtags);
         header
@@ -64,8 +66,9 @@ html
                             |anonim
                 p
                     textarea(name='content' class="content" id="content")= edit_content.content
-                p
-                    input(type='text' name='hashtag' class="hashtag" value= "#{hashtag_final}")
+                if hashtags
+                    p
+                        input(type='text' name='hashtag' class="hashtag" value= "#{hashtag_final}")
                 p
                     input(type='submit' class="submit")
                 script.

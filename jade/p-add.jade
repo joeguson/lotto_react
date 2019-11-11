@@ -42,9 +42,9 @@ html
                 p
                     textarea(name='content' class="content" id="content" required)
                 p
-                    input(type='text' name='hashtag' placeholder='#cinta' class="hashtag")
+                    input(type='text' name='hashtag' placeholder='#cinta / max 7 hashtags' class="hashtag")
                 p
-                    input(type='submit' class="submit")
+                    input(type='submit' class="submit" value="share")
                 script.
                     function checksubmit(){
                         if(title.value.length < 5){
@@ -57,4 +57,6 @@ html
                         }
                         return true;
                     }
-            
+        section.footer(id='footer') 
+            p contact : admin@beritamus.com
+            p www.beritamus.com   
