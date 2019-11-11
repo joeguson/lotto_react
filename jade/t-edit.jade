@@ -15,8 +15,8 @@ html
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
-    -var hashtagcount = edit_content.hashtagcount;
     -var hashtagmaker = function(hashtag_object){
+    -var hashtagcount = edit_content.hashtagcount;
     -var hashtagArray = [];
     -var hashtag_temp = '';
     -hashtagArray[0] = hashtag_object.ht1;
@@ -48,7 +48,7 @@ html
                 p
                     input(type='text' name='question' placeholder='title' class="title" id="title" value=edit_content.question)
                 p
-                    if edit_content.public == p
+                    if edit_content.public == 'p'
                         label
                             input(type='radio' value='p' name="public" checked)
                             |public
@@ -65,9 +65,8 @@ html
                 
                 p
                     textarea(name='content' class="content" id="content")= edit_content.content
-                if hashtags
-                    p
-                        input(type='text' name='hashtag' class="hashtag" value="#{hashtag_final}")
+                p
+                    input(type='text' name='hashtag' class="hashtag" value="#{hashtag_final}")
                 p
                     input(type='submit' class="submit")
                 script.

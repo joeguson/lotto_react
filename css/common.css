@@ -2,6 +2,10 @@
 * {
   font-family: 'Lato', sans-serif;
 }
+* {
+  margin: 0;
+  padding: 0;
+}
 .section-border {
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
@@ -65,7 +69,6 @@ nav {
 }
 #footer {
   width: 100%;
-  height: 50px;
   font-size: 16px;
   background-color: #2043aa;
   text-align: center;
@@ -75,6 +78,9 @@ nav {
   padding: 10px 0px;
   position: relative;
   bottom: 0;
+}
+#footer p:first-child {
+  margin-bottom: 0px;
 }
 header a {
   color: #2e60f4;

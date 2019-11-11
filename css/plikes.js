@@ -53,16 +53,27 @@ function ccommentSendAjax(ccomment){
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
         var result = JSON.parse(xhr.responseText);
-        var pCcomment = document.getElementById("pCcomment"+commentId);
-        var dds1 = document.createElement('dd');
-        var dds2 = document.createElement('dd');
-        var dds3 = document.createElement('dd');
-        dds1.innerHTML = result.ccomment_author;
-        dds2.innerHTML = result.ccomment_content;
-        dds3.innerHTML = result.ccomment_date;
-        pCcomment.append(dds1);
-        pCcomment.append(dds2);
-        pCcomment.append(dds3);
+        var pCcomment = document.getElementById("pc/"+penobrolId[2]+'/'+commentId);
+        var dls = document.createElement('dl');
+        var dts = document.createElement('dt');
+        var dds = document.createElement('dd');
+        var warnButton = document.createElement('button');
+        dls.setAttribute('class', 'pccomment-dl');
+        dts.setAttribute('class', 'pccomment-dt');
+        dds.setAttribute('class', 'pccomment-dd');
+        warnButton.setAttribute('class', 'pccWarnButton');
+        warnButton.setAttribute('type', 'submit');
+        warnButton.setAttribute('value', 'pcc/'+penobrolId[2]+'/'+commentId+'/'+result.ccomment_id);
+        warnButton.setAttribute('id', 'warn/pcc/'+penobrolId[2]+'/'+commentId+'/'+result.ccomment_id);
+        warnButton.setAttribute('onclick', 'warningAjax(this)');
+        
+        dts.innerHTML = '- "' +result.ccomment_content+'"';
+        dds.innerHTML = 'by '+result.ccomment_author+' / '+ result.ccomment_date;
+        
+        dds.append(warnButton);
+        dls.append(dts);
+        dls.append(dds);
+        pCcomment.append(dls);
     });
 }
 function warningAjax(warning){

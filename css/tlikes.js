@@ -53,16 +53,28 @@ function acommentSendAjax(acomment){
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
         var result = JSON.parse(xhr.responseText);
-        var tAcomment = document.getElementById("tAnswer"+answerId);
-        var dds1 = document.createElement('dd');
-        var dds2 = document.createElement('dd');
-        var dds3 = document.createElement('dd');
-        dds1.innerHTML = result.acomment_author;
-        dds2.innerHTML = result.acomment_content;
-        dds3.innerHTML = result.acomment_date;
-        tAcomment.append(dds1);
-        tAcomment.append(dds2);
-        tAcomment.append(dds3);
+        var tAcomment = document.getElementById("ta/"+tandyaId[2]+'/'+answerId);
+        var dls = document.createElement('dl');
+        var dts = document.createElement('dt');
+        var dds = document.createElement('dd');
+        var warnButton = document.createElement('button');
+        
+        dls.setAttribute('class', 'tacomment-dl');
+        dts.setAttribute('class', 'tacomment-dt');
+        dds.setAttribute('class', 'tacomment-dd');
+        warnButton.setAttribute('class', 'tacWarnButton');
+        warnButton.setAttribute('type', 'submit');
+        warnButton.setAttribute('value', 'tac/'+tandyaId[2]+'/'+answerId+'/'+result.acomment_id);
+        warnButton.setAttribute('id', 'warn/tac/'+tandyaId[2]+'/'+answerId+'/'+result.acomment_id);
+        warnButton.setAttribute('onclick', 'warningAjax(this)');
+        
+        dts.innerHTML = '- "' +result.acomment_content+'"';
+        dds.innerHTML = 'by '+result.acomment_author+' / '+ result.acomment_date;
+        
+        dds.append(warnButton);
+        dls.append(dts);
+        dls.append(dds);
+        tAcomment.append(dls);
     });
 }
 function warningAjax(warning){

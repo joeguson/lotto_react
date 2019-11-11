@@ -77,7 +77,7 @@ html
                     - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
                 else
                     - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
-                if hashtag    
+                if hashtag.ht1 != ' '    
                     p
                         -for(var n=0; n<topic.hashtagcount; n++)
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
@@ -95,7 +95,7 @@ html
                     ul.tanswer-ul
                         each a in answers
                             li.tanswer-li
-                                dl.tanswer-dl
+                                dl.tanswer-dl(id='ta/'+topic.id+'/'+a.id)
                                     if topic.public == 'a'
                                         - var answerStart = '@'+ anonimmaker(topic.author)
                                     else

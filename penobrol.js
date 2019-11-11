@@ -68,12 +68,10 @@ exports.getViewPenobrol = function(req, res){
                             if(err){console.log(err);}
                             else{
                                 conn.conn.query(sql7, id, function(err, ccomments, fields){
-                                    if(hashtag.length>= 1){
-                                        delete hashtag[0].id;
-                                        delete hashtag[0].u_id;
-                                        delete hashtag[0].p_id;
-                                        delete hashtag[0].t_id;
-                                    }
+                                    delete hashtag[0].id;
+                                    delete hashtag[0].u_id;
+                                    delete hashtag[0].p_id;
+                                    delete hashtag[0].t_id;
                                     if(req.session.u_id){
                                         conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
                                             if(err){console.log(err);}
@@ -352,13 +350,9 @@ exports.getEditPenobrol = function(req, res){
             conn.conn.query(sql2, [p_id, req.session.u_id], function(err, hashtags, fields){
                 if(err){console.log(err);}
                 else{
+                    console.log(hashtags);
                     if(req.session.u_id == edit[0].author){
-                        if(hashtags.length>=1){
-                            res.render('p-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
-                        }
-                        else{
-                            res.render('p-edit', {u_id:'y', edit_content:edit[0]});
-                        }
+                        res.render('p-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
                     }
                     else{
                         res.redirect('/penobrol/'+p_id);

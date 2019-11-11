@@ -74,12 +74,10 @@ exports.getViewTandya =  function(req, res){
                                                 if(err){console.log(err);}
                                                 else{
                                                     console.log('hashtag : ' + hashtag.length);
-                                                    if(hashtag.length>=1){
-                                                        delete hashtag[0].id;
-                                                        delete hashtag[0].u_id;
-                                                        delete hashtag[0].p_id;
-                                                        delete hashtag[0].t_id;
-                                                    }
+                                                    delete hashtag[0].id;
+                                                    delete hashtag[0].u_id;
+                                                    delete hashtag[0].p_id;
+                                                    delete hashtag[0].t_id;
                                                     if(req.session.u_id){
                                                         conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
                                                             if(err){console.log(err);}
@@ -388,9 +386,9 @@ exports.postEditTandya = function(req, res){
         rawhashtags = rawhashtags.replace(' ', "");
     }
     var hashtags = rawhashtags.split('#');
+    hashtags.splice(0,1);
     hashtagCount = hashtags.length;
     var perfecthashtag = function (array){
-        array.splice(0, 1);
         if(array.length > 7){
             while(array.length > 7){
                 array.splice(7, 1);
