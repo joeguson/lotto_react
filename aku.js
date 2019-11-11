@@ -61,12 +61,40 @@ exports.welcome = function(req, res){
         var sql = 'SELECT * FROM users WHERE u_id= ?';
         var sql2 = 'SELECT * from penobrol WHERE author = ?';
         var sql3 = 'SELECT * from tandya WHERE author = ?';
+        var sql4 = 'select author, sum(t_like) as totalt_like from tandya where author = ?';
+        var sql5 = 'select author, sum(p_like) as totalp_like from penobrol where author = ?';
+        var sql6 = 'select author, sum(ta_like) as totalta_like from t_ans where author = ?';
+        var sql7 = 'select author, sum(pc_like) as totalpc_like from p_com where author = ?';
          conn.conn.query(sql, [req.session.u_id], function(err, user, fields){
              conn.conn.query(sql2, [req.session.u_id], function(err, penobrols, fields){
                 if(err){console.log(err);}
                 else{
-                     conn.conn.query(sql3, [req.session.u_id], function(err, tandyas, fields){
-                        res.render('aku', {user:user[0], penobrols:penobrols, tandyas:tandyas});
+                    conn.conn.query(sql3, [req.session.u_id], function(err, tandyas, fields){
+                        if(err){console.log(err);}
+                        else{
+                            conn.conn.query(sql4, [req.session.u_id], function(err, t_like, fields){
+                                if(err){console.log(err);}
+                                else{
+                                    conn.conn.query(sql5, [req.session.u_id], function(err, p_like, fields){
+                                        if(err){console.log(err);}
+                                        else{
+                                            conn.conn.query(sql6, [req.session.u_id], function(err, ta_like, fields){
+                                                if(err){console.log(err);}
+                                                else{
+                                                    conn.conn.query(sql7, [req.session.u_id], function(err, pc_like, fields){
+                                                        res.render('aku', {user:user[0], penobrols:penobrols, tandyas:tandyas, totalt_like:t_like[0], totalp_like:p_like[0], totalta_like:ta_like[0], totalpc_like:pc_like[0]});
+                                                    });
+                                                }
+
+                                            });
+                                        }
+
+                                    });
+                                }
+                                
+                            });
+                        }
+                        
                     });
                 }
             }); 
