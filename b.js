@@ -216,11 +216,9 @@ app.get(['/cari','/'], function(req, res){
     else{
         sql3 = 'INSERT INTO access_info(ipAddress, browser) VALUES(INET_ATON(?), ?)';
         conn.query(sql3, [ipAddress, req.headers['user-agent']], function(err, access, fields){
-            if(err){console.log(err);}    
+            if(err){console.log(err);}
         });
     }
-    
-    
 });
 /************FOR TANDYA************/
 app.get('/tandya/add', tandya.getAddTandya);
@@ -276,8 +274,46 @@ app.post('/aku/register', function(req, res){
     }); 
 });
 
-var weeklyUpdate = schedule.scheduleJob({dayOfWeek: 6}, function(){
-  console.log('Time for tea!');
+var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfWeek: 6}, function(){
+    var dateFrom = new Date();
+    var dateTo = new Date();
+    dateFrom.setDate(dateFrom.getDate() - 6);
+    dateFrom = dateFrom.getFullYear()+'-'+(dateFrom.getMonth()+1)+'-'+dateFrom.getDate();
+    dateTo = dateTo.getFullYear()+'-'+(dateTo.getMonth()+1)+'-'+dateTo.getDate();
+    var tweeklyUpdate = 'select * from tandya where date between date(?) and date (?) order by score desc limit 2';
+    var pweeklyUpdate = 'select * from penobrol where date between date(?) and date (?) order by score desc limit 2';
+    var weeklyUpdate = 'INSERT INTO weekly (gold_p, silver_p, bronze_p, gold_t, silver_t, bronze_t) VALUES(?)';
+    var weeklyArray = [];
+    conn.query(tweeklyUpdate, [dateFrom, dateTo], function(err, tupdate, fields){
+        if(err){console.log(err);}
+        else{
+            conn.query(pweeklyUpdate, [dateFrom, dateTo], function(err, pupdate, fields){
+                if(err){console.log(err);}
+                else{
+                    for(var i = 0; i<pupdate.length; i++){
+                        weeklyArray.push(pupdate[i].id);
+                    }
+                    console.log('after first for ' + weeklyArray.length);
+                    if(weeklyArray.length<3){
+                        while(weeklyArray.length <3){
+                            weeklyArray.push(0);
+                        }
+                    }
+                    for(var j = 0; j<tupdate.length; j++){
+                        weeklyArray.push(tupdate[j].id);
+                    }
+                    if(weeklyArray.length<6){
+                        while(weeklyArray.length<6){
+                            weeklyArray.push(0);
+                        }
+                    }
+                    conn.query(weeklyUpdate, [weeklyArray], function(err, finalUpdate, fields){
+                        if(err){console.log(err);}
+                    });
+                }
+            });
+        }
+    });
 });
 
 var testingSchedule = schedule.scheduleJob({second: 6}, function(){
@@ -295,7 +331,7 @@ var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, fu
 });
 
 
-app.listen(3000, '0.0.0.0', function(){
+app.listen(80, '0.0.0.0', function(){
   console.log('Connected, 80 port!');
 });
 

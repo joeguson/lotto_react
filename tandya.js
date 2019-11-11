@@ -152,7 +152,7 @@ exports.postAddTandya = function(req, res){
         }
         return array;
     };
-    var finalhastag = perfecthashtag(hashtags);
+    var finalhashtag = perfecthashtag(hashtags);
     var sql = 'INSERT INTO tandya (author, question, content, hashtagcount, public) VALUES (?, ?, ?, ?, ?)';
     var sql4 = 'INSERT INTO hashtag (t_id, u_id, ht1, ht2, ht3, ht4, ht5, ht6, ht7) VALUES (?, ?, ?);';
     var sql2='UPDATE users set u_tan= u_tan + 1 WHERE u_id = ?';
@@ -165,7 +165,7 @@ exports.postAddTandya = function(req, res){
     conn.conn.query(sql, [author, question, content, hashtagCount, public], function(err, result, fields){
         if(err){console.log(err);}
         else{
-            conn.conn.query(sql4, [result.insertId, author, finalhastag], function(err, hashtag, fields){
+            conn.conn.query(sql4, [result.insertId, author, finalhashtag], function(err, hashtag, fields){
                 if(err){console.log(err);}
                 else{ res.redirect('/tandya/'+result.insertId);
                 }
