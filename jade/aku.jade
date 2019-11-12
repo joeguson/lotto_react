@@ -77,8 +77,8 @@ html
                             dl(onclick ='location.href="#{plink}"')
                                 dt
                                     a(href='/penobrol/'+p.id)= p.title
-                                - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / ' + p.com +' kommen'+' / suka: ' + p.p_like
-                                dd.content-info date: #{date_result}         
+                                - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / ' + p.com +' comment'+' / suka: ' + p.p_like
+                                dd.content-info #{date_result}         
                 .p-tandya 
                     p Tandya
                     if tandyas
@@ -87,8 +87,8 @@ html
                             dl(onclick ='location.href="#{tlink}"')
                                 dt
                                     a(href='/tandya/'+t.id)= t.question
-                                - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / jawaban: ' + t.answer + ' / suka: ' + t.t_like
-                                dd.content-info date: #{date_result}        
+                                - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / answer: ' + t.answer + ' / suka: ' + t.t_like
+                                dd.content-info #{date_result}        
                 a.logout(href= '/aku/logout') Logout!
             else
                 form(action='aku/login' method='post')
@@ -96,12 +96,12 @@ html
                     input(type='password' name='u_pw' placeholder='  Password' id="input_pw")
                     if message
                         p.message= message
-                    input(type='submit' value="Login" id="login")
+                    input(type='submit' value="Login" id="login" onclick='noDouble()')
                 .daftar
                     span(id="hilang")
                         a Forgot
                     span(id="daftar")
-                        a(href='/daftar') Sing Up
+                        a(href='/daftar') Sign Up
         section.footer(id='footer') 
             p contact : admin@beritamus.com
             p www.beritamus.com

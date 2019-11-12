@@ -48,23 +48,27 @@ html
                     a(href='/tandya') Tandya
                 br.clear
         section.main(id='main')
-            .title
-                dl.tview-dl
-                    dt.tview-dt= topic.question
-                    - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view
-                    dd.pview-dd #{date_result}
-                    dd.tview-dd= topic.answer        
-                    if hashtag
+            .ttitle-div
+                span Q : #{topic.question}
+            .tcontent-div
+                p(class="content")= topic.content
+                div(id="tlike" class="tlike")= topic.t_like
+            .tdetail-div
+                if topic.public == 'a'
+                    - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
+                else
+                    - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
+                if hashtag.ht1 != ' '    
+                    p
                         -for(var n=0; n<topic.hashtagcount; n++)
                             a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
-            .tcontent= topic.content
-                div(id="tlikes")= topic.t_like
+                p #{date_result}
             if u_id
                 form(action='/taedit/'+topic.id+'/'+edit_content.id method='post' id='answerForm')
                       p
-                        textarea(name='answer' id="answer")= edit_content.answer
+                        textarea(name='answer' id="answer" class="taInput")= edit_content.answer
                       p
-                        input(type='submit' value='submit' class="answer")
+                        input(type='submit' value='submit' class="answer" class="taInputButton")
         section.footer(id='footer') 
             p contact : admin@beritamus.com
             p www.beritamus.com

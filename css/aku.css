@@ -5,14 +5,13 @@
   font-family: 'Lato', sans-serif;
 }
 .section-border {
-  border-top: 2px solid lightgray;
-  border-bottom: 2px solid lightgray;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
 }
 .li-border {
-  border-top: 1px solid #a0b3ef;
-  border-bottom: 1px solid #a0b3ef;
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
   margin-bottom: 10px;
-  border-top-right-radius: 5px;
 }
 .button {
   width: 100%;
@@ -26,21 +25,41 @@
   line-height: 45px;
   text-decoration: none;
   border-style: none;
+  margin: 0px auto 10px auto;
+}
+.halfButton {
+  width: 50%;
+  height: 30px;
+  box-sizing: border-box;
+  font-size: 18px;
+  background-color: #fbffb3;
+  display: inline-block;
+  text-align: center;
+  line-height: 30px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  border: 0px;
+  border-style: none;
+  border-image-width: none;
+}
+.border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 form {
   width: 85%;
-  margin: 60px auto 40px auto;
+  margin: 60px auto 20px auto;
 }
 .daftar {
   width: 85%;
-  margin: 30px auto 160px auto;
+  margin: 30px auto 80px auto;
   text-align: center;
 }
 #input_id {
   width: 100%;
   height: 45px;
   border-radius: 10px;
-  border: 1px solid #4167e0;
+  border: 1px solid #2e60f4;
   margin-bottom: 20px;
   font-size: 20px;
   padding: 5px 10px;
@@ -50,7 +69,7 @@ form {
   width: 100%;
   height: 45px;
   border-radius: 10px;
-  border: 1px solid #4167e0;
+  border: 1px solid #2e60f4;
   margin-bottom: 30px;
   font-size: 20px;
   padding: 5px 10px;
@@ -59,25 +78,25 @@ form {
 .message {
   width: 85%;
   font-size: 20px;
-  margin: 0 auto 20px;
+  margin: 0 auto 10px;
   text-align: center;
 }
 #login {
   width: 100%;
   height: 35px;
   border-radius: 10px;
-  border: 1px solid #4167e0;
+  border: 1px solid #2e60f4;
 }
 #hilang {
   width: 40%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   box-sizing: border-box;
   text-align: right;
   padding-right: 10px;
 }
 #daftar {
   width: 40%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   box-sizing: border-box;
   text-align: left;
   padding-left: 10px;
@@ -94,32 +113,33 @@ form {
   line-height: 45px;
   text-decoration: none;
   border-style: none;
+  margin: 0px auto 10px auto;
   margin-bottom: 0px;
 }
 .p-stat {
   width: 100%;
   box-sizing: border-box;
-  border-top: 2px solid lightgray;
-  border-bottom: 2px solid lightgray;
-  margin-bottom: 20px;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 10px;
   padding: 10px;
   background-color: #ffffff;
 }
 .p-penobrol {
   width: 100%;
   box-sizing: border-box;
-  border-top: 2px solid lightgray;
-  border-bottom: 2px solid lightgray;
-  margin-bottom: 20px;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 10px;
   padding: 10px;
   background-color: #ffffff;
 }
 .p-tandya {
   width: 100%;
   box-sizing: border-box;
-  border-top: 2px solid lightgray;
-  border-bottom: 2px solid lightgray;
-  margin-bottom: 20px;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 10px;
   padding: 10px;
   background-color: #ffffff;
 }
@@ -147,7 +167,7 @@ form {
 }
 .likeHeading {
   margin-bottom: 5px;
-  color: #4167e0;
+  color: #2e60f4;
 }
 .likeCount {
   width: 100%;
@@ -164,11 +184,10 @@ form {
 .p-penobrol dl {
   width: 95%;
   margin: 0 auto;
-  background-color: #fffff0;
-  border-top: 1px solid #a0b3ef;
-  border-bottom: 1px solid #a0b3ef;
+  background-color: #fdffd3;
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
   margin-bottom: 10px;
-  border-top-right-radius: 5px;
   cursor: pointer;
   padding: 5px;
 }
@@ -180,11 +199,10 @@ form {
 .p-tandya dl {
   width: 95%;
   margin: 0 auto;
-  background-color: #fffff0;
-  border-top: 1px solid #a0b3ef;
-  border-bottom: 1px solid #a0b3ef;
+  background-color: #fdffd3;
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
   margin-bottom: 10px;
-  border-top-right-radius: 5px;
   cursor: pointer;
   padding: 5px;
 }
@@ -206,7 +224,7 @@ dt a {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #4167e0;
+  color: #2e60f4;
   text-decoration: none;
   font-size: 16px;
 }
@@ -215,8 +233,8 @@ dt a {
   box-sizing: border-box;
   margin: 0px;
   background-color: #ffffff;
-  border-top: 2px solid lightgray;
-  border-bottom: 2px solid lightgray;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
 }
 .logout {
   width: 100%;
@@ -230,6 +248,9 @@ dt a {
   line-height: 45px;
   text-decoration: none;
   border-style: none;
+  margin: 0px auto 10px auto;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 form {
   font-size: 0px;
@@ -237,6 +258,6 @@ form {
 /*for bigger windows*/
 @media (min-width: 768px) {
   form {
-    margin: 80px auto 20px auto;
+    margin: 80px auto 10px auto;
   }
 }

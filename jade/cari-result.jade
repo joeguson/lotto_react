@@ -64,7 +64,7 @@ html
                                     dt
                                         a(href='/penobrol/'+v.id)= v.title
                                     dd.ddcontent= v.content
-                                    - var date_result = datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / '+v.com + ' komentar';
+                                    - var date_result = datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / '+v.com + ' comments';
                                     dd #{date_result}
                             else
                                 -var tlink = 'tandya/'+v.id
@@ -72,7 +72,7 @@ html
                                     dt
                                         a(href='/tandya/'+v.id)= v.question
                                     dd.ddcontent= v.content
-                                    - var date_result = datemaker(v.date) + ' / ' + v.t_view + ' views'+ ' / '+v.answer + ' jawaban';
+                                    - var date_result = datemaker(v.date) + ' / ' + v.t_view + ' views'+ ' / '+v.answer + ' answers';
                                     dd #{date_result}
                 else
                         

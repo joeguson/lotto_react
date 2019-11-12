@@ -93,7 +93,10 @@ function checksubmit(){
     if(authenticator1+authenticator2+authenticator3+authenticator4 == '1111'){
         if(sex){
             if(checkboxValue=== true){
-                return true;
+                clicked = !clicked;
+                setTimeout(function(){
+                    return true;
+                }, 2000);
             }
             else{return false;}
         }
@@ -105,11 +108,9 @@ function checksubmit(){
         return false;
     }
 }
-
 function checkboxCheck(target){
     checkboxValue = target.checked;
 }
-
 //var authenticate = authenticator1+authenticator2+authenticator3+authenticator4;
 //
 //function CheckboxCheck(checkbox){

@@ -90,7 +90,7 @@ html
                     textarea(name='comment' class="pcInput")
                   p
                     input(type='submit' value='comment' class="pcInputButton")
-            if comments
+            if comments.length > 0
                 .pcomment
                     ul.pcomment-ul
                         each c in comments
