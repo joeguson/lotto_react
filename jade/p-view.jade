@@ -85,11 +85,11 @@ html
                         else
                             button(id="plikeButton" class="plikeButton" type="submit" value="Suka") Suka
             if u_id
-                form(action='penobrol/'+topic.id method='post' class='commentForm')
+                form(action='penobrol/'+topic.id method='post' class='commentForm' onsubmit='return pcChecksubmit();')
                   p
-                    textarea(name='comment' class="pcInput")
+                    textarea(name='comment' class="pcInput" id='pcInput')
                   p
-                    input(type='submit' value='comment' class="pcInputButton")
+                    input(type='submit' value='comment' class="pcInputButton" id="pcInputButton")
             if comments.length > 0
                 .pcomment
                     ul.pcomment-ul
@@ -120,7 +120,7 @@ html
                                                 button(class="pcWarnButton" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') !Warn
                                     if u_id
                                         .ccommentForm
-                                            textarea(name='ccomment' class="pccInput")
+                                            textarea(name='ccomment' class="pccInput" id='pccInput')
                                             input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="komen" class="pccInputButton")
                                     each cc in ccomments    
                                         if cc.pc_id == c.id
@@ -134,6 +134,15 @@ html
                                                 dd.pccomment-dd #{date_result3}
                                                     if u_id
                                                         button(class="pccWarnButton" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) !Warn
+        script.
+            function pcChecksubmit(){
+                if(pcInput.value.length < 5){
+                    alert('kontennya harus lebih dari 5 alphabet');
+                    return false;
+                }
+                else{return true;}
+            }
+            
         section.footer(id='footer') 
             p contact : admin@beritamus.com
             p www.beritamus.com
