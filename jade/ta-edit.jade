@@ -34,6 +34,12 @@ html
     -}
     -}
     -}
+    -var anonimmaker = function(username){
+    -var idChanger = '';
+    -var idLength = (username).length;
+    -idChanger = username.substr(0,3) + '****';
+    -return idChanger;
+    -}
         header
             a(href='/tandya') Beritamus      
         nav
