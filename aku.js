@@ -187,7 +187,7 @@ exports.postDaftar = function(req, res){
           console.log(error);
         }
     });
-    res.redirect("/");
+    res.redirect("/aku");
 };
 
 exports.getDaftar = function(req, res){

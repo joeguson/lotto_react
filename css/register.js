@@ -89,14 +89,19 @@ document.getElementById('email').addEventListener('focus', function(){
     } 
 });
 
+function confirmRegister(){
+    return confirm('Please check your email and verify to complete your sign up');
+}
+
 function checksubmit(){
     if(authenticator1+authenticator2+authenticator3+authenticator4 == '1111'){
         if(sex){
             if(checkboxValue=== true){
-                clicked = !clicked;
-                setTimeout(function(){
+                var confrimR = confirmRegister();
+                if(confrimR ===true){
                     return true;
-                }, 2000);
+                }
+                else{return false;}
             }
             else{return false;}
         }

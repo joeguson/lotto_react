@@ -153,10 +153,9 @@ function ccommentSendAjax(ccomment){
 function warningAjax(warning){
     var warningValue = warning.value.split("/");
     var confirmWarning = function(){
-        return confirm("really?");
+        return confirm("You cannot cancel warn. Are you sure to warn this?");
     };
     var confirmedValue = confirmWarning();
-    console.log(confirmedValue);
     var original = {'warnedItem' : warningValue[0], "warnedP" : warningValue[1], "warnedC" : warningValue[2], "warnedCc" : warningValue[3]};
     original = JSON.stringify(original);
     if(confirmedValue == true){
