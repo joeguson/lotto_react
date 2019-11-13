@@ -147,6 +147,19 @@ dt a {
     font-size: 100px;
     line-height: 200px;
   }
+  .t-terbaru,
+  .t-terkenal {
+    width: 49%;
+    padding: 10px;
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    display: inline-block;
+  }
+  .t-terkenal {
+    float: right;
+  }
   login a {
     margin-bottom: 30px;
   }

@@ -58,7 +58,7 @@
   width: 100%;
   box-sizing: border-box;
   background-color: white;
-  padding: 10px;
+  padding: 20px;
 }
 .tdetail-div {
   width: 100%;
@@ -95,8 +95,9 @@
 }
 .content {
   font-size: 16px;
-  line-height: 20px;
+  line-height: 26px;
   margin-bottom: 10px;
+  font-weight: 300;
 }
 .tlike {
   font-size: 24px;
@@ -293,8 +294,9 @@
   }
   .content {
     font-size: 20px;
-    line-height: 22px;
+    line-height: 30px;
     margin-bottom: 30px;
+    font-weight: 300;
   }
   .tlike {
     font-size: 28px;

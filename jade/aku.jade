@@ -9,7 +9,7 @@ html
         // links css common file
         link(rel='stylesheet', href='aku.css' type="text/css")
         // links css file
-        link(href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400&display=swap" rel="stylesheet")
         meta(charset='UTF-8')
         meta(name='viewport', content='width=device-width, initial-scale=1')
         meta(name='apple-mobile-web-app-capable', content='yes')
@@ -89,7 +89,7 @@ html
                                     a(href='/tandya/'+t.id)= t.question
                                 - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / answer: ' + t.answer + ' / suka: ' + t.t_like
                                 dd.content-info #{date_result}        
-                a.logout(href= '/aku/logout') Logout!
+                a.logout(href= '/aku/logout') Logout
             else
                 form(action='aku/login' method='post')
                     input(type='text' name='u_id' placeholder='  ID' id="input_id")

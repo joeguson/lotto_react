@@ -55,42 +55,90 @@ var testing = require('./testing');
 
 var todayCount = 1;
 
-
 app.get('/test', testing.testing1);
+
+var psqlMaker = function(pId){
+    var temp = 'select * from penobrol where ';
+    for(var j = 0; j<pId.length; j++){
+        temp = temp + 'id = '+pId[j] + ' OR ';
+    }
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    return temp;
+};
+var tsqlMaker = function(tId){
+    var temp = 'select * from tandya where ';
+    for(var k = 0; k<tId.length; k++){
+        temp = temp + 'id = '+tId[k] + ' OR ';
+    }
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    return temp;
+};
 
 /************FOR CARI************/
 app.get('/cari/search', function(req, res){
     var cari = req.query.search;
     var cari_result = [];
     if(cari.indexOf('#')>=0){ //one hashtag - hashtag, title에서 검색
-        var search_string = cari.replace('#', '');
-        var sql1 = 'select * from penobrol';
-        var sql2 = 'select * from tandya';
-        var sql3 = 'select * from hashtag';
-        conn.query(sql1, function(err, penobrol, f){
-            conn.query(sql2, function(err, tandya, f){
-                conn.query(sql3, function(err, hashtag, f){
-                    var prawdata = JSON.parse(JSON.stringify(penobrol));
-                    var trawdata = JSON.parse(JSON.stringify(tandya));
-                    for(var i =0; i<hashtag.length; i++){
-                        var temp = [];
-                        temp.push(hashtag[i].ht1, hashtag[i].ht2, hashtag[i].ht3, hashtag[i].ht4, hashtag[i].ht5, hashtag[i].ht6, hashtag[i].ht7);
-                        for(var j = 0; j<7; j++){
-                            if(temp[j] == search_string){   
-                                if(hashtag[i].t_id === 0){ //if the hashtag is from penobro;
-                                    //id number starts from 1 not 0
-                                    cari_result.push(prawdata[(hashtag[i].p_id)-1]);
-                                }
-                                else{ //if the hashtag is from tandya
-                                    //id number starts from 1 not 0
-                                    cari_result.push(trawdata[(hashtag[i].t_id)-1]);
-                                }
-                            }
-                        }
+        var sql1 = 'select * from hashtag where concat(ht1, ht2, ht3, ht4, ht5, ht6, ht7) LIKE ?';
+        var search_hashtag = cari.replace('#', '');
+        var newpsql = '';
+        var newtsql = '';
+        conn.query(sql1, ['%'+search_hashtag+'%'], function(err, hashtag, f){
+            console.log('hashtag : '+hashtag);
+            var ps = [];
+            var ts = [];
+            if(hashtag.length < 1){
+                res.render('cari-result');
+            }
+            else{
+                for(var i =0; i<hashtag.length; i++){
+                    if(hashtag[i].t_id === 0){
+                        ps.push(hashtag[i].p_id);
                     }
-                    res.render('cari-result', {result:cari_result});                    
-                });
-            });
+                    else{
+                        ts.push(hashtag[i].t_id);
+                    }
+                }
+                newpsql = psqlMaker(ps);
+                newtsql = tsqlMaker(ts);
+                console.log(ps);
+                console.log(ts);
+                console.log('newpsql : ' + newpsql);
+                console.log('newtsql : ' + newtsql);
+                if(ps.length>=1 && ts.length >=1){
+                    conn.query(newpsql, function(err, pResult, f){
+                        conn.query(newtsql, function(err, tResult, f){
+                            var temp1 = pResult.length -1;
+                            while(temp1 >= 0){
+                                cari_result.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                temp1 --;
+                            }
+                            var temp2 = tResult.length -1;
+                            while(temp2 >= 0){
+                                cari_result.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                temp2 --;
+                            }
+                            res.render('cari-result', {result:cari_result});
+                        }); 
+                    });
+                }
+                else if(ps.length<1){
+                    conn.query(newtsql, function(err, tResult, f){
+                        res.render('cari-result', {result:tResult});
+                    });
+                }
+                else{
+                    conn.query(newpsql, function(err, pResult, f){
+                        res.render('cari-result', {result:pResult});
+                    });
+                }
+            }
         });
     }
     else{
@@ -333,5 +381,40 @@ app.listen(80, '0.0.0.0', function(){
 app.all('*', function(req, res){
    res.redirect('cari'); 
 });
+
+//        This is the code for hashtag previously
+//        var search_string = cari.replace('#', '');
+//        var sql1 = 'select * from penobrol';
+//        var sql2 = 'select * from tandya';
+//        var sql3 = 'select * from hashtag';
+//        conn.query(sql1, function(err, penobrol, f){
+//            conn.query(sql2, function(err, tandya, f){
+//                conn.query(sql3, function(err, hashtag, f){
+//                    var prawdata = JSON.parse(JSON.stringify(penobrol));
+//                    var trawdata = JSON.parse(JSON.stringify(tandya));
+//                    for(var i =0; i<hashtag.length; i++){
+//                        var temp = [];
+//                        temp.push(hashtag[i].ht1, hashtag[i].ht2, hashtag[i].ht3, hashtag[i].ht4, hashtag[i].ht5, hashtag[i].ht6, hashtag[i].ht7);
+//                        console.log('temp : ' + temp);
+//                        for(var j = 0; j<7; j++){
+//                            if(temp[j] == search_string){   
+//                                if(hashtag[i].t_id === 0){ //if the hashtag is from penobro;
+//                                    //id number starts from 1 not 0
+//                                    console.log('in if : ' + cari_result);
+//                                    cari_result.push(prawdata[(hashtag[i].p_id)-1]);
+//                                }
+//                                else{ //if the hashtag is from tandya
+//                                    //id number starts from 1 not 0
+//                                    console.log('in else : ' +cari_result);
+//                                    cari_result.push(trawdata[(hashtag[i].t_id)-1]);
+//                                }
+//                            }
+//                        }
+//                    }
+//                    res.render('cari-result', {result:cari_result});                    
+//                });
+//            });
+//        });
+
 
 

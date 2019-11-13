@@ -61,7 +61,7 @@
   margin-bottom: 10px;
   background-color: #ffffff;
   text-align: justify;
-  padding: 10px 10px 30px 10px;
+  padding: 10px 20px 30px 20px;
   box-sizing: border-box;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
@@ -93,8 +93,9 @@
 }
 .content {
   font-size: 16px;
-  line-height: 20px;
+  line-height: 26px;
   margin-bottom: 10px;
+  font-weight: 300;
 }
 .plike {
   font-size: 24px;
@@ -304,8 +305,9 @@
   }
   .content {
     font-size: 20px;
-    line-height: 22px;
+    line-height: 30px;
     margin-bottom: 30px;
+    font-weight: 300;
   }
   .plike {
     font-size: 28px;

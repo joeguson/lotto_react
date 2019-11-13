@@ -1,5 +1,6 @@
 var likeButton = document.getElementById('plikeButton');
 var click = true;
+
 likeButton.addEventListener('click', function(){
     //var v = parseInt(document.getElementById('plikes').innerHTML);
     var pathname = location.pathname;

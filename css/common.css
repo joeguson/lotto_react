@@ -69,18 +69,16 @@ nav {
 }
 #footer {
   width: 100%;
-  font-size: 16px;
-  background-color: #2043aa;
+  font-size: 12px;
+  background-color: #ebedf2;
   text-align: center;
-  color: white;
-  line-height: 26px;
-  margin-top: 40px;
-  padding: 10px 0px;
+  color: black;
+  line-height: 16px;
+  margin-top: 20px;
+  padding: 7px 0px;
   position: relative;
   bottom: 0;
-}
-#footer p:first-child {
-  margin-bottom: 0px;
+  border-top: 1px solid #2e60f4;
 }
 header a {
   color: #2e60f4;
