@@ -51,22 +51,25 @@
   box-sizing: border-box;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
-  background-color: #2e60f4;
   padding: 10px;
+  background-color: white;
 }
 .tcontent-div {
   width: 100%;
   box-sizing: border-box;
   background-color: white;
   padding: 20px;
+  border-top: 2px solid #2e60f4;
 }
 .tdetail-div {
   width: 100%;
   box-sizing: border-box;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
-  background-color: #2e60f4;
-  padding: 5px;
+  background-color: white;
+  padding: 10px 20px;
+  border-top: 2px solid #2e60f4;
+  margin-bottom: 20px;
 }
 .answerForm {
   width: 95%;
@@ -82,7 +85,13 @@
   border-bottom: 1px solid lightgray;
 }
 .ttitle-div span {
-  color: white;
+  color: black;
+  font-size: 16px;
+  text-align: justify;
+  margin-bottom: 10px;
+}
+.ttitle-div span:first-child {
+  color: #2e60f4;
   font-size: 16px;
   text-align: justify;
   margin-bottom: 10px;
@@ -117,7 +126,7 @@
   border: 1px solid red;
 }
 .tdetail-div p {
-  color: white;
+  color: black;
   font-size: 12px;
   margin-bottom: 5px;
 }

@@ -73,7 +73,6 @@ exports.getViewTandya =  function(req, res){
                                             conn.conn.query(sql5, id, function(err, acomments, fields){
                                                 if(err){console.log(err);}
                                                 else{
-                                                    console.log('hashtag : ' + hashtag.length);
                                                     delete hashtag[0].id;
                                                     delete hashtag[0].u_id;
                                                     delete hashtag[0].p_id;

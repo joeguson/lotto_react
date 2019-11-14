@@ -43,14 +43,15 @@
 .border-radius{border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
 
 //.main - .ttitle-div(div), .tcontent-div, .tdetail-div, .answerForm(form), .tanswer(div)
-.ttitle-div{width:100%; box-sizing:border-box; .section-border(); background-color: @main; padding:10px;}
-.tcontent-div{width:100%; box-sizing:border-box; background-color: white; padding:20px;}
-.tdetail-div{width:100%; box-sizing:border-box; .section-border(); background-color: @main; padding:5px;}
+.ttitle-div{width:100%; box-sizing:border-box; .section-border();  padding:10px; background-color: white;}
+.tcontent-div{width:100%; box-sizing:border-box; background-color: white; padding:20px; border-top: 2px solid @main;}
+.tdetail-div{width:100%; box-sizing:border-box; .section-border(); background-color: white; padding:10px 20px; border-top:2px solid @main; margin-bottom: @marginbottom-mbl*2;}
 .answerForm{width:95%; margin: 10px auto @marginbottom-mbl auto;}
 .tanswer{width:100%; background-color:@bgcolor2; margin:0px; margin-bottom: @marginbottom-mbl; box-sizing: border-box;.section-border();}
 
 //.ttitle-div(div) - span
-.ttitle-div span{color:@font-color2; font-size: 16px; text-align: justify; margin-bottom: 10px;}
+.ttitle-div span{color:@font-color1; font-size: 16px; text-align: justify; margin-bottom: 10px;}
+.ttitle-div span:first-child{color:@main; font-size: 16px; text-align: justify; margin-bottom: 10px;}
 
 //.tcontent-div(div) - .warn(p), .content(p), .tlike(div), .tlikeButton(button)
 .warn{display:block; width:100%; text-align: right; padding:0;}
@@ -59,7 +60,7 @@
 .tlikeButton{width:40%; background-color: red; border-radius: 20px; height:30px; color: white; line-height: 30px; margin:0px auto; display: block; border:1px solid red;}
 
 //.tdetail-div(div) - p*2
-.tdetail-div p{color:@font-color2; font-size: 12px; margin-bottom: 5px;}
+.tdetail-div p{color:@font-color1; font-size: 12px; margin-bottom: 5px;}
 .edit{float:right; color:white;}
 //.warn(p) - .warnButton(button)
 .twarnButton{background-color: @main2; border:0px; font-size: 10px;} 

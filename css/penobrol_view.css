@@ -54,7 +54,8 @@
   box-sizing: border-box;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
-  background-color: #2e60f4;
+  background-color: white;
+  padding: 10px 20px;
 }
 .pcontent {
   width: 100%;
@@ -63,8 +64,7 @@
   text-align: justify;
   padding: 10px 20px 30px 20px;
   box-sizing: border-box;
-  border-top: 1px solid lightgray;
-  border-bottom: 1px solid lightgray;
+  border-top: 2px solid #2e60f4;
 }
 .commentForm {
   width: 95%;
@@ -82,7 +82,6 @@
 }
 .pview-dl {
   width: 100%;
-  padding: 10px;
   box-sizing: border-box;
 }
 .warn {
@@ -122,13 +121,13 @@
   list-style: none;
 }
 .pview-dt {
-  color: white;
+  color: black;
   font-size: 16px;
   text-align: justify;
   margin-bottom: 10px;
 }
 .pview-dd {
-  color: white;
+  color: black;
   font-size: 12px;
   margin-bottom: 5px;
 }
