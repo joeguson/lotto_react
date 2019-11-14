@@ -29,7 +29,7 @@ body {
   width: 100%;
   margin: 0px;
   padding: 0px;
-  background-color: #f0f2f6;
+  background-color: #ebedf2;
 }
 header {
   width: 100%;
@@ -41,14 +41,14 @@ header {
 }
 nav {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .sub-main {
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
   color: black;
-  background-color: #f0f2f6;
+  background-color: #ebedf2;
 }
 .ad {
   width: 0%;
@@ -59,18 +59,18 @@ nav {
   text-align: center;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .main {
   width: 100%;
-  margin: 0 auto 20px auto;
+  margin: 0 auto 10px auto;
   box-sizing: border-box;
-  background-color: #f0f2f6;
+  background-color: #ebedf2;
 }
 #footer {
   width: 100%;
   font-size: 12px;
-  background-color: #f0f2f6;
+  background-color: #ebedf2;
   text-align: center;
   color: black;
   line-height: 16px;
