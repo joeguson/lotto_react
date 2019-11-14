@@ -1,6 +1,6 @@
 //this common file is for body, header and nav and main tags only
 //margin order : top right bottom left;
-@bgcolor1: #ebedf2; //for all body(grey)
+@bgcolor1: #f0f2f6; //for all body(grey)
 @bgcolor2: #ffffff; // for section
 
 @main: #2e60f4; // blue main color
@@ -19,6 +19,7 @@
 @font-color1: black;
 @font-color2: white;
 @font-family: 'Lato', sans-serif;
+@font-family2: 'Pattaya', sans-serif;
 
 @marginbottom-mbl: 20px;
 @marginbottom-com: 30px;
@@ -57,16 +58,16 @@ nav{width:100%; margin-bottom: @marginbottom-mbl;}
 #footer{width:100%; font-size: 12px; background-color:@bgcolor1; text-align: center; color:black; line-height: 16px; margin-top: 20px; padding: 7px 0px; position:relative; bottom:0; border-top: 1px solid @main;}
 
 //header - a
-header a{color:@main; text-decoration: none;}
+header a{color:@main; text-decoration: none; font-family: @font-family2}
 
 //nav - ul
 nav ul{list-style: none; padding:0px; margin:0px;}
 
 //ul - li
-nav ul li{width:25%; height:45px; float:left; box-sizing: border-box; text-align: center; line-height: 40px; background-color: @maindark; cursor: pointer;}
+nav ul li{width:25%; height:38px; float:left; box-sizing: border-box; text-align: center; line-height: 38px; background-color: @maindark; cursor: pointer;}
 
 //li - a
-nav ul li a{text-decoration: none; color:@font-color2; font-size: 16px; display: block;}
+nav ul li a{text-decoration: none; color:@font-color2; font-size: 14px; display: block;}
 
 .clear{clear:both;}
 
@@ -75,9 +76,9 @@ nav ul li a{text-decoration: none; color:@font-color2; font-size: 16px; display:
     
     header{font-size: @header-text-size-big; height:120px; line-height: 100px;}
     .sub-main{width:85%;}
-    .main{width:85%;}
+    .main{width:75%;}
     //ul - li
-    nav ul li{height:60px; box-sizing: border-box; text-align: center;line-height: 60px;}
+    nav ul li{height:40px; box-sizing: border-box; text-align: center;line-height: 40px;}
     nav ul li:hover{opacity: .7;}
     //li - a
     nav ul li a{font-size: 20px;}

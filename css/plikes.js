@@ -103,7 +103,6 @@ function ccommentSendAjax(ccomment){
     var penobrolId = pathname.split('/');
     var commentId = ccomment.name;
     var original = {'ccommentContent' : ccomment.previousSibling.previousSibling.value};
-    //////////
     if(pccInputClick){
         pccInputClick = !pccInputClick;
         if(ccomment.previousSibling.previousSibling.value.length < 5){
@@ -134,6 +133,7 @@ function ccommentSendAjax(ccomment){
                 warnButton.setAttribute('value', 'pcc/'+penobrolId[2]+'/'+commentId+'/'+result.ccomment_id);
                 warnButton.setAttribute('id', 'warn/pcc/'+penobrolId[2]+'/'+commentId+'/'+result.ccomment_id);
                 warnButton.setAttribute('onclick', 'warningAjax(this)');
+                warnButton.innerHTML = '!';
                 ccomment.previousSibling.previousSibling.value = '';
                 dts.innerHTML = '- "' +result.ccomment_content+'"';
                 dds.innerHTML = 'by '+result.ccomment_author+' / '+ datemaker(result.ccomment_date);

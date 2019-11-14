@@ -1,6 +1,7 @@
 //this common file is for body, header and nav and main tags only
+//this common file is for body, header and nav and main tags only
 //margin order : top right bottom left;
-@bgcolor1: #ebedf2; //for all body(grey)
+@bgcolor1: #f0f2f6; //for all body(grey)
 @bgcolor2: #ffffff; // for section
 
 @main: #2e60f4; // blue main color
@@ -18,6 +19,7 @@
 @font-color1: black;
 @font-color2: white;
 @font-family: 'Lato', sans-serif;
+@font-family2: 'Pattaya', sans-serif;
 
 @marginbottom-mbl: 10px;
 @marginbottom-com: 30px;
@@ -44,7 +46,7 @@
 }
 
 .button{
-    width: 100%; height:45px; box-sizing: border-box; font-size: 20px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 45px; text-decoration: none; border-style: none; margin: 0px auto 10px auto;
+    width: 100%; height:40px; box-sizing: border-box; font-size: 20px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; border-style: none; margin: 0px auto 0px auto;
 }
 
 .border-radius{border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
@@ -57,11 +59,11 @@
 
 
 //.search - form
-form{width:85%; text-align: center; margin: 0px auto 10px auto;}
+form{width:85%; text-align: center; margin: 0px auto 10px auto; box-sizing: border-box;}
 
 //.search form - p, p
-input{width: 100%; height:45px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 20px; .border-radius(); text-align: center;}
-.submit{.button();}
+input{width: 80%; height:40px; border: 1px solid @main; font-size: 18px; text-align: center; box-sizing: border-box; display: inline;}
+.submit{.button(); width:20%; font-size: 16px; display: inline; margin:0px; float:right;}
 
 //main - .login(div), ul(#uls)
 .login{width:85%; margin:0 auto;}

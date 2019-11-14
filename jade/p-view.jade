@@ -8,7 +8,7 @@ html
         // links css common file
         link(rel="stylesheet" href="penobrol_view.css" type="text/css")
         // links css file
-        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400&display=swap" rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
         meta(charset='UTF-8')
         meta(name='viewport', content='width=device-width, initial-scale=1')    
         meta(name='apple-mobile-web-app-capable', content='yes')
@@ -76,7 +76,7 @@ html
             .pcontent
                 if u_id
                     p(class="warn")
-                        button(class="pwarnButton" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') !Warn
+                        button(class="pwarnButton" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') !
                 p(class="content")= topic.content
                 div(id="plike" class="plike")= topic.p_like
                 if u_id
@@ -117,7 +117,7 @@ html
                                                 else
                                                     button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Suka
                                                 span.dummy    
-                                                button(class="pcWarnButton" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') !Warn
+                                                button(class="pcWarnButton" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') !
                                     if u_id
                                         .ccommentForm
                                             textarea(name='ccomment' class="pccInput" id='pccInput')
@@ -133,7 +133,7 @@ html
                                                     - var date_result3 = 'by ' + cc.author + ' / '+datemaker(cc.date)
                                                 dd.pccomment-dd #{date_result3}
                                                     if u_id
-                                                        button(class="pccWarnButton" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) !Warn
+                                                        button(class="pccWarnButton" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) !
         script.
             function pcChecksubmit(){
                 if(pcInput.value.length < 5){

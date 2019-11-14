@@ -374,7 +374,7 @@ var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, fu
     });
 });
 
-app.listen(80, '0.0.0.0', function(){
+app.listen(3000, '0.0.0.0', function(){
   console.log('Connected, 80 port!');
 });
 

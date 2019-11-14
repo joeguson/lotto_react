@@ -208,7 +208,7 @@ exports.postAddAcomment = function(req, res){
     //when connection is more than two, divide
     var sql = 'INSERT INTO ta_com (author, content, ta_id, t_id) VALUES (?, ?, ?, ?)';
     var sql2 = 'UPDATE t_ans SET com = com + 1 WHERE id = ?';
-    var sql3 = 'UPDATE tandya SET score = com*.3 + ta_like*.7 where id = ?';
+    var sql3 = 'UPDATE t_ans SET score = com*.3 + ta_like*.7 where id = ?';
     var sql4 = 'SELECT * FROM ta_com where id = ?';
     conn.conn.query(sql, [author, content, ta_id, t_id], function(err, result, fields){
         if(err){console.log(err);}

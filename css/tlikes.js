@@ -102,7 +102,6 @@ function acommentSendAjax(acomment){
     var tandyaId = pathname.split('/');
     var answerId = acomment.name;
     var original = {'acommentContent' : acomment.previousSibling.previousSibling.value};
-
     if(tacInputClick){
         tacInputClick = !tacInputClick;
         if(acomment.previousSibling.previousSibling.value.length < 5){
@@ -133,6 +132,7 @@ function acommentSendAjax(acomment){
                 warnButton.setAttribute('value', 'tac/'+tandyaId[2]+'/'+answerId+'/'+result.acomment_id);
                 warnButton.setAttribute('id', 'warn/tac/'+tandyaId[2]+'/'+answerId+'/'+result.acomment_id);
                 warnButton.setAttribute('onclick', 'warningAjax(this)');
+                warnButton.innerHTML = '!';
                 acomment.previousSibling.previousSibling.value = '';
                 dts.innerHTML = '- "' +result.acomment_content+'"';
                 dds.innerHTML = 'by '+result.acomment_author+' / '+ datemaker(result.acomment_date);

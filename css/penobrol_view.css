@@ -286,7 +286,7 @@
 /*for bigger windows*/
 @media (min-width: 768px) {
   .main {
-    width: 90%;
+    width: 75%;
   }
   .pcontent {
     margin-bottom: 30px;

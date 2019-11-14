@@ -8,7 +8,7 @@ html
         // links css common file
         link(rel="stylesheet" href="tandya_view.css" type="text/css")
         // links css file
-        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400&display=swap" rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
         meta(charset='UTF-8')
         meta(name='viewport', content='width=device-width, initial-scale=1')    
         meta(name='apple-mobile-web-app-capable', content='yes')
@@ -64,7 +64,7 @@ html
             .tcontent-div
                 if u_id
                     p(class= "warn")
-                        button(class="twarnButton" type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') !Warn
+                        button(class="twarnButton" type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') !
                 p(class="content")= topic.content
                 div(id="tlike" class="tlike")= topic.t_like
                 if u_id
@@ -117,7 +117,7 @@ html
                                                 else
                                                     button(class="talikeButton" type="submit" value=topic.id+'/'+a.id onclick="answerSendAjax(this);") Suka
                                                 span.dummy
-                                                button(class="taWarnButton" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') !Warn
+                                                button(class="taWarnButton" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') !
                                     if u_id    
                                         .acommentForm
                                             textarea(name='acomment' class="tacInput")
@@ -133,7 +133,7 @@ html
                                                     - var date_result3 = 'by : ' + ac.author + ' / '+datemaker(ac.date)
                                                 dd.tacomment-dd #{date_result3}
                                                     if u_id
-                                                        button(class="tacWarnButton" type="submit" value='tac/'+topic.id+'/'+a.id+'/'+ac.id onclick="warningAjax(this);" id="warn/"+'tac/'+topic.id+'/'+a.id+'/'+ac.id) ! Warn
+                                                        button(class="tacWarnButton" type="submit" value='tac/'+topic.id+'/'+a.id+'/'+ac.id onclick="warningAjax(this);" id="warn/"+'tac/'+topic.id+'/'+a.id+'/'+ac.id) !
         section.footer(id='footer') 
             p contact : admin@beritamus.com
             p www.beritamus.com                            
