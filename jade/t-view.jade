@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang="id")
     head
         title beritamus
         // what appears on the tab
@@ -87,10 +87,8 @@ html
                         a(href='/tedit/'+topic.id class='edit') Edit
             if u_id
                 form(action='tandya/'+topic.id method='post' class='answerForm')
-                      p
                         textarea(name='answer' id="answer" class="taInput")
-                      p
-                        input(type='submit' value='submit' class="taInputButton" id='taInputButton')
+                        input(type='submit' value='answer' class="taInputButton" id='taInputButton')
             if answers.length > 0
                 .tanswer
                     ul.tanswer-ul

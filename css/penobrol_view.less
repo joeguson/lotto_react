@@ -11,7 +11,7 @@
 
 @main2: #faff93; // blue main color
 @mainlighter2: #fbffb3; // blue main color
-@mainlightest2: #fdffd3; // blue main color
+@mainlightest2: #feffed; // blue main color
 
 @button-color: #a0b3ef;
 @font-color1: black;
@@ -20,7 +20,6 @@
 
 @marginbottom-mbl: 10px;
 @marginbottom-com: 30px;
-
 
 //text size & color
 @header-text-size: 40px;
@@ -68,23 +67,20 @@
 .plike{font-size: 24px; text-align: center; margin: @marginbottom-mbl*2 0px; color:red;}
 .plikeButton{width:40%; background-color: red; border-radius: 20px; height:30px; color: white; line-height: 30px; margin:0px auto; display: block; border:1px solid red;}
 
-//.commentForm(form) - p * 2
-.commentForm p{width:100%;}
-
 //.pcomment(div) - .pcomment-ul(ul)
 .pcomment-ul{padding: 5px; list-style: none;}
 
 //.pview-dl(dl) - .pview-dt(dt), .pview-dd(dd)*2, .hashtag(for hashtags)
 .pview-dt{color:@font-color1; font-size: 16px; text-align: justify; margin-bottom: 10px;}
 .pview-dd{color:@font-color1; font-size: 12px; margin-bottom: 5px;}
-.edit{float:right; text-decoration: none; color:white;}
+.edit{float:right; text-decoration: none; color:@main;}
 
 //.warn(p) - .warnButton(button)
-.pwarnButton{background-color: @main2; border:0px; font-size: 10px;} 
+.pwarnButton{background-color: @main2; border:0px; font-size: 10px; border-radius: 13px; height:13px; width:13px; text-align: center;} 
 
 //p * 2 - #comment(textarea), .comment(input)
-.pcInput{width:100%; padding:5px; margin:0 auto; border: 1px solid @main; .border-radius(); height:60px; border: 1px solid @main; box-sizing: border-box; font-size: 12px;}
-.pcInputButton{.button(); width: 100%; height:40px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 18px; .border-radius();}
+.pcInput{width:80%; padding:5px; margin:0 auto; border: 1px solid @main; height:70px; border: 1px solid @main; box-sizing: border-box; font-size: 12px;}
+.pcInputButton{.button(); width: 20%; height:70px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 12px; .border-radius(); float:right;}
 
 
 //.pcomment-ul(ul) - .pcomment-li(li)
@@ -108,19 +104,19 @@
 .pclike{font-size: 14px; color:red; font-style: italic;}
 .commentButton{float:right;}
 .pclikeButton{background-color: red; color:white; border:0px; border-radius: 3px;}
-.pcWarnButton{background-color: @main2; border:0px; border-radius: 3px; float:right;}
+.pcWarnButton{background-color: @main2; border:0px; float:right; border-radius: 13px; height:13px; width:13px; text-align: center;}
 .dummy{width:5px; float:right;}
 
 //.ccommentForm - .pccInput(textarea), .pccInputButton(button)
-.pccInput{width:100%; padding:5px; margin:0 auto; border: 1px solid @main; .border-radius(); height:30px; font-size: 12px; box-sizing:border-box;}
-.pccInputButton{width: 100%; height: 20px; box-sizing: border-box; font-size: 12px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 12px; text-decoration: none; border-style: none; border: 1px solid @main; margin: 0px auto 10px auto; .border-radius();}
+.pccInput{width:80%; padding:5px; margin:0 auto; border: 1px solid @main; height:40px; font-size: 12px; box-sizing:border-box;}
+.pccInputButton{width: 20%; height: 40px; box-sizing: border-box; font-size: 12px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 12px; text-decoration: none; border-style: none; border: 1px solid @main; margin: 0px auto 10px auto; .border-radius(); float:right;}
 
 
 //.pccomment-dl - .pccomment-dt(dt), .pccomment-dd(dd)
 .pccomment-dt{font-size: 13px; font-weight: bold;}
 .pccomment-dd{font-size: 10px; font-style: italic;}
 
-.pccWarnButton{float:right; background-color: @main2; border:0px; border-radius: 5px;}
+.pccWarnButton{float:right; background-color: @main2; border:0px; border-radius: 13px; height:13px; width:13px; text-align: center;}
 
 /*for bigger windows*/
 @media (min-width:768px){

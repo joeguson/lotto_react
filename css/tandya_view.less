@@ -11,7 +11,7 @@
 
 @main2: #faff93; // blue main color
 @mainlighter2: #fbffb3; // blue main color
-@mainlightest2: #fdffd3; // blue main color
+@mainlightest2: #feffed; // blue main color
 
 @button-color: #a0b3ef;
 @font-color1: black;
@@ -61,13 +61,13 @@
 
 //.tdetail-div(div) - p*2
 .tdetail-div p{color:@font-color1; font-size: 12px; margin-bottom: 5px;}
-.edit{float:right; color:white;}
+.edit{float:right; color:@main;}
 //.warn(p) - .warnButton(button)
-.twarnButton{background-color: @main2; border:0px; font-size: 10px;} 
+.twarnButton{float:right; background-color: @main2; border:0px; border-radius: 13px; height:13px; width:13px; text-align: center;} 
 
 //.answerForm - .taInput(textarea), .taInputButton(button)
-.taInput{width:100%; padding:5px; margin:0 auto; border: 1px solid @main; .border-radius(); height:60px; border: 1px solid @main; box-sizing: border-box; font-size: 12px;}
-.taInputButton{.button(); width: 100%; height:40px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 18px; .border-radius();}
+.taInput{width:80%; padding:5px; margin:0 auto; border: 1px solid @main; height:70px; border: 1px solid @main; box-sizing: border-box; font-size: 12px;}
+.taInputButton{.button(); width: 20%; height:70px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 12px; .border-radius(); float:right;}
 
 //.tanswer - .tanswer-ul(ul)
 .tanswer-ul{padding: 5px; list-style: none;}
@@ -94,17 +94,17 @@
 .answerButton{float:right;}
 .talikeButton{background-color: red; color:white; border:0px; border-radius: 3px;}
 .dummy{width:5px; float:right;}
-.taWarnButton{background-color: @main2; border:0px; border-radius: 3px; float:right;}
+.taWarnButton{float:right; background-color: @main2; border:0px; border-radius: 13px; height:13px; width:13px; text-align: center;}
 
 //.acommentForm - .tacInput(textarea), .tacInputButton(button)
-.tacInput{width:100%; padding:5px; margin:0 auto; border: 1px solid @main; .border-radius(); height:30px; font-size: 12px; box-sizing:border-box;}
-.tacInputButton{width: 100%; height: 20px; box-sizing: border-box; font-size: 12px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 12px; text-decoration: none; border-style: none; border: 1px solid @main; margin: 0px auto 10px auto; .border-radius();}
+.tacInput{width:80%; padding:5px; margin:0 auto; border: 1px solid @main; height:40px; font-size: 12px; box-sizing:border-box;}
+.tacInputButton{width: 20%; height: 40px; box-sizing: border-box; font-size: 12px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 12px; text-decoration: none; border-style: none; border: 1px solid @main; margin: 0px auto 10px auto; .border-radius(); float:right;}
 
 //.tacomment-dl - .tacomment-dt(dt), .tacomment-dd(dd)
 .tacomment-dt{font-size: 13px; font-weight: bold;}
 .tacomment-dd{font-size: 10px; font-style: italic;}
 
-.tacWarnButton{float:right; background-color: @main2; border:0px; border-radius: 5px;}
+.tacWarnButton{float:right; background-color: @main2; border:0px; border-radius: 13px; height:13px; width:13px; text-align: center;}
 
 
 /*for bigger windows*/

@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang="id")
     head
         title beritamus
         // what appears on the tab
@@ -86,9 +86,7 @@ html
                             button(id="plikeButton" class="plikeButton" type="submit" value="Suka") Suka
             if u_id
                 form(action='penobrol/'+topic.id method='post' class='commentForm' onsubmit='return pcChecksubmit();')
-                  p
                     textarea(name='comment' class="pcInput" id='pcInput')
-                  p
                     input(type='submit' value='comment' class="pcInputButton" id="pcInputButton")
             if comments.length > 0
                 .pcomment
