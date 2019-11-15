@@ -5,7 +5,6 @@ html(lang="id")
         // what appears on the tab
         base(href="/")
         link(rel='stylesheet', href='common.css' type="text/css")
-        //link(rel='stylesheet', href='common2.css' type="text/css")
         // links css common file
         link(rel='stylesheet', href='aku.css' type="text/css")
         // links css file
@@ -36,75 +35,76 @@ html(lang="id")
     -}
     -}
     -}
-        header
-            a(href='/aku') Beritamus
-        nav
-            ul
-                li(style='border-bottom: 2px solid yellow; opacity: .9')
-                    a(href='/aku' style='color: #ffff97;') Aku
-                li
-                    a(href='/cari') Cari
-                li
-                    a(href='/penobrol') Penobrol
-                li
-                    a(href='/tandya') Tandya
-                br.clear
-        section.sub-main(id='sub-main')
-            //.ad Advertisement
-        section.main(id='main')
-            if user
-                .p-stat
-                    -var likeCountChecker = function(num){if(num){return num;}else{return 0;}}
-                    .likeStat
-                        span.likeSpan
-                            p.likeHeading Penobrol
-                            p.likeCount #{likeCountChecker(totalp_like.totalp_like)}
-                        span.likeSpan
-                            p.likeHeading Tandya
-                            p.likeCount #{likeCountChecker(totalt_like.totalt_like)}
-                    .likeStat
-                        span.likeSpan 
-                            p.likeHeading Comment
-                            p.likeCount #{likeCountChecker(totalpc_like.totalpc_like)}
-                        span.likeSpan 
-                            p.likeHeading Answer
-                            p.likeCount #{likeCountChecker(totalta_like.totalta_like)}
-                .p-penobrol
-                    p Penobrol
-                    if penobrols
-                        each p in penobrols
-                            -var plink = 'penobrol/'+p.id
-                            dl(onclick ='location.href="#{plink}"')
-                                dt
-                                    a(href='/penobrol/'+p.id)= p.title
-                                - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / ' + p.com +' comment'+' / suka: '
-                                dd.content-info #{date_result}
-                                    span(style='color: #c91818; font-size:14px;')= p.p_like
-                .p-tandya 
-                    p Tandya
-                    if tandyas
-                        each t in tandyas
-                            -var tlink = 'tandya/'+t.id
-                            dl(onclick ='location.href="#{tlink}"')
-                                dt
-                                    a(href='/tandya/'+t.id)= t.question
-                                - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / answer: ' + t.answer + ' / suka: '
-                                dd.content-info #{date_result}        
-                                    span(style='color: #c91818;')= t.t_like       
-                a.logout(href= '/aku/logout') Logout
-            else
-                form(action='aku/login' method='post')
-                    input(type='text' name='u_id' placeholder='  ID' id="input_id")
-                    input(type='password' name='u_pw' placeholder='  Password' id="input_pw")
-                    if message
-                        p.message= message
-                    input(type='submit' value="Login" id="login" onclick='noDouble()')
-                .daftar
-                    span(id="hilang")
-                        a Forgot
-                    span(id="daftar")
-                        a(href='/daftar') Sign Up
-        section.footer(id='footer') 
-            p contact : admin@beritamus.com
-            p www.beritamus.com
+        .container
+            header
+                a(href='/aku') Beritamus
+            nav
+                ul
+                    li(style='border-bottom: 2px solid yellow; opacity: .9')
+                        a(href='/aku' style='color: #ffff97;') Aku
+                    li
+                        a(href='/cari') Cari
+                    li
+                        a(href='/penobrol') Penobrol
+                    li
+                        a(href='/tandya') Tandya
+                    br.clear
+            section.sub-main(id='sub-main')
+                //.ad Advertisement
+            section.main(id='main')
+                if user
+                    .p-stat
+                        -var likeCountChecker = function(num){if(num){return num;}else{return 0;}}
+                        .likeStat
+                            span.likeSpan
+                                p.likeHeading Penobrol
+                                p.likeCount #{likeCountChecker(totalp_like.totalp_like)}
+                            span.likeSpan
+                                p.likeHeading Tandya
+                                p.likeCount #{likeCountChecker(totalt_like.totalt_like)}
+                        .likeStat
+                            span.likeSpan 
+                                p.likeHeading Comment
+                                p.likeCount #{likeCountChecker(totalpc_like.totalpc_like)}
+                            span.likeSpan 
+                                p.likeHeading Answer
+                                p.likeCount #{likeCountChecker(totalta_like.totalta_like)}
+                    .p-penobrol
+                        p Penobrol
+                        if penobrols
+                            each p in penobrols
+                                -var plink = 'penobrol/'+p.id
+                                dl(onclick ='location.href="#{plink}"')
+                                    dt
+                                        a(href='/penobrol/'+p.id)= p.title
+                                    - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / ' + p.com +' comment'+' / suka: '
+                                    dd.content-info #{date_result}
+                                        span(style='color: #c91818; font-size:14px;')= p.p_like
+                    .p-tandya 
+                        p Tandya
+                        if tandyas
+                            each t in tandyas
+                                -var tlink = 'tandya/'+t.id
+                                dl(onclick ='location.href="#{tlink}"')
+                                    dt
+                                        a(href='/tandya/'+t.id)= t.question
+                                    - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / answer: ' + t.answer + ' / suka: '
+                                    dd.content-info #{date_result}        
+                                        span(style='color: #c91818;')= t.t_like       
+                    a.logout(href= '/aku/logout') Logout
+                else
+                    form(action='aku/login' method='post')
+                        input(type='text' name='u_id' placeholder='  ID' id="input_id")
+                        input(type='password' name='u_pw' placeholder='  Password' id="input_pw")
+                        if message
+                            p.message= message
+                        input(type='submit' value="Login" id="login" onclick='noDouble()')
+                    .daftar
+                        span(id="hilang")
+                            a Forgot
+                        span(id="daftar")
+                            a(href='/daftar') Sign Up
+            section.footer(id='footer') 
+                p contact : admin@beritamus.com
+                p www.beritamus.com
     script(type="text/javascript" src="aku.js")

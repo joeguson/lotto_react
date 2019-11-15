@@ -15,48 +15,49 @@ html(lang="id")
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
-        header
-            a(href='/penobrol') Beritamus      
-        nav
-            ul
-                li
-                    a(href='/aku') Aku
-                li
-                    a(href='/cari') Cari
-                li
-                    a(href='/penobrol') Penobrol
-                li(style='border-bottom: 2px solid yellow; opacity: .9')
-                    a(href='/tandya' style='color: #ffff97;') Tandya
-                br.clear
-        article
-            form(action='/tandya/add' method='post' onsubmit='return checksubmit();')
-                p
-                    input(type='text' name='question' placeholder='title' class="title" id="title" required)
-                p
-                    label
-                        input(type='radio' value='p' name="public" checked)
-                        |public
-                    label
-                        input(type='radio' value='a' name="public")
-                        |anonim  
-                p
-                    textarea(name='content' class="content" id="content" required)
-                p
-                    input(type='text' name='hashtag' placeholder='#cinta / max 7 hashtags' class="hashtag")
-                p
-                    input(type='submit' class="submit" value="tanya")
-                script.
-                    function checksubmit(){
-                        if(title.value.length < 5){
-                            alert('judulnya harus lebih dari 5 alphabet');
-                            return false;
+        .container
+            header
+                a(href='/penobrol') Beritamus      
+            nav
+                ul
+                    li
+                        a(href='/aku') Aku
+                    li
+                        a(href='/cari') Cari
+                    li
+                        a(href='/penobrol') Penobrol
+                    li(style='border-bottom: 2px solid yellow; opacity: .9')
+                        a(href='/tandya' style='color: #ffff97;') Tandya
+                    br.clear
+            article
+                form(action='/tandya/add' method='post' onsubmit='return checksubmit();')
+                    p
+                        input(type='text' name='question' placeholder='title' class="title" id="title" required)
+                    p
+                        label
+                            input(type='radio' value='p' name="public" checked)
+                            |public
+                        label
+                            input(type='radio' value='a' name="public")
+                            |anonim  
+                    p
+                        textarea(name='content' class="content" id="content" required)
+                    p
+                        input(type='text' name='hashtag' placeholder='#cinta / max 7 hashtags' class="hashtag")
+                    p
+                        input(type='submit' class="submit" value="tanya")
+                    script.
+                        function checksubmit(){
+                            if(title.value.length < 5){
+                                alert('judulnya harus lebih dari 5 alphabet');
+                                return false;
+                            }
+                            if(content.value.length < 5){
+                                alert('kontennya harus lebih dari 5 alphabet');
+                                return false;
+                            }
+                            return true;
                         }
-                        if(content.value.length < 5){
-                            alert('kontennya harus lebih dari 5 alphabet');
-                            return false;
-                        }
-                        return true;
-                    }
-        section.footer(id='footer') 
-            p contact : admin@beritamus.com
-            p www.beritamus.com
+            section.footer(id='footer') 
+                p contact : admin@beritamus.com
+                p www.beritamus.com

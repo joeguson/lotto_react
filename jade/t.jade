@@ -42,58 +42,59 @@ html(lang="id")
     -idChanger = username.substr(0,3) + '****';
     -return idChanger;
     -}
-        header
-            a(href='/tandya') Beritamus
-        nav
-            ul
-                li
-                    a(href='/aku') Aku
-                li
-                    a(href='/cari') Cari
-                li
-                    a(href='/penobrol') Penobrol
-                li(style='border-bottom: 2px solid yellow; opacity: .9')
-                    a(href='/tandya' style='color: #ffff97;') Tandya
-                br.clear
-        section.sub-main(id='sub-main')
-            //.ad Advertisement
-        section.main(id='main')
-            .login
-                if(u_id)
-                    a.addTandya(href='/tandya/add') +
-                else
-                    a.addTandya(href='/aku') +
-            .t-terbaru
-                .t-title Tandya Terbaru
+        .container
+            header
+                a(href='/tandya') Beritamus
+            nav
                 ul
-                    each v in dateTopics
-                        li
-                            -var tlink = 'tandya/'+v.id
-                            dl.t-dl(onclick ='location.href="#{tlink}"')
-                                dt
-                                    a(href='/tandya/'+v.id)= v.question
-                                dd.ddcontent= v.content
-                                if v.public == 'a'
-                                    - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' jawaban'
-                                else
-                                    - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' komentar'
-                                dd #{date_result}
-            .t-terkenal
-                .t-title Tandya Terkenal               
-                ul
-                    each w in scoreTopics
-                        li
-                            -var tlink = 'tandya/'+w.id
-                            dl.t-dl(onclick ='location.href="#{tlink}"')
-                                dt
-                                    a(href='/tandya/'+w.id)= w.question
-                                dd.ddcontent= w.content
-                                if w.public == 'a'
-                                    - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' jawaban'
-                                else
-                                    - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' jawaban'
-                                dd #{date_result}      
-        section.footer(id='footer') 
-            p contact : admin@beritamus.com
-            p www.beritamus.com
-        //script(type="text/javascript" src="prank.js")
+                    li
+                        a(href='/aku') Aku
+                    li
+                        a(href='/cari') Cari
+                    li
+                        a(href='/penobrol') Penobrol
+                    li(style='border-bottom: 2px solid yellow; opacity: .9')
+                        a(href='/tandya' style='color: #ffff97;') Tandya
+                    br.clear
+            section.sub-main(id='sub-main')
+                //.ad Advertisement
+            section.main(id='main')
+                .login
+                    if(u_id)
+                        a.addTandya(href='/tandya/add') +
+                    else
+                        a.addTandya(href='/aku') +
+                .t-terbaru
+                    .t-title Tandya Terbaru
+                    ul
+                        each v in dateTopics
+                            li
+                                -var tlink = 'tandya/'+v.id
+                                dl.t-dl(onclick ='location.href="#{tlink}"')
+                                    dt
+                                        a(href='/tandya/'+v.id)= v.question
+                                    dd.ddcontent= v.content
+                                    if v.public == 'a'
+                                        - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' jawaban'
+                                    else
+                                        - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' komentar'
+                                    dd #{date_result}
+                .t-terkenal
+                    .t-title Tandya Terkenal               
+                    ul
+                        each w in scoreTopics
+                            li
+                                -var tlink = 'tandya/'+w.id
+                                dl.t-dl(onclick ='location.href="#{tlink}"')
+                                    dt
+                                        a(href='/tandya/'+w.id)= w.question
+                                    dd.ddcontent= w.content
+                                    if w.public == 'a'
+                                        - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' jawaban'
+                                    else
+                                        - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' jawaban'
+                                    dd #{date_result}      
+            section.footer(id='footer') 
+                p contact : admin@beritamus.com
+                p www.beritamus.com
+            //script(type="text/javascript" src="prank.js")

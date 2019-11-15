@@ -33,47 +33,48 @@ html(lang="id")
     -}
     -}
     -}
-        header(id='header')
-            a(href='/cari') Beritamus      
-        nav(id='nav')
-            ul
-                li
-                    a(href='/aku') Aku
-                li(style='border-bottom: 2px solid yellow; opacity: .9')
-                    a(href='/cari' style='color: #ffff97;') Cari
-                li
-                    a(href='/penobrol') Penobrol
-                li
-                    a(href='/tandya') Tandya
-                br.clear
-        section.sub-main(id='sub-main')
-            //.ad Advertising
-            .search
-                form(action='/cari/search' method='get')
-                    input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
-                    input(type='submit' class="submit" value="search")
-        section.main(id='main')
-            ul(id='uls')
-                if result
-                    each v in result
-                        li
-                            if(v.identifier =='p')
-                                -var plink = 'penobrol/'+v.id
-                                dl(onclick ='location.href="#{plink}"')
-                                    dt
-                                        a(href='/penobrol/'+v.id)= v.title
-                                    dd.ddcontent= v.content
-                                    - var date_result = datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / '+v.com + ' comments';
-                                    dd #{date_result}
-                            else
-                                -var tlink = 'tandya/'+v.id
-                                dl(onclick ='location.href="#{tlink}"')
-                                    dt
-                                        a(href='/tandya/'+v.id)= v.question
-                                    dd.ddcontent= v.content
-                                    - var date_result = datemaker(v.date) + ' / ' + v.t_view + ' views'+ ' / '+v.answer + ' answers';
-                                    dd #{date_result}
-                else
+        .container
+            header(id='header')
+                a(href='/cari') Beritamus      
+            nav(id='nav')
+                ul
+                    li
+                        a(href='/aku') Aku
+                    li(style='border-bottom: 2px solid yellow; opacity: .9')
+                        a(href='/cari' style='color: #ffff97;') Cari
+                    li
+                        a(href='/penobrol') Penobrol
+                    li
+                        a(href='/tandya') Tandya
+                    br.clear
+            section.sub-main(id='sub-main')
+                //.ad Advertising
+                .search
+                    form(action='/cari/search' method='get')
+                        input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
+                        input(type='submit' class="submit" value="search")
+            section.main(id='main')
+                ul(id='uls')
+                    if result
+                        each v in result
+                            li
+                                if(v.identifier =='p')
+                                    -var plink = 'penobrol/'+v.id
+                                    dl(onclick ='location.href="#{plink}"')
+                                        dt
+                                            a(href='/penobrol/'+v.id)= v.title
+                                        dd.ddcontent= v.content
+                                        - var date_result = datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / '+v.com + ' comments';
+                                        dd #{date_result}
+                                else
+                                    -var tlink = 'tandya/'+v.id
+                                    dl(onclick ='location.href="#{tlink}"')
+                                        dt
+                                            a(href='/tandya/'+v.id)= v.question
+                                        dd.ddcontent= v.content
+                                        - var date_result = datemaker(v.date) + ' / ' + v.t_view + ' views'+ ' / '+v.answer + ' answers';
+                                        dd #{date_result}
+                    else
                         
                         
                         

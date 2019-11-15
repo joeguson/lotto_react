@@ -42,58 +42,59 @@ html(lang="id")
     -idChanger = username.substr(0,3) + '****';
     -return idChanger;
     -}
-        header
-            a(href='/penobrol') Beritamus
-        nav
-            ul
-                li
-                    a(href='/aku') Aku
-                li
-                    a(href='/cari') Cari
-                li(style='border-bottom: 2px solid yellow; opacity: .9')
-                    a(href='/penobrol' style='color: #ffff97;') Penobrol
-                li
-                    a(href='/tandya') Tandya
-                br.clear
-        section.sub-main(id='sub-main')
-            //.ad Advertisement
-        section.main(id='main')
-            .login
-                if(u_id)
-                    a.addPenobrol(href='/penobrol/add') +
-                else
-                    a.addPenobrol(href='/aku') + 
-            .p-terbaru
-                .p-title Penobrol Terbaru
+        .container
+            header
+                a(href='/penobrol') Beritamus
+            nav
                 ul
-                    each v in dateTopics
-                        li
-                            -var plink = 'penobrol/'+v.id
-                            dl.p-dl(onclick ='location.href="#{plink}"')
-                                dt
-                                    a(href='/penobrol/'+v.id)= v.title
-                                dd.ddcontent= v.content
-                                if v.public == 'a'
-                                    - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' komentar'
-                                else
-                                    - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' komentar'
-                                dd #{date_result}        
-            .p-terkenal
-                .p-title Penobrol Terkenal
-                ul
-                    each w in scoreTopics
-                        li
-                            -var plink = 'penobrol/'+w.id
-                            dl.p-dl(onclick ='location.href="#{plink}"')
-                                dt
-                                    a(href='/penobrol/'+w.id)= w.title
-                                dd.ddcontent= w.content
-                                if w.public == 'a'
-                                    - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar'
-                                else
-                                    - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar'
-                                dd #{date_result}   
-        section.footer(id='footer') 
-            p contact : admin@beritamus.com
-            p www.beritamus.com
-    //script(type="text/javascript" src="prank.js")
+                    li
+                        a(href='/aku') Aku
+                    li
+                        a(href='/cari') Cari
+                    li(style='border-bottom: 2px solid yellow; opacity: .9')
+                        a(href='/penobrol' style='color: #ffff97;') Penobrol
+                    li
+                        a(href='/tandya') Tandya
+                    br.clear
+            section.sub-main(id='sub-main')
+                //.ad Advertisement
+            section.main(id='main')
+                .login
+                    if(u_id)
+                        a.addPenobrol(href='/penobrol/add') +
+                    else
+                        a.addPenobrol(href='/aku') + 
+                .p-terbaru
+                    .p-title Penobrol Terbaru
+                    ul
+                        each v in dateTopics
+                            li
+                                -var plink = 'penobrol/'+v.id
+                                dl.p-dl(onclick ='location.href="#{plink}"')
+                                    dt
+                                        a(href='/penobrol/'+v.id)= v.title
+                                    dd.ddcontent= v.content
+                                    if v.public == 'a'
+                                        - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' komentar'
+                                    else
+                                        - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' komentar'
+                                    dd #{date_result}        
+                .p-terkenal
+                    .p-title Penobrol Terkenal
+                    ul
+                        each w in scoreTopics
+                            li
+                                -var plink = 'penobrol/'+w.id
+                                dl.p-dl(onclick ='location.href="#{plink}"')
+                                    dt
+                                        a(href='/penobrol/'+w.id)= w.title
+                                    dd.ddcontent= w.content
+                                    if w.public == 'a'
+                                        - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar'
+                                    else
+                                        - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar'
+                                    dd #{date_result}   
+            section.footer(id='footer') 
+                p contact : admin@beritamus.com
+                p www.beritamus.com
+        //script(type="text/javascript" src="prank.js")
