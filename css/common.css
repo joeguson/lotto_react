@@ -36,7 +36,7 @@ input[type=submit] {
 input[type=button] {
   -webkit-appearance: none;
 }
-* {
+input[type=date] {
   -webkit-appearance: none;
 }
 html {
