@@ -6,7 +6,7 @@
   margin: 0;
   padding: 0;
 }
-input {
+input[type=submit] {
   -webkit-appearance: none;
 }
 .section-border {
@@ -78,7 +78,6 @@ header {
   margin: 0 auto 10px auto;
   box-sizing: border-box;
   background-color: #ebedf2;
-  position: relative;
 }
 #footer {
   width: 100%;

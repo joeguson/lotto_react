@@ -6,9 +6,6 @@
   margin: 0;
   padding: 0;
 }
-input {
-  -webkit-appearance: none;
-}
 .section-border {
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
@@ -51,9 +48,9 @@ header {
   text-align: center;
   background-color: #ffffff;
 }
-nav {
+#nav {
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 .sub-main {
   width: 100%;
@@ -78,7 +75,6 @@ nav {
   margin: 0 auto 10px auto;
   box-sizing: border-box;
   background-color: #ebedf2;
-  position: relative;
 }
 #footer {
   width: 100%;

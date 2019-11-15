@@ -85,6 +85,7 @@ document.getElementById('girl').addEventListener('click', function(){
 document.getElementById('email').addEventListener('focus', function(){
     document.getElementById('email').value = '';
     var userEmail = document.getElementById('email').value;
+    console.log(userEmail);
     if(emailCheck.test(userEmail) === true){
         authenticator4 = '1';
     } 
