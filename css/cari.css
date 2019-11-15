@@ -75,6 +75,7 @@ nav {
   margin: 0 auto 10px auto;
   box-sizing: border-box;
   background-color: #ebedf2;
+  position: relative;
 }
 #footer {
   width: 100%;
@@ -85,8 +86,11 @@ nav {
   line-height: 16px;
   margin-top: 20px;
   padding: 7px 0px;
-  bottom: 0;
   border-top: 1px solid #2e60f4;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 header a {
   color: #2e60f4;
@@ -175,6 +179,7 @@ input {
   text-decoration: none;
   border-style: none;
   width: 20%;
+  height: 40px;
   font-size: 16px;
   display: inline;
   margin: 0px;
@@ -199,9 +204,11 @@ input {
   line-height: 40px;
   text-decoration: none;
   border-style: none;
+  height: 40px;
   margin-bottom: 10px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+  font-size: 16px;
 }
 .clear {
   clear: both;
@@ -266,6 +273,33 @@ dt a {
   }
   login a {
     margin-bottom: 30px;
+  }
+  input {
+    width: 90%;
+    height: 40px;
+    border: 1px solid #2e60f4;
+    font-size: 18px;
+    text-align: center;
+    box-sizing: border-box;
+    display: inline;
+  }
+  .submit {
+    width: 100%;
+    height: 60px;
+    box-sizing: border-box;
+    font-size: 20px;
+    background-color: #a0b3ef;
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+    text-decoration: none;
+    border-style: none;
+    width: 10%;
+    height: 40px;
+    font-size: 16px;
+    display: inline;
+    margin: 0px;
+    float: right;
   }
   dl dt {
     width: 90%;

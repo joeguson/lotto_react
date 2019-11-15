@@ -7,13 +7,12 @@
 
 .search{width:100%; background-color: @bgcolor1; font-size: 20px;}
 
-
 //.search - form
 form{width:85%; text-align: center; margin: 0px auto 10px auto; box-sizing: border-box;}
 
 //.search form - p, p
 input{width: 80%; height:40px; border: 1px solid @main; font-size: 18px; text-align: center; box-sizing: border-box; display: inline;}
-.submit{.button(); width:20%; font-size: 16px; display: inline; margin:0px; float:right;}
+.submit{.button(); width:20%; height:40px; font-size: 16px; display: inline; margin:0px; float:right;}
 
 //main - .login(div), ul(#uls)
 .login{width:85%; margin:0 auto;}
@@ -21,7 +20,7 @@ input{width: 80%; height:40px; border: 1px solid @main; font-size: 18px; text-al
 
 
 //.login - a
-.login a{.button(); margin-bottom: @marginbottom-mbl; .border-radius();}
+.login a{.button(); height:40px; margin-bottom: @marginbottom-mbl; .border-radius(); font-size: 16px;}
 .clear{clear:both}
 
 //#uls - li
@@ -40,9 +39,13 @@ dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @mai
 
 /*for bigger windows*/
 @media (min-width:768px){
+    
     .ad{height:200px; margin-bottom: @marginbottom-com; font-size: 100px; line-height: 200px;}
     form p{width:80%; margin:0 auto;}
     login a{margin-bottom: @marginbottom-com;}
+    
+    input{width: 90%; height:40px; border: 1px solid @main; font-size: 18px; text-align: center; box-sizing: border-box; display: inline;}
+    .submit{.button(); width:10%; height:40px; font-size: 16px; display: inline; margin:0px; float:right;}
     
     dl dt{width: 90%; height:50px; line-height: 30px; margin-bottom: 10px; font-size: 20px;}
     dd{font-style: italic; font-size: 12px;}

@@ -75,6 +75,7 @@ nav {
   margin: 0 auto 10px auto;
   box-sizing: border-box;
   background-color: #ebedf2;
+  position: relative;
 }
 #footer {
   width: 100%;
@@ -85,8 +86,11 @@ nav {
   line-height: 16px;
   margin-top: 20px;
   padding: 7px 0px;
-  bottom: 0;
   border-top: 1px solid #2e60f4;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 header a {
   color: #2e60f4;
