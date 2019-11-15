@@ -72,9 +72,7 @@ html(lang="id")
                 div(id="plike" class="plike")= topic.p_like
             if u_id
                 form(action='/pcedit/'+topic.id+'/'+edit_content.id method='post' id='commentForm' class='commentForm')
-                  p
                     textarea(name='comment' id="comment" class="pcInput")= edit_content.content
-                  p
                     input(type='submit' value='submit' class="pcInputButton")
         section.footer(id='footer') 
             p contact : admin@beritamus.com

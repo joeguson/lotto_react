@@ -374,9 +374,9 @@ exports.postEditPenobrol = function(req, res){
         rawhashtags = rawhashtags.replace(' ', "");
     }
     var hashtags = rawhashtags.split('#');
+    hashtags.splice(0,1);
     hashtagCount = hashtags.length;
     var perfecthashtag = function (array){
-        array.splice(0, 1);
         if(array.length > 7){
             while(array.length > 7){
                 array.splice(7, 1);

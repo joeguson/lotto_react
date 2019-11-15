@@ -77,8 +77,9 @@ html(lang="id")
                             dl(onclick ='location.href="#{plink}"')
                                 dt
                                     a(href='/penobrol/'+p.id)= p.title
-                                - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / ' + p.com +' comment'+' / suka: ' + p.p_like
-                                dd.content-info #{date_result}         
+                                - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / ' + p.com +' comment'+' / suka: '
+                                dd.content-info #{date_result}
+                                    span(style='color: #c91818; font-size:14px;')= p.p_like
                 .p-tandya 
                     p Tandya
                     if tandyas
@@ -87,8 +88,9 @@ html(lang="id")
                             dl(onclick ='location.href="#{tlink}"')
                                 dt
                                     a(href='/tandya/'+t.id)= t.question
-                                - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / answer: ' + t.answer + ' / suka: ' + t.t_like
+                                - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / answer: ' + t.answer + ' / suka: '
                                 dd.content-info #{date_result}        
+                                    span(style='color: #c91818;')= t.t_like       
                 a.logout(href= '/aku/logout') Logout
             else
                 form(action='aku/login' method='post')

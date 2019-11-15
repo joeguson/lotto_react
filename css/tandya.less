@@ -1,53 +1,7 @@
-@bgcolor1: #ebedf2; //for all body(grey)
-@bgcolor2: #ffffff; // for section
-
-@main: #2e60f4; // blue main color
-@maindark: #2043aa; // blue main color
-@maindarker: #122661; // blue main color
-@maindarkest: #040918; // blue main color
-@mainlight: #6c8ff7; // blue main color
-@mainlighter: #abbffa; // blue main color
-@mainlightest: #eaeffd; // blue main color
-
-@main2: #faff93; // blue main color
-@mainlighter2: #fbffb3; // blue main color
-@mainlightest2: #feffed; // blue main color
-
-@button-color: #a0b3ef;
-@font-color1: black;
-@font-color2: white;
-@font-family: 'Lato', sans-serif;
-
-@marginbottom-mbl: 10px;
-@marginbottom-com: 30px;
-
-//text size & color
-@header-text-size: 40px;
-@header-text-size-big: 50px;
-
-*{font-family: @font-family; margin:0px; padding:0px;}
-
-.section-border{
-    border-top: 2px solid lightgray;
-    border-bottom: 2px solid lightgray;
-}
-.li-border{
-    border-top: 1px solid @mainlight;
-    border-bottom: 1px solid @mainlight;
-    margin-bottom: @marginbottom-mbl;
-}
-.identifier-border{
-    height:20px;
-    padding:5px;
-    float:right;
-    color:@mainlight;
-}
-
-.button{
-    width: 100%; height:45px; box-sizing: border-box; font-size: 20px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 45px; text-decoration: none; border-style: none; margin: 0px auto 10px auto;
-}
-.border-radius{border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
-
+// Variables
+@themes: "../css";
+// Usage
+@import "@{themes}/common.less";
 //.sub-main - .ad(div)
 
 //.main - .login(div), .t-terbaru(div), .t-terkenal(div)
@@ -56,7 +10,7 @@
 .t-terbaru{margin-bottom: @marginbottom-mbl;}
 
 //.login(div) - a.addTandya
-.login a{position:fixed; right:25px; bottom:40px; background-color: @main; width:35px; height:35px; text-align:center; text-decoration: none; color:white; line-height: 35px; border-radius: 35px;}
+.login a{position:fixed; right:8%; bottom:8%; background-color: @main; width:35px; height:35px; text-align:center; text-decoration: none; color:white; line-height: 35px; border-radius: 35px;}
 .clear{clear:both}
 
 //.t-terabaru(div), .t-terkenal(div) - .t-title(div), ul * 2
@@ -84,7 +38,8 @@ dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @mai
     .ad{height:200px; margin-bottom: @marginbottom-com; font-size: 100px; line-height: 200px;}
     .t-terbaru, .t-terkenal{width:49%; padding:10px; .section-border(); background-color: @bgcolor2; box-sizing: border-box; display:inline-block;}
     .t-terkenal{float:right;}
-    login a{margin-bottom: @marginbottom-com;}
+    
+    .login a{background-color: @main; width:35px; height:35px; text-align:center; text-decoration: none; color:white; line-height: 35px; border-radius: 35px;}
     dl dt{width: 90%; height:50px; line-height: 30px; margin-bottom: 10px; font-size: 20px;}
     dd{font-style: italic; font-size: 12px;}
     dl .ddcontent{font-size: 16px; line-height: 20px; height:60px; font-style: normal; margin-bottom: 10px;}

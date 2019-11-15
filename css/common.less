@@ -1,5 +1,6 @@
 //this common file is for body, header and nav and main tags only
 //margin order : top right bottom left;
+
 @bgcolor1: #ebedf2; //for all body(grey)
 @bgcolor2: #ffffff; // for section
 
@@ -18,8 +19,12 @@
 @button-color: #a0b3ef;
 @font-color1: black;
 @font-color2: white;
+@font-color3: grey;
+
 @font-family: 'Lato', sans-serif;
 @font-family2: 'Pattaya', sans-serif;
+
+@likeColor: #c91818;
 
 @marginbottom-mbl: 10px;
 @marginbottom-com: 30px;
@@ -38,22 +43,22 @@
 .button{
     width: 100%; height:60px; box-sizing: border-box; font-size: 20px; background-color:@button-color; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; border-style: none;
 }
-
+.li-border{
+    border-top: 1px solid @mainlight;
+    border-bottom: 1px solid @mainlight;
+    margin-bottom: @marginbottom-mbl;
+}
+.border-radius{border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
 input[type=submit] {-webkit-appearance:none;}
 
 body{width:100%; margin:0px; padding:0px; background-color: @bgcolor1;}
 
 //body - header nav submain main footer
 header{width: 100%; font-size: @header-text-size; height:100px; line-height: 90px; text-align: center; background-color: @bgcolor2}
-
 nav{width:100%; margin-bottom: @marginbottom-mbl;}
-
 .sub-main{width:100%; margin:0 auto; box-sizing: border-box; color:@font-color1; background-color: @bgcolor1;}
-
 .ad {width:0%; height:0px; background-color: @bgcolor2; font-size: 50px; line-height: 140px; text-align: center; .section-border(); margin-bottom: @marginbottom-mbl;}
-
 .main{width:100%; margin:0 auto @marginbottom-mbl auto; box-sizing: border-box; background-color: @bgcolor1;}
-
 #footer{width:100%; font-size: 12px; background-color:@bgcolor1; text-align: center; color:black; line-height: 16px; margin-top: 20px; padding: 7px 0px; bottom:0; border-top: 1px solid @main;}
 
 //header - a

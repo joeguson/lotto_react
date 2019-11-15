@@ -71,9 +71,7 @@ html(lang="id")
                 p #{date_result}
             if u_id
                 form(action='/taedit/'+topic.id+'/'+edit_content.id method='post' id='answerForm')
-                      p
                         textarea(name='answer' id="answer" class="taInput")= edit_content.answer
-                      p
                         input(type='submit' value='submit' class="answer" class="taInputButton")
         section.footer(id='footer') 
             p contact : admin@beritamus.com
