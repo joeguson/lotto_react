@@ -118,7 +118,7 @@ exports.getDaftarAuth = function(req, res){
     conn.conn.query(sql, email, function(err, verify, fields){
         if(verify[0]){
             if(verify[0].vcode == code){
-                sql2 = 'UPDATE users set verification = true where email = ?';
+                sql2 = 'UPDATE users set verification = true, verify_date = NOW() where email = ?';
                 conn.conn.query(sql2, email, function(err, verified, fields){
                     if(err){console.log(err);}
                     else{
