@@ -66,7 +66,7 @@ document.getElementById('boy').addEventListener('click', function(){
     var laki = document.getElementById('boy');
     var perem = document.getElementById('girl');
     laki.style.backgroundColor = '#c91818';
-    perem.style.backgroundColor = 'light gray';
+    perem.style.backgroundColor = 'lightgrey';
     sex = 'laki';
     var gender = document.getElementById('gender');
     gender.setAttribute('value', 'M');
@@ -75,7 +75,7 @@ document.getElementById('boy').addEventListener('click', function(){
 document.getElementById('girl').addEventListener('click', function(){
     var laki = document.getElementById('boy');
     var perem = document.getElementById('girl');
-    laki.style.backgroundColor = 'light gray';
+    laki.style.backgroundColor = 'lightgrey';
     perem.style.backgroundColor = '#c91818';
     sex = 'perempuan';
     var gender = document.getElementById('gender');
