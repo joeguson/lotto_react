@@ -6,7 +6,15 @@
 *{font-family: @font-family; margin:0; padding:0; box-sizing: border-box;}
 input[type=submit] {-webkit-appearance:none;}
 input[type=button] {-webkit-appearance:none;}
-
+input[type=date] {-webkit-appearance:none;}
+input[type=date]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+}
+input[type=date]::-webkit-calendar-picker-indicator {
+    -webkit-appearance: none;
+    display: none;
+}
 
 html{height:100%;}
 body{width:100%; height:100%; margin:0px; padding:0px; background-color: @bgcolor1;}
