@@ -15,32 +15,33 @@ html(lang="id")
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
-        h1 Sign Up
-        article
-            form(action='/daftar' method='post' onsubmit='return checksubmit();')
-                p
-                    input(type='text' id="u_id" name='u_id' placeholder='Your interesting ID' required)
-                .idchecker(id="idchecker")
-                p
-                    input(type='password' id = 'u_pw' name='u_pw' placeholder='Secret Password' required)
-                    input(type='password' id = 'u_pw2' placeholder='Check Your Password One More Time')
-                .idchecker(id="pwchecker")
-                p
-                    input(type='date' name='birthday' value='2019-08-31' required)
-                p
-                    input(type='button' name='boy' id = 'boy' value='Male' class="sex" required)
-                    input(type='button' name='girl' id = 'girl' value='Female' class="sex" required)
-                    input(type="hidden" id="gender" name="gender" value="none")
-                p
-                    input(type='text' name='email' id='email' value='emailAdress@yourEmail.com' required)
-                p
-                    input(type="checkbox" value="check" id='check' onclick="checkboxCheck(this)") 
-                    span I fully understand that all the contents uploaded will become the property of Beritamus and agree to share with freely.
-                p
-                    input(type='submit' value='Get my Verification Mail' id='submit')
-                    script.
-        a(href='/cari') Back
-        section.footer(id='footer') 
+        .main
+            h1 Sign Up
+            article
+                form(action='/daftar' method='post' onsubmit='return checksubmit();')
+                    p
+                        input(type='text' id="u_id" name='u_id' placeholder='Your interesting ID' required)
+                    .idchecker(id="idchecker")
+                    p
+                        input(type='password' id = 'u_pw' name='u_pw' placeholder='Secret Password' required)
+                        input(type='password' id = 'u_pw2' placeholder='Check Your Password One More Time')
+                    .idchecker(id="pwchecker")
+                    p
+                        input(type='date' name='birthday' value='2019-08-31' required)
+                    p
+                        input(type='button' name='boy' id = 'boy' value='Male' class="sex" required)
+                        input(type='button' name='girl' id = 'girl' value='Female' class="sex" required)
+                        input(type="hidden" id="gender" name="gender" value="none")
+                    p
+                        input(type='text' name='email' id='email' value='emailAdress@yourEmail.com' required)
+                    p
+                        input(type="checkbox" value="check" id='check' onclick="checkboxCheck(this)") 
+                        span I fully understand that all the contents uploaded will become the property of Beritamus and agree to share with freely.
+                    p
+                        input(type='submit' value='Get my Verification Mail' id='submit')
+                        script.
+            a(href='/cari') Back
+        section.footer(id='footer')
             p contact : admin@beritamus.com
             p www.beritamus.com
         script(type="text/javascript" src="register.js")

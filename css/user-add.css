@@ -6,6 +6,9 @@
   margin: 0;
   padding: 0;
 }
+input {
+  -webkit-appearance: none;
+}
 .section-border {
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
@@ -31,8 +34,8 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-input[type=submit] {
-  -webkit-appearance: none;
+html {
+  height: 100%;
 }
 body {
   width: 100%;
@@ -75,6 +78,7 @@ nav {
   margin: 0 auto 10px auto;
   box-sizing: border-box;
   background-color: #ebedf2;
+  position: relative;
 }
 #footer {
   width: 100%;
@@ -87,6 +91,9 @@ nav {
   padding: 7px 0px;
   bottom: 0;
   border-top: 1px solid #2e60f4;
+}
+#footer p {
+  margin: 0px auto;
 }
 header a {
   color: #2e60f4;
@@ -185,14 +192,16 @@ input {
   border-style: none;
 }
 #check {
-  width: 10%;
-  display: inline;
-  height: 16px;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
   margin: 0px;
+  border-radius: 0px;
 }
 p span {
   color: #2043aa;
   font-size: 12px;
+  margin-left: 5px;
 }
 #submit {
   width: 100%;
@@ -205,18 +214,22 @@ p span {
   line-height: 40px;
   text-decoration: none;
   border-style: none;
+  width: 90%;
+  height: 35px;
+  line-height: 35px;
+  font-size: 16px;
 }
 body a {
   margin: 20px auto 5px auto;
   display: block;
   width: 80%;
-  height: 45px;
+  height: 35px;
   box-sizing: border-box;
   font-size: 16px;
   color: black;
   background-color: #a0b3ef;
   text-align: center;
-  line-height: 45px;
+  line-height: 35px;
   text-decoration: none;
   border-style: none;
   border-top-right-radius: 5px;
@@ -236,7 +249,7 @@ body a {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border: 1px solid #2e60f4;
-    font-size: 20px;
+    font-size: 16px;
   }
   .sex {
     width: 49%;
@@ -249,15 +262,17 @@ body a {
   body a {
     margin: 20px auto 5px auto;
     display: block;
-    width: 50%;
-    height: 45px;
+    width: 60%;
+    height: 35px;
     box-sizing: border-box;
     font-size: 16px;
     color: black;
     background-color: #a0b3ef;
     text-align: center;
-    line-height: 45px;
+    line-height: 35px;
     text-decoration: none;
     border-style: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 }

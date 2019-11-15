@@ -83,6 +83,7 @@ document.getElementById('girl').addEventListener('click', function(){
 });
 
 document.getElementById('email').addEventListener('focus', function(){
+    document.getElementById('email').value = '';
     var userEmail = document.getElementById('email').value;
     if(emailCheck.test(userEmail) === true){
         authenticator4 = '1';
@@ -97,8 +98,8 @@ function checksubmit(){
     if(authenticator1+authenticator2+authenticator3+authenticator4 == '1111'){
         if(sex){
             if(checkboxValue=== true){
-                var confrimR = confirmRegister();
-                if(confrimR ===true){
+                var confirmR = confirmRegister();
+                if(confirmR ===true){
                     return true;
                 }
                 else{return false;}
