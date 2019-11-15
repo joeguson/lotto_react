@@ -93,6 +93,9 @@ p span {
   line-height: 35px;
   font-size: 16px;
 }
+#inputDate {
+  text-align: center;
+}
 body a {
   margin: 20px auto 5px auto;
   display: block;
@@ -131,7 +134,7 @@ body a {
     padding: 0px;
     box-sizing: border-box;
     display: inline;
-    border-style: none;
+    border: 1px solid #2e60f4;
   }
   body a {
     margin: 20px auto 5px auto;

@@ -41,7 +41,7 @@ function sendAjax(url, data){
 document.getElementById('u_pw').addEventListener('change', function(){
     var v = document.getElementById('u_pw').value;
     if(v.length > 7){
-        document.getElementById("pwchecker").innerHTML = 'bagus!';
+        document.getElementById("pwchecker").innerHTML = 'bagus';
         authenticator2 = '1';
     }
     else{
@@ -65,8 +65,8 @@ document.getElementById('u_pw2').addEventListener('change', function(){
 document.getElementById('boy').addEventListener('click', function(){
     var laki = document.getElementById('boy');
     var perem = document.getElementById('girl');
-    laki.style.backgroundColor = 'red';
-    perem.style.backgroundColor = 'gray';
+    laki.style.backgroundColor = '#c91818';
+    perem.style.backgroundColor = 'light gray';
     sex = 'laki';
     var gender = document.getElementById('gender');
     gender.setAttribute('value', 'M');
@@ -75,16 +75,16 @@ document.getElementById('boy').addEventListener('click', function(){
 document.getElementById('girl').addEventListener('click', function(){
     var laki = document.getElementById('boy');
     var perem = document.getElementById('girl');
-    laki.style.backgroundColor = 'gray';
-    perem.style.backgroundColor = 'red';
+    laki.style.backgroundColor = 'light gray';
+    perem.style.backgroundColor = '#c91818';
     sex = 'perempuan';
     var gender = document.getElementById('gender');
     gender.setAttribute('value', 'F');
 });
 
-document.getElementById('email').addEventListener('focus', function(){
+
+document.getElementById('email').addEventListener('change', function(){
     var userEmail = document.getElementById('email').value;
-    console.log(userEmail);
     if(emailCheck.test(userEmail) === true){
         authenticator4 = '1';
     } 
