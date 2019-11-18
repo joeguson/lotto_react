@@ -187,6 +187,7 @@ pre {
   font-size: 12px;
   font-weight: 300;
   margin-bottom: 5px;
+  margin-left: 5px;
 }
 .tanswer-dd {
   font-size: 12px;
@@ -202,7 +203,7 @@ pre {
   margin: 5px 0px;
 }
 .tacomment-dl {
-  margin-left: 5px;
+  margin-left: 10px;
 }
 .tacomment-dl:nth-child(odd) {
   background-color: #eaeffd;
