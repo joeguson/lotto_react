@@ -184,7 +184,7 @@ pre {
   margin-bottom: 5px;
 }
 .tanswer-dt {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 300;
   margin-bottom: 5px;
 }
@@ -266,7 +266,7 @@ pre {
 }
 .tacomment-dt {
   font-size: 13px;
-  font-weight: bold;
+  font-weight: 300;
 }
 .tacomment-dd {
   font-size: 10px;
