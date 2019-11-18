@@ -78,8 +78,8 @@ html(lang="id")
                     if u_id
                         p(class="warn")
                             button(class="pwarnButton" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') !
-                    pre
-                        p(class="content")= topic.content
+                    p(class="content")
+                        pre(class="content")= topic.content
                     div(id="plike" class="plike")= topic.p_like
                     if u_id
                             if statusCheck == 'yes'
@@ -103,8 +103,8 @@ html(lang="id")
                                         .pcomment-start #{commentStart}
                                             if u_id == c.author
                                                 a(href='/pcedit/'+topic.id+'/'+c.id) Edit
-                                        pre
-                                            dt.pcomment-dt "#{c.content}"
+                                        dt.pcomment-dt
+                                            pre(class="pcomment-dt") "#{c.content}"
                                         if topic.public == 'a'        
                                             - var date_result2 = 'by '+anonimmaker(c.author)+' / '+datemaker(c.date)+' / suka : '
                                         else
@@ -127,8 +127,8 @@ html(lang="id")
                                             if cc.pc_id == c.id
                                                 dl.pccomment-dl
                                                     - var ccommentStart = '- "'+cc.content+'"'
-                                                    pre
-                                                        dt.pccomment-dt #{ccommentStart}
+                                                    dt.pccomment-dt 
+                                                        pre(class="pccomment-dt") #{ccommentStart}
                                                     if topic.public == 'a'
                                                         - var date_result3 = 'by ' + anonimmaker(cc.author) + ' / '+datemaker(cc.date)
                                                     else
