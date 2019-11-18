@@ -75,9 +75,9 @@ html(lang="id")
                                         a(href='/tandya/'+v.id)= v.question
                                     dd.ddcontent= v.content
                                     if v.public == 'a'
-                                        - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' jawaban'
+                                        - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' answers'
                                     else
-                                        - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' komentar'
+                                        - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' answers'
                                     dd #{date_result}
                 .t-terkenal
                     .t-title Tandya Terkenal               
@@ -90,9 +90,9 @@ html(lang="id")
                                         a(href='/tandya/'+w.id)= w.question
                                     dd.ddcontent= w.content
                                     if w.public == 'a'
-                                        - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' jawaban'
+                                        - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' answers'
                                     else
-                                        - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' jawaban'
+                                        - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' answers'
                                     dd #{date_result}      
             section.footer(id='footer') 
                 p contact : admin@beritamus.com

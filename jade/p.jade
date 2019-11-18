@@ -75,9 +75,9 @@ html(lang="id")
                                         a(href='/penobrol/'+v.id)= v.title
                                     dd.ddcontent= v.content
                                     if v.public == 'a'
-                                        - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' komentar'
+                                        - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
                                     else
-                                        - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' komentar'
+                                        - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
                                     dd #{date_result}        
                 .p-terkenal
                     .p-title Penobrol Terkenal
@@ -90,9 +90,9 @@ html(lang="id")
                                         a(href='/penobrol/'+w.id)= w.title
                                     dd.ddcontent= w.content
                                     if w.public == 'a'
-                                        - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar'
+                                        - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' comments'
                                     else
-                                        - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' komentar'
+                                        - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' comments'
                                     dd #{date_result}   
             section.footer(id='footer') 
                 p contact : admin@beritamus.com

@@ -67,7 +67,8 @@ html(lang="id")
                     if u_id
                         p(class= "warn")
                             button(class="twarnButton" type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') !
-                    p(class="content")= topic.content
+                    pre
+                        p(class="content")= topic.content
                     div(id="tlike" class="tlike")= topic.t_like
                     if u_id
                         if statusCheck == 'yes'
@@ -103,7 +104,8 @@ html(lang="id")
                                         .tanswer-start #{answerStart}
                                             if u_id == a.author
                                                 a(href='/taedit/'+topic.id+'/'+a.id) Edit
-                                        dt.tanswer-dt "#{a.answer}"
+                                        pre
+                                            dt.tanswer-dt "#{a.answer}"
                                         if topic.public == 'a'
                                             - var date_result2 = 'by '+ anonimmaker(a.author) + ' /  '+datemaker(a.date)+' / suka : '
                                         else
@@ -126,7 +128,8 @@ html(lang="id")
                                             if ac.ta_id == a.id
                                                 dl.tacomment-dl
                                                     - var acommentStart = '- "'+ac.content+'"'
-                                                    dt.tacomment-dt #{acommentStart}
+                                                    pre
+                                                        dt.tacomment-dt #{acommentStart}
                                                     if topic.public == 'a'
                                                         - var date_result3 = 'by : ' + anonimmaker(ac.author) + ' / '+datemaker(ac.date)
                                                     else
