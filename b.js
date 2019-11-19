@@ -51,11 +51,80 @@ var penobrol = require('./penobrol');
 var tandya = require('./tandya');
 var aku = require('./aku');
 var cari = require('./cari');
-var testing = require('./testing');
 
 var todayCount = 1;
+/************chonggwalpage************/
+app.get('/chonggwalpage', function(req, res){
+    var overviewUsers = 'select count(*) AS users from users';
+    var overviewPen = 'select count(*) AS penobrol from penobrol';
+    var overviewTan = 'select count(*) AS tandya from tandya';
+    var overviewPcom = 'select count(*) AS pcom from p_com';
+    var overviewTans = 'select count(*) AS tans from t_ans';
 
-app.get('/test', testing.testing1);
+    conn.query(overviewUsers, function(err, users, fields){
+        if(err){console.log(err);}
+        else{
+            conn.query(overviewPen, function(err, pen, fields){
+                if(err){console.log(err);}
+                else{
+                    conn.query(overviewTan, function(err, tan, fields){
+                        if(err){console.log(err);}
+                        else{
+                            conn.query(overviewPcom, function(err, pcom, fields){
+                                if(err){console.log(err);}
+                                else{
+                                    conn.query(overviewTans, function(err, tans, fields){
+                                        if(err){console.log(err);}
+                                        else{
+                                            console.log(users[0]);
+                                            res.render('chonggwalpage', {'users': users[0], 'pen': pen[0], 'tan': tan[0], 'pcom': pcom[0], 'tans': tans[0]});
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+app.post('/chonggwalpage', function(req, res){
+    var overviewUsers = 'select count(*) from users';
+    var overviewPen = 'select count(*) from penobrol';
+    var overviewTan = 'select count(*) from tandya';
+    var overviewPcom = 'select count(*) from p_com';
+    var overviewTans = 'select count(*) from t_ans';
+
+    conn.query(overviewUsers, function(err, users, fields){
+        if(err){console.log(err);}
+        else{
+            conn.query(overviewPen, function(err, pen, fields){
+                if(err){console.log(err);}
+                else{
+                    conn.query(overviewTan, function(err, tan, fields){
+                        if(err){console.log(err);}
+                        else{
+                            conn.query(overviewPcom, function(err, pcom, fields){
+                                if(err){console.log(err);}
+                                else{
+                                    conn.query(overviewTans, function(err, tans, fields){
+                                        if(err){console.log(err);}
+                                        else{
+                                            var responseData = {'result' : 'ok', 'users': users[0], 'pen': pen[0], 'tan': tan[0], 'pcom': pcom[0], 'tans': tans[0]};
+                                            res.json(responseData);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
 
 var psqlMaker = function(pId){
     var temp = 'select * from penobrol where ';

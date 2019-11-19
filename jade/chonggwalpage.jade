@@ -1,0 +1,27 @@
+doctype html
+html(lang="id")
+    head
+        title beritamus
+        // what appears on the tab
+        base(href="/")
+        link(rel='stylesheet', href='chonggwal.css' type="text/css")
+        // links css file
+        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
+        meta(charset='UTF-8') 
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        // iphone에서 어플식으로 저장가능
+        // Lorem ipsum
+    body
+        header(id='header')
+            a(href='/chonggwalpage') Beritamus      
+        section.main(id='main')
+            .overview 
+                p Overview
+                p total users: #{users.users}
+                p total penobrol: #{pen.penobrol}
+                p total tandya: #{tan.tandya}
+                p total penobrol comments: #{pcom.pcom}
+                p total tandya answers: #{tans.tans}
+                p(id='count')
+    script(type="text/javascript" src="chonggwal.js")
