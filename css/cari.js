@@ -36,6 +36,38 @@ function shuffleRandom(n){
         temp = ar[i]; ar[i] = ar[rnum];ar[rnum] = temp;}
         return ar;
 }
+var phashtagfinder = function(pid, hashtags){
+    for(var i=0; i<hashtags.length; i++){
+        if(hashtags[i].p_id == pid){
+            return hashtags[i];
+        }
+    }
+};
+
+var thashtagfinder = function(tid, hashtags){
+    for(var i=0; i<hashtags.length; i++){
+        if(hashtags[i].t_id == tid){
+            return hashtags[i];
+        }
+    }
+};
+
+var hashtagmaker = function(hashtagObject, count){
+    var hashtagArray = [];
+    var hashtag_temp = '';
+    hashtagArray[0] = hashtagObject.ht1;
+    hashtagArray[1] = hashtagObject.ht2;
+    hashtagArray[2] = hashtagObject.ht3;
+    hashtagArray[3] = hashtagObject.ht4;
+    hashtagArray[4] = hashtagObject.ht5;
+    hashtagArray[5] = hashtagObject.ht6;
+    hashtagArray[6] = hashtagObject.ht7;
+    for(var i = 0; i<count; i++){
+        hashtag_temp= hashtag_temp + '#'+hashtagArray[i]+' ';
+    }
+    return hashtag_temp;
+};
+
 function dateMaker(date){
     var tempdate = new Date(date);
     var nowdate = new Date();
@@ -84,24 +116,32 @@ function sendAjax(url){
             var dts = document.createElement('dt');
             var span_id = document.createElement('span');
             var dds1 = document.createElement('dd');
+            var dds2 = document.createElement('dd');
             var dds3 = document.createElement('dd');
             if(result.data[randoms[i]].identifier == 'p'){
+                var phashtagfind = phashtagfinder(result.data[randoms[i]].id, result.hashtag);
+                var phashtagfinal = hashtagmaker(phashtagfind, result.data[randoms[i]].hashtagcount);
                 as.innerHTML = result.data[randoms[i]].title;
                 as.setAttribute('href', '/penobrol/'+result.data[randoms[i]].id);
                 dds1.innerHTML = result.data[randoms[i]].content;
                 dds1.setAttribute('class', 'ddcontent');
+                dds2.innerHTML = phashtagfinal;
                 dds3.innerHTML = dateMaker(result.data[randoms[i]].date) + ' / ' + result.data[randoms[i]].p_view + ' views' + ' / '+result.data[randoms[i]].com+' komentar';
             }
             else{
+                var thashtagfind = thashtagfinder(result.data[randoms[i]].id, result.hashtag);
+                var thashtagfinal = hashtagmaker(thashtagfind, result.data[randoms[i]].hashtagcount);
                 as.innerHTML = result.data[randoms[i]].question;
                 as.setAttribute('href', '/tandya/'+result.data[randoms[i]].id);
                 dds1.innerHTML = result.data[randoms[i]].content;
                 dds1.setAttribute('class', 'ddcontent');
+                dds2.innerHTML = thashtagfinal;
                 dds3.innerHTML = dateMaker(result.data[randoms[i]].date) + ' / ' + result.data[randoms[i]].t_view + ' views'+ ' / '+result.data[randoms[i]].answer+' jawaban';
             }
             dts.appendChild(as);
             dls.appendChild(dts);
             dls.appendChild(dds1);
+            dls.appendChild(dds2);
             dls.appendChild(dds3);
             lis.appendChild(dls);
             randomul.appendChild(lis);

@@ -311,17 +311,34 @@ var thtsqlMaker = function(hastagObject){
     return temp;
 };
 app.get('/cari/load', function(req, res){
-    sql = 'SELECT * FROM penobrol order by rand() limit 3';
-    sql2 = 'SELECT * FROM tandya order by rand() limit 3';
+    var sql = 'SELECT * FROM penobrol order by rand() limit 3';
+    var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
+    var sql3 = '';
+    var sql4 = '';
     conn.query(sql, function(err, penobrol, fields){
         conn.query(sql2, function(err, tandya, fields){
             if(err){console.log(err);}
             else{
-                var p = JSON.parse(JSON.stringify(penobrol));
-                var t = JSON.parse(JSON.stringify(tandya));
-                p = p.concat(t);
-                var responseData = {'result' : 'ok', 'data': p};
-                res.json(responseData);
+                sql3 = phtsqlMaker(penobrol);
+                sql4 = thtsqlMaker(tandya);
+                conn.query(sql3, function(err, phashtag, fields){
+                    if(err){console.log(err);}
+                    else{
+                        conn.query(sql4, function(err, thashtag, fields){
+                            if(err){console.log(err);}
+                            else{
+                                var p = JSON.parse(JSON.stringify(penobrol));
+                                var t = JSON.parse(JSON.stringify(tandya));
+                                var phash = JSON.parse(JSON.stringify(phashtag));
+                                var thash = JSON.parse(JSON.stringify(thashtag));
+                                p = p.concat(t);
+                                phash = phash.concat(thash);
+                                var responseData = {'result' : 'ok', 'data': p, 'hashtag':phash};
+                                res.json(responseData);
+                            }
+                        });
+                    }
+                });
             }
         });
     });    
