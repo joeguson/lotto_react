@@ -9,26 +9,57 @@ function isEmpty(obj) {
     return true;
 }
 
+var htsqlMaker = function(dateOrder, scoreOrder){
+    var dlength = dateOrder.length;
+    var slength = scoreOrder.length;
+    var dtemp = [];
+    var stemp = [];
+    for(var i =0; i<dlength;i++){
+        dtemp.push(dateOrder[i].id);
+    }
+    for(var j =0; j<slength;j++){
+        stemp.push(scoreOrder[j].id);
+    }
+    dtemp = dtemp.concat(stemp);
+    var temp = 'select * from hashtag where ';
+    for(var k = 0; k<dtemp.length; k++){
+        temp = temp + 'p_id = '+dtemp[k] + ' OR ';
+    }
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    return temp;
+};
+
 exports.getPenobrol = function(req, res){
     var sql = 'SELECT * from penobrol order by date desc limit 3';
     var sql2 = 'SELECT * FROM penobrol ORDER BY score DESC limit 3';
-    if(req.session.u_id){
-        conn.conn.query(sql, function(err, dateOrder, fields){
+    var sql3 = '';
+    conn.conn.query(sql, function(err, dateOrder, fields){
+        if(err){console.log(err);}
+        else{
             conn.conn.query(sql2, function(err, scoreOrder, fields){
-                res.render('p', {dateTopics:dateOrder, scoreTopics:scoreOrder, u_id:'y', });
+                if(err){console.log(err);}
+                else{
+                    sql3 = htsqlMaker(dateOrder, scoreOrder);
+                    conn.conn.query(sql3, function(err, hashtag, fields){
+                        if(err){console.log(err);}
+                        else{
+                            if(req.session.u_id){
+                            res.render('p', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag, u_id:req.session.u_id});
+                            }
+                            else{
+                                res.render('p', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag});
+                            }
+                        }
+                    });
+                }
             });
-            
-        });
-    }
-    else{
-        conn.conn.query(sql, function(err, dateOrder, fields){
-            conn.conn.query(sql2, function(err, scoreOrder, fields){
-                res.render('p', {dateTopics:dateOrder, scoreTopics:scoreOrder});
-            });
-            
-      });
-    }
+        }
+    });
 };
+
 exports.getViewPenobrol = function(req, res){
     var id = req.params.penobrol_no;
     var checkId = /^[0-9]+$/;

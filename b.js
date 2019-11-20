@@ -95,7 +95,6 @@ app.post('/chonggwalpage', function(req, res){
     var overviewTan = 'select count(*) from tandya';
     var overviewPcom = 'select count(*) from p_com';
     var overviewTans = 'select count(*) from t_ans';
-
     conn.query(overviewUsers, function(err, users, fields){
         if(err){console.log(err);}
         else{
@@ -125,7 +124,6 @@ app.post('/chonggwalpage', function(req, res){
     });
 });
 
-
 var psqlMaker = function(pId){
     var temp = 'select * from penobrol where ';
     for(var j = 0; j<pId.length; j++){
@@ -148,10 +146,22 @@ var tsqlMaker = function(tId){
     temp = temp.slice(0,-1);
     return temp;
 };
+var searchStringLengthChecker = function(cari_string){
+    var tempArray = cari_string.split(' ');
+    var temp = [];
+    console.log(tempArray);
+    for(var i=0; i<tempArray.length; i++){
+        if(tempArray[i] !== ''){
+            temp.push(tempArray[i]);
+        }
+    }
+    return temp;
+};
 
 /************FOR CARI************/
 app.get('/cari/search', function(req, res){
     var cari = req.query.search;
+    var cari_check = searchStringLengthChecker(cari);
     var cari_result = [];
     if(cari.indexOf('#')>=0){ //one hashtag - hashtag, title에서 검색
         var sql1 = 'select * from hashtag where concat(ht1, ht2, ht3, ht4, ht5, ht6, ht7) LIKE ?';
@@ -176,10 +186,6 @@ app.get('/cari/search', function(req, res){
                 }
                 newpsql = psqlMaker(ps);
                 newtsql = tsqlMaker(ts);
-                console.log(ps);
-                console.log(ts);
-                console.log('newpsql : ' + newpsql);
-                console.log('newtsql : ' + newtsql);
                 if(ps.length>=1 && ts.length >=1){
                     conn.query(newpsql, function(err, pResult, f){
                         conn.query(newtsql, function(err, tResult, f){
@@ -270,6 +276,40 @@ app.get('/cari/search', function(req, res){
         });
     }
 });
+
+var phtsqlMaker = function(hastagObject){
+    var holength = hastagObject.length;
+    var hotemp = [];
+    for(var i =0; i<holength;i++){
+        hotemp.push(hastagObject[i].id);
+    }
+    var temp = 'select * from hashtag where ';
+    for(var k = 0; k<hotemp.length; k++){
+        temp = temp + 'p_id = '+hotemp[k] + ' OR ';
+    }
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    return temp;
+};
+
+var thtsqlMaker = function(hastagObject){
+    var holength = hastagObject.length;
+    var hotemp = [];
+    for(var i =0; i<holength;i++){
+        hotemp.push(hastagObject[i].id);
+    }
+    var temp = 'select * from hashtag where ';
+    for(var k = 0; k<hotemp.length; k++){
+        temp = temp + 't_id = '+hotemp[k] + ' OR ';
+    }
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    return temp;
+};
 app.get('/cari/load', function(req, res){
     sql = 'SELECT * FROM penobrol order by rand() limit 3';
     sql2 = 'SELECT * FROM tandya order by rand() limit 3';
@@ -297,28 +337,48 @@ app.get(['/cari','/'], function(req, res){
     var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
     var sql = 'select * from penobrol order by rand() limit 3';
     var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
+    var sql3 = '';
+    var sql4 = '';
     //DO NOT SELECT *. Penobrol, tandya have different number of columns. union all will make an error.
     conn.query(sql, function(err, penobrol, fields){
         if(err){console.log(err);}
         else{
             conn.query(sql2, function(err, tandya, fields){
-                var p = JSON.parse(JSON.stringify(penobrol));
-                var t = JSON.parse(JSON.stringify(tandya));
-                p = p.concat(t);
-                if(p.length > 5){
-                    var temp1 = {};
-                    var temp2 = {};
-                    temp1 = p[1];
-                    p[1] = p[4];
-                    temp2 = p[2];
-                    p[2] = temp1;
-                    p[4] = temp2;
-                }
-                if(req.session.u_id){
-                    res.render('cari', {randoms:p, u_id:'req.session.u_id'});
-                }
+                if(err){console.log(err);}
                 else{
-                    res.render('cari', {randoms:p});
+                    sql3 = phtsqlMaker(penobrol);
+                    sql4 = thtsqlMaker(tandya);
+                    conn.query(sql3, function(err, phashtag, fields){
+                        if(err){console.log(err);}
+                        else{
+                            conn.query(sql4, function(err, thashtag, fields){
+                                if(err){console.log(err);}
+                                else{
+                                    var p = JSON.parse(JSON.stringify(penobrol));
+                                    var t = JSON.parse(JSON.stringify(tandya));
+                                    var phash = JSON.parse(JSON.stringify(phashtag));
+                                    var thash = JSON.parse(JSON.stringify(thashtag));
+                                    p = p.concat(t);
+                                    phash = phash.concat(thash);
+                                    if(p.length > 5){
+                                        var temp1 = {};
+                                        var temp2 = {};
+                                        temp1 = p[1];
+                                        p[1] = p[4];
+                                        temp2 = p[2];
+                                        p[2] = temp1;
+                                        p[4] = temp2;
+                                    }
+                                    if(req.session.u_id){
+                                        res.render('cari', {randoms:p, hashtag:phash, u_id:'req.session.u_id'});
+                                    }
+                                    else{
+                                        res.render('cari', {randoms:p, hashtag:phash});
+                                    }
+                                }
+                            });
+                        }
+                    });          
                 }
             });
         }
