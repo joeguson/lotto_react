@@ -146,10 +146,10 @@ var tsqlMaker = function(tId){
     temp = temp.slice(0,-1);
     return temp;
 };
+
 var searchStringLengthChecker = function(cari_string){
     var tempArray = cari_string.split(' ');
     var temp = [];
-    console.log(tempArray);
     for(var i=0; i<tempArray.length; i++){
         if(tempArray[i] !== ''){
             temp.push(tempArray[i]);
@@ -157,125 +157,6 @@ var searchStringLengthChecker = function(cari_string){
     }
     return temp;
 };
-
-/************FOR CARI************/
-app.get('/cari/search', function(req, res){
-    var cari = req.query.search;
-    var cari_check = searchStringLengthChecker(cari);
-    var cari_result = [];
-    if(cari.indexOf('#')>=0){ //one hashtag - hashtag, title에서 검색
-        var sql1 = 'select * from hashtag where concat(ht1, ht2, ht3, ht4, ht5, ht6, ht7) LIKE ?';
-        var search_hashtag = cari.replace('#', '');
-        var newpsql = '';
-        var newtsql = '';
-        conn.query(sql1, ['%'+search_hashtag+'%'], function(err, hashtag, f){
-            console.log('hashtag : '+hashtag);
-            var ps = [];
-            var ts = [];
-            if(hashtag.length < 1){
-                res.render('cari-result');
-            }
-            else{
-                for(var i =0; i<hashtag.length; i++){
-                    if(hashtag[i].t_id === 0){
-                        ps.push(hashtag[i].p_id);
-                    }
-                    else{
-                        ts.push(hashtag[i].t_id);
-                    }
-                }
-                newpsql = psqlMaker(ps);
-                newtsql = tsqlMaker(ts);
-                if(ps.length>=1 && ts.length >=1){
-                    conn.query(newpsql, function(err, pResult, f){
-                        conn.query(newtsql, function(err, tResult, f){
-                            var temp1 = pResult.length -1;
-                            while(temp1 >= 0){
-                                cari_result.push(JSON.parse(JSON.stringify(pResult[temp1])));
-                                temp1 --;
-                            }
-                            var temp2 = tResult.length -1;
-                            while(temp2 >= 0){
-                                cari_result.push(JSON.parse(JSON.stringify(tResult[temp2])));
-                                temp2 --;
-                            }
-                            res.render('cari-result', {result:cari_result});
-                        }); 
-                    });
-                }
-                else if(ps.length<1){
-                    conn.query(newtsql, function(err, tResult, f){
-                        res.render('cari-result', {result:tResult});
-                    });
-                }
-                else{
-                    conn.query(newpsql, function(err, pResult, f){
-                        res.render('cari-result', {result:pResult});
-                    });
-                }
-            }
-        });
-    }
-    else{
-        var sql4 = 'SELECT * FROM penobrol AS result WHERE MATCH(title) AGAINST(?)';
-        var sql5 = 'SELECT * FROM penobrol AS result WHERE MATCH(content) AGAINST(?)';
-        var sql6 = 'SELECT * FROM tandya AS result WHERE MATCH(question) AGAINST(?)';
-        var sql7 = 'SELECT * FROM tandya AS result WHERE MATCH(content) AGAINST(?)';
-        conn.query(sql4, cari, function(err, penobrol_t, f){
-            conn.query(sql5, cari, function(err, penobrol_c, f){
-                conn.query(sql6, cari, function(err, tandya_q, f){
-                    conn.query(sql7, cari, function(err, tandya_c, f){
-                        //one result has mnay children. need to seperate them.
-                        if(penobrol_t.length>0){
-                            var temp1 = penobrol_t.length -1;
-                            while(temp1 >= 0){
-                                cari_result.push(JSON.parse(JSON.stringify(penobrol_t[temp1])));
-                                temp1 --;
-                            }
-                        }
-                        if(penobrol_c.length>0){
-                            var temp2 = penobrol_c.length -1;
-                            while(temp2 >= 0){
-                                cari_result.push(JSON.parse(JSON.stringify(penobrol_c[temp2])));
-                                temp2 --;
-                            }
-                        }
-                        if(tandya_q.length>0){
-                            var temp3 = tandya_q.length -1;
-                            while(temp3 >= 0){
-                                cari_result.push(JSON.parse(JSON.stringify(tandya_q[temp3])));
-                                temp3 --;
-                            }
-                        }
-                        if(tandya_c.length>0){
-                            var temp4 = tandya_c.length -1;
-                            while(temp4 >= 0){
-                                cari_result.push(JSON.parse(JSON.stringify(tandya_c[temp4])));
-                                temp4 --;
-                            }
-                        }
-                        res.render('cari-result', {result:cari_result});
-                    });    
-                });    
-            });
-
-        });
-    }
-    var searchStringSql = '';
-    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-    if(req.session.u_id){
-        searchStringSql = 'INSERT INTO search_string (u_id, search_string, ipAddress) VALUES (?, ?, INET_ATON(?))';
-        conn.query(searchStringSql,[req.session.u_id, cari, ipAddress], function(err, searchStringResult, field){
-            if(err){console.log(err);}    
-        });
-    }
-    else{
-        searchStringSql = 'INSERT INTO search_string (search_string, ipAddress) VALUES (?, INET_ATON(?))';
-        conn.query(searchStringSql, [cari, ipAddress], function(err, searchStringResult, field){
-            if(err){console.log(err);}    
-        });
-    }
-});
 
 var phtsqlMaker = function(hastagObject){
     var holength = hastagObject.length;
@@ -294,11 +175,11 @@ var phtsqlMaker = function(hastagObject){
     return temp;
 };
 
-var thtsqlMaker = function(hastagObject){
-    var holength = hastagObject.length;
+var thtsqlMaker = function(hashtagObject){
+    var holength = hashtagObject.length;
     var hotemp = [];
     for(var i =0; i<holength;i++){
-        hotemp.push(hastagObject[i].id);
+        hotemp.push(hashtagObject[i].id);
     }
     var temp = 'select * from hashtag where ';
     for(var k = 0; k<hotemp.length; k++){
@@ -310,6 +191,153 @@ var thtsqlMaker = function(hastagObject){
     temp = temp.slice(0,-1);
     return temp;
 };
+
+var doubleChecker = function(a, b){
+    var temp1 = [];
+    var temp2 = [];
+    if(a.length >= b.length){
+        temp1 = b;
+        temp2 = a;
+    }
+    else{
+        temp1 = a;
+        temp2 = b;
+    }
+    for(var i =0; i<temp1.length;i++){
+        for(var j = 0; j<temp2.length;j++){
+            if(temp1[i].id == temp2[j].id){
+                temp2.splice(j, 1);
+            }
+        }
+    }
+    temp1 = temp1.concat(temp2);
+    return temp1;
+};
+var hsSearchSqlMaker = function(hashtags){
+    var temp = 'select * from hashtag where ';
+    for(var k = 0; k<hashtags.length; k++){
+        temp = temp + 'concat(ht1, ht2, ht3, ht4, ht5, ht6, ht7) LIKE '+"'%"+hashtags[k]+"%'" + ' OR ';
+    }
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    return temp;
+};
+
+app.get('/cari/search', function(req, res){
+    var cari = req.query.search;
+    var hsresult = [];
+    var cari_check = searchStringLengthChecker(cari);
+    var hashtagonly = [];
+    var stringonly = [];
+    var stringonly2 = '';
+    var penobrolsql = 'SELECT * FROM penobrol AS result WHERE MATCH(title, content) AGAINST(?)';
+    var tandyasql = 'SELECT * FROM tandya AS result WHERE MATCH(question, content) AGAINST(?)';
+    var usersql = 'select * from users AS result WHERE MATCH(u_id) AGAINST(?)';
+    var hashtagsql = 'select * from users AS result WHERE MATCH(u_id) AGAINST(?)';
+    for(var q = 0; q<cari_check.length;q++){
+        if(cari_check[q].indexOf('#') != -1){
+            hashtagonly.push(cari_check[q]);
+        }
+        else{
+            stringonly.push(cari_check[q]);
+            stringonly2 = stringonly2 + cari_check[q]+' ';
+        }
+    }
+    stringonly2 = stringonly2.trim();
+    var newpsql = '';
+    var newtsql = '';
+    conn.query(penobrolsql, stringonly2, function(err, penobrols, f){
+        if(err){console.log(err);}
+        else{
+            conn.query(tandyasql, stringonly2, function(err, tandyas, f){
+                if(err){console.log(err);}
+                else{
+                    conn.query(usersql, stringonly2, function(err, users, f){
+                        if(err){console.log(err);}
+                        else{
+                            if(hashtagonly.length < 1){
+                            hashtagsql = hsSearchSqlMaker(stringonly);
+                            }
+                            else{
+                                if(hashtagonly.length>0){
+                                    for(var r = 0;r<hashtagonly.length; r++){
+                                        hashtagonly[r] = hashtagonly[r].substring(1);
+                                    }
+                                }
+                                hashtagsql = hsSearchSqlMaker(hashtagonly);
+                            }
+                            conn.query(hashtagsql, function(err, hashtags, f){
+                                var ps = [];
+                                var ts = [];
+                                if(hashtags.length < 1){
+                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult});
+                                }
+                                else{
+                                    for(var i =0; i<hashtags.length; i++){
+                                        if(hashtags[i].t_id === 0){
+                                            ps.push(hashtags[i].p_id);
+                                        }
+                                        else{
+                                            ts.push(hashtags[i].t_id);
+                                        }
+                                    }
+                                    newpsql = psqlMaker(ps);
+                                    newtsql = tsqlMaker(ts);
+                                    if(ps.length>=1 && ts.length >=1){
+                                        conn.query(newpsql, function(err, pResult, f){
+                                            conn.query(newtsql, function(err, tResult, f){
+                                                var temp1 = pResult.length -1;
+                                                while(temp1 >= 0){
+                                                    hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                    temp1 --;
+                                                }
+                                                var temp2 = tResult.length -1;
+                                                while(temp2 >= 0){
+                                                    hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                    temp2 --;
+                                                }
+                                                console.log(hsresult);
+                                                res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult});
+                                            }); 
+                                        });
+                                    }
+                                    else if(ps.length<1){
+                                        conn.query(newtsql, function(err, tResult, f){
+                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult});
+                                        });
+                                    }
+                                    else{
+                                        conn.query(newpsql, function(err, pResult, f){
+                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult});
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+    var searchStringSql = '';
+    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+    if(req.session.u_id){
+        searchStringSql = 'INSERT INTO search_string (u_id, search_string, ipAddress) VALUES (?, ?, INET_ATON(?))';
+        conn.query(searchStringSql,[req.session.u_id, cari, ipAddress], function(err, searchStringResult, field){
+            if(err){console.log(err);}    
+        });
+    }
+    else{
+        searchStringSql = 'INSERT INTO search_string (search_string, ipAddress) VALUES (?, INET_ATON(?))';
+        conn.query(searchStringSql, [cari, ipAddress], function(err, searchStringResult, field){
+            if(err){console.log(err);}    
+        });
+    }
+});
+
+
 app.get('/cari/load', function(req, res){
     var sql = 'SELECT * FROM penobrol order by rand() limit 3';
     var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
@@ -520,7 +548,7 @@ var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, fu
     });
 });
 
-app.listen(80, '0.0.0.0', function(){
+app.listen(3000, '0.0.0.0', function(){
   console.log('Connected, 80 port!');
 });
 
