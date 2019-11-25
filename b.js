@@ -228,6 +228,7 @@ var hsSearchSqlMaker = function(hashtags){
 app.get('/cari/search', function(req, res){
     var cari = req.query.search;
     var hsresult = [];
+    var hsforpt = [];
     var cari_check = searchStringLengthChecker(cari);
     var hashtagonly = [];
     var stringonly = [];
@@ -236,6 +237,8 @@ app.get('/cari/search', function(req, res){
     var tandyasql = 'SELECT * FROM tandya AS result WHERE MATCH(question, content) AGAINST(?)';
     var usersql = 'select * from users AS result WHERE MATCH(u_id) AGAINST(?)';
     var hashtagsql = 'select * from users AS result WHERE MATCH(u_id) AGAINST(?)';
+    var phtsql = '';
+    var thtsql = '';
     for(var q = 0; q<cari_check.length;q++){
         if(cari_check[q].indexOf('#') != -1){
             hashtagonly.push(cari_check[q]);
@@ -268,49 +271,233 @@ app.get('/cari/search', function(req, res){
                                 }
                                 hashtagsql = hsSearchSqlMaker(hashtagonly);
                             }
+                            phtsql = phtsqlMaker(penobrols);
+                            thtsql = thtsqlMaker(tandyas);
                             conn.query(hashtagsql, function(err, hashtags, f){
-                                var ps = [];
-                                var ts = [];
-                                if(hashtags.length < 1){
-                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult});
-                                }
+                                if(err){console.log(err);}
                                 else{
-                                    for(var i =0; i<hashtags.length; i++){
-                                        if(hashtags[i].t_id === 0){
-                                            ps.push(hashtags[i].p_id);
-                                        }
-                                        else{
-                                            ts.push(hashtags[i].t_id);
-                                        }
-                                    }
-                                    newpsql = psqlMaker(ps);
-                                    newtsql = tsqlMaker(ts);
-                                    if(ps.length>=1 && ts.length >=1){
-                                        conn.query(newpsql, function(err, pResult, f){
-                                            conn.query(newtsql, function(err, tResult, f){
-                                                var temp1 = pResult.length -1;
-                                                while(temp1 >= 0){
-                                                    hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
-                                                    temp1 --;
-                                                }
-                                                var temp2 = tResult.length -1;
-                                                while(temp2 >= 0){
-                                                    hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
-                                                    temp2 --;
-                                                }
-                                                console.log(hsresult);
-                                                res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult});
-                                            }); 
+                                    var ps = [];
+                                    var ts = [];
+                                    //p, t both have values
+                                    if(penobrols.length >= 1 && tandyas.length>=1){
+                                        conn.query(phtsql, function(err, phtresult, f){
+                                            if(err){console.log(err);}
+                                            else{
+                                                conn.query(thtsql, function(err, thtresult, f){
+                                                    if(err){console.log(err);}
+                                                    else{
+                                                        var tmp1 = phtresult.length -1;
+                                                        while(tmp1 >= 0){
+                                                            hsforpt.push(JSON.parse(JSON.stringify(phtresult[tmp1])));
+                                                            tmp1 --;
+                                                        }
+                                                        var tmp2 = thtresult.length -1;
+                                                        while(tmp2 >= 0){
+                                                            hsforpt.push(JSON.parse(JSON.stringify(thtresult[tmp2])));
+                                                            tmp2 --;
+                                                        }
+                                                        var tmp3 = hashtags.length -1;
+                                                        while(tmp3 >= 0){
+                                                            hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp3])));
+                                                            tmp3 --;
+                                                        }
+                                                        if(hashtags.length<1){ //when hashtag is shorter than 1
+                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                        }
+                                                        else{ //when hashtag is longer than 1
+                                                            for(var i =0; i<hashtags.length; i++){
+                                                                if(hashtags[i].t_id === 0){
+                                                                    ps.push(hashtags[i].p_id);
+                                                                }
+                                                                else{
+                                                                    ts.push(hashtags[i].t_id);
+                                                                }
+                                                            }
+                                                            newpsql = psqlMaker(ps);
+                                                            newtsql = tsqlMaker(ts);
+                                                            if(ps.length>=1 && ts.length >=1){
+                                                                conn.query(newpsql, function(err, pResult, f){
+                                                                    conn.query(newtsql, function(err, tResult, f){
+                                                                        var temp1 = pResult.length -1;
+                                                                        while(temp1 >= 0){
+                                                                            hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                                            temp1 --;
+                                                                        }
+                                                                        var temp2 = tResult.length -1;
+                                                                        while(temp2 >= 0){
+                                                                            hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                                            temp2 --;
+                                                                        }
+                                                                        res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                                    });
+                                                                });
+                                                            }
+                                                            else if(ps.length<1){
+                                                                conn.query(newtsql, function(err, tResult, f){
+                                                                    var temp2 = tResult.length -1;
+                                                                    while(temp2 >= 0){
+                                                                        hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                                        temp2 --;
+                                                                    }
+                                                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult, pthash:hsforpt});
+                                                                });
+                                                            }
+                                                            else{
+                                                                conn.query(newpsql, function(err, pResult, f){
+                                                                    var temp1 = pResult.length -1;
+                                                                    while(temp1 >= 0){
+                                                                        hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                                        temp1 --;
+                                                                    }
+                                                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult, pthash:hsforpt});
+                                                                });
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                });
+                                            }
                                         });
                                     }
-                                    else if(ps.length<1){
-                                        conn.query(newtsql, function(err, tResult, f){
-                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult});
+                                    else if(penobrols.length<1){
+                                        conn.query(thtsql, function(err, thtresult, f){
+                                            if(err){console.log(err);}
+                                            else{
+                                                var tmp4 = thtresult.length -1;
+                                                while(tmp4 >= 0){
+                                                    hsforpt.push(JSON.parse(JSON.stringify(thtresult[tmp4])));
+                                                    tmp4 --;
+                                                }
+                                                var tmp5 = hashtags.length -1;
+                                                while(tmp5 >= 0){
+                                                    hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp5])));
+                                                    tmp5 --;
+                                                }
+                                                if(hashtags.length<1){ //when hashtag is shorter than 1
+                                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                }
+                                                else{ //when hashtag is longer than 1
+                                                    for(var i =0; i<hashtags.length; i++){
+                                                        if(hashtags[i].t_id === 0){
+                                                            ps.push(hashtags[i].p_id);
+                                                        }
+                                                        else{
+                                                            ts.push(hashtags[i].t_id);
+                                                        }
+                                                    }
+                                                    newpsql = psqlMaker(ps);
+                                                    newtsql = tsqlMaker(ts);
+                                                    if(ps.length>=1 && ts.length >=1){
+                                                        conn.query(newpsql, function(err, pResult, f){
+                                                            conn.query(newtsql, function(err, tResult, f){
+                                                                var temp1 = pResult.length -1;
+                                                                while(temp1 >= 0){
+                                                                    hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                                    temp1 --;
+                                                                }
+                                                                var temp2 = tResult.length -1;
+                                                                while(temp2 >= 0){
+                                                                    hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                                    temp2 --;
+                                                                }
+                                                                res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                            });
+                                                        });
+                                                    }
+                                                    else if(ps.length<1){
+                                                        conn.query(newtsql, function(err, tResult, f){
+                                                            var temp2 = tResult.length -1;
+                                                            while(temp2 >= 0){
+                                                                hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                                temp2 --;
+                                                            }
+                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult, pthash:hsforpt});
+                                                        });
+                                                    }
+                                                    else{
+                                                        conn.query(newpsql, function(err, pResult, f){
+                                                            var temp1 = pResult.length -1;
+                                                            while(temp1 >= 0){
+                                                                hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                                temp1 --;
+                                                            }
+                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult, pthash:hsforpt});
+                                                        });
+                                                    }
+
+                                                }
+                                            }
                                         });
                                     }
                                     else{
-                                        conn.query(newpsql, function(err, pResult, f){
-                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult});
+                                        conn.query(phtsql, function(err, phtresult, f){
+                                            if(err){console.log(err);}
+                                            else{
+                                                var tmp4 = phtresult.length -1;
+                                                while(tmp4 >= 0){
+                                                    hsforpt.push(JSON.parse(JSON.stringify(phtresult[tmp4])));
+                                                    tmp4 --;
+                                                }
+                                                var tmp6 = hashtags.length -1;
+                                                while(tmp6 >= 0){
+                                                    hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp6])));
+                                                    tmp6 --;
+                                                }
+                                            }
+                                            if(hashtags.length<1){ //when hashtag is shorter than 1
+                                                res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                            }
+                                            else{ //when hashtag is longer than 1
+                                                for(var i =0; i<hashtags.length; i++){
+                                                    if(hashtags[i].t_id === 0){
+                                                        ps.push(hashtags[i].p_id);
+                                                    }
+                                                    else{
+                                                        ts.push(hashtags[i].t_id);
+                                                    }
+                                                }
+                                                newpsql = psqlMaker(ps);
+                                                newtsql = tsqlMaker(ts);
+                                                if(ps.length>=1 && ts.length >=1){
+                                                    conn.query(newpsql, function(err, pResult, f){
+                                                        conn.query(newtsql, function(err, tResult, f){
+                                                            var temp1 = pResult.length -1;
+                                                            while(temp1 >= 0){
+                                                                hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                                temp1 --;
+                                                            }
+                                                            var temp2 = tResult.length -1;
+                                                            while(temp2 >= 0){
+                                                                hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                                temp2 --;
+                                                            }
+                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                        });
+                                                    });
+                                                }
+                                                else if(ps.length<1){
+                                                    conn.query(newtsql, function(err, tResult, f){
+                                                        var temp2 = tResult.length -1;
+                                                        while(temp2 >= 0){
+                                                            hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                            temp2 --;
+                                                        }
+                                                        res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult, pthash:hsforpt});
+                                                    });
+                                                }
+                                                else{
+                                                    conn.query(newpsql, function(err, pResult, f){
+                                                        var temp1 = pResult.length -1;
+                                                        while(temp1 >= 0){
+                                                            hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                            temp1 --;
+                                                        }
+                                                        res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult, pthash:hsforpt});
+                                                    });
+                                                }
+
+                                            }
                                         });
                                     }
                                 }
@@ -548,7 +735,7 @@ var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, fu
     });
 });
 
-app.listen(3000, '0.0.0.0', function(){
+app.listen(80, '0.0.0.0', function(){
   console.log('Connected, 80 port!');
 });
 
