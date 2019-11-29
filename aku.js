@@ -1,4 +1,4 @@
-var conn = require('./b-test');
+var conn = require('./b');
 var nodemailer = require('nodemailer');
 var key = require('./beritamus-admin-2ff0df5d17ca.json');
 

@@ -1,4 +1,4 @@
-var conn = require('./b-test');
+var conn = require('./b');
 
 /************FOR TESTING************/
 exports.testing1 = function(req, res){
