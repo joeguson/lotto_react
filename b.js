@@ -12,7 +12,7 @@ var mysql = require('mysql');
 var path = require('path')
 var favicon = require('serve-favicon');
 var schedule = require('node-schedule');
-var db_config =require('config.json');
+var db_config =require('./config.json');
 var fs = require('fs');
 var useragent = require('express-useragent');
 exports.sch = schedule;
@@ -736,7 +736,7 @@ var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, fu
     });
 });
 
-app.listen(80, '0.0.0.0', function(){
+app.listen(db_config.port, '0.0.0.0', function(){
   console.log('Connected, 80 port!');
 });
 
