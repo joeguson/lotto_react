@@ -77,7 +77,6 @@ app.get('/chonggwalpage', function(req, res){
                                     conn.query(overviewTans, function(err, tans, fields){
                                         if(err){console.log(err);}
                                         else{
-                                            console.log(users[0]);
                                             res.render('chonggwalpage', {'users': users[0], 'pen': pen[0], 'tan': tan[0], 'pcom': pcom[0], 'tans': tans[0]});
                                         }
                                     });
@@ -126,9 +125,15 @@ app.post('/chonggwalpage', function(req, res){
 });
 
 var psqlMaker = function(pId){
+    var tempArray = [];
+    for(var l =0; l<pId.length;l++){
+        if(tempArray.indexOf(pId[l]) < 0){
+            tempArray.push(pId[l]);
+        }
+    }
     var temp = 'select * from penobrol where ';
-    for(var j = 0; j<pId.length; j++){
-        temp = temp + 'id = '+pId[j] + ' OR ';
+    for(var j = 0; j<tempArray.length; j++){
+        temp = temp + 'id = '+tempArray[j] + ' OR ';
     }
     temp = temp.slice(0,-1);
     temp = temp.slice(0,-1);
@@ -137,9 +142,15 @@ var psqlMaker = function(pId){
     return temp;
 };
 var tsqlMaker = function(tId){
+    var tempArray = [];
+    for(var l =0; l<tId.length;l++){
+        if(tempArray.indexOf(tId[l]) < 0){
+            tempArray.push(tId[l]);
+        }
+    }
     var temp = 'select * from tandya where ';
-    for(var k = 0; k<tId.length; k++){
-        temp = temp + 'id = '+tId[k] + ' OR ';
+    for(var k = 0; k<tempArray.length; k++){
+        temp = temp + 'id = '+tempArray[k] + ' OR ';
     }
     temp = temp.slice(0,-1);
     temp = temp.slice(0,-1);
@@ -215,14 +226,12 @@ var doubleChecker = function(a, b){
     return temp1;
 };
 var hsSearchSqlMaker = function(hashtags){
-    var temp = 'select * from hashtag where ';
+    var temp = "select * from hashtag AS result WHERE MATCH(hash) AGAINST('";
     for(var k = 0; k<hashtags.length; k++){
-        temp = temp + 'concat(ht1, ht2, ht3, ht4, ht5, ht6, ht7) LIKE '+"'%"+hashtags[k]+"%'" + ' OR ';
+        temp = temp + hashtags[k] + ' ';
     }
     temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
+    temp = temp+"')";
     return temp;
 };
 
@@ -232,23 +241,26 @@ app.get('/cari/search', function(req, res){
     var hsforpt = [];
     var cari_check = searchStringLengthChecker(cari);
     var hashtagonly = [];
+    var hashtagonly2 = '';
     var stringonly = [];
     var stringonly2 = '';
     var penobrolsql = 'SELECT * FROM penobrol AS result WHERE MATCH(title, content) AGAINST(?)';
     var tandyasql = 'SELECT * FROM tandya AS result WHERE MATCH(question, content) AGAINST(?)';
     var usersql = 'select * from users AS result WHERE MATCH(u_id) AGAINST(?)';
-    var hashtagsql = 'select * from users AS result WHERE MATCH(u_id) AGAINST(?)';
+    var hashtagsql = '';
     var phtsql = '';
     var thtsql = '';
     for(var q = 0; q<cari_check.length;q++){
         if(cari_check[q].indexOf('#') != -1){
-            hashtagonly.push(cari_check[q]);
+            hashtagonly.push(cari_check[q].substring(1));
+            hashtagonly2 = hashtagonly2 + cari_check[q].substring(1) + ' ';
         }
         else{
             stringonly.push(cari_check[q]);
             stringonly2 = stringonly2 + cari_check[q]+' ';
         }
     }
+    hashtagonly2 = hashtagonly2.trim();
     stringonly2 = stringonly2.trim();
     var newpsql = '';
     var newtsql = '';
@@ -262,14 +274,9 @@ app.get('/cari/search', function(req, res){
                         if(err){console.log(err);}
                         else{
                             if(hashtagonly.length < 1){
-                            hashtagsql = hsSearchSqlMaker(stringonly);
+                                hashtagsql = hsSearchSqlMaker(stringonly);
                             }
                             else{
-                                if(hashtagonly.length>0){
-                                    for(var r = 0;r<hashtagonly.length; r++){
-                                        hashtagonly[r] = hashtagonly[r].substring(1);
-                                    }
-                                }
                                 hashtagsql = hsSearchSqlMaker(hashtagonly);
                             }
                             phtsql = phtsqlMaker(penobrols);
@@ -279,7 +286,7 @@ app.get('/cari/search', function(req, res){
                                 else{
                                     var ps = [];
                                     var ts = [];
-                                    //p, t both have values
+                                    //p, t both have values.
                                     if(penobrols.length >= 1 && tandyas.length>=1){
                                         conn.query(phtsql, function(err, phtresult, f){
                                             if(err){console.log(err);}
@@ -297,15 +304,17 @@ app.get('/cari/search', function(req, res){
                                                             hsforpt.push(JSON.parse(JSON.stringify(thtresult[tmp2])));
                                                             tmp2 --;
                                                         }
-                                                        var tmp3 = hashtags.length -1;
-                                                        while(tmp3 >= 0){
-                                                            hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp3])));
-                                                            tmp3 --;
-                                                        }
-                                                        if(hashtags.length<1){ //when hashtag is shorter than 1
+                                                        //when hashtag is shorter than 1
+                                                        if(hashtags.length<1){ 
                                                             res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
                                                         }
-                                                        else{ //when hashtag is longer than 1
+                                                        //when hashtag is longer than 1
+                                                        else{ 
+                                                            var tmp3 = hashtags.length -1;
+                                                            while(tmp3 >= 0){
+                                                                hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp3])));
+                                                                tmp3 --;
+                                                            }
                                                             for(var i =0; i<hashtags.length; i++){
                                                                 if(hashtags[i].t_id === 0){
                                                                     ps.push(hashtags[i].p_id);
@@ -316,6 +325,7 @@ app.get('/cari/search', function(req, res){
                                                             }
                                                             newpsql = psqlMaker(ps);
                                                             newtsql = tsqlMaker(ts);
+                                                            //when both are longer than 1
                                                             if(ps.length>=1 && ts.length >=1){
                                                                 conn.query(newpsql, function(err, pResult, f){
                                                                     conn.query(newtsql, function(err, tResult, f){
@@ -333,6 +343,7 @@ app.get('/cari/search', function(req, res){
                                                                     });
                                                                 });
                                                             }
+                                                            //when only t is longer than 1
                                                             else if(ps.length<1){
                                                                 conn.query(newtsql, function(err, tResult, f){
                                                                     var temp2 = tResult.length -1;
@@ -343,6 +354,7 @@ app.get('/cari/search', function(req, res){
                                                                     res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult, pthash:hsforpt});
                                                                 });
                                                             }
+                                                            //when only p is longer than 1
                                                             else{
                                                                 conn.query(newpsql, function(err, pResult, f){
                                                                     var temp1 = pResult.length -1;
@@ -370,15 +382,16 @@ app.get('/cari/search', function(req, res){
                                                     hsforpt.push(JSON.parse(JSON.stringify(thtresult[tmp4])));
                                                     tmp4 --;
                                                 }
-                                                var tmp5 = hashtags.length -1;
-                                                while(tmp5 >= 0){
-                                                    hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp5])));
-                                                    tmp5 --;
-                                                }
+                                                //when hashtag is shorter than 1
                                                 if(hashtags.length<1){ //when hashtag is shorter than 1
                                                     res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
                                                 }
                                                 else{ //when hashtag is longer than 1
+                                                    var tmp5 = hashtags.length -1;
+                                                    while(tmp5 >= 0){
+                                                        hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp5])));
+                                                        tmp5 --;
+                                                    }
                                                     for(var i =0; i<hashtags.length; i++){
                                                         if(hashtags[i].t_id === 0){
                                                             ps.push(hashtags[i].p_id);
@@ -389,6 +402,7 @@ app.get('/cari/search', function(req, res){
                                                     }
                                                     newpsql = psqlMaker(ps);
                                                     newtsql = tsqlMaker(ts);
+                                                    //when both are longer than 1
                                                     if(ps.length>=1 && ts.length >=1){
                                                         conn.query(newpsql, function(err, pResult, f){
                                                             conn.query(newtsql, function(err, tResult, f){
@@ -440,16 +454,16 @@ app.get('/cari/search', function(req, res){
                                                     hsforpt.push(JSON.parse(JSON.stringify(phtresult[tmp4])));
                                                     tmp4 --;
                                                 }
-                                                var tmp6 = hashtags.length -1;
-                                                while(tmp6 >= 0){
-                                                    hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp6])));
-                                                    tmp6 --;
-                                                }
                                             }
                                             if(hashtags.length<1){ //when hashtag is shorter than 1
                                                 res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
                                             }
                                             else{ //when hashtag is longer than 1
+                                                var tmp6 = hashtags.length -1;
+                                                while(tmp6 >= 0){
+                                                    hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp6])));
+                                                    tmp6 --;
+                                                }
                                                 for(var i =0; i<hashtags.length; i++){
                                                     if(hashtags[i].t_id === 0){
                                                         ps.push(hashtags[i].p_id);
@@ -497,7 +511,6 @@ app.get('/cari/search', function(req, res){
                                                         res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult, pthash:hsforpt});
                                                     });
                                                 }
-
                                             }
                                         });
                                     }
@@ -703,7 +716,6 @@ var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfW
                     for(var i = 0; i<pupdate.length; i++){
                         weeklyArray.push(pupdate[i].id);
                     }
-                    console.log('after first for ' + weeklyArray.length);
                     if(weeklyArray.length<3){
                         while(weeklyArray.length <3){
                             weeklyArray.push(0);
