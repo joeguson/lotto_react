@@ -148,7 +148,7 @@ exports.getAddTandya = function(req, res){
         res.render('t-add', {u_id:'y'});
     }
     else{
-        res.send('/tandya/belumadakonten'); //change to redirect and make a file
+        res.redirect('/tandya'); //change to redirect and make a file
     }
 };
 exports.postAddTandya = function(req, res){
