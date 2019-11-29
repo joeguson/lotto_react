@@ -68,7 +68,7 @@ html(lang="id")
                     if hashtag.ht1 != ' '    
                         p
                             -for(var n=0; n<topic.hashtagcount; n++)
-                                a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+                                a= '#' + hashtag[n].hash + ' '
                     p #{date_result}
                 if u_id
                     form(action='/taedit/'+topic.id+'/'+edit_content.id method='post' id='answerForm')

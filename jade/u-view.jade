@@ -83,7 +83,7 @@ html(lang="id")
                     if hashtag.ht1 != ' '    
                         p
                             -for(var n=0; n<topic.hashtagcount; n++)
-                                a= '#' + hashtag[n].hash + ' '
+                                a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
                     p #{date_result}
                         if u_id == topic.author
                             a(href='/tedit/'+topic.id class='edit') Edit

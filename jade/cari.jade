@@ -37,22 +37,16 @@ html(lang="id")
     -}
     -}
     -var phashtagfinder = function(pid, hashtags){
-    -for(var i=0; i<hashtags.length; i++){if(hashtags[i].p_id == pid){return hashtags[i];}}
+    -var temp = [];
+    -for(var i=0; i<hashtags.length; i++){if(hashtags[i].p_id == pid){temp.push(hashtags[i].hash);}} return temp;
     -}
     -var thashtagfinder = function(tid, hashtags){
-    -for(var i=0; i<hashtags.length; i++){if(hashtags[i].t_id == tid){return hashtags[i];}}
+    -var temp = [];
+    -for(var i=0; i<hashtags.length; i++){if(hashtags[i].t_id == tid){temp.push(hashtags[i].hash);}} return temp;
     -}
-    -var hashtagmaker = function(hashtagObject, count){
-    -var hashtagArray = [];
+    -var hashtagmaker = function(hashtagObject){
     -var hashtag_temp = '';
-    -hashtagArray[0] = hashtagObject.ht1;
-    -hashtagArray[1] = hashtagObject.ht2;
-    -hashtagArray[2] = hashtagObject.ht3;
-    -hashtagArray[3] = hashtagObject.ht4;
-    -hashtagArray[4] = hashtagObject.ht5;
-    -hashtagArray[5] = hashtagObject.ht6;
-    -hashtagArray[6] = hashtagObject.ht7;
-    -for(var i = 0; i<count; i++){hashtag_temp= hashtag_temp + '#'+hashtagArray[i]+' ';}
+    -for(var i = 0; i<hashtagObject.length; i++){hashtag_temp= hashtag_temp + '#'+hashtagObject[i]+' ';}
     -return hashtag_temp;
     -}
         .container
@@ -88,7 +82,7 @@ html(lang="id")
                                         dd.ddcontent= randoms[i].content
                                         - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].p_view + ' views' + ' / '+randoms[i].com + ' comments';
                                         -var hashtagfind = phashtagfinder(randoms[i].id, hashtag); 
-                                        -var hashtagfinal = hashtagmaker(hashtagfind, randoms[i].hashtagcount);
+                                        -var hashtagfinal = hashtagmaker(hashtagfind);
                                         dd #{hashtagfinal}
                                         dd #{date_result}
                                 else
@@ -98,8 +92,8 @@ html(lang="id")
                                             a(href='/tandya/'+randoms[i].id)= randoms[i].question
                                         dd.ddcontent= randoms[i].content
                                         - var date_result = datemaker(randoms[i].date) + ' / ' + randoms[i].t_view + ' views'+ ' / '+randoms[i].answer + ' answers';
-                                        -var hashtagfind = thashtagfinder(randoms[i].id, hashtag); 
-                                        -var hashtagfinal = hashtagmaker(hashtagfind, randoms[i].hashtagcount);
+                                        -var hashtagfind = thashtagfinder(randoms[i].id, hashtag);
+                                        -var hashtagfinal = hashtagmaker(hashtagfind);
                                         dd #{hashtagfinal}
                                         dd #{date_result}
                         if !u_id

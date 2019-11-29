@@ -70,7 +70,7 @@ html(lang="id")
                         if hashtag.ht1 != ' '   
                             dd.pview-dd.hashtag
                                 -for(var n=0; n<topic.hashtagcount; n++)
-                                    a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+                                    a= '#' + hashtag[n].hash + ' '
                         dd.pview-dd #{date_result}
                             if u_id == topic.author
                                 a(href='/pedit/'+topic.id class='edit') Edit

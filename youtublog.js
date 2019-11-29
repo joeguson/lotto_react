@@ -32,45 +32,35 @@ var htsqlMaker = function(dateOrder, scoreOrder){
     return temp;
 };
 
-var insertHashtagSqlMaker = function(t_id, hashArray){
-    console.log(hashArray);
-    var temp = 'insert into hashtag (t_id, hash) values ';
-    for(var i = 0; i<hashArray.length; i++){
-        temp = temp + '('+t_id+", '"+hashArray[i]+"'), ";
-    }
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    console.log(temp);
-    return temp;
+exports.getYoutublog = function(req, res){
+    res.render('u');
+//    var sql = 'select * from tandya order by date desc limit 3';
+//    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
+//    var sql3 = '';
+//    conn.conn.query(sql, function(err, dateOrder, fields){
+//        if(err){console.log(err);}
+//        else{
+//            conn.conn.query(sql2, function(err, scoreOrder, fields){
+//                if(err){console.log(err);}
+//                else{
+//                    sql3 = htsqlMaker(dateOrder, scoreOrder);
+//                    conn.conn.query(sql3, function(err, hashtag, fields){
+//                        if(err){console.log(err);}
+//                        else{
+//                            if(req.session.u_id){
+//                                res.render('t', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag, u_id:req.session.u_id}); 
+//                            }
+//                            else{
+//                                res.render('t', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag});
+//                            }
+//                        }
+//                    });
+//                }
+//            });
+//        }
+//    });
 };
 
-exports.getTandya = function(req, res){
-    var sql = 'select * from tandya order by date desc limit 3';
-    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
-    var sql3 = '';
-    conn.conn.query(sql, function(err, dateOrder, fields){
-        if(err){console.log(err);}
-        else{
-            conn.conn.query(sql2, function(err, scoreOrder, fields){
-                if(err){console.log(err);}
-                else{
-                    sql3 = htsqlMaker(dateOrder, scoreOrder);
-                    conn.conn.query(sql3, function(err, hashtag, fields){
-                        if(err){console.log(err);}
-                        else{
-                            if(req.session.u_id){
-                                res.render('t', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag, u_id:req.session.u_id}); 
-                            }
-                            else{
-                                res.render('t', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag});
-                            }
-                        }
-                    });
-                }
-            });
-        }
-    });
-};
 exports.getViewTandya =  function(req, res){
     var id = req.params.tandya_no;
     var checkId = /^[0-9]+$/;
@@ -109,6 +99,10 @@ exports.getViewTandya =  function(req, res){
                                             conn.conn.query(sql5, id, function(err, acomments, fields){
                                                 if(err){console.log(err);}
                                                 else{
+                                                    delete hashtag[0].id;
+                                                    delete hashtag[0].u_id;
+                                                    delete hashtag[0].p_id;
+                                                    delete hashtag[0].t_id;
                                                     if(req.session.u_id){
                                                         conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
                                                             if(err){console.log(err);}
@@ -123,14 +117,14 @@ exports.getViewTandya =  function(req, res){
                                                                         else{
                                                                             statusCheck = 'yes';
                                                                         }
-                                                                        res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:req.session.u_id, hashtag:hashtag, acomments:acomments, alikeStatus:alikeStatus});
+                                                                        res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:req.session.u_id, hashtag:hashtag[0], acomments:acomments, alikeStatus:alikeStatus});
                                                                     }
                                                                 });
                                                             }
                                                         });
                                                     }
                                                     else{
-                                                        res.render('t-view', {topic:content[0], answers:answers, hashtag:hashtag, acomments:acomments});
+                                                        res.render('t-view', {topic:content[0], answers:answers, hashtag:hashtag[0], acomments:acomments});
                                                     }
                                                 }
                                                     
@@ -168,11 +162,27 @@ exports.postAddTandya = function(req, res){
     while(rawhashtags.indexOf(' ')>=0){
         rawhashtags = rawhashtags.replace(' ', "");
     }
-    var finalhashtag = rawhashtags.split('#');
-    finalhashtag.splice(0,1);
-    hashtagCount = finalhashtag.length;
+    var hashtags = rawhashtags.split('#');
+    hashtags.splice(0,1);
+    hashtagCount = hashtags.length;
+    var perfecthashtag = function (array){
+        if(array.length > 7){
+            while(array.length > 7){
+                array.splice(7, 1);
+            }
+        }
+        else if(array.length < 7){
+            while(array.length < 7){
+                array.push(' ');
+            }  
+        }
+        return array;
+    };
+    var finalhashtag = perfecthashtag(hashtags);
     var sql = 'INSERT INTO tandya (author, question, content, hashtagcount, public) VALUES (?, ?, ?, ?, ?)';
+    var sql4 = 'INSERT INTO hashtag (t_id, u_id, ht1, ht2, ht3, ht4, ht5, ht6, ht7) VALUES (?, ?, ?);';
     var sql2='UPDATE users set u_tan= u_tan + 1 WHERE u_id = ?';
+
     //update connection
     conn.conn.query(sql2, [author], function(err, update, fields){
         if(err){console.log(err);}
@@ -181,8 +191,7 @@ exports.postAddTandya = function(req, res){
     conn.conn.query(sql, [author, question, content, hashtagCount, public], function(err, result, fields){
         if(err){console.log(err);}
         else{
-            var sql4 = insertHashtagSqlMaker(result.insertId, finalhashtag);
-            conn.conn.query(sql4, function(err, hashtag, fields){
+            conn.conn.query(sql4, [result.insertId, author, finalhashtag], function(err, hashtag, fields){
                 if(err){console.log(err);}
                 else{ res.redirect('/tandya/'+result.insertId);
                 }
@@ -367,18 +376,23 @@ exports.warningTandya = function(req, res){
 exports.getEditTandya = function(req, res){
     var t_id = req.params.tandya_no;
     var sql = 'select * from tandya where id = ?';
-    var sql2 = 'select * from hashtag where t_id = ?';
+    var sql2 = 'select * from hashtag where t_id = ? AND u_id = ?';
     conn.conn.query(sql, t_id, function(err, edit, fields){
         if(err){console.log(err);}
         else{
-            conn.conn.query(sql2, t_id, function(err, hashtags, fields){
+            conn.conn.query(sql2, [t_id, req.session.u_id], function(err, hashtags, fields){
                 if(err){console.log(err);}
                 else{
                     if(req.session.u_id == edit[0].author){
-                        res.render('t-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags});
+                        if(hashtags.length>=1){
+                            res.render('t-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
+                        }
+                        else{
+                            res.render('t-edit', {u_id:'y', edit_content:edit[0]});
+                        }
                     }
                     else{
-                        res.redirect('/tandya/'+t_id);
+                        res.send('hi');
                     }
                 }
             });
@@ -396,13 +410,26 @@ exports.postEditTandya = function(req, res){
     while(rawhashtags.indexOf(' ')>=0){
         rawhashtags = rawhashtags.replace(' ', "");
     }
-    var finalhashtag = rawhashtags.split('#');
-    finalhashtag.splice(0,1);
-    hashtagCount = finalhashtag.length;
+    var hashtags = rawhashtags.split('#');
+    hashtags.splice(0,1);
+    hashtagCount = hashtags.length;
+    var perfecthashtag = function (array){
+        if(array.length > 7){
+            while(array.length > 7){
+                array.splice(7, 1);
+            }
+        }
+        else if(array.length < 7){
+            while(array.length < 7){
+                array.push(' ');
+            }  
+        }
+        return array;
+    };
+    var finalhastag = perfecthashtag(hashtags);
     //for inserts
     var sql = 'UPDATE tandya SET question = ?, content = ?, hashtagcount = ?, public = ? where id = ?';
-    var sql4 = 'Delete from hashtag where t_id = ?';
-    var sql5 = '';
+    var sql4 = 'UPDATE hashtag SET ht1 = ?,  ht2 = ?, ht3 = ?, ht4 = ?, ht5 = ?, ht6 = ?, ht7 = ? where t_id = ? AND u_id = ?';
     //for updates
     var sql2 = 'UPDATE tandya set changed_date = now() WHERE id = ?';
     
@@ -414,16 +441,10 @@ exports.postEditTandya = function(req, res){
     conn.conn.query(sql, [question, content, hashtagCount, public, t_id], function(err, result, fields){
         if(err){console.log(err);}
         else{
-            conn.conn.query(sql4, t_id, function(err, dhashtag, fields){
+            conn.conn.query(sql4, [finalhastag[0], finalhastag[1], finalhastag[2], finalhastag[3], finalhastag[4], finalhastag[5], finalhastag[6], t_id, req.session.u_id], function(err, hashtag, fields){
                 if(err){console.log(err);}
                 else{
-                    sql5 = insertHashtagSqlMaker(t_id, finalhashtag);
-                    conn.conn.query(sql5, function(err, hashtag, fields){
-                        if(err){console.log(err);}
-                        else{
-                            res.redirect('/tandya/'+t_id);
-                        }
-                    });
+                    res.redirect('/tandya/'+t_id);
                 }
             }); 
         }
@@ -443,13 +464,17 @@ exports.getEditTanswer = function(req, res){
                 if(err){console.log(err);}
                 else{
                     conn.conn.query(sql3, t_id, function(err, hashtag, fields){
+                        delete hashtag[0].id;
+                        delete hashtag[0].u_id;
+                        delete hashtag[0].p_id;
+                        delete hashtag[0].t_id;
                         if(err){console.log(err);}
                         else{
                             if(req.session.u_id == tanswer[0].author){
-                                res.render('ta-edit', {u_id:'y', topic:tandya[0], edit_content:tanswer[0], hashtag:hashtag});
+                                res.render('ta-edit', {u_id:'y', topic:tandya[0], edit_content:tanswer[0], hashtag:hashtag[0]});  
                             }
                             else{
-                                res.redirect('/tandya/'+t_id);
+                                res.send('hi');
                             } 
                         }
                         

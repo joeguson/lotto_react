@@ -77,7 +77,7 @@ html(lang="id")
             section.main(id='main')
                 .login
                     if(u_id)
-                        a.addPenobrol(href='/penobrol/add') +
+                        a.addPenobrol(href='/youtublog/add') +
                     else
                         a.addPenobrol(href='/aku') + 
                 .p-terbaru
@@ -94,7 +94,9 @@ html(lang="id")
                                         - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
                                     else
                                         - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
-
+                                    -var hashtagfind = hashtagfinder(v.id, hashtags); 
+                                    -var hashtagfinal = hashtagmaker(hashtagfind, v.hashtagcount);
+                                    dd #{hashtagfinal}
                                     dd #{date_result}        
                 .p-terkenal
                     .p-title Penobrol Terkenal
@@ -110,7 +112,9 @@ html(lang="id")
                                         - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' comments'
                                     else
                                         - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' comments'
-
+                                    -var hashtagfind = hashtagfinder(w.id, hashtags); 
+                                    -var hashtagfinal = hashtagmaker(hashtagfind, w.hashtagcount);
+                                    dd #{hashtagfinal}
                                     dd #{date_result}   
             section.footer(id='footer') 
                 p contact : admin@beritamus.com

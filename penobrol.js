@@ -1,4 +1,4 @@
-var conn = require('./b');
+var conn = require('./b-test');
 
 /************FOR PENOBROL************/
 function isEmpty(obj) {
@@ -27,6 +27,16 @@ var htsqlMaker = function(dateOrder, scoreOrder){
     }
     temp = temp.slice(0,-1);
     temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    temp = temp.slice(0,-1);
+    return temp;
+};
+
+var insertHashtagSqlMaker = function(p_id, hashArray){
+    var temp = 'insert into hashtag (p_id, hash) values ';
+    for(var i = 0; i<hashArray.length; i++){
+        temp = temp + '('+p_id+", '"+hashArray[i]+"'), ";
+    }
     temp = temp.slice(0,-1);
     temp = temp.slice(0,-1);
     return temp;
@@ -99,10 +109,6 @@ exports.getViewPenobrol = function(req, res){
                             if(err){console.log(err);}
                             else{
                                 conn.conn.query(sql7, id, function(err, ccomments, fields){
-                                    delete hashtag[0].id;
-                                    delete hashtag[0].u_id;
-                                    delete hashtag[0].p_id;
-                                    delete hashtag[0].t_id;
                                     if(req.session.u_id){
                                         conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
                                             if(err){console.log(err);}
@@ -117,7 +123,7 @@ exports.getViewPenobrol = function(req, res){
                                                         else{
                                                             statusCheck = 'yes';
                                                         }
-                                                        res.render('p-view', {topic:content[0], statusCheck:statusCheck, comments:comments, u_id:req.session.u_id, hashtag:hashtag[0], ccomments:ccomments, clikeStatus:clikeStatus});
+                                                        res.render('p-view', {topic:content[0], statusCheck:statusCheck, comments:comments, u_id:req.session.u_id, hashtag:hashtag, ccomments:ccomments, clikeStatus:clikeStatus});
                                                     }   
                                                 });
                                                     
@@ -125,7 +131,7 @@ exports.getViewPenobrol = function(req, res){
                                         });
                                     }
                                     else{
-                                        res.render('p-view', {topic:content[0], comments:comments, hashtag:hashtag[0], ccomments:ccomments});
+                                        res.render('p-view', {topic:content[0], comments:comments, hashtag:hashtag, ccomments:ccomments});
                                     }
                                 });
                             }
@@ -160,29 +166,12 @@ exports.postAddPenobrol = function(req, res){
     while(rawhashtags.indexOf(' ')>=0){
         rawhashtags = rawhashtags.replace(' ', "");
     }
-    var hashtags = rawhashtags.split('#');
-    hashtags.splice(0,1);
-    hashtagCount = hashtags.length;
-    var perfecthashtag = function (array){
-        if(array.length > 7){
-            while(array.length > 7){
-                array.splice(7, 1);
-            }
-        }
-        else if(array.length < 7){
-            while(array.length < 7){
-                array.push(' ');
-            }  
-        }
-        return array;
-    };
-    var finalhastag = perfecthashtag(hashtags);
+    var finalhashtag = rawhashtags.split('#');
+    finalhashtag.splice(0,1);
+    hashtagCount = finalhashtag.length;
     //for inserts
     var sql = 'INSERT INTO penobrol (author, title, content, hashtagcount, public) VALUES (?, ?, ?, ?, ?)';
-    var sql4 = 'INSERT INTO hashtag (p_id, u_id, ht1, ht2, ht3, ht4, ht5, ht6, ht7) VALUES (?, ?, ?);';
-    //for updates
     var sql2 = 'UPDATE users set u_pen= u_pen + 1 WHERE u_id = ?';
-    
     //update connection
     conn.conn.query(sql2, [author], function(err, update, fields){
         if(err){console.log(err);}
@@ -191,7 +180,8 @@ exports.postAddPenobrol = function(req, res){
     conn.conn.query(sql, [author, title, content, hashtagCount, public], function(err, result, fields){
         if(err){console.log(err);}
         else{
-            conn.conn.query(sql4, [result.insertId, author, finalhastag], function(err, hashtag, fields){
+            var sql4 = insertHashtagSqlMaker(result.insertId, finalhashtag);
+            conn.conn.query(sql4, function(err, hashtag, fields){
                 if(err){console.log(err);}
                 else{
                     res.redirect('/penobrol/'+result.insertId);
@@ -374,16 +364,16 @@ exports.warningPenobrol = function(req, res){
 exports.getEditPenobrol = function(req, res){
     var p_id = req.params.penobrol_no;
     var sql = 'select * from penobrol where id = ?';
-    var sql2 = 'select * from hashtag where p_id = ? AND u_id = ?';
+    var sql2 = 'select * from hashtag where p_id = ?';
     conn.conn.query(sql, p_id, function(err, edit, fields){
         if(err){console.log(err);}
         else{
-            conn.conn.query(sql2, [p_id, req.session.u_id], function(err, hashtags, fields){
+            conn.conn.query(sql2, p_id, function(err, hashtags, fields){
                 if(err){console.log(err);}
                 else{
                     console.log(hashtags);
                     if(req.session.u_id == edit[0].author){
-                        res.render('p-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
+                        res.render('p-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags});
                     }
                     else{
                         res.redirect('/penobrol/'+p_id);
@@ -404,26 +394,13 @@ exports.postEditPenobrol = function(req, res){
     while(rawhashtags.indexOf(' ')>=0){
         rawhashtags = rawhashtags.replace(' ', "");
     }
-    var hashtags = rawhashtags.split('#');
-    hashtags.splice(0,1);
-    hashtagCount = hashtags.length;
-    var perfecthashtag = function (array){
-        if(array.length > 7){
-            while(array.length > 7){
-                array.splice(7, 1);
-            }
-        }
-        else if(array.length < 7){
-            while(array.length < 7){
-                array.push(' ');
-            }  
-        }
-        return array;
-    };
-    var finalhastag = perfecthashtag(hashtags);
+    var finalhashtag = rawhashtags.split('#');
+    finalhashtag.splice(0,1);
+    hashtagCount = finalhashtag.length;
     //for inserts
     var sql = 'UPDATE penobrol SET title = ?, content = ?, hashtagcount = ?, public = ? where id = ?';
-    var sql4 = 'UPDATE hashtag SET ht1 = ?,  ht2 = ?, ht3 = ?, ht4 = ?, ht5 = ?, ht6 = ?, ht7 = ? where p_id = ? AND u_id = ?';
+    var sql4 = 'Delete from hashtag where p_id = ?';
+    var sql5 = '';
     //for updates
     var sql2 = 'UPDATE penobrol set changed_date = now() WHERE id = ?';
     
@@ -435,10 +412,16 @@ exports.postEditPenobrol = function(req, res){
     conn.conn.query(sql, [title, content, hashtagCount, public, p_id], function(err, result, fields){
         if(err){console.log(err);}
         else{
-            conn.conn.query(sql4, [finalhastag[0], finalhastag[1], finalhastag[2], finalhastag[3], finalhastag[4], finalhastag[5], finalhastag[6], p_id, req.session.u_id], function(err, hashtag, fields){
+            conn.conn.query(sql4, p_id, function(err, dhashtag, fields){
                 if(err){console.log(err);}
                 else{
-                    res.redirect('/penobrol/'+p_id);
+                    sql5 = insertHashtagSqlMaker(p_id, finalhashtag);
+                    conn.conn.query(sql5, function(err, hashtag, fields){
+                        if(err){console.log(err);}
+                        else{
+                            res.redirect('/penobrol/'+p_id);
+                        }
+                    });
                 }
             }); 
         }
@@ -458,19 +441,13 @@ exports.getEditPcomment = function(req, res){
                 if(err){console.log(err);}
                 else{
                     conn.conn.query(sql3, p_id, function(err, hashtag, fields){
-                        delete hashtag[0].id;
-                        delete hashtag[0].u_id;
-                        delete hashtag[0].p_id;
-                        delete hashtag[0].t_id;
-                        if(err){
-                            console.log(err);
-                        }
+                        if(err){console.log(err);}
                         else{
                             if(req.session.u_id == pcomment[0].author){
-                                res.render('pc-edit', {u_id:'y', topic:penobrol[0], edit_content:pcomment[0], hashtag:hashtag[0]});
+                                res.render('pc-edit', {u_id:'y', topic:penobrol[0], edit_content:pcomment[0], hashtag:hashtag});
                             }
                             else{
-                                res.send('hi');
+                                res.redirect('/penobrol/'+p_id);
                             }
                         }
                     });

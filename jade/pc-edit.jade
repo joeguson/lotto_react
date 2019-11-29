@@ -66,7 +66,7 @@ html(lang="id")
                         if hashtag.ht1 != ' '   
                             dd.pview-dd.hashtag
                                 -for(var n=0; n<topic.hashtagcount; n++)
-                                    a= '#' + hashtag[Object.keys(hashtag)[n]] + ' '
+                                    a= '#' + hashtag[n].hash + ' '
                         dd.pview-dd #{date_result} 
                 .pcontent
                     p(class="content")= topic.content

@@ -1,0 +1,63 @@
+doctype html
+html(lang="id")
+    head
+        title beritamus
+        // what appears on the tab
+        base(href="/")
+        link(rel='stylesheet', href='common.css' type="text/css")
+        // links css common file
+        link(rel="stylesheet" href="penobrol_view.css" type="text/css")
+        // links css file
+        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')    
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        // iphone에서 어플식으로 저장가능
+        // Lorem ipsum
+    body
+    -var datemaker = function(date){
+    -var tempdate = new Date(date);
+    -var nowdate = new Date();
+    -var year = tempdate.getFullYear();
+    -var year = tempdate.getFullYear();
+    -var month = tempdate.getMonth();
+    -var day = tempdate.getDate();
+    -var diff = nowdate - tempdate;
+    -if(diff > 864000000){return month+'-'+day;}
+    -else{
+    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -else{
+    -if(diff > 3600000){return parseInt(diff/3600000)+' h ago';}
+    -else{
+    -if(diff > 60000){return parseInt(diff/60000)+' min ago';}
+    -else{return parseInt(diff/1000)+' sec ago';}
+    -}
+    -}
+    -}
+    -}
+    -var anonimmaker = function(username){
+    -var idChanger = '';
+    -var idLength = (username).length;
+    -idChanger = username.substr(0,3) + '****';
+    -return idChanger;
+    -}
+    -var commentLikeChecker = function(likeObject, cId, userId){for(var i = 0; i<likeObject.length; i++){if(likeObject[i].pc_id == cId && likeObject[i].u_id == userId){return true;}}return false;}
+        .container
+            header
+                a(href='/penobrol') Beritamus
+            nav
+                ul
+                    li
+                        a(href='/aku') Aku
+                    li
+                        a(href='/cari') Cari
+                    li
+                        a(href='/penobrol') Penobrol
+                    li
+                        a(href='/tandya') Tandya
+                    li
+                        a(href='/utublog') Utublg
+                    br.clear
+            section.sub-main(id='sub-main')
+            
+

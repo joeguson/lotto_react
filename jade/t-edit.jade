@@ -17,16 +17,8 @@ html(lang="id")
     body
     -var hashtagmaker = function(hashtag_object){
     -var hashtagcount = edit_content.hashtagcount;
-    -var hashtagArray = [];
     -var hashtag_temp = '';
-    -hashtagArray[0] = hashtag_object.ht1;
-    -hashtagArray[1] = hashtag_object.ht2;
-    -hashtagArray[2] = hashtag_object.ht3;
-    -hashtagArray[3] = hashtag_object.ht4;
-    -hashtagArray[4] = hashtag_object.ht5;
-    -hashtagArray[5] = hashtag_object.ht6;
-    -hashtagArray[6] = hashtag_object.ht7;
-    -for(var i = 0; i<hashtagcount; i++){hashtag_temp= hashtag_temp + '#'+hashtagArray[i]+' ';}
+    -for(var i = 0; i<hashtagcount; i++){hashtag_temp= hashtag_temp + '#'+hashtag_object[i].hash+' ';}
     -return hashtag_temp;
     -}
     -var hashtag_final = hashtagmaker(hashtags);

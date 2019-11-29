@@ -21,14 +21,14 @@ html(lang="id")
     -var month = tempdate.getMonth();
     -var day = tempdate.getDate();
     -var diff = nowdate - tempdate;
-    -if(diff > 864000000){return month+'-'+day;}
+    -if(diff > 864000000){return month+'-'+day+'-'+year;}
     -else{
-    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
+    -if(diff > 86400000){return parseInt(diff/86400000)+' hari yang lalu';}
     -else{
-    -if(diff > 3600000){return parseInt(diff/3600000)+' h ago';}
+    -if(diff > 3600000){return parseInt(diff/3600000)+' jam yang lalu';}
     -else{
-    -if(diff > 60000){return parseInt(diff/60000)+' min ago';}
-    -else{return parseInt(diff/1000)+' sec ago';}
+    -if(diff > 60000){return parseInt(diff/60000)+' menit yang lalu';}
+    -else{return parseInt(diff/1000)+' detik yang lalu';}
     -}
     -}
     -}
