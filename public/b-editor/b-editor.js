@@ -41,12 +41,13 @@ class BeritamusEditor extends HTMLElement {
         const controls = document.createElement("div");
         controls.style.boxSizing = "border-box";
         controls.style.borderBottom = "none";
-        controls.style.padding = "10px";
+        controls.style.padding = "8px";
         controls.style.background = "#2e60f4";
         controls.style.color = "white";
         controls.style.borderRadius = "8px 8px 0 0";
         controls.style.width = w;
         controls.style.margin = "0 auto";
+        controls.style.textAlign = "start";
 
         this.addControlButton(controls, "Bold", "<b>B</b>");
         this.addControlButton(controls, "Italic", "<em>I</em>");
@@ -62,6 +63,8 @@ class BeritamusEditor extends HTMLElement {
         cp.style.border = "none";
         cp.style.outline = "none";
         cp.style.backgroundColor = "transparent";
+        cp.style.padding = "5px 0 0 0";
+        cp.style.margin = "3px 5px 0 0";
         controls.appendChild(cp);
 
         const fonts = this.fontPicker = document.createElement("select");
@@ -136,6 +139,8 @@ class BeritamusEditor extends HTMLElement {
         btn.style.border = "none";
         btn.style.outline = "none";
         btn.style.cursor = "pointer";
+        btn.style.padding = "3px";
+        btn.style.margin = "0 5px";
         parent.appendChild(btn);
 
         this.controlButtons[title] = btn;
