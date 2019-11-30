@@ -12,6 +12,7 @@ html(lang="id")
         meta(charset='UTF-8')
         meta(name='viewport', content='width=device-width, user-scalable=no')
         meta(name='apple-mobile-web-app-capable', content='yes')
+        script(src="b-editor/b-editor.js")
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
@@ -41,6 +42,7 @@ html(lang="id")
                             input(type='radio' value='a' name="public")
                             |anonymous  
                     p
+                        b-editor(width="800px" height="600px")
                         textarea(name='content' class="content" id="content" required)
                     p
                         input(type='text' name='hashtag' pplaceholder='#put #hashtags #like #this/ max 7 hashtags' class="hashtag")

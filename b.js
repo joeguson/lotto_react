@@ -43,7 +43,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.locals.pretty = true;
 app.use(express.static('css'));
-app.use("/jade", express.static('/'));
+app.use(express.static('public'));
 app.set('view engine', 'jade');
 app.set('views', './jade');
 app.use(cookieParser());
