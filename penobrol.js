@@ -116,6 +116,7 @@ exports.getViewPenobrol = function(req, res){
                                                 conn.conn.query(sql8, [req.session.u_id, id], function(err, clikeStatus, fields){
                                                     if(err){console.log(err);}
                                                     else{
+                                                        console.log(hashtag);
                                                         var statusCheck = '';
                                                         if(isEmpty(likeStatus)){
                                                             statusCheck = 'no';
