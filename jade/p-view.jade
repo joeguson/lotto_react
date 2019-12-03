@@ -79,7 +79,25 @@ html(lang="id")
                         p(class="warn")
                             button(class="pwarnButton" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') !
                     p(class="content")
-                        pre(class="content")= topic.content
+                        iframe(id="content" class="content" style="border: none;")
+                        script.
+                            var iframe = document.getElementById("content");
+                            var page = iframe.contentWindow.document;
+                            var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+                            
+                            page.body.innerHTML = content;
+                            
+                            const imgTags = page.getElementsByTagName("img");
+                            for(var t of imgTags) {
+                                t.onload = () => {
+                                    var i = document.getElementById('content');
+                                    var w = i.contentWindow.document.body.scrollWidth;
+                                    var h = i.contentWindow.document.body.scrollHeight;
+                                    i.height = h;
+                                    i.width = w;
+                                };
+                            }
+                            
                     div(id="plike" class="plike")= topic.p_like
                     if u_id
                             if statusCheck == 'yes'
