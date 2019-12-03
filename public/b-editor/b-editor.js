@@ -1,12 +1,17 @@
 class BeritamusEditor extends HTMLElement {
     constructor() {
         super();
+        this.editor = null;
         this.btnGradient = {};
         this.controlButtons = {};
         this.colorPicker = null;
         this.fontPicker = null;
         this.sizePicker = null;
         this.imageInput = null;
+    }
+    
+    value() {
+        return this.editor.body.innerHTML;
     }
 
     connectedCallback() {
