@@ -13,6 +13,7 @@ html(lang="id")
         meta(name='viewport', content='width=device-width, user-scalable=no')
         meta(name='apple-mobile-web-app-capable', content='yes')
         script(src="b-editor/b-editor.js")
+        script(src='p-add.js')
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
@@ -31,35 +32,34 @@ html(lang="id")
                         a(href='/tandya') Tandya
                     br.clear
             article
-                form(action='/penobrol/add' method='post' onsubmit='return checksubmit();')
-                    p 
-                        input(type='text' name='title' placeholder='title' class="title" id="title" required)
-                    p
-                        label
-                            input(type='radio' value='p' name="public" checked)
-                            |public
-                        label
-                            input(type='radio' value='a' name="public")
-                            |anonymous  
-                    p
-                        b-editor(width="90%" height="600px")
-                        // textarea(name='content' class="content" id="content" required)
-                    p
-                        input(type='text' name='hashtag' pplaceholder='#put #hashtags #like #this/ max 7 hashtags' class="hashtag")
-                    p
-                        input(type='submit' class="submit" value="share")
-                    script.
-                        function checksubmit(){
-                            if(title.value.length < 5){
-                                alert('judulnya harus lebih dari 5 alphabet');
-                                return false;
-                            }
-                            if(content.value.length < 5){
-                                alert('kontennya harus lebih dari 5 alphabet');
-                                return false;
-                            }
-                            return true;
+                p 
+                    input(type='text' name='title' placeholder='title' class="title" id="title" required)
+                p
+                    label
+                        input(id='rbP' type='radio' value='p' name="public" checked)
+                        |public
+                    label
+                        input(id='rbA' type='radio' value='a' name="public")
+                        |anonymous  
+                p
+                    b-editor(id='editor' width="90%" height="600px" name="content")
+                    // textarea(name='content' class="content" id="content" required)
+                p
+                    input(id='hashtag' type='text' name='hashtag' pplaceholder='#put #hashtags #like #this/ max 7 hashtags' class="hashtag")
+                p
+                    button(class="submit" onclick='postPenobrolAdd();') share
+                script.
+                    function checksubmit(){
+                        if(title.value.length < 5){
+                            alert('judulnya harus lebih dari 5 alphabet');
+                            return false;
                         }
+                        if(content.value.length < 5){
+                            alert('kontennya harus lebih dari 5 alphabet');
+                            return false;
+                        }
+                        return true;
+                    }
             section.footer(id='footer') 
                 p contact : admin@beritamus.com
                 p www.beritamus.com   
