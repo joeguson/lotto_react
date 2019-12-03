@@ -185,12 +185,12 @@ exports.postAddPenobrol = function(req, res){
             conn.conn.query(sql4, function(err, hashtag, fields){
                 if(err){console.log(err);}
                 else{
-                    res.redirect('/penobrol/'+result.insertId);
+                    res.json({'id': result.insertId});
                 }
             }); 
         }
         else{
-            res.redirect('/penobrol/'+result.insertId);
+            res.json({'id': result.insertId});
         }
     });
 };

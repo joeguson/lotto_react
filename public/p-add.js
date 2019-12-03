@@ -14,16 +14,21 @@ function postPenobrolAdd() {
     const parsed = parseImgTags(content);
     content = parsed.content;
     
-    var done = 0;
-    for(var id in parsed.imgs) {
-        uploadImage(id, parsed.imgs[id], (id, filename) => {
+    const imgCount = Object.keys(parsed.imgs).length;
+    if(imgCount == 0) finalPost(req);
+    else {
+        var done = 0;
+        for(var id in parsed.imgs) {
+            uploadImage(id, parsed.imgs[id], (id, filename) => {
             content = replace(content, id, filename);
             req.content = content;
             done++;
-            if(done == Object.keys(parsed.imgs).length)
+            if(done == imgCount)
                 finalPost(req);
         });
     }
+    }
+    
 }
 
 function parseImgTags(content) {
@@ -112,6 +117,7 @@ function finalPost(body) {
     xhr.withCredentials = true;
     xhr.send(JSON.stringify(body));
     xhr.onload = () => {
-        console.log("Done");
+        var id = JSON.parse(xhr.responseText).id;
+        window.location.href = location.origin + "/penobrol/" + id.toString();
     };
 }
