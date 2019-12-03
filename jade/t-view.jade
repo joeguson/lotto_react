@@ -80,7 +80,7 @@ html(lang="id")
                         - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
                     else
                         - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : ' + topic.answer
-                    if hashtag.ht1 != ' '    
+                    if(hashtag.length > 0)    
                         p
                             -for(var n=0; n<topic.hashtagcount; n++)
                                 a= '#' + hashtag[n].hash + ' '

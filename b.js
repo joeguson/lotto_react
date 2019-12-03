@@ -234,6 +234,18 @@ var hsSearchSqlMaker = function(hashtags){
     temp = temp+"')";
     return temp;
 };
+var remove_duplicates = function (objectsArray) {
+    var usedObjects = {};
+    for (var i=objectsArray.length - 1;i>=0;i--) {
+        var so = JSON.stringify(objectsArray[i]);
+        if (usedObjects[so]) {
+            objectsArray.splice(i, 1);
+        } else {
+            usedObjects[so] = true;          
+        }
+    }
+    return objectsArray;
+};
 
 app.get('/cari/search', function(req, res){
     var cari = req.query.search;
@@ -296,31 +308,31 @@ app.get('/cari/search', function(req, res){
                                                     else{
                                                         var tmp1 = phtresult.length -1;
                                                         while(tmp1 >= 0){
-                                                            hsforpt.push(JSON.parse(JSON.stringify(phtresult[tmp1])));
+                                                            hsforpt.unshift(JSON.parse(JSON.stringify(phtresult[tmp1])));
                                                             tmp1 --;
                                                         }
                                                         var tmp2 = thtresult.length -1;
                                                         while(tmp2 >= 0){
-                                                            hsforpt.push(JSON.parse(JSON.stringify(thtresult[tmp2])));
+                                                            hsforpt.unshift(JSON.parse(JSON.stringify(thtresult[tmp2])));
                                                             tmp2 --;
                                                         }
                                                         //when hashtag is shorter than 1
-                                                        if(hashtags.length<1){ 
-                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                        if(hashtags.length<1){
+                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt, cari:cari});
                                                         }
                                                         //when hashtag is longer than 1
                                                         else{ 
                                                             var tmp3 = hashtags.length -1;
                                                             while(tmp3 >= 0){
-                                                                hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp3])));
+                                                                hsforpt.unshift(JSON.parse(JSON.stringify(hashtags[tmp3])));
                                                                 tmp3 --;
                                                             }
                                                             for(var i =0; i<hashtags.length; i++){
                                                                 if(hashtags[i].t_id === 0){
-                                                                    ps.push(hashtags[i].p_id);
+                                                                    ps.unshift(hashtags[i].p_id);
                                                                 }
                                                                 else{
-                                                                    ts.push(hashtags[i].t_id);
+                                                                    ts.unshift(hashtags[i].t_id);
                                                                 }
                                                             }
                                                             newpsql = psqlMaker(ps);
@@ -331,15 +343,16 @@ app.get('/cari/search', function(req, res){
                                                                     conn.query(newtsql, function(err, tResult, f){
                                                                         var temp1 = pResult.length -1;
                                                                         while(temp1 >= 0){
-                                                                            hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                                            hsresult.unshift(JSON.parse(JSON.stringify(pResult[temp1])));
                                                                             temp1 --;
                                                                         }
                                                                         var temp2 = tResult.length -1;
                                                                         while(temp2 >= 0){
-                                                                            hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                                            hsresult.unshift(JSON.parse(JSON.stringify(tResult[temp2])));
                                                                             temp2 --;
                                                                         }
-                                                                        res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                                        hsforpt = remove_duplicates(hsforpt);
+                                                                        res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt, cari:cari});
                                                                     });
                                                                 });
                                                             }
@@ -348,10 +361,11 @@ app.get('/cari/search', function(req, res){
                                                                 conn.query(newtsql, function(err, tResult, f){
                                                                     var temp2 = tResult.length -1;
                                                                     while(temp2 >= 0){
-                                                                        hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                                        hsresult.unshift(JSON.parse(JSON.stringify(tResult[temp2])));
                                                                         temp2 --;
                                                                     }
-                                                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult, pthash:hsforpt});
+                                                                    hsforpt = remove_duplicates(hsforpt);
+                                                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult, pthash:hsforpt, cari:cari});
                                                                 });
                                                             }
                                                             //when only p is longer than 1
@@ -359,10 +373,11 @@ app.get('/cari/search', function(req, res){
                                                                 conn.query(newpsql, function(err, pResult, f){
                                                                     var temp1 = pResult.length -1;
                                                                     while(temp1 >= 0){
-                                                                        hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                                        hsresult.unshift(JSON.parse(JSON.stringify(pResult[temp1])));
                                                                         temp1 --;
                                                                     }
-                                                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult, pthash:hsforpt});
+                                                                    hsforpt = remove_duplicates(hsforpt);
+                                                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult, pthash:hsforpt, cari:cari});
                                                                 });
                                                             }
 
@@ -379,25 +394,26 @@ app.get('/cari/search', function(req, res){
                                             else{
                                                 var tmp4 = thtresult.length -1;
                                                 while(tmp4 >= 0){
-                                                    hsforpt.push(JSON.parse(JSON.stringify(thtresult[tmp4])));
+                                                    hsforpt.unshift(JSON.parse(JSON.stringify(thtresult[tmp4])));
                                                     tmp4 --;
                                                 }
                                                 //when hashtag is shorter than 1
                                                 if(hashtags.length<1){ //when hashtag is shorter than 1
-                                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                    hsforpt = remove_duplicates(hsforpt);
+                                                    res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt, cari:cari});
                                                 }
                                                 else{ //when hashtag is longer than 1
                                                     var tmp5 = hashtags.length -1;
                                                     while(tmp5 >= 0){
-                                                        hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp5])));
+                                                        hsforpt.unshift(JSON.parse(JSON.stringify(hashtags[tmp5])));
                                                         tmp5 --;
                                                     }
                                                     for(var i =0; i<hashtags.length; i++){
                                                         if(hashtags[i].t_id === 0){
-                                                            ps.push(hashtags[i].p_id);
+                                                            ps.unshift(hashtags[i].p_id);
                                                         }
                                                         else{
-                                                            ts.push(hashtags[i].t_id);
+                                                            ts.unshift(hashtags[i].t_id);
                                                         }
                                                     }
                                                     newpsql = psqlMaker(ps);
@@ -408,15 +424,16 @@ app.get('/cari/search', function(req, res){
                                                             conn.query(newtsql, function(err, tResult, f){
                                                                 var temp1 = pResult.length -1;
                                                                 while(temp1 >= 0){
-                                                                    hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                                    hsresult.unshift(JSON.parse(JSON.stringify(pResult[temp1])));
                                                                     temp1 --;
                                                                 }
                                                                 var temp2 = tResult.length -1;
                                                                 while(temp2 >= 0){
-                                                                    hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                                    hsresult.unshift(JSON.parse(JSON.stringify(tResult[temp2])));
                                                                     temp2 --;
                                                                 }
-                                                                res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                                hsforpt = remove_duplicates(hsforpt);
+                                                                res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt, cari:cari});
                                                             });
                                                         });
                                                     }
@@ -424,20 +441,22 @@ app.get('/cari/search', function(req, res){
                                                         conn.query(newtsql, function(err, tResult, f){
                                                             var temp2 = tResult.length -1;
                                                             while(temp2 >= 0){
-                                                                hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                                hsresult.unshift(JSON.parse(JSON.stringify(tResult[temp2])));
                                                                 temp2 --;
                                                             }
-                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult, pthash:hsforpt});
+                                                            hsforpt = remove_duplicates(hsforpt);
+                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult, pthash:hsforpt, cari:cari});
                                                         });
                                                     }
                                                     else{
                                                         conn.query(newpsql, function(err, pResult, f){
                                                             var temp1 = pResult.length -1;
                                                             while(temp1 >= 0){
-                                                                hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                                hsresult.unshift(JSON.parse(JSON.stringify(pResult[temp1])));
                                                                 temp1 --;
                                                             }
-                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult, pthash:hsforpt});
+                                                            hsforpt = remove_duplicates(hsforpt);
+                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult, pthash:hsforpt, cari:cari});
                                                         });
                                                     }
 
@@ -451,25 +470,26 @@ app.get('/cari/search', function(req, res){
                                             else{
                                                 var tmp4 = phtresult.length -1;
                                                 while(tmp4 >= 0){
-                                                    hsforpt.push(JSON.parse(JSON.stringify(phtresult[tmp4])));
+                                                    hsforpt.unshift(JSON.parse(JSON.stringify(phtresult[tmp4])));
                                                     tmp4 --;
                                                 }
                                             }
                                             if(hashtags.length<1){ //when hashtag is shorter than 1
-                                                res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                hsforpt = remove_duplicates(hsforpt);
+                                                res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt, cari:cari});
                                             }
                                             else{ //when hashtag is longer than 1
                                                 var tmp6 = hashtags.length -1;
                                                 while(tmp6 >= 0){
-                                                    hsforpt.push(JSON.parse(JSON.stringify(hashtags[tmp6])));
+                                                    hsforpt.unshift(JSON.parse(JSON.stringify(hashtags[tmp6])));
                                                     tmp6 --;
                                                 }
                                                 for(var i =0; i<hashtags.length; i++){
                                                     if(hashtags[i].t_id === 0){
-                                                        ps.push(hashtags[i].p_id);
+                                                        ps.unshift(hashtags[i].p_id);
                                                     }
                                                     else{
-                                                        ts.push(hashtags[i].t_id);
+                                                        ts.unshift(hashtags[i].t_id);
                                                     }
                                                 }
                                                 newpsql = psqlMaker(ps);
@@ -479,15 +499,16 @@ app.get('/cari/search', function(req, res){
                                                         conn.query(newtsql, function(err, tResult, f){
                                                             var temp1 = pResult.length -1;
                                                             while(temp1 >= 0){
-                                                                hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                                hsresult.unshift(JSON.parse(JSON.stringify(pResult[temp1])));
                                                                 temp1 --;
                                                             }
                                                             var temp2 = tResult.length -1;
                                                             while(temp2 >= 0){
-                                                                hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                                hsresult.unshift(JSON.parse(JSON.stringify(tResult[temp2])));
                                                                 temp2 --;
                                                             }
-                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt});
+                                                            hsforpt = remove_duplicates(hsforpt);
+                                                            res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:hsresult, pthash:hsforpt, cari:cari});
                                                         });
                                                     });
                                                 }
@@ -495,20 +516,22 @@ app.get('/cari/search', function(req, res){
                                                     conn.query(newtsql, function(err, tResult, f){
                                                         var temp2 = tResult.length -1;
                                                         while(temp2 >= 0){
-                                                            hsresult.push(JSON.parse(JSON.stringify(tResult[temp2])));
+                                                            hsresult.unshift(JSON.parse(JSON.stringify(tResult[temp2])));
                                                             temp2 --;
                                                         }
-                                                        res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult, pthash:hsforpt});
+                                                        hsforpt = remove_duplicates(hsforpt);
+                                                        res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:tResult, pthash:hsforpt, cari:cari});
                                                     });
                                                 }
                                                 else{
                                                     conn.query(newpsql, function(err, pResult, f){
                                                         var temp1 = pResult.length -1;
                                                         while(temp1 >= 0){
-                                                            hsresult.push(JSON.parse(JSON.stringify(pResult[temp1])));
+                                                            hsresult.unshift(JSON.parse(JSON.stringify(pResult[temp1])));
                                                             temp1 --;
                                                         }
-                                                        res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult, pthash:hsforpt});
+                                                        hsforpt = remove_duplicates(hsforpt);
+                                                        res.render('cari-result', {penobrols:penobrols, tandyas:tandyas, users:users, hashtags:pResult, pthash:hsforpt, cari:cari});
                                                     });
                                                 }
                                             }

@@ -67,7 +67,7 @@ html(lang="id")
                         else
                             - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
                         dt.pview-dt= topic.title
-                        if hashtag.ht1 != ' '   
+                        if(hashtag.length > 0)
                             dd.pview-dd.hashtag
                                 -for(var n=0; n<topic.hashtagcount; n++)
                                     a= '#' + hashtag[n].hash + ' '

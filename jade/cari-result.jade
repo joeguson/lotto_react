@@ -64,7 +64,7 @@ html(lang="id")
                 //.ad Advertising
                 .search
                     form(action='/cari/search' method='get')
-                        input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
+                        input(type='text' name='search' value='#{cari}')
                         input(type='submit' class="submit" value="search")
             section.main(id='main')
                 // if(users.length > 0)
@@ -79,7 +79,7 @@ html(lang="id")
                                         a(href='/penobrol/'+p.id)= p.title
                                     dd.ddcontent= p.content
                                     - var date_result = datemaker(p.date) + ' / ' + p.p_view + ' views' + ' / '+p.com + ' comments';
-                                    -var hashtagfind = phashtagfinder(p.id, pthash); 
+                                    -var hashtagfind = phashtagfinder(p.id, pthash);
                                     -var hashtagfinal = hashtagmaker(hashtagfind, p.hashtagcount);
                                     dd #{hashtagfinal}
                                     dd #{date_result}
