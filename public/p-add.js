@@ -1,19 +1,29 @@
 function postPenobrolAdd() {
     const title = document.getElementById('title').value;
     const public = document.getElementById('rbP').checked ? 'p' : 'a';
-    const content = document.getElementById('editor').value();
+    var content = document.getElementById('editor').value();
     const hashtag = document.getElementById('hashtag').value;
     
     const req = {
-        'title': title,
-        'public': public,
-        'content': content,
-        'hashtag': hashtag
+        title: title,
+        public: public,
+        content: content,
+        hashtag: hashtag
     };
     
     const parsed = parseImgTags(content);
-    console.log('Content', parsed.content);
-    console.log('Images', parsed.imgs);
+    content = parsed.content;
+    
+    var done = 0;
+    for(var id in parsed.imgs) {
+        uploadImage(id, parsed.imgs[id], (id, filename) => {
+            content = replace(content, id, filename);
+            req.content = content;
+            done++;
+            if(done == Object.keys(parsed.imgs).length)
+                finalPost(req);
+        });
+    }
 }
 
 function parseImgTags(content) {
@@ -53,5 +63,55 @@ function parseImgTags(content) {
     return {
         content: content,
         imgs: imgMaps
+    };
+}
+
+function uploadImage(id, data, onUploaded) {
+    var json = JSON.stringify({
+       img: data 
+    });
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/image', true);
+    xhr.setRequestHeader('Content-type', "application/json");
+    xhr.send(json);
+    xhr.onload = () => {
+        var result = JSON.parse(xhr.responseText).filename;
+        onUploaded(id, result);
+    };
+}
+
+function replace(content, id, filename, index = 0) {
+    filename = "images/" + filename;
+    var s = 0, e = 0;
+    
+    while(true) {
+        const imgIndex = content.indexOf('<img', index);
+        const srcIndex = content.indexOf('src="', imgIndex);
+        const endIndex = content.indexOf('"', srcIndex+5);
+        if(imgIndex == -1 || srcIndex == -1 || endIndex == -1) break;
+        
+        const curId = parseInt(content.substring(srcIndex + 5, endIndex));
+        
+        if(curId == id) {
+            s = srcIndex + 5;
+            e = endIndex;
+            break;
+        }
+        
+        index = endIndex;
+    }
+    
+    return content.substring(0, s) + filename + content.substring(e);
+}
+
+function finalPost(body) {
+    console.log("Final");
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/penobrol/add', true);
+    xhr.setRequestHeader('Content-type', "application/json");
+    xhr.withCredentials = true;
+    xhr.send(JSON.stringify(body));
+    xhr.onload = () => {
+        console.log("Done");
     };
 }

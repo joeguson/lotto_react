@@ -1,5 +1,5 @@
 config.json
-
+public/images/*
 # intellij
 .idea/
 *.iml

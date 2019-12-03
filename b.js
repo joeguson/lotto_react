@@ -697,6 +697,30 @@ app.post('/aku/register', function(req, res){
     }); 
 });
 
+function generateFilename() {
+    const d = new Date();
+    var str = d.getFullYear().toString() + 
+        (d.getMonth() + 1).toString() + 
+        d.getDate().toString() +
+        d.getHours().toString() +
+        d.getMinutes().toString() +
+        d.getSeconds().toString() +
+        Math.floor(Math.random() * 100000).toString() +
+         ".png";
+    return str;
+}
+
+app.post('/image', (req, res) => {
+    var image = req.body.img;
+    var data = image.replace(/^data:image\/\w+;base64,/, "");
+    var buf = new Buffer(data, 'base64');
+    var filename = generateFilename();
+    fs.writeFile('./public/images/' + filename, buf, (err) => {     
+        if(err) console.log(err); 
+    });
+    res.json({'filename': filename});
+});
+
 var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfWeek: 0}, function(){
     var dateFrom = new Date();
     var dateTo = new Date();

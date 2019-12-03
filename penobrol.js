@@ -157,6 +157,7 @@ exports.getAddPenobrol = function(req, res){
     }
 };
 exports.postAddPenobrol = function(req, res){
+    console.log(req.body);
     var author = req.session.u_id;
     var content = req.body.content;
     var title = req.body.title;
@@ -179,7 +180,7 @@ exports.postAddPenobrol = function(req, res){
     //insert connection
     conn.conn.query(sql, [author, title, content, hashtagCount, public], function(err, result, fields){
         if(err){console.log(err);}
-        else{
+        else if(hashtagCount > 0){
             var sql4 = insertHashtagSqlMaker(result.insertId, finalhashtag);
             conn.conn.query(sql4, function(err, hashtag, fields){
                 if(err){console.log(err);}
@@ -187,6 +188,9 @@ exports.postAddPenobrol = function(req, res){
                     res.redirect('/penobrol/'+result.insertId);
                 }
             }); 
+        }
+        else{
+            res.redirect('/penobrol/'+result.insertId);
         }
     });
 };
