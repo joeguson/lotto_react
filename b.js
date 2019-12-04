@@ -39,8 +39,8 @@ var conn = mysql.createConnection(
 );
 conn.connect();
 exports.conn = conn;
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ limit:"50mb", extended: false }));
+app.use(express.json({ limit : "50mb" }));
 app.locals.pretty = true;
 app.use(express.static('css'));
 app.use(express.static('public'));
@@ -722,26 +722,61 @@ app.post('/aku/register', function(req, res){
 
 function generateFilename() {
     const d = new Date();
+    var str = "";
     var str = d.getFullYear().toString() + 
         (d.getMonth() + 1).toString() + 
         d.getDate().toString() +
         d.getHours().toString() +
         d.getMinutes().toString() +
         d.getSeconds().toString() +
-        Math.floor(Math.random() * 100000).toString() +
-         ".png";
+        Math.floor(Math.random() * 100000).toString();
+    
+//    const d = new Date();
+//    
+//    var str = d.getFullYear().toString() + 
+//        (d.getMonth() + 1).toString() + 
+//        d.getDate().toString() +
+//        d.getHours().toString() +
+//        d.getMinutes().toString() +
+//        d.getSeconds().toString() +
+//        Math.floor(Math.random() * 100000).toString() +
+//         ".png";
     return str;
 }
 
 app.post('/image', (req, res) => {
-    var image = req.body.img;
-    var data = image.replace(/^data:image\/\w+;base64,/, "");
+    var img = req.body.img;
+    console.log(img.split(";")[0].split("/")[1]);
+    
+    var d=new Date().valueOf();
+    var data =img.replace(/^data:image\/\w+;base64,/, "");
     var buf = new Buffer(data, 'base64');
     var filename = generateFilename();
+    if("jpeg"==img.split(";")[0].split("/")[1]){
+        filename += '.jpg';
+    }
+    if("gif"==img.split(";")[0].split("/")[1]){
+        filename += '.gif';
+    }
+    if("x-icon"==img.split(";")[0].split("/")[1]){
+        filename += '.ico';
+    }
+    if("png"==img.split(";")[0].split("/")[1]){
+        filename += '.png';
+    }
     fs.writeFile('./public/images/' + filename, buf, (err) => {     
         if(err) console.log(err); 
     });
     res.json({'filename': filename});
+    
+//    var image = req.body.img;
+//    var data = image.replace(/^data:image\/\w+;base64,/, "");
+//    var buf = new Buffer(data, 'base64');
+//    var filename = generateFilename();
+//    fs.writeFile('./public/images/' + filename, buf, (err) => {     
+//        if(err) console.log(err); 
+//    });
+//    res.json({'filename': filename});
 });
 
 var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfWeek: 0}, function(){
