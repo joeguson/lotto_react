@@ -60,6 +60,21 @@ html(lang="id")
                         }
                         return true;
                     }
+                    var iframe = document.getElementById('iframe').contentWindow.document.body;
+                    var iframe2 = document.getElementById('iframe').contentWindow.document.head;
+                    var style = document.createElement('style');
+                    var innerStyle = '.rotateimg{color:red;-webkit-transform:rotate(90deg);-moz-transform: rotate(90deg);-ms-transform: rotate(90deg);-o-transform: rotate(90deg);transform: rotate(90deg);}'
+                    var innerScript = "function myFunction(target){target.classList.add('rotateimg');}";
+                    var script = document.createElement('script');
+                    style.append(innerStyle);
+                    script.append(innerScript);
+                    iframe.appendChild(script);
+                    iframe2.appendChild(style);
+                    script.onload = function() {
+                      alert("Script loaded and ready");
+                    };
+                    console.log(parent.iframe);
+                    console.log(iframe);
             section.footer(id='footer') 
                 p contact : admin@beritamus.com
                 p www.beritamus.com   

@@ -1,3 +1,5 @@
+
+
 class BeritamusEditor extends HTMLElement {
     constructor() {
         super();
@@ -44,6 +46,7 @@ class BeritamusEditor extends HTMLElement {
 
     buildControls(w) {
         const controls = document.createElement("div");
+        controls.style.textAlign = "center";
         controls.style.boxSizing = "border-box";
         controls.style.borderBottom = "none";
         controls.style.padding = "8px";
@@ -52,7 +55,6 @@ class BeritamusEditor extends HTMLElement {
         controls.style.borderRadius = "8px 8px 0 0";
         controls.style.width = w;
         controls.style.margin = "0 auto";
-        controls.style.textAlign = "start";
 
         this.addControlButton(controls, "Bold", "<b>B</b>");
         this.addControlButton(controls, "Italic", "<em>I</em>");
@@ -61,6 +63,10 @@ class BeritamusEditor extends HTMLElement {
         this.addControlButton(controls, "Strikethrough", "<s>abc</s>");
         this.addControlButton(controls, "Numbered list", "(i)");
         this.addControlButton(controls, "Bulleted list", "&bull;");
+        this.addControlButton(controls, "AlignCenter", "Center");
+        this.addControlButton(controls, "AlignLeft", "Left");
+        this.addControlButton(controls, "AlignRight", "Right");
+        this.addControlButton(controls, "turnRight", "90<sup>o</sup>");
 
         const cp = this.colorPicker = document.createElement("input");
         cp.type = "color";
@@ -106,7 +112,8 @@ class BeritamusEditor extends HTMLElement {
         const input = this.imageInput = document.createElement("input");
         input.type = "file";
         input.accept = "image/*";
-        input.style.display = "none";
+        input.accept = ".heic";
+        input.style.display = "block";
 
         this.addControlButton(controls, "Insert image", "Image");
         this.addControlButton(controls, "Undo", "←");
@@ -114,7 +121,7 @@ class BeritamusEditor extends HTMLElement {
 
         return controls;
     }
-
+    
     buildEditor(w, h) {
         const ta = document.createElement("div");
         ta.style.width = w;
@@ -127,9 +134,8 @@ class BeritamusEditor extends HTMLElement {
         iframe.style.border = "none";
         iframe.style.width = w;
         iframe.style.height = h;
-
+        iframe.id="iframe"
         ta.appendChild(iframe);
-
         return ta;
     }
 
@@ -153,14 +159,17 @@ class BeritamusEditor extends HTMLElement {
 
     start() {
         const editor = this.editor = this.iframe.contentWindow.document;
-        editor.designMode = "on";
-
+        editor.designMode = "on";  
         this.controlButtons["Bold"].onclick = this.cmd("Bold");
         this.controlButtons["Italic"].onclick = this.cmd("Italic");
         this.controlButtons["Superscript"].onclick = this.cmd("Superscript");
         this.controlButtons["Subscript"].onclick = this.cmd("Subscript");
         this.controlButtons["Strikethrough"].onclick = this.cmd("Strikethrough");
-
+        this.controlButtons["AlignCenter"].onclick = this.cmd("JustifyCenter");
+        this.controlButtons["AlignRight"].onclick = this.cmd("JustifyRight");
+        this.controlButtons["AlignLeft"].onclick = this.cmd("JustifyLeft");
+        this.controlButtons["turnRight"].onclick
+        
         this.controlButtons["Numbered list"].onclick = this.cmd("InsertOrderedList", false,
             "newOL" + Math.round(Math.random() * 1000));
         this.controlButtons["Bulleted list"].onclick = this.cmd("InsertUnorderedList", false,
@@ -169,14 +178,19 @@ class BeritamusEditor extends HTMLElement {
         this.colorPicker.onchange = (e) => this.cmd("ForeColor", false, e.target.value)();
         this.fontPicker.onchange = (e) => this.cmd("FontName", false, e.target.value)();
         this.sizePicker.onchange = (e) => this.cmd("FontSize", false, e.target.value)();
-
         this.imageInput.onchange = () => {
             const i = this.imageInput;
             if (i.files && i.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     editor.body.focus();
-                    const imgHTML = "<img width='500px'  src='" + e.target.result + "'/>";
+//                    var newimage = new Image();
+//                    newimage.src = e.target.result
+//                    //value of width 
+//                    console.log(editor.body.scrollWidth);
+//                    console.log(newimage.width);
+//                    console.log(newimage.height);
+                    const imgHTML = "<img width='90%' onclick='myFunction(this)' src='" + e.target.result + "'/>";
                     editor.execCommand("insertHTML", false, imgHTML);
                 };
                 reader.readAsDataURL(i.files[0]);
@@ -185,7 +199,7 @@ class BeritamusEditor extends HTMLElement {
         };
 
         this.controlButtons["Create link"].onclick = () =>
-            this.cmd("CreateLink", false, prompt("Enter a URL", "https://"))();
+            this.cmd("CreateLink", false, prompt("Enter a URL", "www."))();
         this.controlButtons["Remove link"].onclick = this.cmd("UnLink");
         this.controlButtons["Insert image"].onclick = () => this.imageInput.click();
         this.controlButtons["Undo"].onclick = this.cmd("undo");
@@ -195,7 +209,6 @@ class BeritamusEditor extends HTMLElement {
     cmd(id, showUi, value) {
         const editor = this.editor;
         return function () {
-            console.log(id);
             editor.execCommand(id, showUi, value);
         }
     }

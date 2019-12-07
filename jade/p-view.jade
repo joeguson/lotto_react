@@ -63,9 +63,9 @@ html(lang="id")
                     if u_id
                     dl.pview-dl
                         if topic.public == 'a'
-                            - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
+                            - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' comments' 
                         else
-                            - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
+                            - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' comments' 
                         dt.pview-dt= topic.title
                         if(hashtag.length > 0)
                             dd.pview-dd.hashtag
@@ -82,11 +82,10 @@ html(lang="id")
                         iframe(id="content" class="content" style="border: none;")
                         script.
                             var iframe = document.getElementById("content");
+                            iframe.width = "100%";
                             var page = iframe.contentWindow.document;
                             var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
-                            
                             page.body.innerHTML = content;
-                            
                             const imgTags = page.getElementsByTagName("img");
                             for(var t of imgTags) {
                                 t.onload = () => {
@@ -97,7 +96,6 @@ html(lang="id")
                                     i.width = w;
                                 };
                             }
-                            
                     div(id="plike" class="plike")= topic.p_like
                     if u_id
                             if statusCheck == 'yes'

@@ -31,6 +31,10 @@ function postPenobrolAdd() {
     
 }
 
+function hi(target){
+    console.log('hi');
+}
+
 function parseImgTags(content) {
     var id = 1;
     var imgIndex = 0;
@@ -42,29 +46,23 @@ function parseImgTags(content) {
         // <img
         imgIndex = content.indexOf('<img', imgIndex);
         if(imgIndex == -1) break;
-        
         // src="
         const srcIndex = content.indexOf('src=\"', imgIndex);
         // data
         const dataIndex = srcIndex + 5;
         // ">
         const endIndex = content.indexOf('\">', imgIndex);
-        
         const data = content.substring(dataIndex, endIndex);
-        
         posMaps[id] = {s: dataIndex, e: endIndex};
         imgMaps[id] = data;
         id++;
-        
         imgIndex = endIndex;
     }
-    
     for(--id; id >= 1; id--) {
         const prev = content.substring(0, posMaps[id].s);
         const post = content.substring(posMaps[id].e);
         content = prev + id.toString() + post;
     }
-    
     return {
         content: content,
         imgs: imgMaps
