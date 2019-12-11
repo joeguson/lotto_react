@@ -12,6 +12,8 @@ html(lang="id")
         meta(charset='UTF-8')
         meta(name='viewport', content='width=device-width, user-scalable=no')
         meta(name='apple-mobile-web-app-capable', content='yes')
+        script(src="b-editor/b-editor.js")
+        script(src='p-edit.js')
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
@@ -37,30 +39,34 @@ html(lang="id")
                         a(href='/tandya') Tandya
                     br.clear
             article
-                form(action='/pedit/'+edit_content.id method='post' onsubmit='return checksubmit();')
+                form
                     p 
                         input(type='text' name='title' placeholder='title' class="title" id="title" value=edit_content.title)
                     p
                         if edit_content.public == 'p'
                             label
-                                input(type='radio' value='p' name="public" checked)
+                                input(id='rbP' type='radio' value='p' name="public" checked)
                                 |public
                             label
-                                input(type='radio' value='a' name="public")
-                                |anonim
+                                input(id='rbA' type='radio' value='a' name="public")
+                                |anonymous
                         else
                             label
-                                input(type='radio' value='p' name="public" )
+                                input(id='rbP' type='radio' value='p' name="public" checked)
                                 |public
                             label
-                                input(type='radio' value='a' name="public" checked)
-                                |anonim
+                                input(id='rbA' type='radio' value='a' name="public")
+                                |anonymous
                     p
-                        textarea(name='content' class="content" id="content")= edit_content.content
+                        b-editor(id='editor' width="90%" height="600px" name="content")
+                        script.
+                            var edit_iframe = document.getElementById("iframe");
+                            edit_iframe.contentWindow.document.body.innerHTML = "#{edit_content.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+                        // textarea(name='content' class="content" id="content" required)
                     p
                         input(type='text' name='hashtag' class="hashtag" value= "#{hashtag_final}")
                     p
-                        input(type='submit' class="submit")
+                        button(class="submit" onclick='postPenobrolAdd();') share
                     script.
                         function checksubmit(){
                             if(title.value.length < 5){
@@ -73,6 +79,58 @@ html(lang="id")
                             }
                             return true;
                         }
+                        var iframe = document.getElementById('iframe').contentWindow.document.body;
+                        var iframe2 = document.getElementById('iframe').contentWindow.document.head;
+                        var style = document.createElement('style');
+                        var innerStyle = 
+                        `
+                        body{margin:10px;box-sizing: border-box;}
+                        div{width:100%;}
+                        .rotate000{
+                            transform: rotate(0deg);
+                            -webkit-transform: rotate(0deg);
+                            -ms-transform: rotate(0deg);
+                        }
+                        .rotate090{
+                          transform: rotate(90deg);
+                          -webkit-transform: rotate(90deg);
+                          -ms-transform: rotate(90deg);
+                        }
+                        .rotate180{
+                          transform: rotate(180deg);
+                          -webkit-transform: rotate(180deg);
+                          -ms-transform: rotate(180deg);
+                        }
+                        .rotate270{
+                          transform: rotate(270deg);
+                          -webkit-transform: rotate(270deg);
+                          -ms-transform: rotate(270deg);
+                        }
+                        `
+                        var innerScript = `
+                        function pad(n, width) {
+                            n = n + '';
+                            return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+                        }
+                        function myFunction(target) {
+                            var angle = parseInt(target.className.substr(-3, 3))/90;
+                            if(angle<3){    
+                                angle++;
+                            }
+                            else{
+                                angle = 0;
+                            }
+                            target.className = ("rotate"+pad(angle*90, 3))
+                        };
+                        `
+                        var script = document.createElement('script');
+                        style.append(innerStyle);
+                        script.append(innerScript);
+                        iframe2.appendChild(script);
+                        iframe2.appendChild(style);
+                        script.onload = function() {
+                          alert("Script loaded and ready");
+                        };
             section.footer(id='footer') 
                 p contact : admin@beritamus.com
                 p www.beritamus.com

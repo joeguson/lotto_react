@@ -66,7 +66,6 @@ class BeritamusEditor extends HTMLElement {
         this.addControlButton(controls, "AlignCenter", "Center");
         this.addControlButton(controls, "AlignLeft", "Left");
         this.addControlButton(controls, "AlignRight", "Right");
-        this.addControlButton(controls, "turnRight", "90<sup>o</sup>");
 
         const cp = this.colorPicker = document.createElement("input");
         cp.type = "color";
@@ -112,7 +111,6 @@ class BeritamusEditor extends HTMLElement {
         const input = this.imageInput = document.createElement("input");
         input.type = "file";
         input.accept = "image/*";
-        input.accept = ".heic";
         input.style.display = "block";
 
         this.addControlButton(controls, "Insert image", "Image");
@@ -132,7 +130,7 @@ class BeritamusEditor extends HTMLElement {
 
         const iframe = this.iframe = document.createElement("iframe");
         iframe.style.border = "none";
-        iframe.style.width = w;
+        iframe.style.width = '100%';
         iframe.style.height = h;
         iframe.id="iframe"
         ta.appendChild(iframe);
@@ -168,7 +166,6 @@ class BeritamusEditor extends HTMLElement {
         this.controlButtons["AlignCenter"].onclick = this.cmd("JustifyCenter");
         this.controlButtons["AlignRight"].onclick = this.cmd("JustifyRight");
         this.controlButtons["AlignLeft"].onclick = this.cmd("JustifyLeft");
-        this.controlButtons["turnRight"].onclick
         
         this.controlButtons["Numbered list"].onclick = this.cmd("InsertOrderedList", false,
             "newOL" + Math.round(Math.random() * 1000));
@@ -190,7 +187,7 @@ class BeritamusEditor extends HTMLElement {
 //                    console.log(editor.body.scrollWidth);
 //                    console.log(newimage.width);
 //                    console.log(newimage.height);
-                    const imgHTML = "<img width='90%' onclick='myFunction(this)' src='" + e.target.result + "'/>";
+                    const imgHTML = "<img width='90%' style='overflow:auto' onclick='myFunction(this)' class='rotate000' src='" + e.target.result+"'/>"
                     editor.execCommand("insertHTML", false, imgHTML);
                 };
                 reader.readAsDataURL(i.files[0]);

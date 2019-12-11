@@ -158,7 +158,6 @@ exports.getAddPenobrol = function(req, res){
     }
 };
 exports.postAddPenobrol = function(req, res){
-    console.log(req.body);
     var author = req.session.u_id;
     var content = req.body.content;
     var title = req.body.title;

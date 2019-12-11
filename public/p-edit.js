@@ -3,14 +3,12 @@ function postPenobrolAdd() {
     const public = document.getElementById('rbP').checked ? 'p' : 'a';
     var content = document.getElementById('editor').value();
     const hashtag = document.getElementById('hashtag').value;
-    
     const req = {
         title: title,
         public: public,
         content: content,
         hashtag: hashtag
     };
-    
     const parsed = parseImgTags(content);
     content = parsed.content;
     
@@ -28,7 +26,6 @@ function postPenobrolAdd() {
         });
     }
     }
-    
 }
 
 function parseImgTags(content) {
@@ -99,8 +96,9 @@ function replace(content, id, filename, index = 0) {
 }
 
 function finalPost(body) {
+    console.log("Final");
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/penobrol/add', true);
+    xhr.open('POST', '/pedit/:penobrol_no', true);
     xhr.setRequestHeader('Content-type', "application/json");
     xhr.withCredentials = true;
     xhr.send(JSON.stringify(body));

@@ -63,18 +63,55 @@ html(lang="id")
                     var iframe = document.getElementById('iframe').contentWindow.document.body;
                     var iframe2 = document.getElementById('iframe').contentWindow.document.head;
                     var style = document.createElement('style');
-                    var innerStyle = '.rotateimg{color:red;-webkit-transform:rotate(90deg);-moz-transform: rotate(90deg);-ms-transform: rotate(90deg);-o-transform: rotate(90deg);transform: rotate(90deg);}'
-                    var innerScript = "function myFunction(target){target.classList.add('rotateimg');}";
+                    var innerStyle = 
+                    `
+                    body{margin:10px;box-sizing: border-box;}
+                    div{width:100%;}
+                    .rotate000{
+                        transform: rotate(0deg);
+                        -webkit-transform: rotate(0deg);
+                        -ms-transform: rotate(0deg);
+                    }
+                    .rotate090{
+                      transform: rotate(90deg);
+                      -webkit-transform: rotate(90deg);
+                      -ms-transform: rotate(90deg);
+                    }
+                    .rotate180{
+                      transform: rotate(180deg);
+                      -webkit-transform: rotate(180deg);
+                      -ms-transform: rotate(180deg);
+                    }
+                    .rotate270{
+                      transform: rotate(270deg);
+                      -webkit-transform: rotate(270deg);
+                      -ms-transform: rotate(270deg);
+                    }
+                    `
+                    var innerScript = `
+                    function pad(n, width) {
+                        n = n + '';
+                        return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+                    }
+                    function myFunction(target) {
+                        var angle = parseInt(target.className.substr(-3, 3))/90;
+                        if(angle<3){    
+                            angle++;
+                        }
+                        else{
+                            angle = 0;
+                        }
+                        target.className = ("rotate"+pad(angle*90, 3))
+                    };
+                    `
                     var script = document.createElement('script');
                     style.append(innerStyle);
                     script.append(innerScript);
-                    iframe.appendChild(script);
+                    iframe2.appendChild(script);
                     iframe2.appendChild(style);
                     script.onload = function() {
                       alert("Script loaded and ready");
                     };
-                    console.log(parent.iframe);
-                    console.log(iframe);
             section.footer(id='footer') 
                 p contact : admin@beritamus.com
                 p www.beritamus.com   
