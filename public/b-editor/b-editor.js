@@ -132,8 +132,9 @@ class BeritamusEditor extends HTMLElement {
         iframe.style.border = "none";
         iframe.style.width = '100%';
         iframe.style.height = h;
-        iframe.id="iframe"
+        iframe.id="iframe";
         ta.appendChild(iframe);
+
         return ta;
     }
 
@@ -177,6 +178,7 @@ class BeritamusEditor extends HTMLElement {
         this.sizePicker.onchange = (e) => this.cmd("FontSize", false, e.target.value)();
         this.imageInput.onchange = () => {
             const i = this.imageInput;
+            const rot = this.rotateImage;
             if (i.files && i.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -187,7 +189,7 @@ class BeritamusEditor extends HTMLElement {
 //                    console.log(editor.body.scrollWidth);
 //                    console.log(newimage.width);
 //                    console.log(newimage.height);
-                    const imgHTML = "<img width='90%' style='overflow:auto;' onclick='myFunction(this)' class='rotate000' src='" + e.target.result+"'/>"
+                    const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + e.target.result+"'/>";
                     editor.execCommand("insertHTML", false, imgHTML);
                 };
                 reader.readAsDataURL(i.files[0]);
@@ -201,6 +203,16 @@ class BeritamusEditor extends HTMLElement {
         this.controlButtons["Insert image"].onclick = () => this.imageInput.click();
         this.controlButtons["Undo"].onclick = this.cmd("undo");
         this.controlButtons["Redo"].onclick = this.cmd("redo");
+
+        const js = document.createElement("script");
+        js.type = "text/javascript";
+        js.src = "b-editor/__b-editor.js";
+        editor.head.append(js);
+
+        const css = document.createElement("link");
+        css.rel = "stylesheet";
+        css.href = "b-editor/__b-editor.css";
+        editor.head.append(css);
     }
 
     cmd(id, showUi, value) {
