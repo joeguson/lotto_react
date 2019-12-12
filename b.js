@@ -603,7 +603,7 @@ app.get(['/cari','/'], function(req, res){
         todayCount++;
     }
     res.cookie('visitDate', todayDay, {maxAge: 86400000, httpOnly: true });
-    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+    // var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
     var sql = 'select * from penobrol order by rand() limit 3';
     var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
     var sql3 = '';
@@ -652,19 +652,19 @@ app.get(['/cari','/'], function(req, res){
             });
         }
     });
-    var sql3 = '';
-    if(req.session.u_id){
-        sql3 = 'INSERT INTO access_info(u_id, ipAddress, browser) VALUES(?, INET_ATON(?), ?)';
-        conn.query(sql3, [req.session.u_id, ipAddress, req.headers['user-agent']], function(err, access, fields){
-            if(err){console.log(err);}    
-        });
-    }
-    else{
-        sql3 = 'INSERT INTO access_info(ipAddress, browser) VALUES(INET_ATON(?), ?)';
-        conn.query(sql3, [ipAddress, req.headers['user-agent']], function(err, access, fields){
-            if(err){console.log(err);}
-        });
-    }
+    // var sql3 = '';
+    // if(req.session.u_id){
+    //     sql3 = 'INSERT INTO access_info(u_id, ipAddress, browser) VALUES(?, INET_ATON(?), ?)';
+    //     conn.query(sql3, [req.session.u_id, ipAddress, req.headers['user-agent']], function(err, access, fields){
+    //         if(err){console.log(err);}
+    //     });
+    // }
+    // else{
+    //     sql3 = 'INSERT INTO access_info(ipAddress, browser) VALUES(INET_ATON(?), ?)';
+    //     conn.query(sql3, [ipAddress, req.headers['user-agent']], function(err, access, fields){
+    //         if(err){console.log(err);}
+    //     });
+    // }
 });
 /************FOR TANDYA************/
 app.get('/tandya/add', tandya.getAddTandya);

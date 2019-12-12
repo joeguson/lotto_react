@@ -43,7 +43,6 @@ var insertHashtagSqlMaker = function(p_id, hashArray){
 };
 
 exports.getPenobrol = function(req, res){
-    console.log(req.session.u_id);
     var sql = 'SELECT * from penobrol order by date desc limit 3';
     var sql2 = 'SELECT * FROM penobrol ORDER BY score DESC limit 3';
     var sql3 = '';

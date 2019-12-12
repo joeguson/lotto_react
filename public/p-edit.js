@@ -1,3 +1,11 @@
+var originalImages;
+var changedImages;
+window.onload= () => {
+    var content = document.getElementById('editor').value();
+    var originalImages = parseImgTags(content);
+    console.log(originalImages.imgs);
+}
+
 function postEditPenobrol() {
     const title = document.getElementById('title').value;
     const public = document.getElementById('rbP').checked ? 'p' : 'a';
@@ -16,24 +24,25 @@ function postEditPenobrol() {
     else {
         var done = 0;
         for(var id in parsed.imgs) {
-            reuploadImage(id, parsed.imgs[id], (id, filename) => {
-            content = replace(content, id, filename);
-            req.content = content;
-            done++;
-            if(done == imgCount)
-                finalPost(req);
-        });
-    }
+            if(binary){
+                uploadImage(id, parsed.imgs[id], (id, filename) => {
+                    content = replace(content, id, filename);
+                    req.content = content;
+                    done++;
+                    if(done == imgCount){
+                        finalPost(req);
+                    }
+                });
+            }
+        }
     }
 }
 
 function parseImgTags(content) {
     var id = 1;
     var imgIndex = 0;
-    
     var imgMaps = {};
     var posMaps = {};
-    
     while(true) {
         // <img
         imgIndex = content.indexOf('<img', imgIndex);
@@ -55,13 +64,14 @@ function parseImgTags(content) {
         const post = content.substring(posMaps[id].e);
         content = prev + id.toString() + post;
     }
+    console.log(imgMaps);
     return {
         content: content,
         imgs: imgMaps
     };
 }
 
-function reuploadImage(id, data, onUploaded) {
+function uploadImage(id, data, onUploaded) {
     var content = location.pathname.split("/");
     var json = JSON.stringify({
         img: data,

@@ -39,7 +39,6 @@ html(lang="id")
                         a(href='/tandya') Tandya
                     br.clear
             article
-                form
                     p 
                         input(type='text' name='title' placeholder='title' class="title" id="title" value=edit_content.title)
                     p
@@ -66,7 +65,7 @@ html(lang="id")
                     p
                         input(id='hashtag' type='text' name='hashtag' class="hashtag" value= "#{hashtag_final}")
                     p
-                        button(class="submit" onclick='postEditPenobrol();') share
+                        button(class="submit" onclick="postEditPenobrol();") share
                     script.
                         function checksubmit(){
                             if(title.value.length < 5){
@@ -128,9 +127,6 @@ html(lang="id")
                         script.append(innerScript);
                         iframe2.appendChild(script);
                         iframe2.appendChild(style);
-                        script.onload = function() {
-                          alert("Script loaded and ready");
-                        };
             section.footer(id='footer') 
                 p contact : admin@beritamus.com
                 p www.beritamus.com
