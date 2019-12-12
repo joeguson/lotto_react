@@ -746,8 +746,6 @@ function generateFilename() {
 
 app.post('/image', (req, res) => {
     var img = req.body.img;
-    console.log(img.split(";")[0].split("/")[1]);
-    
     var d=new Date().valueOf();
     var data =img.replace(/^data:image\/\w+;base64,/, "");
     var buf = new Buffer(data, 'base64');
@@ -768,15 +766,13 @@ app.post('/image', (req, res) => {
         if(err) console.log(err); 
     });
     res.json({'filename': filename});
-    
-//    var image = req.body.img;
-//    var data = image.replace(/^data:image\/\w+;base64,/, "");
-//    var buf = new Buffer(data, 'base64');
-//    var filename = generateFilename();
-//    fs.writeFile('./public/images/' + filename, buf, (err) => {     
-//        if(err) console.log(err); 
-//    });
-//    res.json({'filename': filename});
+});
+
+app.delete('/image/:image_id', (req, res) =>{
+    var id = req.params.image_id;
+    console.log(req.session.u_id);
+    console.log(id);
+    res.send('hi');
 });
 
 var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfWeek: 0}, function(){

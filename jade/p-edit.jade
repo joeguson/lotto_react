@@ -64,9 +64,9 @@ html(lang="id")
                             edit_iframe.contentWindow.document.body.innerHTML = "#{edit_content.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
                         // textarea(name='content' class="content" id="content" required)
                     p
-                        input(type='text' name='hashtag' class="hashtag" value= "#{hashtag_final}")
+                        input(id='hashtag' type='text' name='hashtag' class="hashtag" value= "#{hashtag_final}")
                     p
-                        button(class="submit" onclick='postPenobrolAdd();') share
+                        button(class="submit" onclick='postEditPenobrol();') share
                     script.
                         function checksubmit(){
                             if(title.value.length < 5){

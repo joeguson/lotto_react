@@ -94,6 +94,16 @@ html(lang="id")
                         return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
                     }
                     function myFunction(target) {
+                        
+                        if(target.style.marginTop === '0px' || target.style.marginTop === ''){
+                            var diff = (target.width - target.height)/2;
+                            target.style.marginTop = diff+"px";
+                            target.style.marginBottom = diff+"px";
+                        }
+                        else{
+                            target.style.marginTop = '0px';
+                            target.style.marginBottom = '0px';
+                        }
                         var angle = parseInt(target.className.substr(-3, 3))/90;
                         if(angle<3){    
                             angle++;
@@ -115,3 +125,71 @@ html(lang="id")
             section.footer(id='footer') 
                 p contact : admin@beritamus.com
                 p www.beritamus.com   
+                
+                
+//                <style>
+///* Popup container - can be anything you want */
+//.popup {
+//  position: relative;
+//  display: inline-block;
+//  cursor: pointer;
+//  -webkit-user-select: none;
+//  -moz-user-select: none;
+//  -ms-user-select: none;
+//  user-select: none;
+//}
+//
+///* The actual popup */
+//.popup .popuptext {
+//  visibility: hidden;
+//  width: 160px;
+//  background-color: #555;
+//  color: #fff;
+//  text-align: center;
+//  border-radius: 6px;
+//  padding: 8px 0;
+//  position: absolute;
+//  z-index: 1;
+//  top: 50%;
+//  left: 50%;
+//  transform: translate(-50%, -50%);
+//  
+//}
+//
+///* Toggle this class - hide and show the popup */
+//.popup .show {
+//  visibility: visible;
+//  -webkit-animation: fadeIn 1s;
+//  animation: fadeIn 1s;
+//}
+//
+///* Add animation (fade in the popup) */
+//@-webkit-keyframes fadeIn {
+//  from {opacity: 0;} 
+//  to {opacity: 1;}
+//}
+//
+//@keyframes fadeIn {
+//  from {opacity: 0;}
+//  to {opacity:1 ;}
+//}
+//</style>
+//</head>
+//<body style="text-align:center">
+//
+//<h2>Popup</h2>
+//
+//<div class="popup" onclick="myFunction()">Click me to toggle the popup!
+//  <div class="popuptext" id="myPopup">
+//  	<button>시계</button>
+//  	<button>반시계</button>
+//  </div>
+//</div>
+//
+//<script>
+//// When the user clicks on div, open the popup
+//function myFunction() {
+//  var popup = document.getElementById("myPopup");
+//  popup.classList.toggle("show");
+//}
+//</script>

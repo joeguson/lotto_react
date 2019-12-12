@@ -187,7 +187,7 @@ class BeritamusEditor extends HTMLElement {
 //                    console.log(editor.body.scrollWidth);
 //                    console.log(newimage.width);
 //                    console.log(newimage.height);
-                    const imgHTML = "<img width='90%' style='overflow:auto' onclick='myFunction(this)' class='rotate000' src='" + e.target.result+"'/>"
+                    const imgHTML = "<img width='90%' style='overflow:auto;' onclick='myFunction(this)' class='rotate000' src='" + e.target.result+"'/>"
                     editor.execCommand("insertHTML", false, imgHTML);
                 };
                 reader.readAsDataURL(i.files[0]);

@@ -43,6 +43,7 @@ var insertHashtagSqlMaker = function(p_id, hashArray){
 };
 
 exports.getPenobrol = function(req, res){
+    console.log(req.session.u_id);
     var sql = 'SELECT * from penobrol order by date desc limit 3';
     var sql2 = 'SELECT * FROM penobrol ORDER BY score DESC limit 3';
     var sql3 = '';
@@ -116,7 +117,6 @@ exports.getViewPenobrol = function(req, res){
                                                 conn.conn.query(sql8, [req.session.u_id, id], function(err, clikeStatus, fields){
                                                     if(err){console.log(err);}
                                                     else{
-                                                        console.log(hashtag);
                                                         var statusCheck = '';
                                                         if(isEmpty(likeStatus)){
                                                             statusCheck = 'no';
@@ -375,7 +375,6 @@ exports.getEditPenobrol = function(req, res){
             conn.conn.query(sql2, p_id, function(err, hashtags, fields){
                 if(err){console.log(err);}
                 else{
-                    console.log(hashtags);
                     if(req.session.u_id == edit[0].author){
                         res.render('p-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags});
                     }
@@ -423,7 +422,7 @@ exports.postEditPenobrol = function(req, res){
                     conn.conn.query(sql5, function(err, hashtag, fields){
                         if(err){console.log(err);}
                         else{
-                            res.redirect('/penobrol/'+p_id);
+                            res.json({'id': result.insertId});
                         }
                     });
                 }
