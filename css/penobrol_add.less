@@ -3,7 +3,7 @@
 // Usage
 @import "@{themes}/variable.less";
 
-article{width:100%; background-color: @bgcolor2; padding:20px 25px; box-sizing: border-box;}
+article{width:100%; background-color: @bgcolor2; padding:20px 25px; box-sizing: border-box; text-align: center; margin:0 auto;}
 
 input{border:1px solid lightgray; font-size: 16px; padding:10px; margin-bottom: @marginbottom-mbl; border:1px solid @main;}
 textarea{border:1px solid lightgray; font-size: 16px; padding: 10px; margin-bottom: @marginbottom-mbl; border:1px solid @main;}
@@ -20,6 +20,6 @@ form p:nth-child(4){text-align: center;}
 
 /*for bigger windows*/
 @media (min-width:768px){
-    
+    article{width:90%; text-align: center; margin:0 auto;}
     
 }

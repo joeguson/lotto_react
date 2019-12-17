@@ -20,5 +20,19 @@ function __rotateImage(target) {
     else{
         angle = 0;
     }
-    target.className = ("rotate"+__pad(angle*90, 3))
+    target.className = ("rotate"+__pad(angle*90, 3));
 }
+
+function __rotateInfo(target){
+    var infoDiv = document.createElement('div');
+    infoDiv.innerHTML='click to rotate';
+    infoDiv.style.backgroundColor='black';
+    infoDiv.style.color='white';
+    infoDiv.style.borderRadius='3px';
+    infoDiv.style.width='100px';
+    infoDiv.style.margin='0 auto';
+    infoDiv.style.textAlign='center';
+    target.parentNode.appendChild(infoDiv);
+    setTimeout(target.parentNode.removeChild(infoDiv), 2000);
+}
+

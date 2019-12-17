@@ -1,5 +1,3 @@
-
-
 class BeritamusEditor extends HTMLElement {
     constructor() {
         super();
@@ -19,7 +17,6 @@ class BeritamusEditor extends HTMLElement {
     connectedCallback() {
         const width = this.getAttribute("width");
         const height = this.getAttribute("height");
-
         this.build(width, height);
         this.start();
     }
@@ -37,10 +34,8 @@ class BeritamusEditor extends HTMLElement {
 </style>`;
 
         const ta = this.buildEditor(w, h);
-
         const controls = this.buildControls(w);
         this.appendChild(controls);
-
         this.appendChild(ta);
     }
 

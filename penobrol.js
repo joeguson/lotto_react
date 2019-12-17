@@ -421,7 +421,7 @@ exports.postEditPenobrol = function(req, res){
                     conn.conn.query(sql5, function(err, hashtag, fields){
                         if(err){console.log(err);}
                         else{
-                            res.json({'id': result.insertId});
+                            res.json({'id': p_id});
                         }
                     });
                 }

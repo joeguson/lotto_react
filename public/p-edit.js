@@ -2,8 +2,30 @@ var originalImages;
 var changedImages;
 window.onload= () => {
     var content = document.getElementById('editor').value();
-    var originalImages = parseImgTags(content);
-    console.log(originalImages.imgs);
+    originalImages = parseImgTags(content);
+};
+
+function checkImage(imageObject){
+    var originalImageName = Object.values(originalImages.imgs);
+    var finalImageName = Object.values(imageObject);
+    var temp = [];
+    var returnImageName = [];
+    console.log(originalImageName);
+    console.log(finalImageName);
+    for(var i=0; i<originalImageName.length; i++){
+        var p = 0;
+        for(var j=0; j<finalImageName.length;j++){
+            if(originalImageName[i] == finalImageName[j]){
+                p++;
+            }
+        }
+        if(p < 1){
+            temp.push(i);
+        }
+    }
+    for(var k = 0; k<temp.length; k++){
+        returnImageName.push(originalImageName[temp[k]]);
+    }
 }
 
 function postEditPenobrol() {
@@ -11,6 +33,7 @@ function postEditPenobrol() {
     const public = document.getElementById('rbP').checked ? 'p' : 'a';
     var content = document.getElementById('editor').value();
     const hashtag = document.getElementById('hashtag').value;
+    var deleteImage;
     const req = {
         title: title,
         public: public,
@@ -22,9 +45,12 @@ function postEditPenobrol() {
     const imgCount = Object.keys(parsed.imgs).length;
     if(imgCount == 0) finalPost(req);
     else {
+        console.log(parsed.imgs);
+        deleteImage = checkImage(parsed.imgs);
         var done = 0;
         for(var id in parsed.imgs) {
-            if(binary){
+            if(parsed.imgs[id].substring(0, 4) == "data"){
+                console.log('new image');
                 uploadImage(id, parsed.imgs[id], (id, filename) => {
                     content = replace(content, id, filename);
                     req.content = content;
@@ -34,8 +60,44 @@ function postEditPenobrol() {
                     }
                 });
             }
+            else if(parsed.imgs[id].substring(0, 4) == "http"){
+                var fileURL = parsed.imgs[id].split('/');
+                var filename = '';
+                for(var f=0; f<fileURL.length;f++){
+                    if(fileURL[f] == 'images'){
+                        filename = fileURL[++f];
+                        break;
+                    }
+                }
+                content = replace(content, id, filename);
+                req.content = content;
+                done++;
+            }
+            else{
+                var filePath = parsed.imgs[id].split('/');
+                content = replace(content, id, filePath[1]);
+                req.content = content;
+                done++;
+            }
+
+        }
+        if(done == imgCount){
+            finalPost(req);
+        }
+        if(deleteImage.length>0){
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', location.pathname, true);
+            xhr.setRequestHeader('Content-type', "application/json");
+            xhr.withCredentials = true;
+            xhr.send(JSON.stringify(body));
+            xhr.onload = () => {
+                var id = JSON.parse(xhr.responseText).id;
+                console.log(id);
+                window.location.href = location.origin + "/penobrol/" + id.toString();
+            };
         }
     }
+    
 }
 
 function parseImgTags(content) {
@@ -64,7 +126,6 @@ function parseImgTags(content) {
         const post = content.substring(posMaps[id].e);
         content = prev + id.toString() + post;
     }
-    console.log(imgMaps);
     return {
         content: content,
         imgs: imgMaps
@@ -79,7 +140,7 @@ function uploadImage(id, data, onUploaded) {
         content_id: content[2]
     });
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/reimage', true);
+    xhr.open('POST', '/image', true);
     xhr.setRequestHeader('Content-type', "application/json");
     xhr.send(json);
     xhr.onload = () => {
@@ -109,12 +170,13 @@ function replace(content, id, filename, index = 0) {
 
 function finalPost(body) {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/pedit/:penobrol_no', true);
+    xhr.open('POST', location.pathname, true);
     xhr.setRequestHeader('Content-type', "application/json");
     xhr.withCredentials = true;
     xhr.send(JSON.stringify(body));
     xhr.onload = () => {
         var id = JSON.parse(xhr.responseText).id;
+        console.log(id);
         window.location.href = location.origin + "/penobrol/" + id.toString();
     };
 }
