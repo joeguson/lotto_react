@@ -3,6 +3,7 @@ extends ../layout.jade
 block css
   link(rel='stylesheet', href='/css/cari.css' type="text/css")
   script(type="text/javascript" src="/js/cari.js")
+  script(type="text/javascript" src="/js/jsForAllJade.js")
   
 block nav
   ul
@@ -26,9 +27,9 @@ block main
       dt
         a(href='/penobrol/'+prandoms[i].id)= prandoms[i].title
       dd.ddcontent= prandoms[i].content
-      //- - var date_result = datemaker(prandoms[i].date) + ' / ' + prandoms[i].p_view + ' views' + ' / '+prandoms[i].com + ' comments';
-      //- - var hashtagfind = phashtagfinder(prandoms[i].id, hashtag); 
-      //- - var hashtagfinal = hashtagmaker(hashtagfind);
+      - var date_result = datemaker(prandoms[i].date) + ' / ' + prandoms[i].p_view + ' views';
+      - var hashtagfind = hashtagfinder('p', prandoms[i].id, phashtags);
+      - var hashtagfinal = hashtagmaker(hashtagfind);
       dd #{hashtagfinal}
       dd #{date_result}
       
@@ -37,9 +38,9 @@ block main
       dt
         a(href='/tandya/'+trandoms[i].id)= trandoms[i].question
       dd.ddcontent= trandoms[i].content
-      //- - var date_result = datemaker(trandoms[i].date) + ' / ' + trandoms[i].t_view + ' views'+ ' / '+trandoms[i].answer + ' answers';
-      //- - var hashtagfind = thashtagfinder(trandoms[i].id, hashtag);
-      //- - var hashtagfinal = hashtagmaker(hashtagfind);
+      - var date_result = datemaker(trandoms[i].date) + ' / ' + trandoms[i].t_view + ' views';
+      - var hashtagfind = hashtagfinder('t', trandoms[i].id, thashtags);
+      - var hashtagfinal = hashtagmaker(hashtagfind);
       dd #{hashtagfinal}
       dd #{date_result}
   if !u_id

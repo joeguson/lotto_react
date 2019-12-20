@@ -16,31 +16,6 @@ html(lang="id")
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
-    -var datemaker = function(date){
-    -var tempdate = new Date(date);
-    -var nowdate = new Date();
-    -var year = tempdate.getFullYear();
-    -var month = tempdate.getMonth();
-    -var day = tempdate.getDate();
-    -var diff = nowdate - tempdate;
-    -if(diff > 864000000){return month+'-'+day+'-'+year;}
-    -else{
-    -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
-    -else{
-    -if(diff > 3600000){return parseInt(diff/3600000)+' hours ago';}
-    -else{
-    -if(diff > 60000){return parseInt(diff/60000)+' minutes ago';}
-    -else{return parseInt(diff/1000)+' seconds ago';}
-    -}
-    -}
-    -}
-    -}
-    -var anonimmaker = function(username){
-    -var idChanger = '';
-    -var idLength = (username).length;
-    -idChanger = username.substr(0,3) + '****';
-    -return idChanger;
-    -}
         .container
             header
                 a(href='/penobrol') Beritamus      

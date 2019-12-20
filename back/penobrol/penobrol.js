@@ -1,32 +1,39 @@
 var conn = require('../../b');
+var pool = require('../../b');
+var dbcon = require('../../db/dbconnection');
 
 /************FOR PENOBROL************/
 exports.getPenobrol = function(req, res){
-    var sql = 'SELECT * from penobrol order by date desc limit 3';
-    var sql2 = 'SELECT * FROM penobrol ORDER BY score DESC limit 3';
-    var sql3 = '';
-    conn.conn.query(sql, function(err, dateOrder, fields){
-        if(err){console.log(err);}
-        else{
-            conn.conn.query(sql2, function(err, scoreOrder, fields){
-                if(err){console.log(err);}
-                else{
-                    sql3 = htsqlMaker(dateOrder, scoreOrder);
-                    conn.conn.query(sql3, function(err, hashtag, fields){
-                        if(err){console.log(err);}
-                        else{
-                            if(req.session.u_id){
-                            res.render('./jp/p', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag, u_id:req.session.u_id});
-                            }
-                            else{
-                                res.render('./jp/p', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag});
-                            }
-                        }
-                    });
-                }
-            });
-        }
-    });
+  var sql1 = 'SELECT * from penobrol order by date desc limit 3';
+  var sql2 = 'SELECT * FROM penobrol ORDER BY score DESC limit 3';
+  var sql3 = 'select * from penobrol_hashtag where p_id = ?';
+  var sql4 = 'select * from penobrol_hashtag where p_id = ?';
+
+  var byDate = [];
+  var byScore = [];
+  var pHashtag = [];
+
+  async function getOrderedP(){
+    byDate = await dbcon.select(sql1);
+    byScore = await dbcon.select(sql2);
+    for(var i=0;i<byDate.length;i++){
+      pHashtag.push(await dbcon.selectWhere(sql3, byDate[i].id));
+    }
+    for(var j=0;j<byScore.length;j++){
+      pHashtag.push(await dbcon.selectWhere(sql4, byScore[j].id, ));
+    }
+    console.log(byDate);
+    console.log(byScore);
+    console.log(pHashtag);
+    if(req.session.u_id){
+      res.render('./jp/p', {dateTopics:byDate, scoreTopics:byScore, hashtags:pHashtag, u_id:req.session.u_id});
+    }
+    else{
+      res.render('./jp/p', {dateTopics:byDate, scoreTopics:byScore, hashtags:pHashtag});
+    }
+  }
+  getOrderedP();
+
 };
 
 exports.getViewPenobrol = function(req, res){

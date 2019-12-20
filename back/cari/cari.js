@@ -31,10 +31,6 @@ exports.getCari = function(req, res){
     for(var j=0;j<tResults.length;j++){
       thashResults.push(await dbcon.selectWhere(getHashtagT, tResults[j].id, ));
     }
-    console.log(pResults);
-    console.log(tResults);
-    console.log(phashResults);
-    console.log(thashResults);
     if(req.session.u_id){
         res.render('./jc/cari', {prandoms:pResults, phashtags:phashResults, trandoms:tResults, thashtags:thashResults, u_id:'req.session.u_id'});
     }
