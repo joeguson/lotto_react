@@ -1,0 +1,70 @@
+//out: aku.css
+// Variables
+@themes: "../css";
+// Usage
+@import "@{themes}/variable.less";
+
+//(not logged in) main - form, daftar(div),
+form{width:85%; margin: 60px auto @marginbottom-mbl*2 auto;}
+.daftar{width:85%; margin: 30px auto @marginbottom-mbl*8 auto; text-align: center;}
+
+
+//form - #input_id(input), #input_pw(input), #login(input)
+#input_id{width:100%; height:45px; border-radius: 10px; border: 1px solid @main; margin-bottom: 20px; font-size: 20px; padding: 5px 10px; box-sizing: border-box;}
+#input_pw{width:100%; height:45px; border-radius: 10px; border: 1px solid @main; margin-bottom: 30px; font-size: 20px; padding: 5px 10px; box-sizing: border-box;}
+.message{width:85%; font-size: 20px; margin: 0 auto @marginbottom-mbl; text-align: center;}
+#login{width:100%; height:35px; border-radius: 10px; border: 1px solid @main;}
+
+//.daftar - #hilang(p), #daftar(p)
+#hilang {width:40%; margin-bottom: @marginbottom-mbl; box-sizing: border-box; text-align: right; padding-right: 10px;}
+#daftar {width:40%; margin-bottom: @marginbottom-mbl; box-sizing: border-box; text-align: left; padding-left: 10px;}
+
+//p(2nd) - input
+#login{.button(); height: 45px; margin-bottom: 0px;}
+
+//(logged in) main - .pstat, .p-penobrol, .p-tandya
+.p-stat{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; background-color: @bgcolor2;}
+.p-penobrol{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; background-color: @bgcolor2;}
+.p-tandya{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; background-color: @bgcolor2;}
+
+//.p-stat - .likeHeading(p), .likeStat(div)
+.p-stat p {font-size: 18px; line-height: 30px; box-sizing: border-box;}
+.likeStat{width:100%; box-sizing: border-box; padding: 5px;}
+.likeStat:nth-child(2){border-top:1px solid lightgray}
+.likeStat .likeSpan:first-child{border-right:1px solid lightgray}
+.likeSpan{width:50%; box-sizing: border-box; display: inline-block; text-align: center;}
+.likeHeading{margin-bottom: 5px; color:@main;}
+.likeCount{width:100%; box-sizing: border-box; text-align: center; color:@likeColor; font-size: 20px}
+
+
+//.p-penobrol - p, dl
+.p-penobrol p{font-size: 20px; line-height: 30px; margin-bottom: 15px}
+.p-penobrol dl{width:95%; margin: 0 auto; background-color:@mainlightest2; .li-border(); cursor: pointer; padding:5px;}
+
+//.p-tandya - p, dl
+.p-tandya p{font-size: 20px; line-height: 30px; margin-bottom: 15px;}
+.p-tandya dl{width:95%; margin: 0 auto; background-color:@mainlightest2; .li-border(); cursor: pointer; padding:5px;}
+
+//dl - dt, dd
+dl dt{width: 90%; height:30px; line-height: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
+
+dd{font-style: italic; font-size: 12px; display: inline;}
+
+//dt - a
+dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none; font-size: 16px;}
+
+
+.login{width:100%; box-sizing: border-box; margin: 0px; background-color: @bgcolor2; .section-border();}
+
+.logout{ box-sizing: border-box; font-size: 16px; color: @font-color1; background-color:@button-color; display: block; text-align: center; line-height: 35px; text-decoration: none; margin: 0px auto 10px auto; width:85%; height:35px; border-radius: 10px; border: 1px solid @main;}
+
+form{font-size:0px;} //when making input tags inline, they have space between them. Cannot remove it with margin 0px;
+
+//.pic{width:20%; height:100%;}
+
+
+/*for bigger windows*/
+@media (min-width:768px){
+    form{margin: 80px auto @marginbottom-mbl auto;}
+
+}

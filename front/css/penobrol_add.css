@@ -1,0 +1,90 @@
+.section-border {
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
+.button {
+  width: 100%;
+  height: 45px;
+  box-sizing: border-box;
+  font-size: 20px;
+  background-color: #a0b3ef;
+  display: inline-block;
+  text-align: center;
+  line-height: 40px;
+  text-decoration: none;
+  border-style: none;
+}
+.li-border {
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
+  margin-bottom: 10px;
+}
+.border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+article {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 20px 25px;
+  box-sizing: border-box;
+}
+input {
+  border: 1px solid lightgray;
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #2e60f4;
+}
+textarea {
+  border: 1px solid lightgray;
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #2e60f4;
+}
+form p:nth-child(1) {
+  text-align: center;
+}
+form p:nth-child(2) {
+  text-align: center;
+}
+form p:nth-child(3) {
+  text-align: center;
+}
+form p:nth-child(4) {
+  text-align: center;
+}
+.title {
+  height: 40px;
+  width: 90%;
+}
+.content {
+  height: 500px;
+  width: 90%;
+}
+.hashtag {
+  height: 40px;
+  width: 90%;
+}
+.submit {
+  width: 100%;
+  height: 45px;
+  box-sizing: border-box;
+  font-size: 20px;
+  background-color: #a0b3ef;
+  display: inline-block;
+  text-align: center;
+  line-height: 40px;
+  text-decoration: none;
+  border-style: none;
+  width: 90%;
+  margin: 0 auto;
+  display: block;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  font-size: 14px;
+  line-height: 35px;
+  height: 35px;
+}
+/*for bigger windows*/

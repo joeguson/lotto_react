@@ -1,0 +1,47 @@
+//out: tandya.css
+// Variables
+@themes: "../css";
+// Usage
+@import "@{themes}/variable.less";
+//.sub-main - .ad(div)
+
+//.main - .login(div), .t-terbaru(div), .t-terkenal(div)
+.login{width:85%; margin:0 auto;}
+.t-terbaru, .t-terkenal{width:100%; padding:10px; .section-border(); background-color: @bgcolor2; box-sizing: border-box;}
+.t-terbaru{margin-bottom: @marginbottom-mbl;}
+
+//.login(div) - a.addTandya
+.login a{position:fixed; right:8%; bottom:8%; background-color: @main; width:35px; height:35px; text-align:center; text-decoration: none; color:white; line-height: 35px; border-radius: 35px;}
+.clear{clear:both}
+
+//.t-terabaru(div), .t-terkenal(div) - .t-title(div), ul * 2
+.t-title{background-color: @bgcolor2; font-size: 20px; margin-bottom: @marginbottom-mbl;}
+.t-terbaru ul{list-style: none;}
+.t-terkenal ul{list-style: none;}
+
+//ul - li
+.t-terbaru ul li{width:100%; background-color:@bgcolor2; .li-border(); .border-radius(); padding:5px; box-sizing: border-box;}
+.t-terkenal ul li{width:100%; background-color:@bgcolor2; .li-border(); .border-radius(); padding:5px; box-sizing: border-box;}
+
+//li - dl.t-dl
+.t-dl{cursor: pointer;}
+
+//dl.t-dl - dt, dd
+dl dt{width: 90%; height:20px; line-height: 20px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
+dd{font-style: italic; font-size: 12px;}
+dl .ddcontent{overflow: hidden; text-overflow: ellipsis; white-space:normal; font-size: 12px; line-height: 14px; height:28px; font-style: normal; margin-bottom: 5px;}
+
+//dt - a
+dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none;}
+
+
+@media (min-width:768px){
+    .ad{height:200px; margin-bottom: @marginbottom-com; font-size: 100px; line-height: 200px;}
+    .t-terbaru, .t-terkenal{width:49%; padding:10px; .section-border(); background-color: @bgcolor2; box-sizing: border-box; display:inline-block;}
+    .t-terkenal{float:right;}
+
+    .login a{background-color: @main; width:35px; height:35px; text-align:center; text-decoration: none; color:white; line-height: 35px; border-radius: 35px;}
+    dl dt{width: 90%; height:50px; line-height: 30px; margin-bottom: 10px; font-size: 20px;}
+    dd{font-style: italic; font-size: 12px;}
+    dl .ddcontent{font-size: 16px; line-height: 20px; height:60px; font-style: normal; margin-bottom: 10px;}
+}

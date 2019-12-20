@@ -1,0 +1,48 @@
+extends ../layout.jade
+
+block css
+  link(rel='stylesheet', href='/css/cari.css' type="text/css")
+  script(type="text/javascript" src="/js/cari.js")
+  
+block nav
+  ul
+    li: a(href='/aku') Aku
+    li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/cari' style='color: #ffff97;') Cari
+    li: a(href='/penobrol') Penobrol
+    li: a(href='/tandya') Tandya
+    br.clear
+    
+block submain
+  //.ad Advertising
+  .search
+    form(action='/cari/search' method='get')
+            input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
+            input(type='submit' class="submit" value="search")
+            
+block main
+  -for(var i=0; i<1; i++)
+    - var plink = 'penobrol/'+prandoms[i].id
+    dl(onclick ='location.href="#{plink}"')
+      dt
+        a(href='/penobrol/'+prandoms[i].id)= prandoms[i].title
+      dd.ddcontent= prandoms[i].content
+      //- - var date_result = datemaker(prandoms[i].date) + ' / ' + prandoms[i].p_view + ' views' + ' / '+prandoms[i].com + ' comments';
+      //- - var hashtagfind = phashtagfinder(prandoms[i].id, hashtag); 
+      //- - var hashtagfinal = hashtagmaker(hashtagfind);
+      dd #{hashtagfinal}
+      dd #{date_result}
+      
+    - var tlink = 'tandya/'+trandoms[i].id
+    dl(onclick ='location.href="#{tlink}"')
+      dt
+        a(href='/tandya/'+trandoms[i].id)= trandoms[i].question
+      dd.ddcontent= trandoms[i].content
+      //- - var date_result = datemaker(trandoms[i].date) + ' / ' + trandoms[i].t_view + ' views'+ ' / '+trandoms[i].answer + ' answers';
+      //- - var hashtagfind = thashtagfinder(trandoms[i].id, hashtag);
+      //- - var hashtagfinal = hashtagmaker(hashtagfind);
+      dd #{hashtagfinal}
+      dd #{date_result}
+  if !u_id
+    .login
+      a(href='/aku') Login Dulu
+            

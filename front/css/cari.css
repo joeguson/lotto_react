@@ -1,0 +1,221 @@
+.section-border {
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
+.button {
+  width: 100%;
+  height: 45px;
+  box-sizing: border-box;
+  font-size: 20px;
+  background-color: #a0b3ef;
+  display: inline-block;
+  text-align: center;
+  line-height: 40px;
+  text-decoration: none;
+  border-style: none;
+}
+.li-border {
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
+  margin-bottom: 10px;
+}
+.border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.search {
+  width: 100%;
+  background-color: #ebedf2;
+  font-size: 20px;
+}
+form {
+  width: 85%;
+  text-align: center;
+  margin: 0px auto 10px auto;
+  box-sizing: border-box;
+}
+input {
+  width: 80%;
+  height: 40px;
+  border: 1px solid #2e60f4;
+  font-size: 18px;
+  text-align: center;
+  box-sizing: border-box;
+  display: inline;
+}
+.submit {
+  width: 100%;
+  height: 45px;
+  box-sizing: border-box;
+  font-size: 20px;
+  background-color: #a0b3ef;
+  display: inline-block;
+  text-align: center;
+  line-height: 40px;
+  text-decoration: none;
+  border-style: none;
+  width: 20%;
+  height: 40px;
+  font-size: 16px;
+  display: inline;
+  margin: 0px;
+  float: right;
+}
+.login {
+  width: 85%;
+  margin: 0 auto;
+}
+#uls {
+  padding: 10px;
+  list-style: none;
+}
+.ul-result {
+  padding: 20px;
+  list-style: none;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  background-color: white;
+  margin-bottom: 15px;
+}
+.login a {
+  width: 100%;
+  height: 45px;
+  box-sizing: border-box;
+  font-size: 20px;
+  background-color: #a0b3ef;
+  display: inline-block;
+  text-align: center;
+  line-height: 40px;
+  text-decoration: none;
+  border-style: none;
+  height: 40px;
+  margin-bottom: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  font-size: 16px;
+}
+.clear {
+  clear: both;
+}
+#uls li {
+  width: 100%;
+  background-color: #ffffff;
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
+  margin-bottom: 10px;
+  padding: 5px;
+  box-sizing: border-box;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.div-result {
+  background-color: white;
+  margin-bottom: 5px;
+}
+.ul-result li {
+  width: 100%;
+  background-color: #ffffff;
+  border-top: 1px solid #6c8ff7;
+  border-bottom: 1px solid #6c8ff7;
+  margin-bottom: 10px;
+  padding: 5px;
+  box-sizing: border-box;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+li dl {
+  cursor: pointer;
+}
+dl dt {
+  width: 90%;
+  height: 20px;
+  line-height: 20px;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: bolder;
+}
+dd {
+  font-style: italic;
+  font-size: 12px;
+}
+dl .ddcontent {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  font-size: 12px;
+  line-height: 14px;
+  height: 28px;
+  font-style: normal;
+  margin-bottom: 5px;
+}
+dt a {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #2e60f4;
+  text-decoration: none;
+  display: block;
+}
+/*for bigger windows*/
+@media (min-width: 768px) {
+  .ad {
+    height: 200px;
+    margin-bottom: 30px;
+    font-size: 100px;
+    line-height: 200px;
+  }
+  form p {
+    width: 80%;
+    margin: 0 auto;
+  }
+  login a {
+    margin-bottom: 30px;
+  }
+  input {
+    width: 90%;
+    height: 40px;
+    border: 1px solid #2e60f4;
+    font-size: 18px;
+    text-align: center;
+    box-sizing: border-box;
+    display: inline;
+  }
+  .submit {
+    width: 100%;
+    height: 45px;
+    box-sizing: border-box;
+    font-size: 20px;
+    background-color: #a0b3ef;
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+    text-decoration: none;
+    border-style: none;
+    width: 10%;
+    height: 40px;
+    font-size: 16px;
+    display: inline;
+    margin: 0px;
+    float: right;
+  }
+  dl dt {
+    width: 90%;
+    height: 50px;
+    line-height: 30px;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  dd {
+    font-style: italic;
+    font-size: 12px;
+  }
+  dl .ddcontent {
+    font-size: 16px;
+    line-height: 20px;
+    height: 60px;
+    font-style: normal;
+    margin-bottom: 10px;
+  }
+}
