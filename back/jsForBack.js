@@ -1,3 +1,28 @@
+exports.finalHashtagMaker = function(hashtagString){
+  var finalHashtag = [];
+  var temp = [];
+  while(hashtagString.indexOf(' ')>=0){
+    hashtagString = hashtagString.replace(' ', "");
+  }
+  var temp = hashtagString.split('#');
+  for(var i =0; i<temp.length; i++){
+    if(temp[i] != ""){
+      finalHashtag.push(temp[i]);
+    }
+  }
+  return finalHashtag;
+}
+
+exports.isEmptyObject = function(obj) {
+  for(var key in obj) {
+    if(obj.hasOwnProperty(key))
+      return false;
+  }
+  return true;
+}
+
+
+
 var psqlMaker = function(pId){
     var tempArray = [];
     for(var l =0; l<pId.length;l++){
@@ -136,13 +161,7 @@ function codeMaker(){
     final_code = ar[0]+ar[1]+ar[2]+ar[3]+ar[4]+ar[5];
     return final_code;
 }
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
+
 
 var htsqlMaker = function(dateOrder, scoreOrder){
     var dlength = dateOrder.length;

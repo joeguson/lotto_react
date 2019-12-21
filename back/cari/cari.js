@@ -23,13 +23,13 @@ exports.getCari = function(req, res){
   var thashResults = [];
 
   async function getRandomPandT(){
-    pResults = await dbcon.select(getRandomPenobrol);
-    tResults = await dbcon.select(getRandomTandya);
+    pResults = await dbcon.oneArg(getRandomPenobrol);
+    tResults = await dbcon.oneArg(getRandomTandya);
     for(var i=0;i<pResults.length;i++){
-      phashResults.push(await dbcon.selectWhere(getHashtagP, pResults[i].id));
+      phashResults.push(await dbcon.twoArg(getHashtagP, pResults[i].id));
     }
     for(var j=0;j<tResults.length;j++){
-      thashResults.push(await dbcon.selectWhere(getHashtagT, tResults[j].id, ));
+      thashResults.push(await dbcon.twoArg(getHashtagT, tResults[j].id, ));
     }
     if(req.session.u_id){
         res.render('./jc/cari', {prandoms:pResults, phashtags:phashResults, trandoms:tResults, thashtags:thashResults, u_id:'req.session.u_id'});

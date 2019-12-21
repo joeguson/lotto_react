@@ -60,13 +60,13 @@ exports.welcome = function(req, res){
     var sql7 = 'select count(ta_id) as totalta_like from ta_like where u_id = ?';
 
     async function getUserRecord(){
-      userInfo = await dbcon.selectWhere(sql1, req.session.u_id);
-      userPenobrol = await dbcon.selectWhere(sql2, userInfo[0].id);
-      userTandya = await dbcon.selectWhere(sql3, userInfo[0].id);
-      totalp_like = await dbcon.selectWhere(sql4, userInfo[0].id);
-      totalpc_like = await dbcon.selectWhere(sql5, userInfo[0].id);
-      totalt_like = await dbcon.selectWhere(sql6, userInfo[0].id);
-      totalta_like = await dbcon.selectWhere(sql7, userInfo[0].id);
+      userInfo = await dbcon.twoArg(sql1, req.session.u_id);
+      userPenobrol = await dbcon.twoArg(sql2, userInfo[0].id);
+      userTandya = await dbcon.twoArg(sql3, userInfo[0].id);
+      totalp_like = await dbcon.twoArg(sql4, userInfo[0].id);
+      totalpc_like = await dbcon.twoArg(sql5, userInfo[0].id);
+      totalt_like = await dbcon.twoArg(sql6, userInfo[0].id);
+      totalta_like = await dbcon.twoArg(sql7, userInfo[0].id);
       res.render('./ja/aku', {user:userInfo[0], penobrols:userPenobrol, tandyas:userTandya,
         p_like:totalp_like, t_like:totalt_like, pc_like:totalpc_like, ta_like:totalta_like});
     }

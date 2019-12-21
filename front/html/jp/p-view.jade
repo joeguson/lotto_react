@@ -1,124 +1,106 @@
-doctype html
-html(lang="id")
-    head
-        title beritamus
-        // what appears on the tab
-        base(href="/")
-        link(rel='stylesheet', href='common.css' type="text/css")
-        // links css common file
-        link(rel="stylesheet" href="penobrol_view.css" type="text/css")
-        // links css file
-        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
-        meta(charset='UTF-8')
-        meta(name='viewport', content='width=device-width, initial-scale=1')    
-        meta(name='apple-mobile-web-app-capable', content='yes')
-        // iphone에서 어플식으로 저장가능
-        // Lorem ipsum
-    body
-        .container
-            header
-                a(href='/penobrol') Beritamus
-            nav
-                ul
-                    li
-                        a(href='/aku') Aku
-                    li
-                        a(href='/cari') Cari
-                    li(style='border-bottom: 2px solid yellow; opacity: .9')
-                        a(href='/penobrol' style='color: #ffff97;') Penobrol
-                    li
-                        a(href='/tandya') Tandya
-                    br.clear
-            section.sub-main(id='sub-main')
-                //.ad Advertisement
-            section.main(id='main')
-                .title
-                    if u_id
-                    dl.pview-dl
-                        if topic.public == 'a'
-                            - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
-                        else
-                            - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
-                        dt.pview-dt= topic.title
-                        if(hashtag.length > 0)
-                            dd.pview-dd.hashtag
-                                -for(var n=0; n<topic.hashtagcount; n++)
-                                    a= '#' + hashtag[n].hash + ' '
-                        dd.pview-dd #{date_result}
-                            if u_id == topic.author
-                                a(href='/pedit/'+topic.id class='edit') Edit
-                .pcontent
-                    if u_id
-                        p(class="warn")
-                            button(class="pwarnButton" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') !
-                    p(class="content")
-                        pre(class="content")= topic.content
-                    div(id="plike" class="plike")= topic.p_like
-                    if u_id
-                            if statusCheck == 'yes'
-                                button(id="plikeButton" class="plikeButton" type="submit" value="Batal Suka") Batal Suka
-                            else
-                                button(id="plikeButton" class="plikeButton" type="submit" value="Suka") Suka
-                if u_id
-                    form(action='penobrol/'+topic.id method='post' class='commentForm' onsubmit='return pcChecksubmit();')
-                        textarea(name='comment' class="pcInput" id='pcInput')
-                        input(type='submit' value='comment' class="pcInputButton" id="pcInputButton")
-                if comments.length > 0
-                    .pcomment
-                        ul.pcomment-ul
-                            each c in comments
-                                li.pcomment-li
-                                    dl.pcomment-dl(id='pc/'+topic.id+'/'+c.id)
-                                        if topic.public == 'a'
-                                            - var commentStart = '@'+ anonimmaker(topic.author)
-                                        else
-                                            - var commentStart = '@'+ topic.author
-                                        .pcomment-start #{commentStart}
-                                            if u_id == c.author
-                                                a(href='/pcedit/'+topic.id+'/'+c.id) Edit
-                                        dt.pcomment-dt
-                                            pre(class="pcomment-dt") "#{c.content}"
-                                        if topic.public == 'a'        
-                                            - var date_result2 = 'by '+anonimmaker(c.author)+' / '+datemaker(c.date)+' / suka : '
-                                        else
-                                            - var date_result2 = 'by '+c.author+' / '+datemaker(c.date)+' / suka : '
-                                        dd.pcomment-dd #{date_result2}
-                                            span.pclike(id="pCommentlikes"+c.id)=c.pc_like
-                                            if u_id
-                                                span.commentButton
-                                                    if(commentLikeChecker(clikeStatus, c.id, u_id))
-                                                        button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Batal Suka
-                                                    else
-                                                        button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Suka
-                                                    span.dummy    
-                                                    button(class="pcWarnButton" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') !
-                                        if u_id
-                                            .ccommentForm
-                                                textarea(name='ccomment' class="pccInput" id='pccInput')
-                                                input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="komen" class="pccInputButton")
-                                        each cc in ccomments    
-                                            if cc.pc_id == c.id
-                                                dl.pccomment-dl
-                                                    - var ccommentStart = '- "'+cc.content+'"'
-                                                    dt.pccomment-dt 
-                                                        pre(class="pccomment-dt") #{ccommentStart}
-                                                    if topic.public == 'a'
-                                                        - var date_result3 = 'by ' + anonimmaker(cc.author) + ' / '+datemaker(cc.date)
-                                                    else
-                                                        - var date_result3 = 'by ' + cc.author + ' / '+datemaker(cc.date)
-                                                    dd.pccomment-dd #{date_result3}
-                                                        if u_id
-                                                            button(class="pccWarnButton" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) !
-            script.
-                function pcChecksubmit(){
-                    if(pcInput.value.length < 5){
-                        alert('kontennya harus lebih dari 5 alphabet');
-                        return false;
-                    }
-                    else{return true;}
-                }
+extends ../layout.jade
 
-            section.footer(id='footer') 
-                p contact : admin@beritamus.com
-                p www.beritamus.com
-            script(type="text/javascript" src="plikes.js")
+block css
+  link(rel="stylesheet" href="penobrol_view.css" type="text/css")
+  script(type="text/javascript" src="/js/jsForAllJade.js")
+  
+block nav
+  ul
+    li: a(href='/aku') Aku
+    li: a(href='/cari') Cari
+    li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/penobrol' style='color: #ffff97;') Penobrol
+    li: a(href='/tandya') Tandya
+    br.clear
+
+block submain
+  //.ad Advertisement
+
+block main
+  section.main(id='main')
+    .title
+      if u_id
+      dl.pview-dl
+          if topic.public == 'a'
+              - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
+          else
+              - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
+          dt.pview-dt= topic.title
+          if(hashtag.length > 0)
+              dd.pview-dd.hashtag
+                  -for(var n=0; n<topic.hashtagcount; n++)
+                      a= '#' + hashtag[n].hash + ' '
+          dd.pview-dd #{date_result}
+              if u_id == topic.author
+                  a(href='/pedit/'+topic.id class='edit') Edit
+    .pcontent
+        if u_id
+            p(class="warn")
+                button(class="pwarnButton" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') !
+        p(class="content")
+            pre(class="content")= topic.content
+        div(id="plike" class="plike")= topic.p_like
+        if u_id
+                if statusCheck == 'yes'
+                    button(id="plikeButton" class="plikeButton" type="submit" value="Batal Suka") Batal Suka
+                else
+                    button(id="plikeButton" class="plikeButton" type="submit" value="Suka") Suka
+    if u_id
+        form(action='penobrol/'+topic.id method='post' class='commentForm' onsubmit='return pcChecksubmit();')
+            textarea(name='comment' class="pcInput" id='pcInput')
+            input(type='submit' value='comment' class="pcInputButton" id="pcInputButton")
+    if comments.length > 0
+        .pcomment
+            ul.pcomment-ul
+                each c in comments
+                    li.pcomment-li
+                        dl.pcomment-dl(id='pc/'+topic.id+'/'+c.id)
+                            if topic.public == 'a'
+                                - var commentStart = '@'+ anonimmaker(topic.author)
+                            else
+                                - var commentStart = '@'+ topic.author
+                            .pcomment-start #{commentStart}
+                                if u_id == c.author
+                                    a(href='/pcedit/'+topic.id+'/'+c.id) Edit
+                            dt.pcomment-dt
+                                pre(class="pcomment-dt") "#{c.content}"
+                            if topic.public == 'a'        
+                                - var date_result2 = 'by '+anonimmaker(c.author)+' / '+datemaker(c.date)+' / suka : '
+                            else
+                                - var date_result2 = 'by '+c.author+' / '+datemaker(c.date)+' / suka : '
+                            dd.pcomment-dd #{date_result2}
+                                span.pclike(id="pCommentlikes"+c.id)=c.pc_like
+                                if u_id
+                                    span.commentButton
+                                        if(commentLikeChecker(clikeStatus, c.id, u_id))
+                                            button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Batal Suka
+                                        else
+                                            button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="commentSendAjax(this);") Suka
+                                        span.dummy    
+                                        button(class="pcWarnButton" type="submit" value='com/'+topic.id+'/'+c.id+'/0' onclick="warningAjax(this);" id="warn/"+'com/'+topic.id+'/'+c.id+'/0') !
+                            if u_id
+                                .ccommentForm
+                                    textarea(name='ccomment' class="pccInput" id='pccInput')
+                                    input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="komen" class="pccInputButton")
+                            each cc in ccomments    
+                                if cc.pc_id == c.id
+                                    dl.pccomment-dl
+                                        - var ccommentStart = '- "'+cc.content+'"'
+                                        dt.pccomment-dt 
+                                            pre(class="pccomment-dt") #{ccommentStart}
+                                        if topic.public == 'a'
+                                            - var date_result3 = 'by ' + anonimmaker(cc.author) + ' / '+datemaker(cc.date)
+                                        else
+                                            - var date_result3 = 'by ' + cc.author + ' / '+datemaker(cc.date)
+                                        dd.pccomment-dd #{date_result3}
+                                            if u_id
+                                                button(class="pccWarnButton" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) !
+  script.
+      function pcChecksubmit(){
+          if(pcInput.value.length < 5){
+              alert('kontennya harus lebih dari 5 alphabet');
+              return false;
+          }
+          else{return true;}    
+      }
+
+script(type="text/javascript" src="plikes.js")
