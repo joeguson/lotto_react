@@ -32,10 +32,10 @@ exports.getCari = function(req, res){
       thashResults.push(await dbcon.twoArg(getHashtagT, tResults[j].id, ));
     }
     if(req.session.u_id){
-        res.render('./jc/cari', {prandoms:pResults, phashtags:phashResults, trandoms:tResults, thashtags:thashResults, u_id:'req.session.u_id'});
+      res.render('./jc/cari', {prandoms:pResults, phashtags:phashResults, trandoms:tResults, thashtags:thashResults, u_id:'req.session.u_id'});
     }
     else{
-        res.render('./jc/cari', {prandoms:pResults, phashtags:phashResults, trandoms:tResults, thashtags:thashResults});
+      res.render('./jc/cari', {prandoms:pResults, phashtags:phashResults, trandoms:tResults, thashtags:thashResults});
     }
   }
   getRandomPandT();

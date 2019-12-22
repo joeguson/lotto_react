@@ -21,6 +21,51 @@ exports.isEmptyObject = function(obj) {
   return true;
 }
 
+exports.doubleChecker = function(a, b){
+  var temp1 = [];
+  var temp2 = [];
+  if(a.length >= b.length){
+    temp1 = b;
+    temp2 = a;
+  }
+  else{
+    temp1 = a;
+    temp2 = b;
+  }
+  for(var i =0; i<temp1.length;i++){
+    for(var j = 0; j<temp2.length;j++){
+      if(temp1[i].id == temp2[j].id){
+        temp2.splice(j, 1);
+      }
+    }
+  }
+  temp1 = temp1.concat(temp2);
+  return temp1;
+};
+
+exports.searchStringLengthChecker = function(cari_string){
+  var tempArray = cari_string.split(' ');
+  var temp = [];
+  for(var i=0; i<tempArray.length; i++){
+    if(tempArray[i] !== ''){
+      temp.push(tempArray[i]);
+    }
+  }
+  return temp;
+};
+
+exports.remove_duplicates = function(objectsArray){
+  var usedObjects = {};
+  for(var i=objectsArray.length - 1;i>=0;i--){
+    var so = JSON.stringify(objectsArray[i]);
+    if(usedObjects[so]){
+      objectsArray.splice(i, 1);
+    }else{
+      usedObjects[so] = true;
+    }
+  }
+  return objectsArray;
+};
 
 
 var psqlMaker = function(pId){
@@ -58,16 +103,7 @@ var tsqlMaker = function(tId){
     return temp;
 };
 
-var searchStringLengthChecker = function(cari_string){
-    var tempArray = cari_string.split(' ');
-    var temp = [];
-    for(var i=0; i<tempArray.length; i++){
-        if(tempArray[i] !== ''){
-            temp.push(tempArray[i]);
-        }
-    }
-    return temp;
-};
+
 
 var phtsqlMaker = function(hastagObject){
     var holength = hastagObject.length;
@@ -103,27 +139,7 @@ var thtsqlMaker = function(hashtagObject){
     return temp;
 };
 
-var doubleChecker = function(a, b){
-    var temp1 = [];
-    var temp2 = [];
-    if(a.length >= b.length){
-        temp1 = b;
-        temp2 = a;
-    }
-    else{
-        temp1 = a;
-        temp2 = b;
-    }
-    for(var i =0; i<temp1.length;i++){
-        for(var j = 0; j<temp2.length;j++){
-            if(temp1[i].id == temp2[j].id){
-                temp2.splice(j, 1);
-            }
-        }
-    }
-    temp1 = temp1.concat(temp2);
-    return temp1;
-};
+
 var hsSearchSqlMaker = function(hashtags){
     var temp = "select * from hashtag AS result WHERE MATCH(hash) AGAINST('";
     for(var k = 0; k<hashtags.length; k++){
@@ -133,18 +149,7 @@ var hsSearchSqlMaker = function(hashtags){
     temp = temp+"')";
     return temp;
 };
-var remove_duplicates = function (objectsArray) {
-    var usedObjects = {};
-    for (var i=objectsArray.length - 1;i>=0;i--) {
-        var so = JSON.stringify(objectsArray[i]);
-        if (usedObjects[so]) {
-            objectsArray.splice(i, 1);
-        } else {
-            usedObjects[so] = true;
-        }
-    }
-    return objectsArray;
-};
+
 function codeMaker(){
     var ar = [];
     var final_code = '';

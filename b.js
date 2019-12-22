@@ -114,12 +114,12 @@ app.post(['/taedit/:tandya_no/:tanswer_no'], tandya.postEditTanswer);
 /************FOR PENOBROL************/
 app.get('/penobrol/add', penobrol.getAddPenobrol);
 app.post('/penobrol/add', penobrol.postAddPenobrol);
-app.post('/penobrol/:penobrol_no', penobrol.postAddComment);
+app.post('/pcomment/:penobrol_no', penobrol.postAddComment);
 app.get(['/penobrol'], penobrol.getPenobrol);
 app.get(['/penobrol/:penobrol_no'], penobrol.getViewPenobrol);
 app.post('/plikes/:id', penobrol.likesPenobrol);
 app.post('/pCommentlikes/:id', penobrol.likesComment);
-app.post('/penobrol/:penobrol_no/:comment_no', penobrol.postAddCcomment);
+app.post('/pccomment/:pc_no', penobrol.postAddCcomment);
 app.post('/pwarning/', penobrol.warningPenobrol);
 app.get(['/pedit/:penobrol_no'], penobrol.getEditPenobrol);
 app.post(['/pedit/:penobrol_no'], penobrol.postEditPenobrol);

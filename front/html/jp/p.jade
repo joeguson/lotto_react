@@ -1,7 +1,7 @@
 extends ../layout.jade
 
 block css
-  link(rel="stylesheet" href="penobrol.css" type="text/css")
+  link(rel="stylesheet" href="../css/penobrol.css" type="text/css")
   script(type="text/javascript" src="/js/jsForAllJade.js")
 
 block nav
@@ -32,9 +32,9 @@ block main
                           a(href='/penobrol/'+v.id)= v.title
                       dd.ddcontent= v.content
                       if v.public == 'a'
-                          - var date_result = 'by '+anonimmaker(v.author)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
+                          - var date_result = 'by '+anonimmaker(v.u_id)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
                       else
-                          - var date_result = 'by '+v.author+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
+                          - var date_result = 'by '+v.u_id+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
                       -var hashtagfind = hashtagfinder('p', v.id, hashtags); 
                       -var hashtagfinal = hashtagmaker(hashtagfind);
                       dd #{hashtagfinal}
@@ -50,9 +50,9 @@ block main
                           a(href='/penobrol/'+w.id)= w.title
                       dd.ddcontent= w.content
                       if w.public == 'a'
-                          - var date_result = 'by '+anonimmaker(w.author)+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' comments'
+                          - var date_result = 'by '+anonimmaker(w.u_id)+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' comments'
                       else
-                          - var date_result = 'by '+w.author+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' comments'
+                          - var date_result = 'by '+w.u_id+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' comments'
                       -var hashtagfind = hashtagfinder('p', w.id, hashtags); 
                       -var hashtagfinal = hashtagmaker(hashtagfind);
                       dd #{hashtagfinal}
