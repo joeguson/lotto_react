@@ -19,6 +19,7 @@ var tandya = require('./back/tandya/tandya');
 var aku = require('./back/aku/aku');
 var cari = require('./back/cari/cari');
 var jsForJade = require('./front/js/jsForAllJade');
+var jsForBack = require('./back/jsForBack');
 app.use(useragent.express());
 app.use(favicon(path.join(__dirname,'./info', 'logo2.png')));
 const pool = mysql2.createPool(

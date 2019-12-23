@@ -3,6 +3,8 @@ extends ../layout.jade
 block css
   link(rel="stylesheet" href="../css/tandya_add.css" type="text/css")
   script(type="text/javascript" src="/js/jsForAllJade.js")
+  script(src="../../public/b-editor/b-editor.js")
+  script(src='../../public/p-add.js')
 
 block nav
   ul
@@ -28,7 +30,7 @@ block main
           input(type='radio' value='a' name="public")
           |anonim  
       p
-        textarea(name='content' class="content" id="content" required)
+        b-editor(id='editor' width="90%" height="600px" name="content")
       p
         input(type='text' name='hashtag' placeholder='#put #hashtags #like #this' class="hashtag")
       p

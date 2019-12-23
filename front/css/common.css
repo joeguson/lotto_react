@@ -28,7 +28,8 @@
   height: 45px;
   box-sizing: border-box;
   font-size: 20px;
-  background-color: #5781a6;
+  color: white;
+  background-color: #0f4c81;
   display: inline-block;
   text-align: center;
   line-height: 40px;
@@ -36,8 +37,8 @@
   border-style: none;
 }
 .li-border {
-  border-top: 1px solid #4c77b1;
-  border-bottom: 1px solid #4c77b1;
+  border-top: 1px solid #5781a6;
+  border-bottom: 1px solid #5781a6;
   margin-bottom: 10px;
 }
 .border-radius {
@@ -81,7 +82,7 @@ header {
   height: 100px;
   line-height: 90px;
   text-align: center;
-  background-color: #ffffff;
+  background-color: white;
 }
 nav {
   width: 100%;
@@ -97,7 +98,7 @@ nav {
 .ad {
   width: 0%;
   height: 0px;
-  background-color: #ffffff;
+  background-color: white;
   font-size: 50px;
   line-height: 140px;
   text-align: center;

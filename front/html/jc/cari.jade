@@ -21,29 +21,32 @@ block submain
             input(type='submit' class="submit" value="search")
             
 block main
-  -for(var i=0; i<1; i++)
-    - var plink = 'penobrol/'+prandoms[i].id
-    dl(onclick ='location.href="#{plink}"')
-      dt
-        a(href='/penobrol/'+prandoms[i].id)= prandoms[i].title
-      dd.ddcontent= prandoms[i].content
-      - var date_result = datemaker(prandoms[i].date) + ' / ' + prandoms[i].p_view + ' views';
-      - var hashtagfind = hashtagfinder('p', prandoms[i].id, phashtags);
-      - var hashtagfinal = hashtagmaker(hashtagfind);
-      dd #{hashtagfinal}
-      dd #{date_result}
-      
-    - var tlink = 'tandya/'+trandoms[i].id
-    dl(onclick ='location.href="#{tlink}"')
-      dt
-        a(href='/tandya/'+trandoms[i].id)= trandoms[i].question
-      dd.ddcontent= trandoms[i].content
-      - var date_result = datemaker(trandoms[i].date) + ' / ' + trandoms[i].t_view + ' views';
-      - var hashtagfind = hashtagfinder('t', trandoms[i].id, thashtags);
-      - var hashtagfinal = hashtagmaker(hashtagfind);
-      dd #{hashtagfinal}
-      dd #{date_result}
-  if !u_id
-    .login
-      a(href='/aku') Login Dulu
-            
+    ul(id='uls')
+        -for(var i=0; i<1; i++)
+            li
+                - var plink = 'penobrol/'+prandoms[i].id
+                dl(onclick ='location.href="#{plink}"')
+                  dt
+                    a(href='/penobrol/'+prandoms[i].id)= prandoms[i].title
+                  dd.ddcontent= prandoms[i].content
+                  - var date_result = datemaker(prandoms[i].date) + ' / ' + prandoms[i].p_view + ' views';
+                  - var hashtagfind = hashtagfinder('p', prandoms[i].id, phashtags);
+                  - var hashtagfinal = hashtagmaker(hashtagfind);
+                  dd #{hashtagfinal}
+                  dd #{date_result}
+            li
+                - var tlink = 'tandya/'+trandoms[i].id
+                dl(onclick ='location.href="#{tlink}"')
+                  dt
+                    a(href='/tandya/'+trandoms[i].id)= trandoms[i].question
+                  dd.ddcontent= trandoms[i].content
+                  - var date_result = datemaker(trandoms[i].date) + ' / ' + trandoms[i].t_view + ' views';
+                  - var hashtagfind = hashtagfinder('t', trandoms[i].id, thashtags);
+                  - var hashtagfinal = hashtagmaker(hashtagfind);
+                  dd #{hashtagfinal}
+                  dd #{date_result}
+      if !u_id
+        .login
+          a(href='/aku') Login Dulu
+
+block footer            

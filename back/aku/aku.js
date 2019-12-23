@@ -162,5 +162,5 @@ exports.postDaftar = function(req, res){
 };
 
 exports.getDaftar = function(req, res){
-  res.render('user-add');
+  res.render('./ja/user-add');
 };
