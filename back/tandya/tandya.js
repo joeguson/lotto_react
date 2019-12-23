@@ -1,289 +1,236 @@
 var conn = require('../../b');
+var pool = require('../../b');
+var dbcon = require('../../db/dbconnection');
+var jsForBack = require('../jsForBack');
 
 /************FOR TANDYA************/
 exports.getTandya = function(req, res){
-    var sql = 'select * from tandya order by date desc limit 3';
-    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
-    var sql3 = '';
-    conn.conn.query(sql, function(err, dateOrder, fields){
-        if(err){console.log(err);}
-        else{
-            conn.conn.query(sql2, function(err, scoreOrder, fields){
-                if(err){console.log(err);}
-                else{
-                    sql3 = htsqlMaker(dateOrder, scoreOrder);
-                    conn.conn.query(sql3, function(err, hashtag, fields){
-                        if(err){console.log(err);}
-                        else{
-                            if(req.session.u_id){
-                                res.render('./jt/t', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag, u_id:req.session.u_id});
-                            }
-                            else{
-                                res.render('./jt/t', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag});
-                            }
-                        }
-                    });
-                }
-            });
-        }
-    });
-};
-exports.getViewTandya =  function(req, res){
-    var id = req.params.tandya_no;
-    var checkId = /^[0-9]+$/;
-    if(checkId.test(id)){
-        var sql1 = 'SELECT MAX(id) AS max from tandya';
-        var sql3 = 'UPDATE tandya SET t_view = t_view + 1 WHERE id = ?';
-        var sql7 = 'UPDATE tandya SET score = (answer *.3 + t_like*.7)/t_view * 100 where id = ?';
-        var sql = 'SELECT * FROM tandya WHERE id = ?';
-        var sql2 = 'SELECT * FROM t_ans WHERE t_id = ? order by score desc';
-        var sql6 = 'SELECT * FROM hashtag where t_id = ?';
-        var sql4 = 'Select * from t_like where u_id = ? AND t_id = ?';
-        var sql5 = 'SELECT * FROM ta_com where t_id = ?';
-        var sql8 = 'SELECT * FROM ta_like where u_id = ? AND t_id = ?';
-        conn.conn.query(sql1, function(err, maxValue, fields){
-            if(maxValue[0].max < id){
-                res.redirect('/tandya'); //change to redirect and make a file
-            }
-            else{
-                conn.conn.query(sql3, [id], function(err, views, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql7, id, function(err, score, fields){
-                            if(err){console.log(err);}
-                        });
-                    }
-                });
-                conn.conn.query(sql, id, function(err, content, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql2, id, function(err, answers, fields){
-                            if(err){console.log(err);}
-                            else{
-                                conn.conn.query(sql6, id, function(err, hashtag, fields){
-                                        if(err){console.log(err);}
-                                        else{
-                                            conn.conn.query(sql5, id, function(err, acomments, fields){
-                                                if(err){console.log(err);}
-                                                else{
-                                                    if(req.session.u_id){
-                                                        conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
-                                                            if(err){console.log(err);}
-                                                            else{
-                                                                conn.conn.query(sql8, [req.session.u_id, id], function(err, alikeStatus, fields){
-                                                                    if(err){console.log(err);}
-                                                                    else{
-                                                                        var statusCheck = '';
-                                                                        if(isEmpty(likeStatus)){
-                                                                            statusCheck = 'no';
-                                                                        }
-                                                                        else{
-                                                                            statusCheck = 'yes';
-                                                                        }
-                                                                        res.render('./jt/t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:req.session.u_id, hashtag:hashtag, acomments:acomments, alikeStatus:alikeStatus});
-                                                                    }
-                                                                });
-                                                            }
-                                                        });
-                                                    }
-                                                    else{
-                                                        res.render('./jt/t-view', {topic:content[0], answers:answers, hashtag:hashtag, acomments:acomments});
-                                                    }
-                                                }
+  var sql1 = 'select t.*, u.u_id from tandya as t join users as u on t.author = u.id order by date desc limit 3';
+  var sql2 = 'select t.*, u.u_id from tandya as t join users as u on t.author = u.id ORDER BY score DESC limit 3';
+  var sql3 = 'select * from tandya_hashtag where t_id = ?';
+  var sql4 = 'select * from tandya_hashtag where t_id = ?';
 
-                                            });
+  var byDate = [];
+  var byScore = [];
+  var tHashtag = [];
 
-                                        }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
+  async function getOrderedT(){
+    byDate = await dbcon.oneArg(sql1);
+    byScore = await dbcon.oneArg(sql2);
+    for(var i=0;i<byDate.length;i++){
+      tHashtag.push(await dbcon.twoArg(sql3, byDate[i].id));
+    }
+    for(var j=0;j<byScore.length;j++){
+      tHashtag.push(await dbcon.twoArg(sql4, byScore[j].id));
+    }
+    tHashtag = jsForBack.remove_duplicates(tHashtag);
+    if(req.session.u_id){
+      res.render('./jt/t', {dateTopics:byDate, scoreTopics:byScore, hashtags:tHashtag, u_id:req.session.u_id});
     }
     else{
-        res.redirect('/tandya');
+      res.render('./jt/t', {dateTopics:byDate, scoreTopics:byScore, hashtags:tHashtag});
     }
+  }
+  getOrderedT();
+};
+
+exports.getViewTandya =  function(req, res){
+  var id = req.params.tandya_no;
+  var tandya = [];
+  var t_answers = [];
+  var t_hashtags = [];
+  var ta_comments = [];
+  var t_likes = [];
+  var ta_likes = [];
+  var checkId = /^[0-9]+$/;
+  if(checkId.test(id)){
+    var sql1 = 'SELECT MAX(id) AS max from tandya';
+    conn.conn.query(sql1, function(err, maxValue, fields){
+      if(err){console.log(err);}
+      else if(maxValue[0].max < id){
+        res.redirect('/tandya/'); //change to redirect and make a file
+      }
+      else{
+        async function getT(){
+          var sql2 = 'UPDATE tandya SET t_view = t_view + 1 WHERE id = ?';
+          var sql3 = 'UPDATE tandya SET score = ((select count(t_id) from t_ans where t_id = ?) *.3 + (select count(t_id) from t_like where t_id = ?)*.7)/t_view * 100 where id = ?';
+          var sql4 = 'select t.*, u.u_id from tandya as t join users as u on t.author = u.id where t.id = ?';
+          var sql5 = 'SELECT t.*, u.u_id FROM t_ans as t join users as u on t.author = u.id WHERE t_id = ? order by score desc';
+          var sql6 = 'SELECT * FROM tandya_hashtag where t_id = ?';
+          var sql7 = 'SELECT t.*, u.u_id FROM ta_com as t join users as u on t.author = u.id WHERE t.ta_id = ?';
+          var sql8 = 'SELECT t.t_id as like_id, t.u_id, u.u_id FROM t_like as t join users as u on t.u_id = u.id WHERE t.t_id = ?';
+          var sql9 = 'SELECT t.ta_id as like_id, t.u_id, u.u_id FROM ta_like as t join users as u on t.u_id = u.id where t.ta_id = ?';
+          await dbcon.twoArg(sql2, id);
+          await dbcon.fourArg(sql3, id, id, id);
+          tandya = await dbcon.twoArg(sql4, id);
+          t_answers = await dbcon.twoArg(sql5, id);
+          t_hashtags = await dbcon.twoArg(sql6, id);
+          if(t_answers.length>0){
+            for(var i=0;i<t_answers.length;i++){
+              ta_comments.push(await dbcon.twoArg(sql7, t_answers[i].id));
+            }
+          }
+          t_likes = await dbcon.twoArg(sql8, id);
+          if(t_answers.length>0){
+            for(var j=0;j<t_answers.length;j++){
+              ta_likes.push(await dbcon.twoArg(sql9, t_answers[j].id));
+            }
+          }
+          if(req.session.u_id){
+            res.render('./jt/t-view', {topic:tandya[0], answers:t_answers, u_id:req.session.u_id, hashtag:t_hashtags, acomments:ta_comments, tlikes:t_likes, talikes:ta_likes});
+          }
+          else{
+            res.render('./jt/t-view', {topic:tandya[0], answers:t_answers, hashtag:t_hashtags, acomments:ta_comments, tlikes:t_likes, talikes:ta_likes});
+          }
+        }
+        getT();
+      }
+    });
+  }
+  else{
+    res.redirect('/tandya/');
+  }
 };
 
 exports.getAddTandya = function(req, res){
   if(req.session.u_id){
-        res.render('./jt/t-add', {u_id:'y'});
-    }
-    else{
-        res.send('/tandya/belumadakonten'); //change to redirect and make a file
-    }
+    res.render('./jt/t-add', {u_id:'y'});
+  }
+  else{
+    res.redirect('/tandya/');
+  }
 };
 exports.postAddTandya = function(req, res){
-    var author = req.session.u_id;
-    var content = req.body.content;
-    var question = req.body.question;
-    var rawhashtags = req.body.hashtag;
-    var hashtagCount = 0;
-    var public = req.body.public;
-    while(rawhashtags.indexOf(' ')>=0){
-        rawhashtags = rawhashtags.replace(' ', "");
+  var author = req.session.u_id;
+  var content = req.body.content;
+  var question = req.body.question;
+  var rawhashtags = req.body.hashtag;
+  var public = req.body.public;
+  var finalhashtag = jsForBack.finalHashtagMaker(rawhashtags);
+
+  var sql1 = "INSERT INTO tandya (author, question, content, public) VALUES ((select id from users where u_id = ?), ?, ?, ?)";
+  var sql2 = "INSERT INTO tandya_hashtag (t_id, hash) VALUES (?, ?)";
+
+  async function insertHashtag(query, id, hashtagArray){
+    for(var i=0;i<hashtagArray.length;i++){
+      await dbcon.threeArg(query, id, hashtagArray[i]);
     }
-    var finalhashtag = rawhashtags.split('#');
-    finalhashtag.splice(0,1);
-    hashtagCount = finalhashtag.length;
-    var sql = 'INSERT INTO tandya (author, question, content, hashtagcount, public) VALUES (?, ?, ?, ?, ?)';
-    var sql2='UPDATE users set u_tan= u_tan + 1 WHERE u_id = ?';
-    //update connection
-    conn.conn.query(sql2, [author], function(err, update, fields){
-        if(err){console.log(err);}
-      });
-    //insert connection
-    conn.conn.query(sql, [author, question, content, hashtagCount, public], function(err, result, fields){
-        if(err){console.log(err);}
-        else{
-            var sql4 = insertHashtagSqlMaker(result.insertId, finalhashtag);
-            conn.conn.query(sql4, function(err, hashtag, fields){
-                if(err){console.log(err);}
-                else{ res.redirect('/tandya/'+result.insertId);
-                }
-            });
-        }
-    });
+    res.redirect('/tandya/'+id);
+  }
+  conn.conn.query(sql1, [author, question, content, public], function(err, result, fields){
+    if(err){console.log(err);}
+    else{
+      insertHashtag(sql2, result.insertId, finalhashtag);
+    }
+  });
 };
 
 exports.postAddAnswer = function(req, res){
-    var author = req.session.u_id;
-    var answer = req.body.answer;
-    var t_id = req.params.tandya_no;
-    var sql = 'INSERT INTO t_ans (author, answer, t_id) VALUES (?, ?, ?)';
-    var sql2 = 'UPDATE tandya SET answer = answer + 1 WHERE id = (?)';
-    var sql3 = 'UPDATE tandya SET score = (answer *.3 + t_like*.7)/t_view * 100 where id = ?';
-    conn.conn.query(sql, [author, answer, t_id], function(err, result, fields){
+  var author = req.session.u_id;
+  var answer = req.body.answer;
+  var t_id = req.params.tandya_no;
+  //when connection is more than two, divide
+  var sql1 = 'INSERT INTO t_ans (author, answer, t_id) VALUES ((select id from users where u_id = ?), ?, ?)';
+  var sql2 = 'UPDATE tandya SET score = ((select count(t_id) from t_ans where t_id = ?) *.3 + (select count(t_id) from t_like where t_id = ?)*.7)/t_view * 100 where id = ?'
+  conn.conn.query(sql1, [author, answer, t_id], function(err, result, fields){
+    if(err){console.log(err);}
+    else{
+      conn.conn.query(sql2, [t_id, t_id, t_id], function(err, result2, fields){
         if(err){console.log(err);}
         else{
-            conn.conn.query(sql2, [t_id], function(err, result2, fields){
-                if(err){
-                    console.log(err);
-                }
-                else{
-                    conn.conn.query(sql3, t_id, function(err, score, fields){
-                        if(err){console.log(err);}
-                    });
-                }
-            });
-            res.redirect('/tandya/'+t_id);
+          res.redirect('/tandya/'+t_id);
         }
-    });
+      });
+    }
+  });
 };
 
 exports.postAddAcomment = function(req, res){
-    var author = req.session.u_id;
-    var content = req.body.acommentContent;
-    var t_id = req.params.tandya_no;
-    var ta_id = req.params.answer_no;
-    //when connection is more than two, divide
-    var sql = 'INSERT INTO ta_com (author, content, ta_id, t_id) VALUES (?, ?, ?, ?)';
-    var sql2 = 'UPDATE t_ans SET com = com + 1 WHERE id = ?';
-    var sql3 = 'UPDATE t_ans SET score = com*.3 + ta_like*.7 where id = ?';
-    var sql4 = 'SELECT * FROM ta_com where id = ?';
-    conn.conn.query(sql, [author, content, ta_id, t_id], function(err, result, fields){
+  var author = req.session.u_id;
+  var content = req.body.acommentContent;
+  var t_id = req.params.tandya_no;
+  var ta_id = req.params.answer_no;
+  //when connection is more than two, divide
+  var sql1 = 'UPDATE t_ans set score = ((select count(ta_id) from ta_com where ta_id = ?) *.3 + (select count(ta_id) from ta_like where ta_id = ?)*.7)/(select t_view from tandya where id = ?) * 100 where id = ?';
+  var sql2 = 'INSERT INTO ta_com (author, content, ta_id) VALUES ((select id from users where u_id = ?), ?, ?)';
+  var sql3 = 'SELECT t.*, u.u_id FROM ta_com as t join users as u on t.author = u.id where t.id = ?';
+
+  conn.conn.query(sql1, [ta_id, ta_id, t_id, ta_id], function(err, result, fields){
+    if(err){console.log(err);}
+    else{
+      conn.conn.query(sql2, [author, content, ta_id], function(err, result2, fields){
         if(err){console.log(err);}
         else{
-            conn.conn.query(sql2, [ta_id], function(err, result2, fields){
-                if(err){console.log(err)}
-                else{
-                    conn.conn.query(sql3, ta_id, function(err, result3, fields){
-                        if(err){console.log(err)}
-                        else{
-                            conn.conn.query(sql4, result.insertId, function(err, ajaxResult, fields){
-                                res.json({"acomment_id" : ajaxResult[0].id, "acomment_author" : ajaxResult[0].author, "acomment_content" : ajaxResult[0].content, "acomment_date" : ajaxResult[0].date});
-                            });
-                        }
-                    });
-                }
-            });
+          conn.conn.query(sql3, result2.insertId, function(err, ajaxResult, fields){
+            res.json({"acomment_id" : ajaxResult[0].id, "acomment_author" : ajaxResult[0].u_id, "acomment_content" : ajaxResult[0].content, "acomment_date" : ajaxResult[0].date});
+          });
         }
-    });
+      });
+    }
+  });
 };
 
 
 exports.likesTandya = function(req, res){
-    var clickValue = req.body.clickedValue;
-    var t_id = req.params.id;
-    var sql = 'SELECT * FROM t_like WHERE u_id = ? AND t_id = ?';
-    var sql2 = 'UPDATE tandya set t_like = t_like - 1 where id = ?';
-    var sql3 = 'DELETE FROM t_like WHERE u_id = ? AND t_id = ?';
-    var sql4 = 'UPDATE tandya set t_like = t_like + 1 where id = ?';
-    var sql5 = 'INSERT INTO t_like (t_id, u_id) VALUES (?, ?)';
-    var sql6 = 'select t_like from tandya where id = ?';
-    var sql7 = 'UPDATE tandya SET score = (answer *.3 + t_like*.7)/t_view * 100 where id = ?';
-    conn.conn.query(sql, [req.session.u_id, t_id], function(err, statusCheck, fields){
-        if(clickValue == 'Batal Suka'){
-            conn.conn.query(sql2, t_id, function(err, update, fields){
-                conn.conn.query(sql3, [req.session.u_id, t_id], function(err, deleting, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql6, t_id, function(err, ajaxresult, fields){
-                            res.json({"t_like" : ajaxresult[0].t_like, "button" : "Suka"});
-                        });
-                    }
-                });
-            });
-        }
-        else{
-            conn.conn.query(sql4, t_id, function(err, update, fields){
-                conn.conn.query(sql5, [t_id, req.session.u_id], function(err, inserting, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql6, t_id, function(err, ajaxresult, fields){
-                            res.json({"t_like" : ajaxresult[0].t_like, "button" : "Batal Suka"});
-                        });
-                    }
-                });
-            });
-        }
-    });
-    conn.conn.query(sql7, t_id, function(err, score, fields){
+  var clickValue = req.body.clickedValue;
+  var t_id = req.params.id;
+  var sql1 = '';
+  var sql2 = 'UPDATE tandya SET score = ((select count(t_id) from t_ans where t_id = ?) *.3 + (select count(t_id) from t_like where t_id = ?)*.7)/t_view * 100 where id = ?'
+  var sql3 = 'select count(t_id) as tlikeCount from t_like where t_id = ?';
+  var buttonValue = '';
+  if(clickValue == 'Batal Suka'){
+    sql1 = 'DELETE FROM t_like WHERE t_id = ? AND u_id = (select id from users where u_id = ?)';
+    buttonValue = "Suka";
+  }
+  else{
+    sql1 = 'INSERT INTO t_like (t_id, u_id) VALUES (?, (select id from users where u_id = ?))';
+    buttonValue = "Batal Suka";
+  }
+  conn.conn.query(sql1, [t_id, req.session.u_id], function(err, action, fields){
+    if(err){console.log(err);}
+    else{
+      conn.conn.query(sql2, [t_id, t_id, t_id], function(err, update, fields){
         if(err){console.log(err);}
-    });
+        else{
+          conn.conn.query(sql3, t_id, function(err, ajaxResult, fields){
+            console.log(ajaxResult);
+            res.json({"t_like" : ajaxResult[0].tlikeCount, "button" : buttonValue});
+          });
+        }
+      });
+    }
+  });
 };
+
 exports.likesAnswer = function(req, res){
-    var clickValue = req.body.clickedValue;
-    var t_id = req.body.t_id;
-    var ta_id = req.body.ta_id;
-    var sql = 'SELECT * FROM ta_like WHERE u_id = ? AND ta_id = ?';
-    var sql2 = 'UPDATE t_ans set ta_like = ta_like - 1 where id = ?';
-    var sql3 = 'DELETE FROM ta_like WHERE u_id = ? AND ta_id = ? AND t_id';
-    var sql4 = 'UPDATE t_ans set ta_like = ta_like + 1 where id = ?';
-    var sql5 = 'INSERT INTO ta_like (ta_id, u_id, t_id) VALUES (?, ?, ?)';
-    var sql6 = 'select ta_like from t_ans where id = ?';
-    var sql7 = 'UPDATE tandya SET score = com*.3 + ta_like*.7 where id = ?';
-    conn.conn.query(sql, [req.session.u_id, ta_id], function(err, statusCheck, fields){
-        if(clickValue == 'Batal Suka'){
-            conn.conn.query(sql2, ta_id, function(err, update, fields){
-                conn.conn.query(sql3, [req.session.u_id, ta_id, t_id], function(err, deleting, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql6, ta_id, function(err, ajaxresult, fields){
-                            res.json({"ta_like" : ajaxresult[0].ta_like, "button" : "Suka"});
-                        });
-                    }
-                });
-            });
-        }
-        else{
-            conn.conn.query(sql4, ta_id, function(err, update, fields){
-                conn.conn.query(sql5, [ta_id, req.session.u_id, t_id], function(err, inserting, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql6, ta_id, function(err, ajaxresult, fields){
-                            res.json({"ta_like" : ajaxresult[0].ta_like, "button" : "Batal Suka"});
-                        });
-                    }
-                });
-            });
-        }
-    });
-    conn.conn.query(sql7, t_id, function(err, score, fields){
+  var clickValue = req.body.clickedValue;
+  var t_id = req.body.t_id;
+  var ta_id = req.body.ta_id;
+  var sql1 = '';
+  var sql2 = 'UPDATE t_ans set score = ((select count(ta_id) from ta_com where ta_id = ?) *.3 + (select count(ta_id) from ta_like where ta_id = ?)*.7)/(select t_view from tandya where id = ?) * 100 where id = ?';
+  var sql3 = 'select count(ta_id) as taLikeCount from ta_like where ta_id = ?';
+  var buttonValue = '';
+  if(clickValue == 'Batal Suka'){
+    sql1 = 'DELETE FROM ta_like WHERE ta_id = ? AND u_id = (select id from users where u_id = ?)';
+    buttonValue = 'Suka';
+  }
+  else{
+    sql1 = 'INSERT INTO ta_like (ta_id, u_id) VALUES (?, (select id from users where u_id = ?))';
+    buttonValue = 'Batal Suka';
+  }
+  conn.conn.query(sql1, [ta_id, req.session.u_id], function(err, action, fields){
+    if(err){console.log(err);}
+    else{
+      conn.conn.query(sql2, [ta_id, ta_id, t_id, ta_id], function(err, update, fields){
         if(err){console.log(err);}
-    });
+        else{
+          conn.conn.query(sql3, ta_id, function(err, ajaxresult, fields){
+            res.json({"ta_like" : ajaxresult[0].taLikeCount, "button" : buttonValue});
+          });
+        }
+      });
+    }
+  });
 };
 
 exports.warningTandya = function(req, res){

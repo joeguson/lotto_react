@@ -1,79 +1,56 @@
-doctype html
-html(lang="id")
-    head
-        title beritamus
-        // what appears on the tab
-        base(href="/")
-        link(rel='stylesheet', href='common.css' type="text/css")
-        // links css common file
-        link(rel="stylesheet" href="tandya_add.css" type="text/css")
-        // links css file
-        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
-        meta(charset='UTF-8')
-        meta(name='viewport', content='width=device-width, user-scalable=no')
-        meta(name='apple-mobile-web-app-capable', content='yes')
-        // iphone에서 어플식으로 저장가능
-        // Lorem ipsum
-    body
-    -var hashtagmaker = function(hashtag_object){
-    -var hashtagcount = edit_content.hashtagcount;
-    -var hashtag_temp = '';
-    -for(var i = 0; i<hashtagcount; i++){hashtag_temp= hashtag_temp + '#'+hashtag_object[i].hash+' ';}
-    -return hashtag_temp;
-    -}
-    -var hashtag_final = hashtagmaker(hashtags);
-        .container
-            header
-                a(href='/penobrol') Beritamus      
-            nav
-                ul
-                    li
-                        a(href='/aku') Aku
-                    li
-                        a(href='/cari') Cari
-                    li
-                        a(href='/penobrol') Penobrol
-                    li(style='border-bottom: 2px solid yellow; opacity: .9')
-                        a(href='/tandya' style='color: #ffff97;') Tandya
-                    br.clear
-            article
-                form(action='/tedit/'+edit_content.id method='post' onsubmit='return checksubmit();')
-                    p
-                        input(type='text' name='question' placeholder='title' class="title" id="title" value=edit_content.question)
-                    p
-                        if edit_content.public == 'p'
-                            label
-                                input(type='radio' value='p' name="public" checked)
-                                |public
-                            label
-                                input(type='radio' value='a' name="public")
-                                |anonim
-                        else
-                            label
-                                input(type='radio' value='p' name="public" )
-                                |public
-                            label
-                                input(type='radio' value='a' name="public" checked)
-                                |anonim
+extends ../layout.jade
 
-                    p
-                        textarea(name='content' class="content" id="content")= edit_content.content
-                    p
-                        input(type='text' name='hashtag' class="hashtag" value="#{hashtag_final}")
-                    p
-                        input(type='submit' class="submit")
-                    script.
-                        function checksubmit(){
-                            if(title.value.length < 5){
-                                alert('judulnya harus lebih dari 5 alphabet');
-                                return false;
-                            }
-                            if(content.value.length < 5){
-                                alert('kontennya harus lebih dari 5 alphabet');
-                                return false;
-                            }
-                            return true;
-                        }
-            section.footer(id='footer') 
-                p contact : admin@beritamus.com
-                p www.beritamus.com
+block css
+  link(rel="stylesheet" href="../css/tandya_add.css" type="text/css")
+  script(type="text/javascript" src="/js/jsForAllJade.js")
+
+block nav
+  ul
+    li: a(href='/aku') Aku
+    li: a(href='/cari') Cari
+    li: a(href='/penobrol') Penobrol
+    li(style='border-bottom: 3px solid #ffff97; opacity: .9'):: a(href='/tandya' style='color: #ffff97;') Tandya
+    br.clear
+
+block submain
+  //.ad Advertisement
+  
+  
+block main 
+  article
+    form(action='/tedit/'+edit_content.id method='post' onsubmit='return checksubmit();')
+      p
+        input(type='text' name='question' placeholder='title' class="title" id="title" value=edit_content.question)
+      p
+        if edit_content.public == 'p'
+          label
+            input(type='radio' value='p' name="public" checked)
+            |public
+          label
+            input(type='radio' value='a' name="public")
+            |anonim
+        else
+          label
+            input(type='radio' value='p' name="public" )
+            |public
+          label
+            input(type='radio' value='a' name="public" checked)
+            |anonim
+      p
+        textarea(name='content' class="content" id="content")= edit_content.content
+      p
+        input(type='text' name='hashtag' class="hashtag" value="#{hashtag_final}")
+      p
+        input(type='submit' class="submit")
+        script.
+            function checksubmit(){
+                if(title.value.length < 5){
+                    alert('judulnya harus lebih dari 5 alphabet');
+                    return false;
+                }
+                if(content.value.length < 5){
+                    alert('kontennya harus lebih dari 5 alphabet');
+                    return false;
+                }
+                return true;
+            }

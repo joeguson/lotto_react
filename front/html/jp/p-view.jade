@@ -36,8 +36,7 @@ block main
             button(class="pwarnButton" type="submit" value='pen/'+topic.id+'/0/0' onclick="warningAjax(this)" id="warn/"+'pen/'+topic.id+'/0/0') !
         p(class="content")
           pre(class="content")= topic.content
-        -var likeCount = plikes.length
-        div(id="plike" class="plike")= likeCount
+        div(id="plike" class="plike")= plikes.length
         if u_id
           if(commentLikeChecker(plikes, topic.id, u_id))
             button(id="plikeButton" class="plikeButton" type="submit" value="Batal Suka") Batal Suka

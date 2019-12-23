@@ -24,21 +24,21 @@ block main
   .p-terbaru
       .p-title Penobrol Terbaru
       ul
-          each v in dateTopics
-              li
-                  -var plink = 'penobrol/'+v.id
-                  dl.p-dl(onclick ='location.href="#{plink}"')
-                      dt
-                          a(href='/penobrol/'+v.id)= v.title
-                      dd.ddcontent= v.content
-                      if v.public == 'a'
-                          - var date_result = 'by '+anonimmaker(v.u_id)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
-                      else
-                          - var date_result = 'by '+v.u_id+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
-                      -var hashtagfind = hashtagfinder('p', v.id, hashtags); 
-                      -var hashtagfinal = hashtagmaker(hashtagfind);
-                      dd #{hashtagfinal}
-                      dd #{date_result}      
+        each v in dateTopics
+          li
+            -var plink = 'penobrol/'+v.id
+            dl.p-dl(onclick ='location.href="#{plink}"')
+              dt
+                a(href='/penobrol/'+v.id)= v.title
+              dd.ddcontent= v.content
+              if v.public == 'a'
+                - var date_result = 'by '+anonimmaker(v.u_id)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
+              else
+                - var date_result = 'by '+v.u_id+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
+              -var hashtagfind = hashtagfinder('p', v.id, hashtags); 
+              -var hashtagfinal = hashtagmaker(hashtagfind);
+              dd #{hashtagfinal}
+              dd #{date_result}      
   .p-terkenal
       .p-title Penobrol Terkenal
       ul

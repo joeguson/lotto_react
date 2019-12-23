@@ -27,6 +27,9 @@ exports.threeArg = function(query, id, arg1){
       if(!err){
         resolve(result);
       }
+      else{
+        console.log(err);
+      }
     });
   });
 }

@@ -1,22 +1,22 @@
 var likeButton = document.getElementById('plikeButton');
-
 var click = true;
 likeButton.addEventListener('click', function(){
-    //var v = parseInt(document.getElementById('plikes').innerHTML);
-    var pathname = location.pathname;
-    var id = pathname.split('/');
-    var clickedValue = likeButton.value;
-    if(click){
-        click = !click;
-        plikeSendAjax('/plikes/'+id[2], clickedValue);
-        // 타이밍 추가
-        setTimeout(function(){
-            click = true;
-        },3000);
-    }
-    else{
-        console.log("double");
-    }
+  //var v = parseInt(document.getElementById('plikes').innerHTML);
+  var pathname = location.pathname;
+  var id = pathname.split('/');
+  var clickedValue = likeButton.value;
+  console.log(clickedValue);
+  if(click){
+    click = !click;
+    plikeSendAjax('/plikes/'+id[2], clickedValue);
+    // 타이밍 추가
+    setTimeout(function(){
+        click = true;
+    },3000);
+  }
+  else{
+    console.log("double");
+  }
 });
 
 function plikeSendAjax(url, data){
@@ -31,6 +31,7 @@ function plikeSendAjax(url, data){
       var result = JSON.parse(xhr.responseText);
       document.getElementById("plike").innerHTML = result.p_like;
       likeButton.innerHTML = result.button;
+      likeButton.setAttribute("value", result.button);
     });
 }
 
