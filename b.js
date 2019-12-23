@@ -119,7 +119,7 @@ app.get(['/penobrol'], penobrol.getPenobrol);
 app.get(['/penobrol/:penobrol_no'], penobrol.getViewPenobrol);
 app.post('/plikes/:id', penobrol.likesPenobrol);
 app.post('/pCommentlikes/:id', penobrol.likesComment);
-app.post('/pccomment/:pc_no', penobrol.postAddCcomment);
+app.post('/pccomment/:p_id/:pc_id', penobrol.postAddCcomment);
 app.post('/pwarning/', penobrol.warningPenobrol);
 app.get(['/pedit/:penobrol_no'], penobrol.getEditPenobrol);
 app.post(['/pedit/:penobrol_no'], penobrol.postEditPenobrol);

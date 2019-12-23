@@ -28,11 +28,9 @@ function plikeSendAjax(url, data){
     xhr.send(original);
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
-      console.log('hi');
       var result = JSON.parse(xhr.responseText);
       document.getElementById("plike").innerHTML = result.p_like;
       likeButton.innerHTML = result.button;
-      likeButton.setAttribute('value', result.button);
     });
 }
 
@@ -62,12 +60,12 @@ function pcLikeSendAjax(comment){
     xhr.send(original);
     // 데이터 수신이 완료되면 표시
     xhr.addEventListener('load', function(){
-        var result = JSON.parse(xhr.responseText);
-        document.getElementById("pCommentlikes"+id[1]).innerHTML = result.pc_like;
-        comment.innerHTML = result.button;
-        setTimeout(function(){
-            pcLikeClick = true;
-        },2000);
+      var result = JSON.parse(xhr.responseText);
+      document.getElementById("pCommentlikes"+id[1]).innerHTML = result.pc_like;
+      comment.innerHTML = result.button;
+      setTimeout(function(){
+          pcLikeClick = true;
+      },2000);
     });
   }
   else{
@@ -112,7 +110,7 @@ function ccommentSendAjax(ccomment){
     else{
       original = JSON.stringify(original);
       var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/pccomment/'+commentId);
+      xhr.open('POST', '/pccomment/'+penobrolId[2]+'/'+commentId);
       xhr.setRequestHeader('Content-type', "application/json");
       xhr.send(original);
       // 데이터 수신이 완료되면 표시

@@ -39,7 +39,7 @@ block main
         -var likeCount = plikes.length
         div(id="plike" class="plike")= likeCount
         if u_id
-          if statusCheck == 'yes'
+          if(commentLikeChecker(plikes, topic.id, u_id))
             button(id="plikeButton" class="plikeButton" type="submit" value="Batal Suka") Batal Suka
           else
             button(id="plikeButton" class="plikeButton" type="submit" value="Suka") Suka
@@ -65,10 +65,10 @@ block main
                 dt.pcomment-dt
                   pre(class="pcomment-dt") "#{c.content}"
                 dd.pcomment-dd #{date_result2}
-                  span.pclike(id="pCommentlikes"+c.id)=c.pc_like
+                  span.pclike(id="pCommentlikes"+c.id)= pclikes[comments.indexOf(c)].length
                   if u_id
                     span.commentButton
-                      if(commentLikeChecker(plikes, c.id, u_id)) 
+                      if(commentLikeChecker(pclikes[comments.indexOf(c)], c.id, u_id)) 
                         button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="pcLikeSendAjax(this);") Batal Suka
                       else
                         button(class="pclikeButton" type="submit" value=topic.id+'/'+c.id onclick="pcLikeSendAjax(this);") Suka

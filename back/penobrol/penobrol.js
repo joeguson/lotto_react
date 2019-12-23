@@ -58,8 +58,8 @@ exports.getViewPenobrol = function(req, res){
           var sql5 = 'SELECT p.*, u.u_id FROM p_com as p join users as u on p.author = u.id WHERE p_id = ? order by score desc';
           var sql6 = 'SELECT * FROM penobrol_hashtag where p_id = ?';
           var sql7 = 'SELECT p.*, u.u_id FROM pc_com as p join users as u on p.author = u.id WHERE p.pc_id = ?';
-          var sql8 = 'SELECT * FROM p_like WHERE p_id = ? AND u_id = (select id from users where u_id = ?)';
-          var sql9 = 'SELECT * FROM pc_like where pc_id = ? AND u_id = (select id from users where u_id = ?)';
+          var sql8 = 'SELECT p.p_id as like_id, p.u_id, u.u_id FROM p_like as p join users as u on p.u_id = u.id WHERE p.p_id = ?';
+          var sql9 = 'SELECT p.pc_id as like_id, p.u_id, u.u_id FROM pc_like as p join users as u on p.u_id = u.id where p.pc_id = ?';
           await dbcon.twoArg(sql2, id);
           await dbcon.fourArg(sql3, id, id, id);
           penobrol = await dbcon.twoArg(sql4, id);
@@ -70,18 +70,17 @@ exports.getViewPenobrol = function(req, res){
               pc_comments.push(await dbcon.twoArg(sql7, p_comments[i].id));
             }
           }
-          if(req.session.u_id){
-            p_likes = await dbcon.threeArg(sql8, id, req.session.u_id);
-            if(p_likes.length>0){
-              for(var j=0;j<p_likes.length;j++){
-                pc_likes.push(await dbcon.threeArg(sql9, id, req.session.u_id));
-              }
+          p_likes = await dbcon.twoArg(sql8, id);
+          if(p_comments.length>0){
+            for(var j=0;j<p_comments.length;j++){
+              pc_likes.push(await dbcon.twoArg(sql9, p_comments[j].id));
             }
-            console.l
+          }
+          if(req.session.u_id){
             res.render('./jp/p-view', {topic:penobrol[0], comments:p_comments, u_id:req.session.u_id, hashtag:p_hashtags, ccomments:pc_comments, plikes:p_likes, pclikes:pc_likes});
           }
           else{
-            res.render('./jp/p-view', {topic:penobrol[0], comments:p_comments, u_id:req.session.u_id, hashtag:p_hashtags, ccomments:pc_comments});
+            res.render('./jp/p-view', {topic:penobrol[0], comments:p_comments, hashtag:p_hashtags, ccomments:pc_comments, plikes:p_likes, pclikes:pc_likes});
           }
         }
         getP();
@@ -149,13 +148,14 @@ exports.postAddComment = function(req, res){
 exports.postAddCcomment = function(req, res){
   var author = req.session.u_id;
   var content = req.body.ccommentContent;
-  var pc_id = req.params.pc_no;
+  var p_id = req.params.p_id;
+  var pc_id = req.params.pc_id;
   //when connection is more than two, divide
-  var sql1 = 'UPDATE p_com as pcom join penobrol as p SET pcom.score = ((select count(pc_id) from pc_com where pc_id = ?) *.3 + (select count(pc_id) from pc_like where pc_id = ?)*.7)/p.p_view * 100 where pcom.id = ?'
+  var sql1 = 'UPDATE p_com set score = ((select count(pc_id) from pc_com where pc_id = ?) *.3 + (select count(pc_id) from pc_like where pc_id = ?)*.7)/(select p_view from penobrol where id = ?) * 100 where id = ?';
   var sql2 = 'INSERT INTO pc_com (author, content, pc_id) VALUES ((select id from users where u_id = ?), ?, ?)';
   var sql3 = 'SELECT p.*, u.u_id FROM pc_com as p join users as u on p.author = u.id where p.id = ?';
 
-  conn.conn.query(sql1, [pc_id, pc_id, pc_id], function(err, result, fields){
+  conn.conn.query(sql1, [pc_id, pc_id, p_id, pc_id], function(err, result, fields){
     if(err){console.log(err);}
     else{
       conn.conn.query(sql2, [author, content, pc_id], function(err, result2, fields){
@@ -205,41 +205,32 @@ exports.likesComment = function(req, res){
   var clickValue = req.body.clickedValue;
   var p_id = req.body.p_id;
   var pc_id = req.body.pc_id;
-  var sql = 'SELECT * FROM pc_like WHERE u_id = ? AND pc_id = ?';
-  var sql2 = 'UPDATE p_com set pc_like = pc_like - 1 where id = ?';
-  var sql3 = 'DELETE FROM pc_like WHERE u_id = ? AND pc_id = ? AND p_id';
-  var sql4 = 'UPDATE p_com set pc_like = pc_like + 1 where id = ?';
-  var sql5 = 'INSERT INTO pc_like (pc_id, u_id, p_id) VALUES (?, ?, ?)';
-  var sql6 = 'select pc_like from p_com where id = ?';
-  var sql7 = 'UPDATE p_com SET score = pc_like*0.7 + com*0.3 where id = ?';
-  conn.conn.query(sql, [req.session.u_id, pc_id], function(err, statusCheck, fields){
-      if(clickValue == 'Batal Suka'){
-          conn.conn.query(sql2, pc_id, function(err, update, fields){
-              conn.conn.query(sql3, [req.session.u_id, pc_id, p_id], function(err, deleting, fields){
-                  if(err){console.log(err);}
-                  else{
-                      conn.conn.query(sql6, pc_id, function(err, ajaxresult, fields){
-                          res.json({"pc_like" : ajaxresult[0].pc_like, "button" : "Suka"});
-                      });
-                  }
-              });
+
+  var sql1 = '';
+  var sql2 = 'UPDATE p_com set score = ((select count(pc_id) from pc_com where pc_id = ?) *.3 + (select count(pc_id) from pc_like where pc_id = ?)*.7)/(select p_view from penobrol where id = ?) * 100 where id = ?';
+  var sql3 = 'select count(pc_id) as pcLikeCount from pc_like where pc_id = ?';
+  var buttonValue = '';
+  if(clickValue == 'Batal Suka'){
+    sql1 = 'DELETE FROM pc_like WHERE pc_id = ? AND u_id = (select id from users where u_id = ?)';
+    buttonValue = 'Suka';
+  }
+  else{
+    sql1 = 'INSERT INTO pc_like (pc_id, u_id) VALUES (?, (select id from users where u_id = ?))';
+    buttonValue = 'Batal Suka';
+  }
+
+  conn.conn.query(sql1, [pc_id, req.session.u_id], function(err, action, fields){
+    if(err){console.log(err);}
+    else{
+      conn.conn.query(sql2, [pc_id, pc_id, p_id, pc_id], function(err, update, fields){
+        if(err){console.log(err);}
+        else{
+          conn.conn.query(sql3, pc_id, function(err, ajaxresult, fields){
+            res.json({"pc_like" : ajaxresult[0].pcLikeCount, "button" : buttonValue});
           });
-      }
-      else{
-          conn.conn.query(sql4, pc_id, function(err, update, fields){
-              conn.conn.query(sql5, [pc_id, req.session.u_id, p_id], function(err, inserting, fields){
-                  if(err){console.log(err);}
-                  else{
-                      conn.conn.query(sql6, pc_id, function(err, ajaxresult, fields){
-                          res.json({"pc_like" : ajaxresult[0].pc_like, "button" : "Batal Suka"});
-                      });
-                  }
-              });
-          });
-      }
-  });
-  conn.conn.query(sql7, p_id, function(err, score, fields){
-      if(err){console.log(err);}
+        }
+      });
+    }
   });
 };
 exports.warningPenobrol = function(req, res){
