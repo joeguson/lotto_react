@@ -1,0 +1,26 @@
+//out: penobrol_add.css
+// Variables
+@themes: "../css";
+// Usage
+@import "@{themes}/variable.less";
+
+article{width:100%; background-color: @bgcolor2; padding:20px 25px; box-sizing: border-box; text-align: center; margin:0 auto;}
+
+input{border:1px solid lightgray; font-size: 16px; padding:10px; margin-bottom: @marginbottom-mbl; border:1px solid @main;}
+textarea{border:1px solid lightgray; font-size: 16px; padding: 10px; margin-bottom: @marginbottom-mbl; border:1px solid @main;}
+
+form p:nth-child(1){text-align: center;}
+form p:nth-child(2){text-align: center;}
+form p:nth-child(3){text-align: center;}
+form p:nth-child(4){text-align: center;}
+
+.title{height:40px; width:90%;}
+.content{height:500px; width:90%;}
+.hashtag{height:40px; width:90%;}
+.submit{.button(); width:90%; margin:0 auto; display: block; .border-radius(); font-size: 14px; line-height: 35px; height:35px;}
+
+/*for bigger windows*/
+@media (min-width:768px){
+    article{width:90%; text-align: center; margin:0 auto;}
+
+}

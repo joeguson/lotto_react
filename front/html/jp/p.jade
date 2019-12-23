@@ -1,0 +1,59 @@
+extends ../layout.jade
+
+block css
+  link(rel="stylesheet" href="../css/penobrol.css" type="text/css")
+  script(type="text/javascript" src="/js/jsForAllJade.js")
+
+block nav
+  ul
+    li: a(href='/aku') Aku
+    li: a(href='/cari') Cari
+    li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/penobrol' style='color: #ffff97;') Penobrol
+    li: a(href='/tandya') Tandya
+    br.clear
+
+block submain
+  //.ad Advertisement
+  
+block main
+  .login
+      if(u_id)
+          a.addPenobrol(href='/penobrol/add') +
+      else
+          a.addPenobrol(href='/aku') + 
+  .p-terbaru
+      .p-title Penobrol Terbaru
+      ul
+        each v in dateTopics
+          li
+            -var plink = 'penobrol/'+v.id
+            dl.p-dl(onclick ='location.href="#{plink}"')
+              dt
+                a(href='/penobrol/'+v.id)= v.title
+              dd.ddcontent= v.content
+              if v.public == 'a'
+                - var date_result = 'by '+anonimmaker(v.u_id)+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
+              else
+                - var date_result = 'by '+v.u_id+' / ' + datemaker(v.date) + ' / ' + v.p_view + ' views' + ' / ' + v.com+' comments'
+              -var hashtagfind = hashtagfinder('p', v.id, hashtags); 
+              -var hashtagfinal = hashtagmaker(hashtagfind);
+              dd #{hashtagfinal}
+              dd #{date_result}      
+  .p-terkenal
+      .p-title Penobrol Terkenal
+      ul
+          each w in scoreTopics
+              li
+                  -var plink = 'penobrol/'+w.id
+                  dl.p-dl(onclick ='location.href="#{plink}"')
+                      dt
+                          a(href='/penobrol/'+w.id)= w.title
+                      dd.ddcontent= w.content
+                      if w.public == 'a'
+                          - var date_result = 'by '+anonimmaker(w.u_id)+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' comments'
+                      else
+                          - var date_result = 'by '+w.u_id+' / ' + datemaker(w.date) + ' / ' + w.p_view + ' views' + ' / ' + w.com+' comments'
+                      -var hashtagfind = hashtagfinder('p', w.id, hashtags); 
+                      -var hashtagfinal = hashtagmaker(hashtagfind);
+                      dd #{hashtagfinal}
+                      dd #{date_result}
