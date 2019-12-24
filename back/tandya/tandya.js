@@ -58,40 +58,22 @@ exports.getViewTandya = function (req, res) {
                     var sql9 = 'SELECT t.ta_id as like_id, t.u_id, u.u_id FROM ta_like as t join users as u on t.u_id = u.id where t.ta_id = ?';
                     await dbcon.twoArg(sql2, id);
                     await dbcon.fourArg(sql3, id, id, id);
-                    tandya = await dbcon.twoArg(sql4, id);
-                    t_answers = await dbcon.twoArg(sql5, id);
-                    t_hashtags = await dbcon.twoArg(sql6, id);
-                    if (t_answers.length > 0) {
-                        for (var i = 0; i < t_answers.length; i++) {
-                            ta_comments.push(await dbcon.twoArg(sql7, t_answers[i].id));
-                        }
+                    tandya = parser.parseTandya((await dbcon.twoArg(sql4, id))[0]);
+                    tandya.answers = (await dbcon.twoArg(sql5, id)).map(parser.parseAnswer);
+                    tandya.hashtags = (await dbcon.twoArg(sql6, id)).map(parser.parseHashtag);
+
+                    for(const a of tandya.answers) {
+                        a.comments = (await dbcon.twoArg(sql7, id)).map(parser.parseAComment);
+                        a.likes = (await dbcon.twoArg(sql9, id)).map(parser.parseALike);
                     }
-                    t_likes = await dbcon.twoArg(sql8, id);
-                    if (t_answers.length > 0) {
-                        for (var j = 0; j < t_answers.length; j++) {
-                            ta_likes.push(await dbcon.twoArg(sql9, t_answers[j].id));
-                        }
-                    }
-                    if (req.session.u_id) {
-                        res.render('./jt/t-view', {
-                            topic: tandya[0],
-                            answers: t_answers,
-                            u_id: req.session.u_id,
-                            hashtag: t_hashtags,
-                            acomments: ta_comments,
-                            tlikes: t_likes,
-                            talikes: ta_likes
-                        });
-                    } else {
-                        res.render('./jt/t-view', {
-                            topic: tandya[0],
-                            answers: t_answers,
-                            hashtag: t_hashtags,
-                            acomments: ta_comments,
-                            tlikes: t_likes,
-                            talikes: ta_likes
-                        });
-                    }
+                    tandya.likes = (await dbcon.twoArg(sql8, id)).map(parser.parseLike);
+
+                    console.log(tandya);
+
+                    res.render('./jt/t-view', {
+                        topic: tandya,
+                        u_id: req.session.u_id,
+                    });
                 }
 
                 getT();

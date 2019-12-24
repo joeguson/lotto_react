@@ -61,6 +61,21 @@ exports.parseComment = function (packet) {
     };
 };
 
+exports.parseAnswer = function (packet) {
+    return {
+        id: packet.id,
+        t_id: packet.t_id,
+        author: packet.author,
+        answer: packet.answer,
+        date: utils.dateMaker(packet.date),
+        score: packet.score,
+        changed_date: packet.changed_date,
+        comments: packet.comments,
+        likes: packet.likes,
+        u_id: packet.u_id
+    };
+};
+
 exports.parseCComment = function (packet) {
     return {
         id: packet.id,
@@ -68,6 +83,17 @@ exports.parseCComment = function (packet) {
         content: packet.content,
         date: utils.dateMaker(packet.date),
         pc_id: packet.pc_id,
+        u_id: packet.u_id
+    };
+};
+
+exports.parseAComment = function (packet) {
+    return {
+        id: packet.id,
+        author: packet.author,
+        content: packet.content,
+        date: utils.dateMaker(packet.date),
+        ta_id: packet.ta_id,
         u_id: packet.u_id
     };
 };
@@ -86,6 +112,17 @@ exports.parseCLike = function (packet) {
         content: packet.content,
         date: utils.dateMaker(packet.date),
         pc_id: packet.pc_id,
+        u_id: packet.u_id
+    };
+};
+
+exports.parseALike = function (packet) {
+    return {
+        id: packet.id,
+        author: packet.author,
+        content: packet.content,
+        date: utils.dateMaker(packet.date),
+        ta_id: packet.ta_id,
         u_id: packet.u_id
     };
 };
