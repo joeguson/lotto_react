@@ -57,44 +57,6 @@ var thashtagfinder = function(tid, hashtags){
     return temp;
 };
 
-var hashtagmaker = function(hashtagObject){
-    var hashtag_temp = '';
-    for(var i = 0; i<hashtagObject.length; i++){
-        hashtag_temp= hashtag_temp + '#'+hashtagObject[i]+' ';
-    }
-    return hashtag_temp;
-};
-
-
-function dateMaker(date){
-    var tempdate = new Date(date);
-    var nowdate = new Date();
-    var year = tempdate.getFullYear();
-    var month = tempdate.getMonth();
-    var day = tempdate.getDate();
-    var diff = nowdate - tempdate;
-    if(diff > 864000000){
-        return month+'-'+day+'-'+year;
-    }
-    else{
-        if(diff > 86400000){
-            return parseInt(diff/86400000)+' days ago';
-        }
-        else{
-            if(diff > 3600000){
-                return parseInt(diff/3600000)+' h ago';
-            }
-                else{
-                    if(diff > 60000){
-                        return parseInt(diff/60000)+' min ago';
-                    }
-                    else{
-                        return parseInt(diff/1000)+' sec ago';
-                    }
-                }
-        }
-    }
-}
 function sendAjax(url){
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url);

@@ -9,81 +9,13 @@ html(lang="id")
         // links css file
         link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
         meta(charset='UTF-8')
-        meta(name='viewport', content='width=device-width, initial-scale=1')    
+        meta(name='viewport', content='width=device-width, initial-scale=1')
         meta(name='apple-mobile-web-app-capable', content='yes')
+        script(type="text/javascript" src="../js/utils.js")
         block css
         // iphone에서 어플식으로 저장가능
         // Lorem ipsum
     body
-      -var datemaker = function(date){
-      -var tempdate = new Date(date);
-      -var nowdate = new Date();
-      -var year = tempdate.getFullYear();
-      -var year = tempdate.getFullYear();
-      -var month = tempdate.getMonth();
-      -var day = tempdate.getDate();
-      -var diff = nowdate - tempdate;
-      -if(diff > 864000000){return month+'-'+day;}
-      -else{
-      -if(diff > 86400000){return parseInt(diff/86400000)+' days ago';}
-      -else{
-      -if(diff > 3600000){return parseInt(diff/3600000)+' h ago';}
-      -else{
-      -if(diff > 60000){return parseInt(diff/60000)+' min ago';}
-      -else{return parseInt(diff/1000)+' sec ago';}
-      -}
-      -}
-      -}
-      -}
-      -var anonimmaker = function(username){
-      -var idChanger = '';
-      -var idLength = (username).length;
-      -idChanger = username.substr(0,3) + '****';
-      -return idChanger;
-      -}
-      -var commentLikeChecker = function(likeObject, cId, userId){
-      -for(var i = 0; i<likeObject.length; i++){
-      -if(likeObject[i].like_id == cId && likeObject[i].u_id == userId){
-      -return true;
-      -}
-      -}
-      -return false;
-      -}
-      //- -var hashtagmaker = function(hashtag_object){
-      //- -var hashtagcount = edit_content.hashtagcount;
-      //- -var hashtag_temp = '';
-      //- -for(var i = 0; i<hashtagcount; i++){hashtag_temp= hashtag_temp + '#'+hashtag_object[i].hash+' ';}
-      //- -return hashtag_temp;
-      //- -}
-      -function hashtagmaker(hashtagObject){
-      -var hashtag_temp = '';
-      -for(var i = 0; i<hashtagObject.length; i++){
-      -hashtag_temp= hashtag_temp + '#'+hashtagObject[i]+' ';
-      -}
-      -return hashtag_temp;
-      -}
-      -function hashtagfinder(type, id, hashtagObject){
-      -var temp = [];
-      -for(var i=0; i<hashtagObject.length; i++){
-      -if(hashtagObject[i].length >0){
-      -if(type == 'p'){
-      -if(hashtagObject[i][0].p_id == id){
-      -for(var j=0; j<hashtagObject[i].length; j++){  
-      -temp.push(hashtagObject[i][j].hash);
-      -}
-      -}
-      -}
-      -else{
-      -if(hashtagObject[i][0].t_id == id){
-      -for(var j=0; j<hashtagObject[i].length; j++){  
-      -temp.push(hashtagObject[i][j].hash);
-      -}
-      -}
-      -}   
-      -}
-      -}
-      -return temp;
-      -}
       .container
           header
               a(href='/cari') Beritamus
@@ -97,5 +29,4 @@ html(lang="id")
             block footer
               p contact : admin@beritamus.com
               p www.beritamus.com
-      script(type="text/javascript" src="/js/jsForAllJade.js")
             
