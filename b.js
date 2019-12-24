@@ -112,9 +112,9 @@ app.get(['/pedit/:penobrol_no'], penobrol.getEditPenobrol);
 app.post(['/pedit/:penobrol_no'], penobrol.postEditPenobrol);
 app.get(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.getEditPcomment);
 app.post(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.postEditPcomment);
-app.post('/penobrol/delete/:id', penobrol.postDeletePenobrol);
-app.post('/pcomment/delete/:id', penobrol.postDeletePcomment);
-app.post('/pccomment/delete/:id', penobrol.postDeletePccomment);
+app.post('/penobroldelete/:id', penobrol.postDeletePenobrol);
+app.post('/pcommentdelete/:id', penobrol.postDeletePcomment);
+app.post('/pccommentdelete/:id', penobrol.postDeletePccomment);
 
 function generateFilename() {
     const d = new Date();

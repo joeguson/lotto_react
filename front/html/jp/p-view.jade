@@ -23,8 +23,7 @@ block main
         else
           - var date_result = 'by '+ topic.u_id + ' / '+ datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' +' comments' 
         dt.pview-dt= topic.title
-          if u_id == topic.u_id
-            a(onclick='deletePenobrol()') delete
+           
         if(hashtag.length > 0)
           dd.pview-dd.hashtag
             -for(var n=0; n<hashtag.length; n++)
@@ -63,6 +62,7 @@ block main
                 .pcomment-start #{commentStart}
                   if u_id == c.u_id
                     a(href='/pcedit/'+topic.id+'/'+c.id) Edit
+                    a(value=c.id onclick="postDeletePcomment(this)") Delete
                 dt.pcomment-dt
                   pre(class="pcomment-dt") "#{c.content}"
                 dd.pcomment-dd #{date_result2}
@@ -93,6 +93,8 @@ block main
                           dd.pccomment-dd #{date_result3}
                             if u_id
                               button(class="pccWarnButton" type="submit" value='pcc/'+topic.id+'/'+c.id+'/'+cc.id  onclick="warningAjax(this);" id="warn/"+'pcc/'+topic.id+'/'+c.id+'/'+cc.id) !
+                            if u_id == cc.u_id
+                              a(value=cc.id onclick="postDeletePccomment(this)") Delete
   script.
       function pcChecksubmit(){
           if(pcInput.value.length < 5){

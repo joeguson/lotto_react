@@ -394,7 +394,6 @@ exports.postDeletePenobrol = function(req, res){
   conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
     if(err){console.log(err);}
     else{
-      console.log(getAuthor);
       if(getAuthor[0].u_id == req.session.u_id){
         conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
           if(err){console.log(err);}
@@ -412,8 +411,48 @@ exports.postDeletePenobrol = function(req, res){
 }
 
 exports.postDeletePcomment = function(req, res){
-
+  var deleteId = req.body.deleteId;
+  var p_id = req.body.penobrolId
+  var checkAuthor = 'select p.author, u.u_id from p_com p inner join users u on p.author = u.id where p.id = ?';
+  var deleteQuery = 'Delete from p_com where id = ?';
+  conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
+    if(err){console.log(err);}
+    else{
+      if(getAuthor[0].u_id == req.session.u_id){
+        conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
+          if(err){console.log(err);}
+          else{
+            res.json({"result":"deleted"});
+          }
+        });
+      }
+      else{
+        res.redirect('/penobrol/'+p_id);
+      }
+    }
+  });
 }
 exports.postDeletePccomment = function(req, res){
-
+  console.log('in delete');
+  console.log(req.body);
+  var deleteId = req.body.deleteId;
+  var p_id = req.body.penobrolId
+  var checkAuthor = 'select p.author, u.u_id from pc_com p inner join users u on p.author = u.id where p.id = ?';
+  var deleteQuery = 'Delete from pc_com where id = ?';
+  conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
+    if(err){console.log(err);}
+    else{
+      if(getAuthor[0].u_id == req.session.u_id){
+        conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
+          if(err){console.log(err);}
+          else{
+            res.json({"result":"deleted"});
+          }
+        });
+      }
+      else{
+        res.redirect('/penobrol/'+p_id);
+      }
+    }
+  });
 }
