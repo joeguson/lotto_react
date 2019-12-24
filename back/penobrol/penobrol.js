@@ -8,20 +8,30 @@ exports.getPenobrol = function(req, res){
   var sql1 = 'select p.*, u.u_id from penobrol as p join users as u on p.author = u.id order by date desc limit 3';
   var sql2 = 'select p.*, u.u_id from penobrol as p join users as u on p.author = u.id ORDER BY score DESC limit 3';
   var sql3 = 'select * from penobrol_hashtag where p_id = ?';
-  var sql4 = 'select * from penobrol_hashtag where p_id = ?';
+  var sql4 = 'select p.*, u.u_id from penobrol p inner join users u on p.author = u.id order by rand() limit 3';
 
   var byDate = [];
   var byScore = [];
   var pHashtag = [];
+  var testing = [];
 
   async function getOrderedP(){
+    testing = await dbcon.oneArg(sql4);
+    for(var z=0; z<testing.length;z++){
+      testing[z].hash = [];
+      var temp = await dbcon.twoArg(sql3, testing[z].id);
+      for(var y=0; y<temp.length;y++){
+        testing[z].hash.push(temp[y].hash);
+      }
+    }
+
     byDate = await dbcon.oneArg(sql1);
     byScore = await dbcon.oneArg(sql2);
     for(var i=0;i<byDate.length;i++){
       pHashtag.push(await dbcon.twoArg(sql3, byDate[i].id));
     }
     for(var j=0;j<byScore.length;j++){
-      pHashtag.push(await dbcon.twoArg(sql4, byScore[j].id));
+      pHashtag.push(await dbcon.twoArg(sql3, byScore[j].id));
     }
     pHashtag = jsForBack.remove_duplicates(pHashtag);
     if(req.session.u_id){
@@ -372,7 +382,38 @@ exports.postEditPcomment = function(req, res){
   conn.conn.query(sql, [content, pc_id, p_id], function(err, updated, fields){
       if(err){console.log(err);}
       else{
-          res.redirect('/penobrol/'+p_id);
+        res.redirect('/penobrol/'+p_id);
       }
   });
 };
+
+exports.postDeletePenobrol = function(req, res){
+  var deleteId = req.body.deleteId;
+  var checkAuthor = 'select p.author, u.u_id from penobrol p inner join users u on p.author = u.id where p.id = ?';
+  var deleteQuery = 'Delete from penobrol where id = ?';
+  conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
+    if(err){console.log(err);}
+    else{
+      console.log(getAuthor);
+      if(getAuthor[0].u_id == req.session.u_id){
+        conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
+          if(err){console.log(err);}
+          else{
+            console.log(deleteP);
+            res.json({"result":"deleted"});
+          }
+        });
+      }
+      else{
+        res.redirect('/penobrol/'+deleteId);
+      }
+    }
+  });
+}
+
+exports.postDeletePcomment = function(req, res){
+
+}
+exports.postDeletePccomment = function(req, res){
+
+}

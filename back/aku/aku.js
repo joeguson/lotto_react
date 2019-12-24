@@ -4,6 +4,25 @@ var nodemailer = require('nodemailer');
 var key = require('../../info/beritamus-admin-2ff0df5d17ca.json');
 var dbcon = require('../../db/dbconnection');
 
+exports.checkUserId = function(req, res){
+  var sql = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
+  var u_id = req.body.u_id;
+  var result = 0;
+  conn.query(sql, u_id, function(err, check, fields){
+    if(err){console.log(err);}
+    else{
+      if(parseInt(check[0].u_id) > 0){
+        result = 1;
+    }
+      else{
+        result = 0;
+      }
+      var responseData = {'result' : 'ok', 'u_id': result};
+      res.json(responseData);
+    }
+  });
+}
+
 exports.login = function(req, res){
   //login이 이뤄질때
   var u_id = req.body.u_id;
@@ -151,7 +170,7 @@ exports.postDaftar = function(req, res){
     from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
     to: u_email,                     // 수신 메일 주소
     subject: 'Email Verikasi Dari Beritamus',   // 제목
-    html: '<p>Welcome To Beritamus!</p>'+'<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://beritamus.com/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
+    html: '<p>Welcome To Beritamus!</p>'+'<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://beritamus.com/aku/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
   };
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {

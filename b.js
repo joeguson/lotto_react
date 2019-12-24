@@ -68,29 +68,15 @@ exports.pool = pool;
 exports.sch = schedule;
 
 /************FOR AKU************/
+app.get('/aku/findMyIdPw')
 app.post('/aku/login', aku.login);
 app.get(['/aku'], aku.welcome);
 app.get('/aku/logout', aku.logout);
 app.get('/aku/hilang', aku.hilang);
-app.post('/daftar', aku.postDaftar);
-app.get('/daftar', aku.getDaftar);
-app.get('/daftar/auth/', aku.getDaftarAuth);
-app.post('/aku/register', function(req, res){
-    var sql = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
-    var u_id = req.body.u_id;
-    var result = 0;
-    conn.query(sql, u_id, function(err, check, fields){
-        if(parseInt(check[0].u_id) > 0){
-            result = 1;
-        }
-        else{
-            result = 0;
-        }
-        var responseData = {'result' : 'ok', 'u_id': result};
-        res.json(responseData);
-    });
-});
-
+app.post('/aku/daftar', aku.postDaftar);
+app.get('/aku/daftar', aku.getDaftar);
+app.get('/aku/daftar/auth/', aku.getDaftarAuth);
+app.post('/aku/register', aku.checkUserId);
 
 /************FOR CARI************/
 app.get(['/cari','/'], cari.getCari);
@@ -126,30 +112,9 @@ app.get(['/pedit/:penobrol_no'], penobrol.getEditPenobrol);
 app.post(['/pedit/:penobrol_no'], penobrol.postEditPenobrol);
 app.get(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.getEditPcomment);
 app.post(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.postEditPcomment);
-
-/************FOR AKU************/
-app.post('/aku/login', aku.login);
-app.get(['/aku'], aku.welcome);
-app.get('/aku/logout', aku.logout);
-app.get('/aku/hilang', aku.hilang);
-app.post('/daftar', aku.postDaftar);
-app.get('/daftar', aku.getDaftar);
-app.get('/daftar/auth/', aku.getDaftarAuth);
-app.post('/aku/register', function(req, res){
-    var sql = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
-    var u_id = req.body.u_id;
-    var result = 0;
-    conn.query(sql, u_id, function(err, check, fields){
-        if(parseInt(check[0].u_id) > 0){
-            result = 1;
-        }
-        else{
-            result = 0;
-        }
-        var responseData = {'result' : 'ok', 'u_id': result};
-        res.json(responseData);
-    });
-});
+app.post('/penobrol/delete/:id', penobrol.postDeletePenobrol);
+app.post('/pcomment/delete/:id', penobrol.postDeletePcomment);
+app.post('/pccomment/delete/:id', penobrol.postDeletePccomment);
 
 function generateFilename() {
     const d = new Date();
@@ -200,51 +165,51 @@ app.post('/image', (req, res) => {
 });
 
 app.delete('/image/:image_id', (req, res) =>{
-    var id = req.params.image_id;
-    console.log(req.session.u_id);
-    console.log(id);
-    res.send('hi');
+  var id = req.params.image_id;
+  console.log(req.session.u_id);
+  console.log(id);
+  res.send('hi');
 });
 
 var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfWeek: 0}, function(){
-    var dateFrom = new Date();
-    var dateTo = new Date();
-    dateFrom.setDate(dateFrom.getDate() - 6);
-    dateFrom = dateFrom.getFullYear()+'-'+(dateFrom.getMonth()+1)+'-'+dateFrom.getDate();
-    dateTo = dateTo.getFullYear()+'-'+(dateTo.getMonth()+1)+'-'+dateTo.getDate();
-    var tweeklyUpdate = 'select * from tandya where date between date(?) and date (?) order by score desc limit 2';
-    var pweeklyUpdate = 'select * from penobrol where date between date(?) and date (?) order by score desc limit 2';
-    var weeklyUpdate = 'INSERT INTO weekly (gold_p, silver_p, bronze_p, gold_t, silver_t, bronze_t) VALUES(?)';
-    var weeklyArray = [];
-    conn.query(tweeklyUpdate, [dateFrom, dateTo], function(err, tupdate, fields){
-        if(err){console.log(err);}
-        else{
-            conn.query(pweeklyUpdate, [dateFrom, dateTo], function(err, pupdate, fields){
-                if(err){console.log(err);}
-                else{
-                    for(var i = 0; i<pupdate.length; i++){
-                        weeklyArray.push(pupdate[i].id);
-                    }
-                    if(weeklyArray.length<3){
-                        while(weeklyArray.length <3){
-                            weeklyArray.push(0);
-                        }
-                    }
-                    for(var j = 0; j<tupdate.length; j++){
-                        weeklyArray.push(tupdate[j].id);
-                    }
-                    if(weeklyArray.length<6){
-                        while(weeklyArray.length<6){
-                            weeklyArray.push(0);
-                        }
-                    }
-                    conn.query(weeklyUpdate, [weeklyArray], function(err, finalUpdate, fields){
-                        if(err){console.log(err);}
-                    });
-                }
-            });
-        }
-    });
+  var dateFrom = new Date();
+  var dateTo = new Date();
+  dateFrom.setDate(dateFrom.getDate() - 6);
+  dateFrom = dateFrom.getFullYear()+'-'+(dateFrom.getMonth()+1)+'-'+dateFrom.getDate();
+  dateTo = dateTo.getFullYear()+'-'+(dateTo.getMonth()+1)+'-'+dateTo.getDate();
+  var tweeklyUpdate = 'select * from tandya where date between date(?) and date (?) order by score desc limit 2';
+  var pweeklyUpdate = 'select * from penobrol where date between date(?) and date (?) order by score desc limit 2';
+  var weeklyUpdate = 'INSERT INTO weekly (gold_p, silver_p, bronze_p, gold_t, silver_t, bronze_t) VALUES(?)';
+  var weeklyArray = [];
+  conn.query(tweeklyUpdate, [dateFrom, dateTo], function(err, tupdate, fields){
+      if(err){console.log(err);}
+      else{
+          conn.query(pweeklyUpdate, [dateFrom, dateTo], function(err, pupdate, fields){
+              if(err){console.log(err);}
+              else{
+                  for(var i = 0; i<pupdate.length; i++){
+                      weeklyArray.push(pupdate[i].id);
+                  }
+                  if(weeklyArray.length<3){
+                      while(weeklyArray.length <3){
+                          weeklyArray.push(0);
+                      }
+                  }
+                  for(var j = 0; j<tupdate.length; j++){
+                      weeklyArray.push(tupdate[j].id);
+                  }
+                  if(weeklyArray.length<6){
+                      while(weeklyArray.length<6){
+                          weeklyArray.push(0);
+                      }
+                  }
+                  conn.query(weeklyUpdate, [weeklyArray], function(err, finalUpdate, fields){
+                      if(err){console.log(err);}
+                  });
+              }
+          });
+      }
+  });
 });
 
 var todayCountsql = 'INSERT INTO daily_count (visitCount) VALUES (?)';

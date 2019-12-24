@@ -173,3 +173,24 @@ function warningAjax(warning){
         });
     }
 }
+function deletePenobrol(){
+  var p_id = location.pathname.split('/')[2];
+  var original = {'deleteId' : p_id};
+  original = JSON.stringify(original);
+  if(confirm("Are you sure to delete this content?")){
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/penobrol/delete/'+p_id);
+    xhr.setRequestHeader('Content-type', "application/json");
+    xhr.send(original);
+    console.log(original);
+    // 데이터 수신이 완료되면 표시
+    xhr.addEventListener('load', function(){
+      var result = JSON.parse(xhr.responseText);
+      console.log(result);
+      if(result.result == "deleted"){
+        alert('deleted');
+        window.location.replace("http://localhost:3000/penobrol/");
+      }
+    });
+  }
+}
