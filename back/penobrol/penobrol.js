@@ -25,7 +25,6 @@ exports.getPenobrol = function (req, res) {
             u_id: req.session.u_id
         });
     }
-
     getOrderedP();
 };
 
