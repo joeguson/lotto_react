@@ -1,99 +1,86 @@
 extends ../layout.jade
 
 block css
-  link(rel="stylesheet" href="../css/tandya_view.css" type="text/css")
-  script(type="text/javascript" src="/js/jsForAllJade.js")
+    link(rel="stylesheet" href="../css/tandya_view.css" type="text/css")
+    script(type="text/javascript" src="/js/jsForAllJade.js")
 
 block nav
-  ul
-    li: a(href='/aku') Aku
-    li: a(href='/cari') Cari
-    li: a(href='/penobrol') Penobrol
-    li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/tandya' style='color: #ffff97;') Tandya
-    br.clear
+    ul
+        li: a(href='/aku') Aku
+        li: a(href='/cari') Cari
+        li: a(href='/penobrol') Penobrol
+        li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/tandya' style='color: #ffff97;') Tandya
+        br.clear
 
 block submain
-  //.ad Advertisement
-  
+    //.ad Advertisement
+
 block main
-  section.main(id='main')
-    .ttitle-div
-        span Q : 
-        span #{topic.question}
-    .tcontent-div
-        if u_id
-          p(class= "warn")
-              button(class="twarnButton" type="submit" value='tan/'+topic.id+'/0/0' onclick="warningAjax(this);" id="warn/"+'tan/'+topic.id+'/0/0') !
-        p(class="content")
-          pre(class="content")= topic.content
-        div(id="tlike" class="tlike")= tlikes.length
-        if u_id
-          if(commentLikeChecker(tlikes, topic.id, u_id))
-            button(id="tlikeButton" class="tlikeButton" type="submit" value="Batal Suka") Batal Suka
-          else
-            button(id="tlikeButton" class="tlikeButton" type="submit" value="Suka") Suka
+    section.main(id='main')
+        .tcontent-div
+            if u_id
+                p(class= "warn")
+                    button(class="twarnButton" type="submit" value='tan/' + topic.id + '/0/0' onclick="warningAjax(this);" id="warn/" + 'tan/' + topic.id + '/0/0') !
+            p(class="content")
+                pre(class="content")= topic.content
+            div(id="tlike" class="tlike")= topic.likes.length
+            if u_id
+                //if(commentLikeChecker(tlikes, topic.id, u_id))
+                //  button(id="tlikeButton" class="tlikeButton" type="submit" value="Batal Suka") Batal Suka
+                //else
+                button(id="tlikeButton" class="tlikeButton" type="submit" value="Suka") Suka
+        .ttitle-div
+            span Q :
+            span #{topic.question}
     .tdetail-div
-        if topic.public == 'a'
-            - var date_result = 'by '+ anonimmaker(topic.u_id) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : '
-        else
-            - var date_result = 'by '+ topic.u_id + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.t_view + ' / ' + 'jawaban : '
-        if(hashtag.length > 0)    
+        - var date_result = 'by '+ topic.u_id + ' /  '+topic.date+' / ' + 'view : ' + topic.view + ' / ' + 'jawaban : '
+        if(topic.hashtags.length > 0)
             p
-              -for(var n=0; n<hashtag.length; n++)
-                  a= '#' + hashtag[n].hash + ' '
+                -var hashtagfinal = topic.hashtags.map(e => `#${e.hash}`).join(" ");
+                a = #{hashtagfinal}
         p #{date_result}
-            if u_id == topic.u_id
-                a(href='/tedit/'+topic.id class='edit') Edit
+            if u_id === topic.u_id
+                a(href='/tedit/' + topic.id class='edit') Edit
     if u_id
-      form(action='tandya/'+topic.id method='post' class='answerForm')
-        textarea(name='answer' id="answer" class="taInput")
-        input(type='submit' value='answer' class="taInputButton" id='taInputButton')
-    if answers.length > 0
-      .tanswer
-        ul.tanswer-ul
-          each a in answers
-            li.tanswer-li
-              dl.tanswer-dl(id='ta/'+topic.id+'/'+a.id)
-                if topic.public == 'a'
-                  - var answerStart = '@'+ anonimmaker(topic.u_id)
-                else
-                  - var answerStart = '@'+ topic.u_id
-                .tanswer-start #{answerStart}
-                  if u_id == a.author
-                      a(href='/taedit/'+topic.id+'/'+a.id) Edit
-                dt.tanswer-dt
-                  pre(class="tanswer-dt") "#{a.answer}"
-                if topic.public == 'a'
-                  - var date_result2 = 'by '+ anonimmaker(a.u_id) + ' /  '+datemaker(a.date)+' / suka : '
-                else
-                  - var date_result2 = 'by '+ a.u_id + ' / '+datemaker(a.date)+' / suka : '
-                dd.tanswer-dd #{date_result2}
-                  span.talike(id="tAnswerlikes"+a.id)= talikes[answers.indexOf(a)].length
-                  if u_id
-                      span.answerButton
-                          if(commentLikeChecker(talikes[answers.indexOf(a)], a.id, u_id))
-                            button(class="talikeButton" type="submit" value=topic.id+'/'+a.id onclick="answerSendAjax(this);") Batal Suka
-                          else
-                            button(class="talikeButton" type="submit" value=topic.id+'/'+a.id onclick="answerSendAjax(this);") Suka
-                          span.dummy
-                          button(class="taWarnButton" type="submit" value='ans/'+topic.id+'/'+a.id+'/0' onclick="warningAjax(this);" id="warn/"+'ans/'+topic.id+'/'+a.id+'/0') !
-                if u_id    
-                  .acommentForm
-                      textarea(name='acomment' class="tacInput")
-                      input(type='submit' name=a.id onclick="acommentSendAjax(this);" value="komen" class="tacInputButton")        
-                each acs in acomments   
-                  each ac in acs
-                    if ac.ta_id == a.id
-                        dl.tacomment-dl
-                            - var acommentStart = '- "'+ac.content+'"'
-                            dt.tacomment-dt 
-                                pre(class="tacomment-dt") #{acommentStart}
-                            if topic.public == 'a'
-                                - var date_result3 = 'by : ' + anonimmaker(ac.u_id) + ' / '+datemaker(ac.date)
-                            else
-                                - var date_result3 = 'by : ' + ac.u_id + ' / '+datemaker(ac.date)
-                            dd.tacomment-dd #{date_result3}
+        form(action='tandya/' + topic.id method='post' class='answerForm')
+            textarea(name='answer' id="answer" class="taInput")
+            input(type='submit' value='answer' class="taInputButton" id='taInputButton')
+    if topic.answers.length > 0
+        .tanswer
+            ul.tanswer-ul
+                each a in topic.answers
+                    li.tanswer-li
+                        dl.tanswer-dl(id='ta/' + topic.id + '/' + a.id)
+                            - var answerStart = '@'+ topic.u_id
+                            .tanswer-start #{answerStart}
+                                if u_id === a.author
+                                    a(href='/taedit/' + topic.id + '/' + a.id) Edit
+                            dt.tanswer-dt
+                                pre(class="tanswer-dt") "#{a.answer}"
+                            - var date_result2 = 'by '+ a.u_id + ' / '+a.date+' / suka : '
+                            dd.tanswer-dd #{date_result2}
+                                span.talike(id="tAnswerlikes" + a.id)= a.likes.length
                                 if u_id
-                                    button(class="tacWarnButton" type="submit" value='tac/'+topic.id+'/'+a.id+'/'+ac.id onclick="warningAjax(this);" id="warn/"+'tac/'+topic.id+'/'+a.id+'/'+ac.id)
-                         
-  script(type="text/javascript" src="/js/tlikes.js")
+                                    span.answerButton
+                                        //if(commentLikeChecker(talikes[answers.indexOf(a)], a.id, u_id))
+                                        //    button(class="talikeButton" type="submit" value=topic.id + '/' + a.id onclick="answerSendAjax(this);") Batal Suka
+                                        //else
+                                        button(class="talikeButton" type="submit" value=topic.id + '/' + a.id onclick="answerSendAjax(this);") Suka
+                                        span.dummy
+                                        button(class="taWarnButton" type="submit" value='ans/' + topic.id + '/' + a.id + '/0' onclick="warningAjax(this);" id="warn/" + 'ans/' + topic.id + '/' + a.id + '/0') !
+                            if u_id
+                                .acommentForm
+                                    textarea(name='acomment' class="tacInput")
+                                    input(type='submit' name=a.id onclick="acommentSendAjax(this);" value="komen" class="tacInputButton")
+                            each acs in a.comments
+                                each ac in acs
+                                    dl.tacomment-dl
+                                        - var acommentStart = '- "'+ac.content+'"'
+                                        dt.tacomment-dt
+                                            pre(class="tacomment-dt") #{acommentStart}
+                                        - var date_result3 = 'by : ' + ac.u_id + ' / '+ac.date
+                                        dd.tacomment-dd #{date_result3}
+                                            if u_id
+                                                button(class="tacWarnButton" type="submit" value='tac/' + topic.id + '/' + a.id + '/' + ac.id onclick="warningAjax(this);" id="warn/" + 'tac/' + topic.id + '/' + a.id + '/' + ac.id)
+
+    script(type="text/javascript" src="/js/tlikes.js")

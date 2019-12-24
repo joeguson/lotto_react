@@ -1,61 +1,53 @@
 extends ../layout.jade
 
 block css
-  link(rel="stylesheet" href="../css/tandya.css" type="text/css")
-  script(type="text/javascript" src="/js/jsForAllJade.js")
+    link(rel="stylesheet" href="../css/tandya.css" type="text/css")
+    script(type="text/javascript" src="/js/jsForAllJade.js")
 
 block nav
-  ul
-    li: a(href='/aku') Aku
-    li: a(href='/cari') Cari
-    li: a(href='/penobrol') Penobrol
-    li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/tandya' style='color: #ffff97;') Tandya
-    br.clear
+    ul
+        li: a(href='/aku') Aku
+        li: a(href='/cari') Cari
+        li: a(href='/penobrol') Penobrol
+        li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/tandya' style='color: #ffff97;') Tandya
+        br.clear
 
 block submain
-  //.ad Advertisement
-  
+    //.ad Advertisement
+
 block main
-  section.main(id='main')
-    .login
-      if(u_id)
-        a.addTandya(href='/tandya/add') +
-      else
-        a.addTandya(href='/aku') +
-    .t-terbaru
-        .t-title Tandya Terbaru
-        ul
-          each v in dateTopics
-            li
-              -var tlink = 'tandya/'+v.id
-              dl.t-dl(onclick ='location.href="#{tlink}"')
-                dt
-                  a(href='/tandya/'+v.id)= v.question
-                dd.ddcontent= v.content
-                if v.public == 'a'
-                  - var date_result = 'by '+anonimmaker(v.u_id)+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' answers'
-                else
-                  - var date_result = 'by '+v.u_id+' / ' + datemaker(v.date) + ' / ' + v.t_view + ' views' + ' / ' + v.answer+' answers'
-                -var hashtagfind = hashtagfinder('t', v.id, hashtags); 
-                -var hashtagfinal = hashtagmaker(hashtagfind);
-                dd #{hashtagfinal}
-                dd #{date_result}
-    .t-terkenal
-        .t-title Tandya Terkenal               
-        ul
-          each w in scoreTopics
-              li
-                -var tlink = 'tandya/'+w.id
-                dl.t-dl(onclick ='location.href="#{tlink}"')
-                  dt
-                      a(href='/tandya/'+w.id)= w.question
-                  dd.ddcontent= w.content
-                  if w.public == 'a'
-                      - var date_result = 'by '+anonimmaker(w.u_id)+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' answers'
-                  else
-                      - var date_result = 'by '+w.u_id+' / ' + datemaker(w.date) + ' / ' + w.t_view + ' views' + ' / ' + w.answer+' answers'
-                  -var hashtagfind = hashtagfinder('t', w.id, hashtags); 
-                  -var hashtagfinal = hashtagmaker(hashtagfind, w.hashtagcount);
-                  dd #{hashtagfinal}
-                  dd #{date_result}      
-            //script(type="text/javascript" src="prank.js")
+    section.main(id='main')
+        .login
+            if(u_id)
+                a.addTandya(href='/tandya/add') +
+            else
+                a.addTandya(href='/aku') +
+        .t-terbaru
+            .t-title Tandya Terbaru
+            ul
+                each v in dateTopics
+                    li
+                        -var tlink = 'tandya/'+v.id
+                        dl.t-dl(onclick ='location.href="#{tlink}"')
+                            dt
+                                a(href='/tandya/' + v.id)= v.question
+                            dd.ddcontent= v.content
+                            -var date_result = 'by '+v.u_id+' / ' + v.date + ' / ' + v.view + ' views' + ' / ' + v.answer+' answers'
+                            -var hashtagfinal = v.hashtags.map(e => `#${e.hash}`).join(" ");
+                            dd #{hashtagfinal}
+                            dd #{date_result}
+        .t-terkenal
+            .t-title Tandya Terkenal
+            ul
+                each w in scoreTopics
+                    li
+                        -var tlink = 'tandya/'+w.id
+                        dl.t-dl(onclick ='location.href="#{tlink}"')
+                            dt
+                                a(href='/tandya/' + w.id)= w.question
+                            dd.ddcontent= w.content
+                              - var date_result = 'by '+w.u_id+' / ' + w.date + ' / ' + w.view + ' views' + ' / ' + w.answer+' answers'
+                              -var hashtagfinal = w.hashtags.map(e => `#${e.hash}`).join(" ");
+                            dd #{hashtagfinal}
+                            dd #{date_result}
+                //script(type="text/javascript" src="prank.js")
