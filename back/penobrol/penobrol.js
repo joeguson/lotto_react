@@ -2,6 +2,7 @@ var conn = require('../../b');
 var pool = require('../../b');
 var dbcon = require('../../db/dbconnection');
 var parser = require('../../db/parser.js');
+var jsForBack = require('../../back/jsForBack.js');
 
 /************FOR PENOBROL************/
 exports.getPenobrol = function (req, res) {
@@ -13,12 +14,10 @@ exports.getPenobrol = function (req, res) {
     async function getOrderedP() {
         var byDate = (await dbcon.oneArg(sql1)).map(parser.parsePenobrol);
         var byScore = (await dbcon.oneArg(sql2)).map(parser.parsePenobrol);
-
         for(const p of byDate)
-            p.hashtags = (await dbcon.twoArg(sql3, p.id)).map(parser.parseHashtag);
+            p.hashtags = (await dbcon.twoArg(sql3, p.id)).map(parser.parseHashtagP);
         for(const p of byScore)
-            p.hashtags = (await dbcon.twoArg(sql4, p.id)).map(parser.parseHashtag);
-
+            p.hashtags = (await dbcon.twoArg(sql4, p.id)).map(parser.parseHashtagP);
         res.render('./jp/p', {
             dateTopics: byDate,
             scoreTopics: byScore,
@@ -48,20 +47,20 @@ exports.getViewPenobrol = function (req, res) {
                     var sql7 = 'SELECT p.*, u.u_id FROM pc_com as p join users as u on p.author = u.id WHERE p.pc_id = ?';
                     var sql8 = 'SELECT p.p_id as like_id, p.u_id, u.u_id FROM p_like as p join users as u on p.u_id = u.id WHERE p.p_id = ?';
                     var sql9 = 'SELECT p.pc_id as like_id, p.u_id, u.u_id FROM pc_like as p join users as u on p.u_id = u.id where p.pc_id = ?';
+
                     await dbcon.twoArg(sql2, id);
                     await dbcon.fourArg(sql3, id, id, id);
-
                     var penobrol = parser.parsePenobrol((await dbcon.twoArg(sql4, id))[0]);
                     penobrol.comments = (await dbcon.twoArg(sql5, id)).map(parser.parseComment);
                     penobrol.likes = (await dbcon.twoArg(sql8, id)).map(parser.parseLike);
-                    penobrol.hashtags = (await dbcon.twoArg(sql6, id)).map(parser.parseHashtag);
+                    penobrol.hashtags = (await dbcon.twoArg(sql6, id)).map(parser.parseHashtagP);
                     for (const c of penobrol.comments) {
                         c.comments = (await dbcon.twoArg(sql7, c.id)).map(parser.parseCLike);
                         c.likes = (await dbcon.twoArg(sql9, c.id)).map(parser.parseCLike);
                     }
 
                     res.render('./jp/p-view', {
-                        topic: parser.parsePenobrol(penobrol),
+                        topic: penobrol,
                         u_id: req.session.u_id,
                     });
                 }
@@ -96,7 +95,9 @@ exports.postAddPenobrol = function (req, res) {
         for (var i = 0; i < hashtagArray.length; i++) {
             await dbcon.threeArg(query, id, hashtagArray[i]);
         }
-        res.redirect('/penobrol/' + id);
+        res.json({
+            "id" : id
+        });
     }
 
     conn.conn.query(sql, [author, title, content, public], function (err, result, fields) {

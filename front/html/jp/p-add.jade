@@ -1,9 +1,10 @@
 extends ../layout.jade
 
 block css
-  link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
-  script(src="../../public/b-editor/b-editor.js")
-  script(src='../../public/p-add.js')
+    link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
+    script(src="../../public/b-editor/b-editor.js")
+    script(src='./penobrol/p-add.js')
+    script(src='../addPandT.js')
 
 block nav
   ul
@@ -17,23 +18,23 @@ block submain
   //.ad Advertisement
   
 block main
-  article
-    form(action='/penobrol/add' method='post' onsubmit='return checksubmit();')
-      p 
-        input(type='text' name='title' placeholder='title' class="title" id="title" required)
-      p
-        label
-          input(type='radio' value='p' name="public" checked)
-          |public
-        label
-          input(type='radio' value='a' name="public")
-          |anonymous  
-      p
-        b-editor(id='editor' width="90%" height="600px" name="content")
-      p
-        input(type='text' name='hashtag' placeholder='#put #hashtags #like #this' class="hashtag")
-      p
-        input(type='submit' class="submit" value="share")
+    article
+        p 
+            input(type='text' name='title' placeholder='title' class="title" id="title" required)
+        p
+            label
+            input(id='rbP' type='radio' value='p' name="public" checked)
+            |public
+            label
+            input(id='rbA' type='radio' value='a' name="public")
+            |anonymous  
+        p
+            b-editor(id='editor' width="90%" height="600px" name="content")
+        // textarea(name='content' class="content" id="content" required)
+        p
+            input(id='hashtag' type='text' name='hashtag' placeholder='#put #hashtags #like #this' class="hashtag")
+        p
+            button(class="submit" onclick='postPenobrolAdd();') share
       script.
         function checksubmit(){
             if(title.value.length < 5){

@@ -11,7 +11,6 @@ function parseArticle(packet) {
         content: packet.content,
         author: packet.author,
         date: utils.dateMaker(packet.date), // reformat date
-        identifier: packet.identifier,
         public: packet.public,
         warning: packet.warning,
         changed_date: packet.changed_date,
@@ -27,6 +26,7 @@ exports.parsePenobrol = function (packet) {
     penobrol.title = packet.title;
     penobrol.comments = packet.comments;
     penobrol.view = packet.p_view;
+    penobrol.identifier = 'p';
     return penobrol;
 };
 
@@ -35,13 +35,22 @@ exports.parseTandya = function (packet) {
     tandya.question = packet.question;
     tandya.answers = packet.answers;
     tandya.view = packet.t_view;
+    tandya.identifier = 't';
     return tandya;
 };
 
-exports.parseHashtag = function (packet) {
+exports.parseHashtagP = function (packet) {
     return {
         id: packet.id,
         p_id: packet.p_id,
+        hash: packet.hash
+    };
+};
+
+exports.parseHashtagT = function (packet) {
+    return {
+        id: packet.id,
+        t_id: packet.t_id,
         hash: packet.hash
     };
 };

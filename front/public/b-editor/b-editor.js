@@ -9,7 +9,7 @@ class BeritamusEditor extends HTMLElement {
         this.sizePicker = null;
         this.imageInput = null;
     }
-    
+
     value() {
         return this.editor.body.innerHTML;
     }
@@ -114,7 +114,7 @@ class BeritamusEditor extends HTMLElement {
 
         return controls;
     }
-    
+
     buildEditor(w, h) {
         const ta = document.createElement("div");
         ta.style.width = w;
@@ -153,7 +153,7 @@ class BeritamusEditor extends HTMLElement {
 
     start() {
         const editor = this.editor = this.iframe.contentWindow.document;
-        editor.designMode = "on";  
+        editor.designMode = "on";
         this.controlButtons["Bold"].onclick = this.cmd("Bold");
         this.controlButtons["Italic"].onclick = this.cmd("Italic");
         this.controlButtons["Superscript"].onclick = this.cmd("Superscript");
@@ -162,7 +162,7 @@ class BeritamusEditor extends HTMLElement {
         this.controlButtons["AlignCenter"].onclick = this.cmd("JustifyCenter");
         this.controlButtons["AlignRight"].onclick = this.cmd("JustifyRight");
         this.controlButtons["AlignLeft"].onclick = this.cmd("JustifyLeft");
-        
+
         this.controlButtons["Numbered list"].onclick = this.cmd("InsertOrderedList", false,
             "newOL" + Math.round(Math.random() * 1000));
         this.controlButtons["Bulleted list"].onclick = this.cmd("InsertUnorderedList", false,
@@ -180,7 +180,7 @@ class BeritamusEditor extends HTMLElement {
                     editor.body.focus();
 //                    var newimage = new Image();
 //                    newimage.src = e.target.result
-//                    //value of width 
+//                    //value of width
 //                    console.log(editor.body.scrollWidth);
 //                    console.log(newimage.width);
 //                    console.log(newimage.height);
@@ -201,12 +201,12 @@ class BeritamusEditor extends HTMLElement {
 
         const js = document.createElement("script");
         js.type = "text/javascript";
-        js.src = "b-editor/__b-editor.js";
+        js.src = "../../public/b-editor/__b-editor.js";
         editor.head.append(js);
 
         const css = document.createElement("link");
         css.rel = "stylesheet";
-        css.href = "b-editor/__b-editor.css";
+        css.href = "../../public/b-editor/__b-editor.css";
         editor.head.append(css);
     }
 

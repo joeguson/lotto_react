@@ -3,6 +3,7 @@ var pool = require('../../b');
 var nodemailer = require('nodemailer');
 var key = require('../../info/beritamus-admin-2ff0df5d17ca.json');
 var dbcon = require('../../db/dbconnection');
+var parser = require('../../db/parser.js');
 
 exports.checkUserId = function(req, res){
   var sql = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
@@ -65,6 +66,7 @@ exports.welcome = function(req, res){
     var userInfo = [];
     var userPenobrol = [];
     var userTandya = [];
+    var totalLikes = [];
     var totalt_like = [];
     var totalp_like = [];
     var totalta_like = [];
@@ -80,8 +82,8 @@ exports.welcome = function(req, res){
 
     async function getUserRecord(){
       userInfo = await dbcon.twoArg(sql1, req.session.u_id);
-      userPenobrol = await dbcon.twoArg(sql2, userInfo[0].id);
-      userTandya = await dbcon.twoArg(sql3, userInfo[0].id);
+      userPenobrol = (await dbcon.twoArg(sql2, userInfo[0].id)).map(parser.parsePenobrol);
+      userTandya = (await dbcon.twoArg(sql3, userInfo[0].id)).map(parser.parseTandya);
       totalp_like = await dbcon.twoArg(sql4, userInfo[0].id);
       totalpc_like = await dbcon.twoArg(sql5, userInfo[0].id);
       totalt_like = await dbcon.twoArg(sql6, userInfo[0].id);

@@ -28,8 +28,8 @@ block main
                 dl(onclick = 'location.href="#{plink}"')
                 dt
                     - var title = item.identifier === 'p'? item.title : item.question;
-                    a(href='/#{type}/#{item.id}') = #{title}
-                dd.ddcontent = #{item.content}
+                    a(href='/#{type}/#{item.id}') #{title}
+                dd.ddcontent #{item.content}
                 - var date_result = item.date + ' / ' + item.view + ' views';
                 - var hashtagfinal = item.hashtags.map(e => `#${e.hash}`).join(' ');
                 dd #{hashtagfinal}

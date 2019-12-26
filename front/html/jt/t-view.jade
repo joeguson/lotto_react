@@ -17,6 +17,9 @@ block submain
 
 block main
     section.main(id='main')
+        .ttitle-div
+            span Q :
+            span #{topic.question}
         .tcontent-div
             if u_id
                 p(class= "warn")
@@ -29,9 +32,7 @@ block main
                 //  button(id="tlikeButton" class="tlikeButton" type="submit" value="Batal Suka") Batal Suka
                 //else
                 button(id="tlikeButton" class="tlikeButton" type="submit" value="Suka") Suka
-        .ttitle-div
-            span Q :
-            span #{topic.question}
+
     .tdetail-div
         - var date_result = 'by '+ topic.u_id + ' /  '+topic.date+' / ' + 'view : ' + topic.view + ' / ' + 'jawaban : '
         if(topic.hashtags.length > 0)

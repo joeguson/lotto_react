@@ -35,4 +35,3 @@ function __rotateInfo(target){
     target.parentNode.appendChild(infoDiv);
     setTimeout(target.parentNode.removeChild(infoDiv), 2000);
 }
-

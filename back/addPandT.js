@@ -1,43 +1,10 @@
-function postPenobrolAdd() {
-    const title = document.getElementById('title').value;
-    const public = document.getElementById('rbP').checked ? 'p' : 'a';
-    var content = document.getElementById('editor').value();
-    const hashtag = document.getElementById('hashtag').value;
-    
-    const req = {
-        title: title,
-        public: public,
-        content: content,
-        hashtag: hashtag
-    };
-    
-    const parsed = parseImgTags(content);
-    content = parsed.content;
-    
-    const imgCount = Object.keys(parsed.imgs).length;
-    if(imgCount == 0) finalPost(req);
-    else {
-        var done = 0;
-        for(var id in parsed.imgs) {
-            uploadImage(id, parsed.imgs[id], (id, filename) => {
-            content = replace(content, id, filename);
-            req.content = content;
-            done++;
-            if(done == imgCount)
-                finalPost(req);
-        });
-    }
-    }
-    
-}
-
 function parseImgTags(content) {
     var id = 1;
     var imgIndex = 0;
-    
+
     var imgMaps = {};
     var posMaps = {};
-    
+
     while(true) {
         // <img
         imgIndex = content.indexOf('<img', imgIndex);
@@ -67,7 +34,7 @@ function parseImgTags(content) {
 
 function uploadImage(id, data, onUploaded) {
     var json = JSON.stringify({
-       img: data 
+       img: data
     });
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/image', true);
@@ -78,9 +45,8 @@ function uploadImage(id, data, onUploaded) {
         onUploaded(id, result);
     };
 }
-
 function replace(content, id, filename, index = 0) {
-    filename = "images/" + filename;
+    filename = "../../../images/" + filename;
     var s = 0, e = 0;
     while(true) {
         const imgIndex = content.indexOf('<img', index);
@@ -96,16 +62,4 @@ function replace(content, id, filename, index = 0) {
         index = endIndex;
     }
     return content.substring(0, s) + filename + content.substring(e);
-}
-
-function finalPost(body) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/penobrol/add', true);
-    xhr.setRequestHeader('Content-type', "application/json");
-    xhr.withCredentials = true;
-    xhr.send(JSON.stringify(body));
-    xhr.onload = () => {
-        var id = JSON.parse(xhr.responseText).id;
-        window.location.href = location.origin + "/penobrol/" + id.toString();
-    };
 }

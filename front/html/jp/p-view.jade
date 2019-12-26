@@ -23,7 +23,7 @@ block main
                 if(topic.hashtags.length > 0)
                     dd.pview-dd.hashtag
                         - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
-                        a = #{hashtags}
+                        a #{hashtags}
                 dd.pview-dd #{date_result}
                     if u_id === topic.u_id
                         a(href='/pedit/' + topic.id class='edit') Edit

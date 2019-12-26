@@ -24,8 +24,8 @@ exports.getCari = function (req, res) {
 
 //    var sql3 = '';
 //    var sql4 = '';
-    var getRandomPenobrol = 'select * from penobrol';
-    var getRandomTandya = 'select * from tandya';
+    var getRandomPenobrol = 'select * from penobrol limit 3';
+    var getRandomTandya = 'select * from tandya limit 3';
     var getHashtagP = 'select * from penobrol_hashtag where p_id = ?';
     var getHashtagT = 'select * from tandya_hashtag where t_id = ?';
     var pResults = [];
@@ -34,13 +34,12 @@ exports.getCari = function (req, res) {
     async function getRandomPandT() {
         pResults = await dbcon.oneArg(getRandomPenobrol);
         tResults = await dbcon.oneArg(getRandomTandya);
-
         for (const p of pResults)
-            p.hashtags = (await dbcon.twoArg(getHashtagP, p.id)).map(parser.parseHashtag);
+            p.hashtags = (await dbcon.twoArg(getHashtagP, p.id)).map(parser.parseHashtagP);
         pResults = pResults.map(parser.parsePenobrol);
 
         for (const t of tResults)
-            t.hashtags = (await dbcon.twoArg(getHashtagT, t.id)).map(parser.parseHashtag);
+            t.hashtags = (await dbcon.twoArg(getHashtagT, t.id)).map(parser.parseHashtagT);
         tResults = tResults.map(parser.parseTandya);
 
         var result = pResults.concat(tResults);
@@ -452,38 +451,28 @@ exports.getSearch = function (req, res) {
 };
 
 exports.getLoad = function (req, res) {
-    var sql = 'SELECT * FROM penobrol order by rand() limit 3';
-    var sql2 = 'SELECT * FROM tandya order by rand() limit 3';
-    var sql3 = '';
-    var sql4 = '';
-    conn.query(sql, function (err, penobrol, fields) {
-        conn.query(sql2, function (err, tandya, fields) {
-            if (err) {
-                console.log(err);
-            } else {
-                sql3 = phtsqlMaker(penobrol);
-                sql4 = thtsqlMaker(tandya);
-                conn.query(sql3, function (err, phashtag, fields) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        conn.query(sql4, function (err, thashtag, fields) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var p = JSON.parse(JSON.stringify(penobrol));
-                                var t = JSON.parse(JSON.stringify(tandya));
-                                var phash = JSON.parse(JSON.stringify(phashtag));
-                                var thash = JSON.parse(JSON.stringify(thashtag));
-                                p = p.concat(t);
-                                phash = phash.concat(thash);
-                                var responseData = {'result': 'ok', 'data': p, 'hashtag': phash};
-                                res.json(responseData);
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    });
+    var getRandomPenobrol = 'select * from penobrol limit 3';
+    var getRandomTandya = 'select * from tandya limit 3';
+    var getHashtagP = 'select * from penobrol_hashtag where p_id = ?';
+    var getHashtagT = 'select * from tandya_hashtag where t_id = ?';
+    var pResults = [];
+    var tResults = [];
+
+    async function getRandomPandT() {
+        pResults = await dbcon.oneArg(getRandomPenobrol);
+        tResults = await dbcon.oneArg(getRandomTandya);
+        for (const p of pResults)
+            p.hashtags = (await dbcon.twoArg(getHashtagP, p.id)).map(parser.parseHashtagP);
+        pResults = pResults.map(parser.parsePenobrol);
+
+        for (const t of tResults)
+            t.hashtags = (await dbcon.twoArg(getHashtagT, t.id)).map(parser.parseHashtagT);
+        tResults = tResults.map(parser.parseTandya);
+
+        var result = pResults.concat(tResults);
+        shuffle(result);
+        var responseData = {'result': 'ok', 'data': result};
+        res.json(responseData);
+    }
+    getRandomPandT();
 };

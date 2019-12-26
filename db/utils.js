@@ -9,13 +9,13 @@ exports.dateMaker = function(date) {
     if (diff >= 864000000)
         return month + '-' + day;
     else if (diff > 86400000)
-        return (diff / 86400000).toString() + ' days ago';
+        return Math.round(diff/86400000) + ' days ago';
     else if (diff > 3600000)
-        return (diff / 3600000).toString() + ' h ago';
+        return Math.round(diff/3600000) + ' h ago';
     else if (diff > 60000)
-        return (diff / 60000).toString() + ' min ago';
+        return Math.round(diff/60000) + ' min ago';
     else
-        return (diff / 1000).toString() + ' sec ago';
+        return Math.round(diff/1000) + ' sec ago';
 };
 
 exports.commentLikeChecker = function(likeObject, cId, userId){

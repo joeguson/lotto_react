@@ -1,8 +1,9 @@
 extends ../layout.jade
-
+    
 block css
-  link(rel='stylesheet', href='/css/aku.css' type="text/css")
-  script(type="text/javascript" src="aku.js")
+    link(rel='stylesheet', href='/css/aku.css' type="text/css")
+    script(type="text/javascript" src="aku.js")
+
 
 block nav
   ul
@@ -45,7 +46,6 @@ block main
           dl(onclick ='location.href="#{plink}"')
             dt
               a(href='/penobrol/'+p.id)= p.title
-            - var date_result = datemaker(p.date) + ' / view: ' + p.p_view + ' / ' + p.com +' comment'+' / like: '
             dd.content-info #{date_result}
               span(style='color: #c91818; font-size:14px;')= p.p_like
     .p-tandya 
@@ -56,7 +56,6 @@ block main
           dl(onclick ='location.href="#{tlink}"')
             dt
               a(href='/tandya/'+t.id)= t.question
-            - var date_result = datemaker(t.date) + ' / view: ' + t.t_view + ' / answer: ' + t.answer + ' / like: '
             dd.content-info #{date_result}        
               span(style='color: #c91818;')= t.t_like       
     a.logout(href= '/aku/logout') Logout

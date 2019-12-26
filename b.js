@@ -52,6 +52,8 @@ app.use(bodyParser.json());
 app.locals.pretty = true;
 
 app.use(express.static('front'));
+app.use(express.static('back'));
+app.use(express.static('public'));
 app.use("/jade", express.static('/'));
 app.set('view engine', 'jade');
 app.set('views', './front/html');
@@ -156,7 +158,7 @@ app.post('/image', (req, res) => {
     if("png"==img.split(";")[0].split("/")[1]){
         filename += '.png';
     }
-    fs.writeFile('./public/images/' + filename, buf, (err) => {
+    fs.writeFile('./images/' + filename, buf, (err) => {
         if(err) console.log(err);
     });
     res.json({'filename': filename});

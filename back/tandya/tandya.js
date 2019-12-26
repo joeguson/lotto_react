@@ -2,6 +2,7 @@ var conn = require('../../b');
 var pool = require('../../b');
 var dbcon = require('../../db/dbconnection');
 var parser = require('../../db/parser.js');
+var jsForBack = require('../../back/jsForBack.js');
 
 /************FOR TANDYA************/
 exports.getTandya = function (req, res) {
@@ -13,12 +14,11 @@ exports.getTandya = function (req, res) {
     async function getOrderedT() {
         var byDate = (await dbcon.oneArg(sql1)).map(parser.parseTandya);
         var byScore = (await dbcon.oneArg(sql2)).map(parser.parseTandya);
-        console.log(byDate);
 
         for(const t of byDate)
-            t.hashtags = (await dbcon.twoArg(sql3, t.id)).map(parser.parseHashtag);
+            t.hashtags = (await dbcon.twoArg(sql3, t.id)).map(parser.parseHashtagT);
         for(const t of byScore)
-            t.hashtags = (await dbcon.twoArg(sql4, t.id)).map(parser.parseHashtag);
+            t.hashtags = (await dbcon.twoArg(sql4, t.id)).map(parser.parseHashtagT);
 
         res.render('./jt/t', {
             dateTopics: byDate,
@@ -26,7 +26,6 @@ exports.getTandya = function (req, res) {
             u_id: req.session.u_id
         });
     }
-
     getOrderedT();
 };
 
@@ -60,7 +59,7 @@ exports.getViewTandya = function (req, res) {
                     await dbcon.fourArg(sql3, id, id, id);
                     tandya = parser.parseTandya((await dbcon.twoArg(sql4, id))[0]);
                     tandya.answers = (await dbcon.twoArg(sql5, id)).map(parser.parseAnswer);
-                    tandya.hashtags = (await dbcon.twoArg(sql6, id)).map(parser.parseHashtag);
+                    tandya.hashtags = (await dbcon.twoArg(sql6, id)).map(parser.parseHashtagT);
 
                     for(const a of tandya.answers) {
                         a.comments = (await dbcon.twoArg(sql7, id)).map(parser.parseAComment);
@@ -99,14 +98,16 @@ exports.postAddTandya = function (req, res) {
     var public = req.body.public;
     var finalhashtag = jsForBack.finalHashtagMaker(rawhashtags);
 
-    var sql1 = "INSERT INTO tandya (author, question, content, public) VALUES ((select id from users where u_id = ?), ?, ?, ?)";
+    var sql1 = "INSERT INTO tandya(author, question, content, public) VALUES ((select id from users where u_id = ?), ?, ?, ?)";
     var sql2 = "INSERT INTO tandya_hashtag (t_id, hash) VALUES (?, ?)";
 
     async function insertHashtag(query, id, hashtagArray) {
         for (var i = 0; i < hashtagArray.length; i++) {
             await dbcon.threeArg(query, id, hashtagArray[i]);
         }
-        res.redirect('/tandya/' + id);
+        res.json({
+            "id" : id
+        });
     }
 
     conn.conn.query(sql1, [author, question, content, public], function (err, result, fields) {
