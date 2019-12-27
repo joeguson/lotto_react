@@ -19,7 +19,7 @@ var tandya = require('./back/tandya/tandya');
 var aku = require('./back/aku/aku');
 var cari = require('./back/cari/cari');
 app.use(useragent.express());
-app.use(favicon(path.join(__dirname,'./info', 'logo2.png')));
+app.use(favicon(path.join(__dirname,'./info', 'beritamus logo.png')));
 const pool = mysql2.createPool(
   {
     host     : db_config.host,
@@ -68,7 +68,7 @@ exports.pool = pool;
 exports.sch = schedule;
 
 /************FOR AKU************/
-app.get('/aku/findMyIdPw')
+app.get('/aku/findMyIdPw', aku.getFindMyIdPw);
 app.post('/aku/login', aku.login);
 app.get(['/aku'], aku.welcome);
 app.get('/aku/logout', aku.logout);

@@ -1,34 +1,3 @@
-exports.datemaker = function(date){
-  var tempdate = new Date(date);
-  var nowdate = new Date();
-  var year = tempdate.getFullYear();
-  var year = tempdate.getFullYear();
-  var month = tempdate.getMonth();
-  var day = tempdate.getDate();
-  var diff = nowdate - tempdate;
-  if(diff > 864000000){
-    return month+'-'+day;
-  }
-  else{
-    if(diff > 86400000){
-      return parseInt(diff/86400000)+' days ago';
-    }
-    else{
-      if(diff > 3600000){
-        return parseInt(diff/3600000)+' h ago';
-      }
-      else{
-        if(diff > 60000){
-          return parseInt(diff/60000)+' min ago';
-        }
-        else{
-          return parseInt(diff/1000)+' sec ago';
-        }
-      }
-    }
-  }
-}
-
 exports.finalHashtagMaker = function(hashtagString){
   var finalHashtag = [];
   var temp = [];
@@ -98,88 +67,24 @@ exports.remove_duplicates = function(objectsArray){
   return objectsArray;
 };
 
-
-var psqlMaker = function(pId){
-    var tempArray = [];
-    for(var l =0; l<pId.length;l++){
-        if(tempArray.indexOf(pId[l]) < 0){
-            tempArray.push(pId[l]);
+exports.extractWords = function(wordArray){
+    var temp = '';
+    for(var i = 0; i<wordArray.length; i++){
+        if(wordArray[i].length > 0){
+            temp += wordArray[i];
         }
     }
-    var temp = 'select * from penobrol where ';
-    for(var j = 0; j<tempArray.length; j++){
-        temp = temp + 'id = '+tempArray[j] + ' OR ';
-    }
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    return temp;
-};
-var tsqlMaker = function(tId){
-    var tempArray = [];
-    for(var l =0; l<tId.length;l++){
-        if(tempArray.indexOf(tId[l]) < 0){
-            tempArray.push(tId[l]);
+}
+
+exports.extractHash = function(wordArray){
+    var temp = [];
+    for(var i = 0; i<wordArray.length; i++){
+        if(wordArray[i][0] == '#'){
+            temp.push(wordArray[i])
         }
     }
-    var temp = 'select * from tandya where ';
-    for(var k = 0; k<tempArray.length; k++){
-        temp = temp + 'id = '+tempArray[k] + ' OR ';
-    }
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
     return temp;
-};
-
-
-
-var phtsqlMaker = function(hastagObject){
-    var holength = hastagObject.length;
-    var hotemp = [];
-    for(var i =0; i<holength;i++){
-        hotemp.push(hastagObject[i].id);
-    }
-    var temp = 'select * from hashtag where ';
-    for(var k = 0; k<hotemp.length; k++){
-        temp = temp + 'p_id = '+hotemp[k] + ' OR ';
-    }
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    return temp;
-};
-
-var thtsqlMaker = function(hashtagObject){
-    var holength = hashtagObject.length;
-    var hotemp = [];
-    for(var i =0; i<holength;i++){
-        hotemp.push(hashtagObject[i].id);
-    }
-    var temp = 'select * from hashtag where ';
-    for(var k = 0; k<hotemp.length; k++){
-        temp = temp + 't_id = '+hotemp[k] + ' OR ';
-    }
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    return temp;
-};
-
-
-var hsSearchSqlMaker = function(hashtags){
-    var temp = "select * from hashtag AS result WHERE MATCH(hash) AGAINST('";
-    for(var k = 0; k<hashtags.length; k++){
-        temp = temp + hashtags[k] + ' ';
-    }
-    temp = temp.slice(0,-1);
-    temp = temp+"')";
-    return temp;
-};
+}
 
 function codeMaker(){
     var ar = [];
@@ -197,72 +102,3 @@ function codeMaker(){
     final_code = ar[0]+ar[1]+ar[2]+ar[3]+ar[4]+ar[5];
     return final_code;
 }
-
-
-var htsqlMaker = function(dateOrder, scoreOrder){
-    var dlength = dateOrder.length;
-    var slength = scoreOrder.length;
-    var dtemp = [];
-    var stemp = [];
-    for(var i =0; i<dlength;i++){
-        dtemp.push(dateOrder[i].id);
-    }
-    for(var j =0; j<slength;j++){
-        stemp.push(scoreOrder[j].id);
-    }
-    dtemp = dtemp.concat(stemp);
-    var temp = 'select * from hashtag where ';
-    for(var k = 0; k<dtemp.length; k++){
-        temp = temp + 'p_id = '+dtemp[k] + ' OR ';
-    }
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    return temp;
-};
-
-var insertHashtagSqlMaker = function(p_id, hashArray){
-    var temp = 'insert into hashtag (p_id, hash) values ';
-    for(var i = 0; i<hashArray.length; i++){
-        temp = temp + '('+p_id+", '"+hashArray[i]+"'), ";
-    }
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    return temp;
-};
-
-var htsqlMaker = function(dateOrder, scoreOrder){
-    var dlength = dateOrder.length;
-    var slength = scoreOrder.length;
-    var dtemp = [];
-    var stemp = [];
-    for(var i =0; i<dlength;i++){
-        dtemp.push(dateOrder[i].id);
-    }
-    for(var j =0; j<slength;j++){
-        stemp.push(scoreOrder[j].id);
-    }
-    dtemp = dtemp.concat(stemp);
-    var temp = 'select * from hashtag where ';
-    for(var k = 0; k<dtemp.length; k++){
-        temp = temp + 't_id = '+dtemp[k] + ' OR ';
-    }
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    return temp;
-};
-
-var insertHashtagSqlMaker = function(t_id, hashArray){
-    console.log(hashArray);
-    var temp = 'insert into hashtag (t_id, hash) values ';
-    for(var i = 0; i<hashArray.length; i++){
-        temp = temp + '('+t_id+", '"+hashArray[i]+"'), ";
-    }
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    console.log(temp);
-    return temp;
-};

@@ -5,6 +5,10 @@ var key = require('../../info/beritamus-admin-2ff0df5d17ca.json');
 var dbcon = require('../../db/dbconnection');
 var parser = require('../../db/parser.js');
 
+exports.getFindMyIdPw =function(req, res){
+    res.render('./ja/findMyIdPw');
+}
+
 exports.checkUserId = function(req, res){
   var sql = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
   var u_id = req.body.u_id;

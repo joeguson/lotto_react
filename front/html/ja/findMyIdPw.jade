@@ -1,0 +1,35 @@
+extends ../layout.jade
+
+block css
+  link(rel='stylesheet', href='../css/user-add.css' type="text/css")
+
+block nav
+  ul
+    li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/aku' style='color: #ffff97;') Aku
+    li: a(href='/cari') Cari
+    li: a(href='/penobrol') Penobrol
+    li: a(href='/tandya') Tandya
+    br.clear
+
+block submain
+  //.ad Advertising
+  
+block main
+    article
+        form(action='/daftar' method='post' onsubmit='return checksubmit();')
+            p
+                input(type='text' id="u_id" name='u_id' placeholder='Your interesting ID' required)
+            .idchecker(id="idchecker")
+            p
+                input(type='date' name='birthday' value='2019-08-31' id='inputDate' required)
+            p
+                input(type='button' name='boy' id = 'boy' value='Male' class="sex" required)
+                input(type='button' name='girl' id = 'girl' value='Female' class="sex" required)
+                input(type="hidden" id="gender" name="gender" value="none")
+            p
+                input(type='text' name='email' id='email' placeholder='emailAdress@yourEmail.com' required)
+            p
+                input(type='submit' value='Get my Verification Mail' id='submit')
+            script.
+                a(href='/cari') Back
+      script(type="text/javascript" src="register.js")
