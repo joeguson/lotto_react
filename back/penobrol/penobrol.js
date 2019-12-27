@@ -229,29 +229,30 @@ exports.likesComment = function (req, res) {
     });
 };
 exports.warningPenobrol = function (req, res) {
-    var p_id = parseInt(req.body.warnedP);
-    var pc_id = parseInt(req.body.warnedC);
-    var pcc_id = parseInt(req.body.warnedCc);
-    var sql = '';
-    var checking_sql = 'select u_id, p_id, pc_id, pcc_id from warning WHERE u_id = ? AND p_id = ? AND pc_id = ? AND pcc_id = ?';
-    conn.conn.query(checking_sql, [req.session.u_id, p_id, pc_id, pcc_id], function (err, checking, fields) {
+    var check_sql = '';
+    var warn_sql = '';
+    switch(req.body.warnType){
+        case 'p':
+            check_sql = 'select u_id, p_id from p_warning where u_id = (select id from users where u_id = ?) AND p_id = ?';
+            warn_sql = 'insert into p_warning(u_id, p_id) values((select id from users where u_id = ?), ?)';
+            break;
+        case 'pc':
+            check_sql = 'select u_id, pc_id from pc_warning where u_id = (select id from users where u_id = ?) AND pc_id = ?';
+            warn_sql = 'insert into pc_warning(u_id, pc_id) values((select id from users where u_id = ?), ?)';
+            break;
+        case 'pcc':
+            check_sql = 'select u_id, pcc_id from pcc_warning where u_id = (select id from users where u_id = ?) AND pcc_id = ?';
+            warn_sql = 'insert into pcc_warning(u_id, pcc_id) values((select id from users where u_id = ?), ?)';
+            break;
+    }
+    conn.conn.query(check_sql, [req.session.u_id, req.body.warnId], function (err, checking, fields) {
         if (err) {
             console.log(err);
         } else {
             if (checking.length) {
                 res.json({"result": "alreadywarned"});
             } else {
-                switch (req.body.warnedItem) {
-                    case "pen":
-                        sql = 'INSERT INTO warning (u_id, p_id, pc_id, pcc_id) VALUES (?, ?, 0, 0)';
-                        break;
-                    case "com":
-                        sql = 'INSERT INTO warning (u_id, p_id, pc_id, pcc_id) VALUES(?, ?, ?, 0)';
-                        break;
-                    case "pcc":
-                        sql = 'INSERT INTO warning (u_id, p_id, pc_id, pcc_id) VALUES(?, ?, ?, ?)';
-                }
-                conn.conn.query(sql, [req.session.u_id, p_id, pc_id, pcc_id], function (err, warned, fields) {
+                conn.conn.query(warn_sql, [req.session.u_id, req.body.warnId], function (err, warned, fields) {
                     if (err) {
                         console.log(err);
                     } else {

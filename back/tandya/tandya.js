@@ -239,29 +239,30 @@ exports.likesAnswer = function (req, res) {
 };
 
 exports.warningTandya = function (req, res) {
-    var t_id = parseInt(req.body.warnedT);
-    var ta_id = parseInt(req.body.warnedA);
-    var tac_id = parseInt(req.body.warnedC);
-    var sql = '';
-    var checking_sql = 'select u_id, t_id, ta_id, tac_id from warning where u_id = ? AND t_id = ? AND ta_id = ? AND tac_id = ?';
-    conn.conn.query(checking_sql, [req.session.u_id, t_id, ta_id, tac_id], function (err, checking, fields) {
+    var check_sql = '';
+    var warn_sql = '';
+    switch(req.body.warnType){
+        case 't':
+            check_sql = 'select u_id, t_id from t_warning where u_id = (select id from users where u_id = ?) AND t_id = ?';
+            warn_sql = 'insert into t_warning(u_id, t_id) values((select id from users where u_id = ?), ?)';
+            break;
+        case 'ta':
+            check_sql = 'select u_id, ta_id from ta_warning where u_id = (select id from users where u_id = ?) AND ta_id = ?';
+            warn_sql = 'insert into ta_warning(u_id, ta_id) values((select id from users where u_id = ?), ?)';
+            break;
+        case 'tac':
+            check_sql = 'select u_id, tac_id from tac_warning where u_id = (select id from users where u_id = ?) AND tac_id = ?';
+            warn_sql = 'insert into tac_warning(u_id, tac_id) values((select id from users where u_id = ?), ?)';
+            break;
+    }
+    conn.conn.query(check_sql, [req.session.u_id, req.body.warnId], function (err, checking, fields) {
         if (err) {
             console.log(err);
         } else {
             if (checking.length) {
                 res.json({"result": "alreadywarned"});
             } else {
-                switch (req.body.warnedItem) {
-                    case "tan":
-                        sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES (?, ?, 0, 0)';
-                        break;
-                    case "ans":
-                        sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES(?, ?, ?, 0)';
-                        break;
-                    case "tac":
-                        sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES(?, ?, ?, ?)';
-                }
-                conn.conn.query(sql, [req.session.u_id, t_id, ta_id, tac_id], function (err, warned, fields) {
+                conn.conn.query(warn_sql, [req.session.u_id, req.body.warnId], function (err, warned, fields) {
                     if (err) {
                         console.log(err);
                     } else {

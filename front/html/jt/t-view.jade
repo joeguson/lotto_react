@@ -23,7 +23,7 @@ block main
         .tcontent-div
             if u_id
                 p(class= "warn")
-                    button(class="twarnButton" type="submit" value='tan/' + topic.id + '/0/0' onclick="warningAjax(this);" id="warn/" + 'tan/' + topic.id + '/0/0') !
+                    button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningAjax(this);") !
             p(class="content")
                 pre(class="content")= topic.content
             div(id="tlike" class="tlike")= topic.likes.length
@@ -38,7 +38,7 @@ block main
         if(topic.hashtags.length > 0)
             p
                 -var hashtagfinal = topic.hashtags.map(e => `#${e.hash}`).join(" ");
-                a = #{hashtagfinal}
+                a #{hashtagfinal}
         p #{date_result}
             if u_id === topic.u_id
                 a(href='/tedit/' + topic.id class='edit') Edit
@@ -68,7 +68,7 @@ block main
                                         //else
                                         button(class="talikeButton" type="submit" value=topic.id + '/' + a.id onclick="answerSendAjax(this);") Suka
                                         span.dummy
-                                        button(class="taWarnButton" type="submit" value='ans/' + topic.id + '/' + a.id + '/0' onclick="warningAjax(this);" id="warn/" + 'ans/' + topic.id + '/' + a.id + '/0') !
+                                        button(class="taWarnButton" type="submit" value='t/ta/'+a.id onclick="warningAjax(this);") !
                             if u_id
                                 .acommentForm
                                     textarea(name='acomment' class="tacInput")
@@ -82,6 +82,6 @@ block main
                                         - var date_result3 = 'by : ' + ac.u_id + ' / '+ac.date
                                         dd.tacomment-dd #{date_result3}
                                             if u_id
-                                                button(class="tacWarnButton" type="submit" value='tac/' + topic.id + '/' + a.id + '/' + ac.id onclick="warningAjax(this);" id="warn/" + 'tac/' + topic.id + '/' + a.id + '/' + ac.id)
+                                                button(class="tacWarnButton" type="submit" value='t/tac/'+ac.id onclick="warningAjax(this);")
 
     script(type="text/javascript" src="/js/tlikes.js")

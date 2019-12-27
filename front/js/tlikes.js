@@ -129,8 +129,7 @@ function acommentSendAjax(acomment){
                 dds.setAttribute('class', 'tacomment-dd');
                 warnButton.setAttribute('class', 'tacWarnButton');
                 warnButton.setAttribute('type', 'submit');
-                warnButton.setAttribute('value', 'tac/'+tandyaId[2]+'/'+answerId+'/'+result.acomment_id);
-                warnButton.setAttribute('id', 'warn/tac/'+tandyaId[2]+'/'+answerId+'/'+result.acomment_id);
+                warnButton.setAttribute('value', 't/tac/'+result.acomment_id);
                 warnButton.setAttribute('onclick', 'warningAjax(this)');
                 warnButton.innerHTML = '!';
                 acomment.previousSibling.previousSibling.value = '';
@@ -148,30 +147,5 @@ function acommentSendAjax(acomment){
     }
     else{
         console.log('double');
-    }
-}
-function warningAjax(warning){
-    var warningValue = warning.value.split("/");
-    var confirmWarning = function(){
-        return confirm("really?");
-    };
-    var confirmedValue = confirmWarning();
-    var original = {'warnedItem' : warningValue[0], "warnedT" : warningValue[1], "warnedA" : warningValue[2], "warnedC" : warningValue[3]};
-    original = JSON.stringify(original);
-    if(confirmedValue == true){
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/twarning/');
-        xhr.setRequestHeader('Content-type', "application/json");
-        xhr.send(original);
-        // 데이터 수신이 완료되면 표시
-        xhr.addEventListener('load', function(){
-            var result = JSON.parse(xhr.responseText);
-            if(result.result == "warned"){
-                alert('terima kasih');
-            }
-            else{
-                alert('sudah di warn');
-            }
-        });
     }
 }

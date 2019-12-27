@@ -2,6 +2,7 @@ extends ../layout.jade
 
 block css
     link(rel="stylesheet" href="../css/penobrol_view.css" type="text/css")
+    script(type="text/javascript" src="/js/jsForAllJade.js")
 
 block nav
     ul
@@ -30,7 +31,7 @@ block main
         .pcontent
             if u_id
                 p(class="warn")
-                    button(class="pwarnButton" type="submit" value='pen/' + topic.id + '/0/0' onclick="warningAjax(this)" id="warn/" + 'pen/' + topic.id + '/0/0') !
+                    button(class="pwarnButton" type="submit" value='p/p/'+topic.id onclick="warningAjax(this)" ) !
             p(class="content")
                 pre(class="content")= topic.content
             div(id="plike" class="plike")= topic.likes.length
@@ -65,7 +66,7 @@ block main
                                             //else
                                                 button(class="pclikeButton" type="submit" value=topic.id + '/' + c.id onclick="pcLikeSendAjax(this);") Suka
                                             span.dummy
-                                            button(class="pcWarnButton" type="submit" value='com/' + topic.id + '/' + c.id + '/0' onclick="warningAjax(this);" id="warn/" + 'com/' + topic.id + '/' + c.id + '/0') !
+                                            button(class="pcWarnButton" type="submit" value='p/pc/'+ c.id onclick="warningAjax(this);") !
                                     if u_id
                                         .ccommentForm
                                             textarea(name='ccomment' class="pccInput" id='pccInput')
@@ -85,7 +86,7 @@ block main
                                                         // -var date_result3 = 'by ' + cc.u_id + ' / '+jsForBack.datemaker(cc.date)
                                                     dd.pccomment-dd #{date_result3}
                                                         if u_id
-                                                            button(class="pccWarnButton" type="submit" value='pcc/' + topic.id + '/' + c.id + '/' + cc.id  onclick="warningAjax(this);" id="warn/" + 'pcc/' + topic.id + '/' + c.id + '/' + cc.id) !
+                                                            button(class="pccWarnButton" type="submit" value='p/pcc/'+cc.id  onclick="warningAjax(this);") !
     script.
         function pcChecksubmit() {
             if (pcInput.value.length < 5) {
