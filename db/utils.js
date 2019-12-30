@@ -21,3 +21,24 @@ exports.dateMaker = function(date) {
 exports.commentLikeChecker = function(likeObject, cId, userId){
     return likeObject.filter(e => (e.like_id === cId && e.u_id === userId)) > 0;
 };
+
+exports.getImage = function(contentString){
+    var id = 1;
+    var imgIndex = 0;
+    var imgMaps = {};
+    var posMaps = {};
+    while(true) {
+        // <img
+        imgIndex = contentString.indexOf('<img', imgIndex);
+        if(imgIndex == -1) break;
+        var endIndex = contentString.indexOf('>', imgIndex);
+        endIndex++;
+        const data = contentString.substring(imgIndex, endIndex);
+        imgMaps[id] = data;
+        id++;
+        imgIndex = endIndex;
+    }
+    return {
+        imgs: imgMaps
+    };
+};

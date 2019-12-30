@@ -24,8 +24,25 @@ block main
             if u_id
                 p(class= "warn")
                     button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningAjax(this);") !
-            p(class="content")
-                pre(class="content")= topic.content
+            div(class="content")
+                div(class="thumbnail")= topic.thumbnail
+                iframe(id="content" class="content" style="border: none;")
+                script.
+                    var iframe = document.getElementById("content");
+                    iframe.width = "100%";
+                    var page = iframe.contentWindow.document;
+                    var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+                    page.body.innerHTML = content;
+                    const imgTags = page.getElementsByTagName("img");
+                    for(var t of imgTags) {
+                        t.onload = () => {
+                            var i = document.getElementById('content');
+                            var w = i.contentWindow.document.body.scrollWidth;
+                            var h = i.contentWindow.document.body.scrollHeight;
+                            i.height = h;
+                            i.width = w;
+                        };
+                    }
             div(id="tlike" class="tlike")= topic.likes.length
             if u_id
                 //if(commentLikeChecker(tlikes, topic.id, u_id))

@@ -46,7 +46,7 @@ function uploadImage(id, data, onUploaded) {
     };
 }
 function replace(content, id, filename, index = 0) {
-    filename = "../../../images/" + filename;
+    filename = "./" + filename;
     var s = 0, e = 0;
     while(true) {
         const imgIndex = content.indexOf('<img', index);

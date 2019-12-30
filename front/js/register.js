@@ -1,7 +1,7 @@
-var authenticator1 = '';
-var authenticator2 = '';
-var authenticator3 = '';
-var authenticator4 = '';
+var idAuth = 0;
+var pwAuth = 0;
+var mailAuth = 0;
+
 var sex = '';
 var userIdCheck = RegExp(/^[A-Za-z0-9_\-]{4,20}$/);
 var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
@@ -16,37 +16,16 @@ document.getElementById('u_id').addEventListener('change', function(){
         document.getElementById("idchecker").innerHTML = 'maaf, minta pakai yang lain';
     }
 });
-function sendAjax(url, data){
-    var data2 = {'u_id' : data};
-    data2 = JSON.stringify(data2);
-    var xhr = new XMLHttpRequest();
-    xhr.open('post', url);
-    xhr.setRequestHeader('Content-type', "application/json");
-  xhr.send(data2);
-  // 데이터 수신이 완료되면 표시
-  xhr.addEventListener('load', function(){
-     var result = JSON.parse(xhr.responseText);
-     if(result.result !== 'ok') return;
-     // 데이터가 있으면 결과값 표시
-      if(parseInt(result.u_id) > 0){
-        document.getElementById("idchecker").innerHTML = 'maaf, sudah dipakai';
-          authenticator1 = '';
-        }
-      else{
-        document.getElementById("idchecker").innerHTML = 'silakan';
-        authenticator1 = '1';
-      }
-  });
-}
+
 document.getElementById('u_pw').addEventListener('change', function(){
     var v = document.getElementById('u_pw').value;
     if(v.length > 7){
         document.getElementById("pwchecker").innerHTML = 'bagus';
-        authenticator2 = '1';
+        pwAuth = 1;
     }
     else{
         document.getElementById("pwchecker").innerHTML = 'maaf, terlalu pendek. harus lebih dari 7 huruf';
-        authenticator2 = '';
+        pwAuth = 0;
     }
 });
 document.getElementById('u_pw2').addEventListener('change', function(){
@@ -54,11 +33,11 @@ document.getElementById('u_pw2').addEventListener('change', function(){
     var a = document.getElementById('u_pw2').value;
     if(v == a && v.length > 7){
         document.getElementById("pwchecker").innerHTML = 'Silakan lanjutkan';
-        authenticator3 = '1';
+        pwAuth = 2;
     }
     else{
         document.getElementById("pwchecker").innerHTML = 'Tidak sama';
-        authenticator3 = '';
+        pwAuth = 1;
     }
 });
 
@@ -86,8 +65,12 @@ document.getElementById('girl').addEventListener('click', function(){
 document.getElementById('email').addEventListener('change', function(){
     var userEmail = document.getElementById('email').value;
     if(emailCheck.test(userEmail) === true){
-        authenticator4 = '1';
-    } 
+        sendAjax('/aku/register', userEmail);
+        mailAuth = 1;
+    }
+    else{
+        mailAuth = 0;
+    }
 });
 
 function confirmRegister(){
@@ -95,28 +78,59 @@ function confirmRegister(){
 }
 
 function checksubmit(){
-    if(authenticator1+authenticator2+authenticator3+authenticator4 == '1111'){
-        if(sex){
-            if(checkboxValue=== true){
-                var confirmR = confirmRegister();
-                if(confirmR ===true){
-                    return true;
+    console.log(idAuth);
+    console.log(pwAuth);
+    console.log(mailAuth);
+    if(idAuth){
+        if(pwAuth){
+            if(mailAuth){
+                if(sex){
+                    if(checkboxValue=== true){
+                        var confirmR = confirmRegister();
+                        if(confirmR ===true){
+                            return true;
+                        }
+                        else{return false;}
+                    }
+                    else{return false;}
                 }
                 else{return false;}
             }
             else{return false;}
         }
-        else{
-            return false;
-        }
+        else{return false;}
     }
-    else{
-        return false;
-    }
+    else{return false;}
 }
+
 function checkboxCheck(target){
     checkboxValue = target.checked;
 }
+
+function sendAjax(url, data){
+    var data2 = {'u_id' : data};
+    data2 = JSON.stringify(data2);
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', url);
+    xhr.setRequestHeader('Content-type', "application/json");
+    xhr.send(data2);
+    xhr.addEventListener('load', function(){
+    var result = JSON.parse(xhr.responseText);
+    if(result.result !== 'ok') return;
+     // 데이터가 있으면 결과값 표시
+    if(parseInt(result.u_id) > 0){
+        document.getElementById("idchecker").innerHTML = 'maaf, sudah dipakai';
+        idAuth = 0;
+    }
+    else{
+        document.getElementById("idchecker").innerHTML = 'silakan';
+        idAuth = 1;
+    }
+    });
+}
+
+
+
 //var authenticate = authenticator1+authenticator2+authenticator3+authenticator4;
 //
 //function CheckboxCheck(checkbox){
@@ -136,7 +150,3 @@ function checkboxCheck(target){
 //document.getElementById('check').addEventListener('change', function(){
 //    CheckboxCheck();
 //});
- 
-
-
-

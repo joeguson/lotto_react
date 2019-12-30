@@ -21,19 +21,38 @@ block main
             dl.pview-dl
                 - var date_result = 'by '+ topic.u_id + ' / '+topic.date+' / ' + 'view : ' + topic.view + ' / ' + ' comments'
                 dt.pview-dt= topic.title
+                    if u_id === topic.u_id
+                        a(onclick ='deletePenobrol()') delete
                 if(topic.hashtags.length > 0)
                     dd.pview-dd.hashtag
                         - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
                         a #{hashtags}
                 dd.pview-dd #{date_result}
                     if u_id === topic.u_id
-                        a(href='/pedit/' + topic.id class='edit') Edit
+                        a(href='/pedit/'+topic.id class='edit') edit
         .pcontent
             if u_id
                 p(class="warn")
                     button(class="pwarnButton" type="submit" value='p/p/'+topic.id onclick="warningAjax(this)" ) !
-            p(class="content")
-                pre(class="content")= topic.content
+            div(class="content")
+                div(class="thumbnail")= topic.thumbnail
+                iframe(id="content" class="content" style="border: none;")
+                script.
+                    var iframe = document.getElementById("content");
+                    iframe.width = "100%";
+                    var page = iframe.contentWindow.document;
+                    var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+                    page.body.innerHTML = content;
+                    const imgTags = page.getElementsByTagName("img");
+                    for(var t of imgTags) {
+                        t.onload = () => {
+                            var i = document.getElementById('content');
+                            var w = i.contentWindow.document.body.scrollWidth;
+                            var h = i.contentWindow.document.body.scrollHeight;
+                            i.height = h;
+                            i.width = w;
+                        };
+                    }
             div(id="plike" class="plike")= topic.likes.length
             if u_id
                 //if(commentLikeChecker(plikes, topic.id, u_id))
@@ -55,6 +74,7 @@ block main
                                 .pcomment-start #{commentStart}
                                     if u_id === c.u_id
                                         a(href='/pcedit/' + topic.id + '/' + c.id) Edit
+                                        a(value=c.id onclick ='postDeletePcomment(this)') delete
                                 dt.pcomment-dt
                                     pre(class="pcomment-dt") "#{c.content}"
                                 dd.pcomment-dd #{date_result2}

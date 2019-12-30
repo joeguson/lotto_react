@@ -2,7 +2,7 @@ extends ../layout.jade
     
 block css
     link(rel='stylesheet', href='/css/aku.css' type="text/css")
-    script(type="text/javascript" src="aku.js")
+    script(type="text/javascript" src="../js/aku.js")
 
 
 block nav
@@ -27,17 +27,17 @@ block main
       .likeStat
         span.likeSpan
           p.likeHeading Penobrol
-          p.likeCount #{likeCountChecker(p_like.totalp_like)}
+          p.likeCount= totalLikes.penobrol
         span.likeSpan
           p.likeHeading Tandya
-          p.likeCount #{likeCountChecker(t_like.totalt_like)}
+          p.likeCount= totalLikes.tandya
       .likeStat
         span.likeSpan 
           p.likeHeading Comment
-          p.likeCount #{likeCountChecker(pc_like.totalpc_like)}
+          p.likeCount= totalLikes.comment
         span.likeSpan 
           p.likeHeading Answer
-          p.likeCount #{likeCountChecker(ta_like.totalta_like)}
+          p.likeCount= totalLikes.answer
     .p-penobrol
       p Penobrol
       if penobrols
@@ -46,8 +46,10 @@ block main
           dl(onclick ='location.href="#{plink}"')
             dt
               a(href='/penobrol/'+p.id)= p.title
-            dd.content-info #{date_result}
-              span(style='color: #c91818; font-size:14px;')= p.p_like
+            dd.content-info #{p.content}
+            - var hashtags = p.hashtags.map(e => `#${e.hash}`).join(" ");
+            dd.content-info #{hashtags+ p.date}
+              span(style='color: #c91818; font-size:14px;')= p.like
     .p-tandya 
       p Tandya
       if tandyas
@@ -56,8 +58,10 @@ block main
           dl(onclick ='location.href="#{tlink}"')
             dt
               a(href='/tandya/'+t.id)= t.question
-            dd.content-info #{date_result}        
-              span(style='color: #c91818;')= t.t_like       
+            dd.content-info #{t.content}        
+            - var hashtags = t.hashtags.map(e => `#${e.hash}`).join(" ");
+            dd.content-info #{hashtags + t.date}
+              span(style='color: #c91818;')= t.like       
     a.logout(href= '/aku/logout') Logout
   else
     form(action='aku/login' method='post')

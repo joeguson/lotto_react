@@ -18,6 +18,8 @@ var penobrol = require('./back/penobrol/penobrol');
 var tandya = require('./back/tandya/tandya');
 var aku = require('./back/aku/aku');
 var cari = require('./back/cari/cari');
+var backSystem = require('./back/backsystem')
+var jsForBack = require('./back/jsForBack.js');
 app.use(useragent.express());
 app.use(favicon(path.join(__dirname,'./info', 'beritamus logo.png')));
 const pool = mysql2.createPool(
@@ -54,6 +56,7 @@ app.locals.pretty = true;
 app.use(express.static('front'));
 app.use(express.static('back'));
 app.use(express.static('public'));
+app.use(express.static('images'));
 app.use("/jade", express.static('/'));
 app.set('view engine', 'jade');
 app.set('views', './front/html');
@@ -66,6 +69,10 @@ exports.router = router;
 exports.conn = conn;
 exports.pool = pool;
 exports.sch = schedule;
+
+/************FOR SYSTEM************/
+app.get('/chonggwalpage', backSystem.getChonggwalpage);
+app.post('/chonggwalpage', backSystem.postChonggwalpage);
 
 /************FOR AKU************/
 app.get('/aku/findMyIdPw', aku.getFindMyIdPw);
@@ -116,36 +123,12 @@ app.post('/penobroldelete/:id', penobrol.postDeletePenobrol);
 app.post('/pcommentdelete/:id', penobrol.postDeletePcomment);
 app.post('/pccommentdelete/:id', penobrol.postDeletePccomment);
 
-function generateFilename() {
-    const d = new Date();
-    var str = "";
-    var str = d.getFullYear().toString() +
-        (d.getMonth() + 1).toString() +
-        d.getDate().toString() +
-        d.getHours().toString() +
-        d.getMinutes().toString() +
-        d.getSeconds().toString() +
-        Math.floor(Math.random() * 100000).toString();
-
-//    const d = new Date();
-//
-//    var str = d.getFullYear().toString() +
-//        (d.getMonth() + 1).toString() +
-//        d.getDate().toString() +
-//        d.getHours().toString() +
-//        d.getMinutes().toString() +
-//        d.getSeconds().toString() +
-//        Math.floor(Math.random() * 100000).toString() +
-//         ".png";
-    return str;
-}
-
 app.post('/image', (req, res) => {
     var img = req.body.img;
     var d=new Date().valueOf();
     var data =img.replace(/^data:image\/\w+;base64,/, "");
     var buf = new Buffer(data, 'base64');
-    var filename = generateFilename();
+    var filename = jsForBack.generateFilename();
     if("jpeg"==img.split(";")[0].split("/")[1]){
         filename += '.jpg';
     }
@@ -164,63 +147,6 @@ app.post('/image', (req, res) => {
     res.json({'filename': filename});
 });
 
-app.delete('/image/:image_id', (req, res) =>{
-  var id = req.params.image_id;
-  console.log(req.session.u_id);
-  console.log(id);
-  res.send('hi');
-});
-
-var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfWeek: 0}, function(){
-  var dateFrom = new Date();
-  var dateTo = new Date();
-  dateFrom.setDate(dateFrom.getDate() - 6);
-  dateFrom = dateFrom.getFullYear()+'-'+(dateFrom.getMonth()+1)+'-'+dateFrom.getDate();
-  dateTo = dateTo.getFullYear()+'-'+(dateTo.getMonth()+1)+'-'+dateTo.getDate();
-  var tweeklyUpdate = 'select * from tandya where date between date(?) and date (?) order by score desc limit 2';
-  var pweeklyUpdate = 'select * from penobrol where date between date(?) and date (?) order by score desc limit 2';
-  var weeklyUpdate = 'INSERT INTO weekly (gold_p, silver_p, bronze_p, gold_t, silver_t, bronze_t) VALUES(?)';
-  var weeklyArray = [];
-  conn.query(tweeklyUpdate, [dateFrom, dateTo], function(err, tupdate, fields){
-      if(err){console.log(err);}
-      else{
-          conn.query(pweeklyUpdate, [dateFrom, dateTo], function(err, pupdate, fields){
-              if(err){console.log(err);}
-              else{
-                  for(var i = 0; i<pupdate.length; i++){
-                      weeklyArray.push(pupdate[i].id);
-                  }
-                  if(weeklyArray.length<3){
-                      while(weeklyArray.length <3){
-                          weeklyArray.push(0);
-                      }
-                  }
-                  for(var j = 0; j<tupdate.length; j++){
-                      weeklyArray.push(tupdate[j].id);
-                  }
-                  if(weeklyArray.length<6){
-                      while(weeklyArray.length<6){
-                          weeklyArray.push(0);
-                      }
-                  }
-                  conn.query(weeklyUpdate, [weeklyArray], function(err, finalUpdate, fields){
-                      if(err){console.log(err);}
-                  });
-              }
-          });
-      }
-  });
-});
-
-var todayCountsql = 'INSERT INTO daily_count (visitCount) VALUES (?)';
-var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, function(){
-    conn.query(todayCountsql, todayCount, function(err, updateCount, field){
-        if(err){console.log(err);}
-        else{
-            todayCount = 1;
-        }
-    });
-});
 
 app.listen(db_config.port, '0.0.0.0', function(){
   console.log('Connected, 80 port!');

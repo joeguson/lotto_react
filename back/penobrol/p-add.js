@@ -4,9 +4,11 @@ function postPenobrolAdd() {
     const public = document.getElementById('rbP').checked ? 'p' : 'a';
     var content = document.getElementById('editor').value();
     const hashtag = document.getElementById('hashtag').value;
+    const thumbnail = document.getElementById('thumbnail').value;
 
     const req = {
         title: title,
+        thumbnail: thumbnail,
         public: public,
         content: content,
         hashtag: hashtag

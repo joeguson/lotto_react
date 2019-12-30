@@ -10,6 +10,7 @@ function parseArticle(packet) {
         id: packet.id,
         content: packet.content,
         author: packet.author,
+        thumbnail: packet.thumbnail,
         date: utils.dateMaker(packet.date), // reformat date
         public: packet.public,
         warning: packet.warning,
@@ -20,6 +21,36 @@ function parseArticle(packet) {
         u_id: packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id
     };
 }
+
+exports.parseFrontPenobrol = function (packet) {
+    const penobrol = {};
+    penobrol.id = packet.id;
+    penobrol.date = utils.dateMaker(packet.date);
+    penobrol.title = packet.title;
+    penobrol.thumbnail = packet.thumbnail;
+    penobrol.commentCount = packet.comments;
+    penobrol.view = packet.p_view;
+    penobrol.identifier = 'p';
+    penobrol.hashtags = packet.hashtags;
+    penobrol.u_id =  packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id;
+    penobrol.imgs = Object.values((utils.getImage(packet.content)).imgs);
+    return penobrol;
+};
+
+exports.parseFrontTandya = function (packet) {
+    const tandya = {};
+    tandya.id = packet.id
+    tandya.date = utils.dateMaker(packet.date);
+    tandya.question = packet.question;
+    tandya.thumbnail = packet.thumbnail;
+    tandya.answerCount = packet.answers;
+    tandya.view = packet.t_view;
+    tandya.identifier = 't';
+    tandya.hashtags = packet.hashtags;
+    tandya.u_id =  packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id
+    tandya.imgs = Object.values((utils.getImage(packet.content)).imgs);
+    return tandya;
+};
 
 exports.parsePenobrol = function (packet) {
     const penobrol = parseArticle(packet);

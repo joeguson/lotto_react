@@ -1,125 +1,60 @@
-doctype html
-html(lang="id")
-    head
-        title beritamus
-        // what appears on the tab
-        base(href="/")
-        link(rel='stylesheet', href='common.css' type="text/css")
-        // links css common file
-        link(rel="stylesheet" href="penobrol_add.css" type="text/css")
-        // links css file
-        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
-        meta(charset='UTF-8')
-        meta(name='viewport', content='width=device-width, user-scalable=no')
-        meta(name='apple-mobile-web-app-capable', content='yes')
-        script(src="b-editor/b-editor.js")
-        script(src='p-edit.js')
-        // iphone에서 어플식으로 저장가능
-        // Lorem ipsum
-    body
-        .container
-            header
-                a(href='/penobrol') Beritamus      
-            nav
-                ul
-                    li
-                        a(href='/aku') Aku
-                    li
-                        a(href='/cari') Cari
-                    li(style='border-bottom: 2px solid yellow; opacity: .9')
-                        a(href='/penobrol' style='color: #ffff97;') Penobrol
-                    li
-                        a(href='/tandya') Tandya
-                    br.clear
-            article
-                    p 
-                        input(type='text' name='title' placeholder='title' class="title" id="title" value=edit_content.title)
-                    p
-                        if edit_content.public == 'p'
-                            label
-                                input(id='rbP' type='radio' value='p' name="public" checked)
-                                |public
-                            label
-                                input(id='rbA' type='radio' value='a' name="public")
-                                |anonymous
-                        else
-                            label
-                                input(id='rbP' type='radio' value='p' name="public" checked)
-                                |public
-                            label
-                                input(id='rbA' type='radio' value='a' name="public")
-                                |anonymous
-                    p
-                        b-editor(id='editor' width="90%" height="600px" name="content")
-                        script.
-                            var edit_iframe = document.getElementById("iframe");
-                            edit_iframe.contentWindow.document.body.innerHTML = "#{edit_content.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
-                        // textarea(name='content' class="content" id="content" required)
-                    p
-                        input(id='hashtag' type='text' name='hashtag' class="hashtag" value= "#{hashtag_final}")
-                    p
-                        button(class="submit" onclick="postEditPenobrol();") share
-                    script.
-                        function checksubmit(){
-                            if(title.value.length < 5){
-                                alert('judulnya harus lebih dari 5 alphabet');
-                                return false;
-                            }
-                            if(content.value.length < 5){
-                                alert('kontennya harus lebih dari 5 alphabet');
-                                return false;
-                            }
-                            return true;
-                        }
-                        var iframe = document.getElementById('iframe').contentWindow.document.body;
-                        var iframe2 = document.getElementById('iframe').contentWindow.document.head;
-                        var style = document.createElement('style');
-                        var innerStyle = 
-                        `
-                        body{margin:10px;box-sizing: border-box;}
-                        div{width:100%;}
-                        .rotate000{
-                            transform: rotate(0deg);
-                            -webkit-transform: rotate(0deg);
-                            -ms-transform: rotate(0deg);
-                        }
-                        .rotate090{
-                          transform: rotate(90deg);
-                          -webkit-transform: rotate(90deg);
-                          -ms-transform: rotate(90deg);
-                        }
-                        .rotate180{
-                          transform: rotate(180deg);
-                          -webkit-transform: rotate(180deg);
-                          -ms-transform: rotate(180deg);
-                        }
-                        .rotate270{
-                          transform: rotate(270deg);
-                          -webkit-transform: rotate(270deg);
-                          -ms-transform: rotate(270deg);
-                        }
-                        `
-                        var innerScript = `
-                        function pad(n, width) {
-                            n = n + '';
-                            return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
-                        }
-                        function myFunction(target) {
-                            var angle = parseInt(target.className.substr(-3, 3))/90;
-                            if(angle<3){    
-                                angle++;
-                            }
-                            else{
-                                angle = 0;
-                            }
-                            target.className = ("rotate"+pad(angle*90, 3))
-                        };
-                        `
-                        var script = document.createElement('script');
-                        style.append(innerStyle);
-                        script.append(innerScript);
-                        iframe2.appendChild(script);
-                        iframe2.appendChild(style);
-            section.footer(id='footer') 
-                p contact : admin@beritamus.com
-                p www.beritamus.com
+extends ../layout.jade
+
+block css
+    link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
+    script(src="../../public/b-editor/b-editor.js")
+    script(src='./penobrol/p-edit.js')
+    script(src='../addPandT.js')
+
+block nav
+  ul
+    li: a(href='/aku') Aku
+    li: a(href='/cari') Cari
+    li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/penobrol' style='color: #ffff97;') Penobrol
+    li: a(href='/tandya') Tandya
+    br.clear
+
+block submain
+  //.ad Advertisement
+  
+block main
+    article
+        p 
+            input(type='text' name='title' placeholder='title' class="title" id="title" value=edit_content.title)
+        p
+            if edit_content.public == 'p'
+                label
+                    input(id='rbP' type='radio' value='p' name="public" checked)
+                    |public
+                label
+                    input(id='rbA' type='radio' value='a' name="public")
+                    |anonymous
+            else
+                label
+                    input(id='rbP' type='radio' value='p' name="public" checked)
+                    |public
+                label
+                    input(id='rbA' type='radio' value='a' name="public")
+                    |anonymous
+        p
+            b-editor(id='editor' width="90%" height="600px" name="content")
+            script.
+                var edit_iframe = document.getElementById("iframe");
+                edit_iframe.contentWindow.document.body.innerHTML = "#{edit_content.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+            // textarea(name='content' class="content" id="content" required)
+        p
+            input(id='hashtag' type='text' name='hashtag' class="hashtag" value= "#{hashtag_final}")
+        p
+            button(class="submit" onclick="postEditPenobrol();") share
+        script.
+            function checksubmit(){
+                if(title.value.length < 5){
+                    alert('judulnya harus lebih dari 5 alphabet');
+                    return false;
+                }
+                if(content.value.length < 5){
+                    alert('kontennya harus lebih dari 5 alphabet');
+                    return false;
+                }
+                return true;
+            }

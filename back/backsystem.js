@@ -1,13 +1,16 @@
+var schedule = require('node-schedule');
+var conn = require('../b');
+
 var todayCount = 1;
 
-app.get('/chonggwalpage', function(req, res){
+exports.getChonggwalpage = function(req, res){
     var overviewUsers = 'select count(*) AS users from users';
     var overviewPen = 'select count(*) AS penobrol from penobrol';
     var overviewTan = 'select count(*) AS tandya from tandya';
     var overviewPcom = 'select count(*) AS pcom from p_com';
     var overviewTans = 'select count(*) AS tans from t_ans';
 
-    conn.query(overviewUsers, function(err, users, fields){
+    conn.conn.query(overviewUsers, function(err, users, fields){
         if(err){console.log(err);}
         else{
             conn.query(overviewPen, function(err, pen, fields){
@@ -33,8 +36,9 @@ app.get('/chonggwalpage', function(req, res){
             });
         }
     });
-});
-app.post('/chonggwalpage', function(req, res){
+}
+
+exports.postChonggwalpage = function(req, res){
     var overviewUsers = 'select count(*) from users';
     var overviewPen = 'select count(*) from penobrol';
     var overviewTan = 'select count(*) from tandya';
@@ -67,7 +71,7 @@ app.post('/chonggwalpage', function(req, res){
             });
         }
     });
-});
+}
 
 var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfWeek: 0}, function(){
     var dateFrom = new Date();
@@ -79,10 +83,10 @@ var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfW
     var pweeklyUpdate = 'select * from penobrol where date between date(?) and date (?) order by score desc limit 2';
     var weeklyUpdate = 'INSERT INTO weekly (gold_p, silver_p, bronze_p, gold_t, silver_t, bronze_t) VALUES(?)';
     var weeklyArray = [];
-    conn.query(tweeklyUpdate, [dateFrom, dateTo], function(err, tupdate, fields){
+    conn.conn.query(tweeklyUpdate, [dateFrom, dateTo], function(err, tupdate, fields){
         if(err){console.log(err);}
         else{
-            conn.query(pweeklyUpdate, [dateFrom, dateTo], function(err, pupdate, fields){
+            conn.conn.query(pweeklyUpdate, [dateFrom, dateTo], function(err, pupdate, fields){
                 if(err){console.log(err);}
                 else{
                     for(var i = 0; i<pupdate.length; i++){
@@ -110,11 +114,21 @@ var weeklyUpdate = schedule.scheduleJob({second: 55, minute: 59, hour:23, dayOfW
     });
 });
 
+var todayCountsql = 'INSERT INTO daily_count (visitCount) VALUES (?)';
+var dailyVisitCount = schedule.scheduleJob({second: 59, minute: 59, hour:23}, function(){
+    conn.conn.query(todayCountsql, todayCount, function(err, updateCount, field){
+        if(err){console.log(err);}
+        else{
+            todayCount = 1;
+        }
+    });
+});
+
 //    var sql3 = '';
 //    if(req.session.u_id){
 //        sql3 = 'INSERT INTO access_info(u_id, ipAddress, browser) VALUES(?, INET_ATON(?), ?)';
 //        conn.query(sql3, [req.session.u_id, ipAddress, req.headers['user-agent']], function(err, access, fields){
-//            if(err){console.log(err);}    
+//            if(err){console.log(err);}
 //        });
 //    }
 //    else{

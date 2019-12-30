@@ -15,8 +15,8 @@ function shuffle(list) {
 }
 
 exports.getCari = function (req, res) {
-    var getRandomPenobrol = 'select * from penobrol limit 3';
-    var getRandomTandya = 'select * from tandya limit 3';
+    var getRandomPenobrol = 'select * from penobrol order by rand () limit 3';
+    var getRandomTandya = 'select * from tandya order by rand () limit 3';
     var getHashtagP = 'select * from penobrol_hashtag where p_id = ?';
     var getHashtagT = 'select * from tandya_hashtag where t_id = ?';
     var pResults = [];
@@ -27,15 +27,13 @@ exports.getCari = function (req, res) {
         tResults = await dbcon.oneArg(getRandomTandya);
         for (const p of pResults)
             p.hashtags = (await dbcon.twoArg(getHashtagP, p.id)).map(parser.parseHashtagP);
-        pResults = pResults.map(parser.parsePenobrol);
+        pResults = pResults.map(parser.parseFrontPenobrol);
 
         for (const t of tResults)
             t.hashtags = (await dbcon.twoArg(getHashtagT, t.id)).map(parser.parseHashtagT);
-        tResults = tResults.map(parser.parseTandya);
-
+        tResults = tResults.map(parser.parseFrontTandya);
         var result = pResults.concat(tResults);
         shuffle(result);
-
         // u_id 가 없으면 어차피 undefined 로 들어가므로 통합 가능
         res.render('./jc/cari', {
             list: result,

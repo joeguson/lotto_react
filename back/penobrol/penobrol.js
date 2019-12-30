@@ -12,8 +12,8 @@ exports.getPenobrol = function (req, res) {
     var sql4 = 'select * from penobrol_hashtag where p_id = ?';
 
     async function getOrderedP() {
-        var byDate = (await dbcon.oneArg(sql1)).map(parser.parsePenobrol);
-        var byScore = (await dbcon.oneArg(sql2)).map(parser.parsePenobrol);
+        var byDate = (await dbcon.oneArg(sql1)).map(parser.parseFrontPenobrol);
+        var byScore = (await dbcon.oneArg(sql2)).map(parser.parseFrontPenobrol);
         for(const p of byDate)
             p.hashtags = (await dbcon.twoArg(sql3, p.id)).map(parser.parseHashtagP);
         for(const p of byScore)
@@ -83,12 +83,13 @@ exports.getAddPenobrol = function (req, res) {
 exports.postAddPenobrol = function (req, res) {
     var author = req.session.u_id;
     var content = req.body.content;
+    var thumbnail = req.body.thumbnail;
     var title = req.body.title;
     var rawhashtags = req.body.hashtag;
     var public = req.body.public;
     var finalhashtag = jsForBack.finalHashtagMaker(rawhashtags);
 
-    var sql = "INSERT INTO penobrol (author, title, content, public) VALUES ((select id from users where u_id = ?), ?, ?, ?)";
+    var sql = "INSERT INTO penobrol (author, title, content, public, thumbnail) VALUES ((select id from users where u_id = ?), ?, ?, ?, ?)";
     var sql2 = "INSERT INTO penobrol_hashtag (p_id, hash) VALUES (?, ?)";
 
     async function insertHashtag(query, id, hashtagArray) {
@@ -100,7 +101,7 @@ exports.postAddPenobrol = function (req, res) {
         });
     }
 
-    conn.conn.query(sql, [author, title, content, public], function (err, result, fields) {
+    conn.conn.query(sql, [author, title, content, public, thumbnail], function (err, result, fields) {
         if (err) {
             console.log(err);
         } else {
@@ -267,8 +268,8 @@ exports.warningPenobrol = function (req, res) {
 
 exports.getEditPenobrol = function (req, res) {
     var p_id = req.params.penobrol_no;
-    var sql = 'select * from penobrol where id = ?';
-    var sql2 = 'select * from hashtag where p_id = ?';
+    var sql = 'select p.*, u.u_id from penobrol p join users u on p.author = u.id where p.id = ?';
+    var sql2 = 'select * from penobrol_hashtag where p_id = ?';
     conn.conn.query(sql, p_id, function (err, edit, fields) {
         if (err) {
             console.log(err);
@@ -277,8 +278,10 @@ exports.getEditPenobrol = function (req, res) {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(hashtags);
-                    if (req.session.u_id == edit[0].author) {
+                    var penobrol = parser.parsePenobrol(edit);
+                    penobrol.hashtags = hashtags.map(parser.parseHashtagP);
+                    console.log(penobrol);
+                    if(req.session.u_id == penobrol.u_id){
                         res.render('./jp/p-edit', {u_id: 'y', edit_content: edit[0], hashtags: hashtags});
                     } else {
                         res.redirect('/penobrol/' + p_id);
@@ -413,6 +416,7 @@ exports.postDeletePenobrol = function(req, res){
 
 exports.postDeletePcomment = function(req, res){
   var deleteId = req.body.deleteId;
+  console.log(req.body);
   var p_id = req.body.penobrolId
   var checkAuthor = 'select p.author, u.u_id from p_com p inner join users u on p.author = u.id where p.id = ?';
   var deleteQuery = 'Delete from p_com where id = ?';

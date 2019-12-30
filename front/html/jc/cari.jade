@@ -17,7 +17,8 @@ block submain
     .search
         form(action='/cari/search' method='get')
             input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
-            input(type='submit' class="submit" value="search")
+            button(type='submit' class="submit" value="search")
+                img(src="cari3.png" class="cariImage")
 
 block main
     ul(id='uls')
@@ -25,15 +26,20 @@ block main
             li
                 - var type = item.identifier === 'p'? 'penobrol' : 'tandya';
                 - var link = `${type}/${item.id}`;
-                dl(onclick = 'location.href="#{plink}"')
-                dt
-                    - var title = item.identifier === 'p'? item.title : item.question;
-                    a(href='/#{type}/#{item.id}') #{title}
-                dd.ddcontent #{item.content}
-                - var date_result = item.date + ' / ' + item.view + ' views';
-                - var hashtagfinal = item.hashtags.map(e => `#${e.hash}`).join(' ');
-                dd #{hashtagfinal}
-                dd #{date_result}
+                dl(onclick = 'location.href="#{link}"')
+                    dt
+                        - var title = item.identifier === 'p'? item.title : item.question;
+                        a(href='/#{type}/#{item.id}') #{title}
+                    dd.ddcontent #{item.thumbnail}
+                    - var date_result = item.date + ' / ' + item.view + ' views';
+                    - var hashtagfinal = item.hashtags.map(e => `#${e.hash}`).join(' ');
+                    dd #{hashtagfinal}
+                    dd #{date_result}
+                div
+                    if(item.imgs.length > 0)
+                        for imgs in item.imgs
+                            div!= imgs
+                    
     if !u_id
         .login
             a(href='/aku') Login Dulu

@@ -70,7 +70,9 @@ exports.remove_duplicates = function(objectsArray){
 exports.extractWords = function(wordArray){
     var temp = '';
     for(var i = 0; i<wordArray.length; i++){
+        console.log(wordArray[i].length);
         if(wordArray[i].length > 0){
+
             temp += wordArray[i];
         }
     }
@@ -86,7 +88,7 @@ exports.extractHash = function(wordArray){
     return temp;
 }
 
-function codeMaker(){
+exports.codeMaker = function(){
     var ar = [];
     var final_code = '';
     var temp;
@@ -101,4 +103,17 @@ function codeMaker(){
     }
     final_code = ar[0]+ar[1]+ar[2]+ar[3]+ar[4]+ar[5];
     return final_code;
+}
+
+exports.generateFilename = function() {
+    const d = new Date();
+    var str = "";
+    var str = d.getFullYear().toString() +
+        (d.getMonth() + 1).toString() +
+        d.getDate().toString() +
+        d.getHours().toString() +
+        d.getMinutes().toString() +
+        d.getSeconds().toString() +
+        Math.floor(Math.random() * 100000).toString();
+    return str;
 }

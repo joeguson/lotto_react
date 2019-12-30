@@ -4,6 +4,7 @@ var nodemailer = require('nodemailer');
 var key = require('../../info/beritamus-admin-2ff0df5d17ca.json');
 var dbcon = require('../../db/dbconnection');
 var parser = require('../../db/parser.js');
+var jsForBack = require('../../back/jsForBack.js');
 
 exports.getFindMyIdPw =function(req, res){
     res.render('./ja/findMyIdPw');
@@ -13,7 +14,7 @@ exports.checkUserId = function(req, res){
   var sql = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
   var u_id = req.body.u_id;
   var result = 0;
-  conn.query(sql, u_id, function(err, check, fields){
+  conn.conn.query(sql, u_id, function(err, check, fields){
     if(err){console.log(err);}
     else{
       if(parseInt(check[0].u_id) > 0){
@@ -70,30 +71,48 @@ exports.welcome = function(req, res){
     var userInfo = [];
     var userPenobrol = [];
     var userTandya = [];
-    var totalLikes = [];
-    var totalt_like = [];
-    var totalp_like = [];
-    var totalta_like = [];
-    var totalpc_like = [];
+    var totalLikes = {
+        "penobrol" : 0,
+        "tandya" : 0,
+        "comment" : 0,
+        "answer" : 0
+    };
 
     var sql1 = 'SELECT * FROM users WHERE u_id= ?';
     var sql2 = 'SELECT * from penobrol WHERE author = ?';
     var sql3 = 'SELECT * from tandya WHERE author = ?';
-    var sql4 = 'select count(p_id) as totalp_like from p_like where u_id = ?';
-    var sql5 = 'select count(pc_id) as totalpc_like from pc_like where u_id = ?';
-    var sql6 = 'select count(t_id) as totalt_like from t_like where u_id = ?';
-    var sql7 = 'select count(ta_id) as totalta_like from ta_like where u_id = ?';
+    var sql4 = 'select count(p_id) as count from p_com where p_id = ?';
+    var sql5 = 'select count(t_id) as count from t_ans where t_id = ?';
+    var sql6 = 'SELECT * FROM penobrol_hashtag where p_id = ?';
+    var sql7 = 'SELECT * FROM tandya_hashtag where t_id = ?';
+    var sql8 = 'select count(p_id) as count from p_like where p_id = ?';
+    var sql9 = 'select count(t_id) as count from t_like where t_id = ?';
+    var sql10 = 'select count(c.p_id) as total from(select p.id, p.author, pl.p_id from penobrol as p inner join p_like as pl on p.id = pl.p_id where p.author = ?) as c';
+    var sql11 = 'select count(c.t_id) as total from(select t.id, t.author, tl.t_id from tandya as t inner join t_like as tl on t.id = tl.t_id where t.author = ?) as c';
+    var sql12 = 'select count(c.pc_id) as total from(select p.id, p.author, pl.pc_id from p_com as p inner join pc_like as pl on p.id = pl.pc_id where p.author = ?) as c';
+    var sql13 = 'select count(c.ta_id) as total from(select t.id, t.author, tl.ta_id from t_ans as t inner join ta_like as tl on t.id = tl.ta_id where t.author = ?) as c';
+
 
     async function getUserRecord(){
-      userInfo = await dbcon.twoArg(sql1, req.session.u_id);
-      userPenobrol = (await dbcon.twoArg(sql2, userInfo[0].id)).map(parser.parsePenobrol);
-      userTandya = (await dbcon.twoArg(sql3, userInfo[0].id)).map(parser.parseTandya);
-      totalp_like = await dbcon.twoArg(sql4, userInfo[0].id);
-      totalpc_like = await dbcon.twoArg(sql5, userInfo[0].id);
-      totalt_like = await dbcon.twoArg(sql6, userInfo[0].id);
-      totalta_like = await dbcon.twoArg(sql7, userInfo[0].id);
-      res.render('./ja/aku', {user:userInfo[0], penobrols:userPenobrol, tandyas:userTandya,
-        p_like:totalp_like, t_like:totalt_like, pc_like:totalpc_like, ta_like:totalta_like});
+        userInfo = await dbcon.twoArg(sql1, req.session.u_id);
+        userPenobrol = (await dbcon.twoArg(sql2, userInfo[0].id)).map(parser.parsePenobrol);
+        userTandya = (await dbcon.twoArg(sql3, userInfo[0].id)).map(parser.parseTandya);
+        for(var i = 0; i<userPenobrol.length;i++){
+            userPenobrol[i].commentCount = (await dbcon.twoArg(sql4, userPenobrol[i].id))[0].count;
+            userPenobrol[i].hashtags = (await dbcon.twoArg(sql6, userPenobrol[i].id)).map(parser.parseHashtagP);
+            userPenobrol[i].likeCount = (await dbcon.twoArg(sql8, userPenobrol[i].id))[0].count;
+        }
+        for(var j = 0; j<userTandya.length;j++){
+            userTandya[j].answerCount = (await dbcon.twoArg(sql5, userTandya[j].id))[0].count;
+            userTandya[j].hashtags = (await dbcon.twoArg(sql7, userTandya[j].id)).map(parser.parseHashtagT);
+            userTandya[j].likeCount = (await dbcon.twoArg(sql9, userTandya[j].id))[0].count;
+        }
+        totalLikes.penobrol = (await dbcon.twoArg(sql10, userInfo[0].id))[0].total;
+        totalLikes.tandya = (await dbcon.twoArg(sql11, userInfo[0].id))[0].total;
+        totalLikes.comment = (await dbcon.twoArg(sql12, userInfo[0].id))[0].total;
+        totalLikes.answer = (await dbcon.twoArg(sql13, userInfo[0].id))[0].total;
+        console.log(userTandya);
+        res.render('./ja/aku', {user:userInfo[0], penobrols:userPenobrol, tandyas:userTandya, totalLikes:totalLikes});
     }
     getUserRecord();
   }
@@ -145,7 +164,7 @@ exports.postDaftar = function(req, res){
   var birthday = req.body.birthday;
   var u_sex = req.body.gender;
   var u_email = req.body.email;
-  var code = codeMaker();
+  var code = jsForBack.codeMaker();
   var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
   var sql = 'INSERT INTO users (u_id, u_pw, u_bday, email, sex, vcode) VALUES (?, ?, ?, ?, ?, ?)';
   conn.conn.query(sql2, [u_id], function(err, check, fields){

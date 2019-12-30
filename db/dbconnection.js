@@ -7,6 +7,9 @@ exports.oneArg = function(query){
       if(!err){
         resolve(result);
       }
+      else{
+          console.log(err);
+      }
     });
   });
 }
@@ -16,6 +19,9 @@ exports.twoArg = function(query, id){
     conn.conn.query(query, id, function(err, result, fields){
       if(!err){
         resolve(result);
+      }
+      else{
+          console.log(err);
       }
     });
   });
@@ -39,6 +45,9 @@ exports.fourArg = function(query, id, arg1, arg2){
     conn.conn.query(query, [id, arg1, arg2], function(err, result, fields){
       if(!err){
         resolve(result);
+      }
+      else{
+          console.log(err);
       }
     });
   });

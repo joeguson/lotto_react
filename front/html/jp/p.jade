@@ -26,6 +26,7 @@ block main
             each v in dateTopics
                 li
                     -var plink = 'penobrol/'+v.id
+                    -console.log(v);
                     dl.p-dl(onclick ='location.href="#{plink}"')
                         dt
                             a(href='/penobrol/' + v.id)= v.title
@@ -34,6 +35,10 @@ block main
                         -var hashtagfinal = v.hashtags.map(e => `#${e.hash}`).join(" ");
                         dd #{hashtagfinal}
                         dd #{date_result}
+                    div
+                        if(v.imgs.length > 0)
+                            for imgs in v.imgs
+                                div!= imgs
     .p-terkenal
         .p-title Penobrol Terkenal
         ul
@@ -48,3 +53,7 @@ block main
                         -var hashtagfinal = w.hashtags.map(e => `#${e.hash}`).join(" ");
                         dd #{hashtagfinal}
                         dd #{date_result}
+                    div
+                        if(w.imgs.length > 0)
+                            for imgs in w.imgs
+                                div!= imgs
