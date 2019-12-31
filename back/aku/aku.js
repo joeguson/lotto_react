@@ -11,22 +11,26 @@ exports.getFindMyIdPw =function(req, res){
 }
 
 exports.checkUserId = function(req, res){
-  var sql = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
-  var u_id = req.body.u_id;
-  var result = 0;
-  conn.conn.query(sql, u_id, function(err, check, fields){
-    if(err){console.log(err);}
-    else{
-      if(parseInt(check[0].u_id) > 0){
-        result = 1;
+    var sql = "";
+    if(req.body.type == 'id'){
+        sql = 'SELECT COUNT(u_id) AS total from users WHERE u_id = ?';
+    }else{
+        sql = 'SELECT COUNT(email) AS total from users WHERE email = ?';
     }
-      else{
-        result = 0;
-      }
-      var responseData = {'result' : 'ok', 'u_id': result};
-      res.json(responseData);
-    }
-  });
+    var result = 0;
+    conn.conn.query(sql, req.body.data, function(err, check, fields){
+        if(err){console.log(err);}
+        else{
+            if(parseInt(check[0].total) > 0){
+                result = 1;
+            }
+            else{
+                result = 0;
+            }
+            var responseData = {'result' : 'ok', 'length': result};
+            res.json(responseData);
+        }
+    });
 }
 
 exports.login = function(req, res){

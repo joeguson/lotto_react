@@ -39,6 +39,7 @@
 .li-border {
   border-top: 1px solid #5781a6;
   border-bottom: 1px solid #5781a6;
+  border-right: 1px solid #5781a6;
   margin-bottom: 10px;
 }
 .border-radius {
@@ -129,6 +130,7 @@ input {
   background-color: white;
   border-top: 1px solid #5781a6;
   border-bottom: 1px solid #5781a6;
+  border-right: 1px solid #5781a6;
   margin-bottom: 10px;
   padding: 5px;
   box-sizing: border-box;
@@ -144,13 +146,28 @@ input {
   background-color: white;
   border-top: 1px solid #5781a6;
   border-bottom: 1px solid #5781a6;
+  border-right: 1px solid #5781a6;
   margin-bottom: 10px;
   padding: 5px;
   box-sizing: border-box;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-li dl {
+li .articleDiv {
+  width: 70%;
+  height: 100%;
+  float: left;
+  box-sizing: border-box;
+  line-height: 38px;
+  cursor: pointer;
+}
+li .articleImgDiv {
+  width: 30%;
+  height: 100%;
+  float: left;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 38px;
   cursor: pointer;
 }
 dl dt {
@@ -176,6 +193,9 @@ dl .ddcontent {
   height: 28px;
   font-style: normal;
   margin-bottom: 5px;
+}
+dl .imgDiv {
+  height: 100%;
 }
 dt a {
   overflow: hidden;

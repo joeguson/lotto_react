@@ -7,68 +7,72 @@ var userIdCheck = RegExp(/^[A-Za-z0-9_\-]{4,20}$/);
 var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
 var checkboxValue;
 
-document.getElementById('u_id').addEventListener('change', function(){
-    var v = document.getElementById('u_id').value;
-    if(userIdCheck.test(v)){
-        sendAjax('/aku/register', v);
+const userId = document.getElementById('u_id');
+const userPw = document.getElementById('u_pw');
+const userPw2 = document.getElementById('u_pw2');
+const userSexBoy = document.getElementById('boy');
+const userSexGirl = document.getElementById('girl');
+const userEmail = document.getElementById('email');
+const gender = document.getElementById('gender');
+
+userId.addEventListener('change', function(){
+    if(userIdCheck.test(userId.value)){
+        sendAjax('/aku/register', userId.value, 'id');
     }
     else{
+        appearCross(userId);
         document.getElementById("idchecker").innerHTML = 'maaf, minta pakai yang lain';
     }
 });
 
-document.getElementById('u_pw').addEventListener('change', function(){
-    var v = document.getElementById('u_pw').value;
-    if(v.length > 7){
-        document.getElementById("pwchecker").innerHTML = 'bagus';
+userPw.addEventListener('change', function(){
+    if(userPw.value.length > 7){
+        appearCheck(userPw);
         pwAuth = 1;
     }
     else{
+        appearCross(userPw);
         document.getElementById("pwchecker").innerHTML = 'maaf, terlalu pendek. harus lebih dari 7 huruf';
         pwAuth = 0;
     }
 });
-document.getElementById('u_pw2').addEventListener('change', function(){
-    var v = document.getElementById('u_pw').value;
-    var a = document.getElementById('u_pw2').value;
-    if(v == a && v.length > 7){
-        document.getElementById("pwchecker").innerHTML = 'Silakan lanjutkan';
+
+userPw2.addEventListener('change', function(){
+    if(userPw.value == userPw2.value && userPw.value.length > 7){
+        appearCheck(userPw2);
         pwAuth = 2;
     }
     else{
+        appearCross(userPw2);
         document.getElementById("pwchecker").innerHTML = 'Tidak sama';
         pwAuth = 1;
     }
 });
 
-document.getElementById('boy').addEventListener('click', function(){
-    var laki = document.getElementById('boy');
-    var perem = document.getElementById('girl');
-    laki.style.backgroundColor = '#c91818';
-    perem.style.backgroundColor = 'lightgrey';
+userSexBoy.addEventListener('click', function(){
+    userSexBoy.style.backgroundColor = '#c91818';
+    userSexGirl.style.backgroundColor = 'lightgrey';
+    userSexBoy.style.color ='white';
+    userSexGirl.style.color ='black';
     sex = 'laki';
-    var gender = document.getElementById('gender');
     gender.setAttribute('value', 'M');
 });
 
-document.getElementById('girl').addEventListener('click', function(){
-    var laki = document.getElementById('boy');
-    var perem = document.getElementById('girl');
-    laki.style.backgroundColor = 'lightgrey';
-    perem.style.backgroundColor = '#c91818';
+userSexGirl.addEventListener('click', function(){
+    userSexBoy.style.backgroundColor = 'lightgrey';
+    userSexGirl.style.backgroundColor = '#c91818';
+    userSexGirl.style.color ='white';
+    userSexBoy.style.color ='black';
     sex = 'perempuan';
-    var gender = document.getElementById('gender');
     gender.setAttribute('value', 'F');
 });
 
-
-document.getElementById('email').addEventListener('change', function(){
-    var userEmail = document.getElementById('email').value;
-    if(emailCheck.test(userEmail) === true){
-        sendAjax('/aku/register', userEmail);
-        mailAuth = 1;
+userEmail.addEventListener('change', function(){
+    if(emailCheck.test(userEmail.value) === true){
+        sendAjax('/aku/register', userEmail.value, 'mail');
     }
     else{
+        appearCross(userEmail);
         mailAuth = 0;
     }
 });
@@ -107,28 +111,64 @@ function checkboxCheck(target){
     checkboxValue = target.checked;
 }
 
-function sendAjax(url, data){
-    var data2 = {'u_id' : data};
-    data2 = JSON.stringify(data2);
+function sendAjax(url, data, checkType){
+    var sendingData = (checkType == 'id') ? {'type' : checkType, 'data' : data} : {'type' : checkType, 'data' : data}
+    var markTarget = (checkType == 'id') ? userId : userEmail;
+    console.log(markTarget);
+    sendingData = JSON.stringify(sendingData);
     var xhr = new XMLHttpRequest();
     xhr.open('post', url);
     xhr.setRequestHeader('Content-type', "application/json");
-    xhr.send(data2);
+    xhr.send(sendingData);
     xhr.addEventListener('load', function(){
-    var result = JSON.parse(xhr.responseText);
-    if(result.result !== 'ok') return;
-     // 데이터가 있으면 결과값 표시
-    if(parseInt(result.u_id) > 0){
-        document.getElementById("idchecker").innerHTML = 'maaf, sudah dipakai';
-        idAuth = 0;
-    }
-    else{
-        document.getElementById("idchecker").innerHTML = 'silakan';
-        idAuth = 1;
-    }
+        var result = JSON.parse(xhr.responseText);
+        console.log(result);
+        if(result.result !== 'ok') return;
+         // 데이터가 있으면 결과값 표시
+        if(parseInt(result.length) > 0){
+            console.log('no area');
+            appearCross(markTarget);
+            if(checkType == 'id'){
+                console.log('no for id');
+                document.getElementById("idchecker").innerHTML = 'maaf, sudah dipakai';
+                idAuth = 0;
+            }
+            else{
+                console.log('no afor mail');
+                mailAuth = 0;
+            }
+        }
+        else{
+            console.log('yes area');
+            appearCheck(markTarget);
+            if(checkType == 'id'){
+                console.log('yes for id');
+                idAuth = 1;
+            }
+            else{
+                console.log('yes for mail');
+                mailAuth = 1;
+            }
+        }
     });
 }
 
+function appearCross(target){
+    target.style.backgroundImage = "url('../no.svg')";
+    target.style.backgroundImage = "url('../no.svg')";
+    target.style.backgroundRepeat = "no-repeat";
+    target.style.backgroundPosition = "99%";
+    target.style.backgroundSize = "2%";
+    target.style.backgroundColor = "white";
+}
+function appearCheck(target){
+    target.style.backgroundImage = "url('../check.svg')";
+    target.style.backgroundImage = "url('../check.svg')";
+    target.style.backgroundRepeat = "no-repeat";
+    target.style.backgroundPosition = "99%";
+    target.style.backgroundSize = "2%";
+    target.style.backgroundColor = "white";
+}
 
 
 //var authenticate = authenticator1+authenticator2+authenticator3+authenticator4;

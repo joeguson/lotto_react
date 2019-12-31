@@ -18,7 +18,7 @@
 @main2lighter: #fdffd3; // yellow main color
 @main2lightest: #fefff4;
 
-@button-color: #0f4c81;
+@button-color: @main;
 @font-color1: black;
 @font-color2: white;
 @font-color3: grey;
@@ -61,11 +61,12 @@
     border-bottom: 1px solid lightgray;
 }
 .button{
-    width: 100%; height:45px; box-sizing: border-box; font-size: 20px; color:@font-color2; background-color:@button-color; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; border-style: none;
+    width: 100%; height:45px; box-sizing: border-box; font-size: 20px; color:white; background-color:@button-color; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; border-style: none;
 }
 .li-border{
     border-top: 1px solid @mainlight;
     border-bottom: 1px solid @mainlight;
+    border-right: 1px solid @mainlight;
     margin-bottom: @marginbottom-mbl;
 }
 .border-radius{border-top-right-radius: 5px; border-bottom-right-radius: 5px;}

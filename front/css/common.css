@@ -39,6 +39,7 @@
 .li-border {
   border-top: 1px solid #5781a6;
   border-bottom: 1px solid #5781a6;
+  border-right: 1px solid #5781a6;
   margin-bottom: 10px;
 }
 .border-radius {
@@ -126,6 +127,7 @@ nav {
   bottom: 0;
   left: 0;
   right: 0;
+  box-sizing: border-box;
 }
 .footer p {
   margin: 0px auto;

@@ -30,13 +30,19 @@ input{width: 90%; height:40px; border: 1px solid @main; font-size: 18px; text-al
 .div-result{background-color: white; margin-bottom: 5px;}
 .ul-result li {width:100%; background-color:white; .li-border(); padding:5px; box-sizing: border-box; .border-radius();}
 
-//li - span, dl
-li dl{cursor: pointer;}
+//li - div(.articleDiv, .articleImgDiv) span, dl
+li .articleDiv{width:70%; height: 100%;float:left; box-sizing: border-box; line-height: 38px; cursor: pointer;}
+li .articleImgDiv{width: 30%; height:100%; float:left; box-sizing: border-box; text-align: center; line-height: 38px; cursor: pointer;}
 
-//dl - dt, dd
+//.articleDiv - dl
+
+//.articleImgDiv - div
+
+//dl - dt, dd, div(.imgDiv)
 dl dt{width: 90%; height:20px; line-height: 20px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
 dd{font-style: italic; font-size: 12px;}
 dl .ddcontent{overflow: hidden; text-overflow: ellipsis; white-space:normal; font-size: 12px; line-height: 14px; height:28px; font-style: normal; margin-bottom: 5px;}
+dl .imgDiv{height:100%;}
 
 //dt - a
 dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none; display:block;}

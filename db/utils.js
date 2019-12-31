@@ -26,7 +26,6 @@ exports.getImage = function(contentString){
     var id = 1;
     var imgIndex = 0;
     var imgMaps = {};
-    var posMaps = {};
     while(true) {
         // <img
         imgIndex = contentString.indexOf('<img', imgIndex);
@@ -38,7 +37,12 @@ exports.getImage = function(contentString){
         id++;
         imgIndex = endIndex;
     }
-    return {
-        imgs: imgMaps
-    };
+    var temp = Object.values(imgMaps);
+    if(temp.length > 0)
+    {
+        return temp;
+    }
+    else{
+        return [];
+    }
 };

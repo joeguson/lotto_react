@@ -25,35 +25,38 @@ block main
         ul
             each v in dateTopics
                 li
-                    -var plink = 'penobrol/'+v.id
-                    -console.log(v);
-                    dl.p-dl(onclick ='location.href="#{plink}"')
-                        dt
-                            a(href='/penobrol/' + v.id)= v.title
-                        dd.ddcontent= v.content
-                        -var date_result = 'by '+v.u_id+' / ' + v.date + ' / ' + v.view + ' views' + ' / ' + v.com+' comments'
-                        -var hashtagfinal = v.hashtags.map(e => `#${e.hash}`).join(" ");
-                        dd #{hashtagfinal}
-                        dd #{date_result}
-                    div
+                    div(class='articleDiv')
+                        -var plink = 'penobrol/'+v.id
+                        dl.p-dl(onclick ='location.href="#{plink}"')
+                            dt
+                                a(href='/penobrol/' + v.id)= v.title
+                            dd.ddcontent= v.thumbnail
+                            -var date_result = 'by '+v.u_id+' / ' + v.date + ' / ' + v.view + ' views' + ' / ' + v.com+' comments'
+                            -var hashtagfinal = v.hashtags.map(e => `#${e.hash}`).join(" ");
+                            dd #{hashtagfinal}
+                            dd #{date_result}
+                    div(class='articleImgDiv')
                         if(v.imgs.length > 0)
                             for imgs in v.imgs
                                 div!= imgs
+                    br.clear
     .p-terkenal
         .p-title Penobrol Terkenal
         ul
             each w in scoreTopics
                 li
-                    -var plink = 'penobrol/'+w.id
-                    dl.p-dl(onclick ='location.href="#{plink}"')
-                        dt
-                            a(href='/penobrol/' + w.id)= w.title
-                        dd.ddcontent= w.content
-                        -var date_result = 'by '+w.u_id+' / ' + w.date + ' / ' + w.view + ' views' + ' / ' + w.com+' comments'
-                        -var hashtagfinal = w.hashtags.map(e => `#${e.hash}`).join(" ");
-                        dd #{hashtagfinal}
-                        dd #{date_result}
-                    div
+                    div(class='articleDiv')
+                        -var plink = 'penobrol/'+w.id
+                        dl.p-dl(onclick ='location.href="#{plink}"')
+                            dt
+                                a(href='/penobrol/' + w.id)= w.title
+                            dd.ddcontent= w.thumbnail
+                            -var date_result = 'by '+w.u_id+' / ' + w.date + ' / ' + w.view + ' views' + ' / ' + w.com+' comments'
+                            -var hashtagfinal = w.hashtags.map(e => `#${e.hash}`).join(" ");
+                            dd #{hashtagfinal}
+                            dd #{date_result}
+                    div(class='articleImgDiv')
                         if(w.imgs.length > 0)
                             for imgs in w.imgs
                                 div!= imgs
+                    br.clear

@@ -24,22 +24,23 @@ block main
     ul(id='uls')
         for item in list
             li
-                - var type = item.identifier === 'p'? 'penobrol' : 'tandya';
-                - var link = `${type}/${item.id}`;
-                dl(onclick = 'location.href="#{link}"')
-                    dt
-                        - var title = item.identifier === 'p'? item.title : item.question;
-                        a(href='/#{type}/#{item.id}') #{title}
-                    dd.ddcontent #{item.thumbnail}
-                    - var date_result = item.date + ' / ' + item.view + ' views';
-                    - var hashtagfinal = item.hashtags.map(e => `#${e.hash}`).join(' ');
-                    dd #{hashtagfinal}
-                    dd #{date_result}
-                div
+                div(class='articleDiv')
+                    - var type = item.identifier === 'p'? 'penobrol' : 'tandya';
+                    - var link = `${type}/${item.id}`;
+                    dl(onclick = 'location.href="#{link}"')
+                        dt
+                            - var title = item.identifier === 'p'? item.title : item.question;
+                            a(href='/#{type}/#{item.id}') #{title}
+                        dd.ddcontent #{item.thumbnail}
+                        - var date_result = item.date + ' / ' + item.view + ' views';
+                        - var hashtagfinal = item.hashtags.map(e => `#${e.hash}`).join(' ');
+                        dd #{hashtagfinal}
+                        dd #{date_result}
+                div(class='articleImgDiv')
                     if(item.imgs.length > 0)
                         for imgs in item.imgs
-                            div!= imgs
-                    
+                            div(class="imgDiv")!= imgs
+                br.clear
     if !u_id
         .login
             a(href='/aku') Login Dulu
