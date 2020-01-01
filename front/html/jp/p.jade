@@ -2,6 +2,7 @@ extends ../layout.jade
 
 block css
     link(rel="stylesheet" href="../css/penobrol.css" type="text/css")
+    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
 
 block nav
     ul
@@ -24,37 +25,9 @@ block main
         .p-title Penobrol Terbaru
         ul
             each v in dateTopics
-                li
-                    div(class='articleDiv')
-                        -var plink = 'penobrol/'+v.id
-                        dl.p-dl(onclick ='location.href="#{plink}"')
-                            dt
-                                a(href='/penobrol/' + v.id)= v.title
-                            dd.ddcontent= v.thumbnail
-                            -var date_result = 'by '+v.u_id+' / ' + v.date + ' / ' + v.view + ' views' + ' / ' + v.com+' comments'
-                            -var hashtagfinal = v.hashtags.map(e => `#${e.hash}`).join(" ");
-                            dd #{hashtagfinal}
-                            dd #{date_result}
-                    div(class='articleImgDiv')
-                        if(v.img)
-                                img(src="#{v.img}")
-                    br.clear
+                b-thumbnail(jsonSrc="#{JSON.stringify(v)}")
     .p-terkenal
         .p-title Penobrol Terkenal
         ul
             each w in scoreTopics
-                li
-                    div(class='articleDiv')
-                        -var plink = 'penobrol/'+w.id
-                        dl.p-dl(onclick ='location.href="#{plink}"')
-                            dt
-                                a(href='/penobrol/' + w.id)= w.title
-                            dd.ddcontent= w.thumbnail
-                            -var date_result = 'by '+w.u_id+' / ' + w.date + ' / ' + w.view + ' views' + ' / ' + w.com+' comments'
-                            -var hashtagfinal = w.hashtags.map(e => `#${e.hash}`).join(" ");
-                            dd #{hashtagfinal}
-                            dd #{date_result}
-                    div(class='articleImgDiv')
-                        if(w.img)
-                                img(src="#{w.img}")
-                    br.clear
+                b-thumbnail(jsonSrc="#{JSON.stringify(w)}")

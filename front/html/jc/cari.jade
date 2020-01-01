@@ -3,6 +3,7 @@ extends ../layout.jade
 block css
     link(rel='stylesheet', href='../css/cari.css' type="text/css")
     script(type="text/javascript" src="/js/cari.js")
+    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
 
 block nav
     ul
@@ -23,23 +24,7 @@ block submain
 block main
     ul(id='uls')
         for item in list
-            li
-                div(class='articleDiv')
-                    - var type = item.identifier === 'p'? 'penobrol' : 'tandya';
-                    - var link = `${type}/${item.id}`;
-                    dl(onclick = 'location.href="#{link}"')
-                        dt
-                            - var title = item.identifier === 'p'? item.title : item.question;
-                            a(href='/#{type}/#{item.id}') #{title}
-                        dd.ddcontent #{item.thumbnail}
-                        - var date_result = item.date + ' / ' + item.view + ' views';
-                        - var hashtagfinal = item.hashtags.map(e => `#${e.hash}`).join(' ');
-                        dd #{hashtagfinal}
-                        dd #{date_result}
-                div(class='articleImgDiv')
-                    if(item.img)
-                            img(src="#{item.img}")
-                br.clear
+            b-thumbnail(jsonSrc="#{JSON.stringify(item)}")
     if !u_id
         .login
             a(href='/aku') Login Dulu
