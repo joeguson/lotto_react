@@ -36,9 +36,8 @@ block main
                             dd #{hashtagfinal}
                             dd #{date_result}
                     div(class='articleImgDiv')
-                        if(v.imgs.length > 0)
-                            for imgs in v.imgs
-                                div!= imgs
+                        if(v.img)
+                                img(src="#{v.img}")
                     br.clear
     .p-terkenal
         .p-title Penobrol Terkenal
@@ -56,7 +55,6 @@ block main
                             dd #{hashtagfinal}
                             dd #{date_result}
                     div(class='articleImgDiv')
-                        if(w.imgs.length > 0)
-                            for imgs in w.imgs
-                                div!= imgs
+                        if(w.img)
+                                img(src="#{w.img}")
                     br.clear

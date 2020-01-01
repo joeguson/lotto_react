@@ -38,9 +38,8 @@ block main
                                 dd #{hashtagfinal}
                                 dd #{date_result}
                         div(class='articleImgDiv')
-                            if(v.imgs.length > 0)
-                                for imgs in v.imgs
-                                    div!= imgs
+                            if(v.img)
+                                img(src="#{v.img}")
                         br.clear
         .t-terkenal
             .t-title Tandya Terkenal
@@ -58,8 +57,7 @@ block main
                                 dd #{hashtagfinal}
                                 dd #{date_result}
                         div(class='articleImgDiv')
-                            if(w.imgs.length > 0)
-                                for imgs in w.imgs
-                                    div!= imgs
+                            if(w.img)
+                                img(src="#{w.img}")
                         br.clear
                 //script(type="text/javascript" src="prank.js")

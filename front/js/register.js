@@ -15,7 +15,7 @@ const userSexGirl = document.getElementById('girl');
 const userEmail = document.getElementById('email');
 const gender = document.getElementById('gender');
 
-userId.addEventListener('change', function(){
+userId.addEventListener('change', function(){``
     if(userIdCheck.test(userId.value)){
         sendAjax('/aku/register', userId.value, 'id');
     }

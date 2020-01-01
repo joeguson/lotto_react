@@ -37,9 +37,8 @@ block main
                         dd #{hashtagfinal}
                         dd #{date_result}
                 div(class='articleImgDiv')
-                    if(item.imgs.length > 0)
-                        for imgs in item.imgs
-                            div(class="imgDiv")!= imgs
+                    if(item.img)
+                            img(src="#{item.img}")
                 br.clear
     if !u_id
         .login

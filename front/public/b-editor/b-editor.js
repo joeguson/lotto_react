@@ -1,4 +1,4 @@
-class BeritamusEditor extends HTMLElement {
+  class BeritamusEditor extends HTMLElement {
     constructor() {
         super();
         this.editor = null;

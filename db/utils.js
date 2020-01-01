@@ -23,26 +23,9 @@ exports.commentLikeChecker = function(likeObject, cId, userId){
 };
 
 exports.getImage = function(contentString){
-    var id = 1;
-    var imgIndex = 0;
-    var imgMaps = {};
-    while(true) {
-        // <img
-        imgIndex = contentString.indexOf('<img', imgIndex);
-        if(imgIndex == -1) break;
-        var endIndex = contentString.indexOf('>', imgIndex);
-        endIndex++;
-        const data = contentString.substring(imgIndex, endIndex);
-        imgMaps[id] = data;
-        id++;
-        imgIndex = endIndex;
-    }
-    var temp = Object.values(imgMaps);
-    if(temp.length > 0)
-    {
-        return temp;
-    }
-    else{
-        return [];
-    }
+    const imgIndex = contentString.indexOf('<img', 0);
+    const srcIndex = contentString.indexOf('src="', imgIndex);
+    const endIndex = contentString.indexOf('"', srcIndex+5);
+    if(imgIndex == -1 || srcIndex == -1 || endIndex == -1) return null;
+    return contentString.substring(srcIndex + 5, endIndex);
 };

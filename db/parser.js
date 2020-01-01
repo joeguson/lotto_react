@@ -33,7 +33,8 @@ exports.parseFrontPenobrol = function (packet) {
     penobrol.identifier = 'p';
     penobrol.hashtags = packet.hashtags;
     penobrol.u_id =  packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id;
-    penobrol.imgs = utils.getImage(packet.content);
+    penobrol.img = utils.getImage(packet.content);
+    console.log(penobrol.img);
     return penobrol;
 };
 
@@ -48,7 +49,7 @@ exports.parseFrontTandya = function (packet) {
     tandya.identifier = 't';
     tandya.hashtags = packet.hashtags;
     tandya.u_id =  packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id
-    tandya.imgs = utils.getImage(packet.content);
+    tandya.img = utils.getImage(packet.content);
     return tandya;
 };
 
