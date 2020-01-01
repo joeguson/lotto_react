@@ -6,7 +6,6 @@ class BeritamusThumbnail extends HTMLElement {
 
     connectedCallback() {
         this.src = JSON.parse(this.getAttribute("jsonSrc"));
-
         this.__build();
     }
 

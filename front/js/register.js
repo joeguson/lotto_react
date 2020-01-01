@@ -14,37 +14,38 @@ const userSexBoy = document.getElementById('boy');
 const userSexGirl = document.getElementById('girl');
 const userEmail = document.getElementById('email');
 const gender = document.getElementById('gender');
+const information = document.getElementById('information');
 
-userId.addEventListener('change', function(){``
+userId.addEventListener('blur', function(){
     if(userIdCheck.test(userId.value)){
         sendAjax('/aku/register', userId.value, 'id');
     }
     else{
         appearCross(userId);
-        document.getElementById("idchecker").innerHTML = 'maaf, minta pakai yang lain';
+        information.innerHTML = 'maaf, minta pakai yang lain';
     }
 });
 
-userPw.addEventListener('change', function(){
+userPw.addEventListener('blur', function(){
     if(userPw.value.length > 7){
         appearCheck(userPw);
         pwAuth = 1;
     }
     else{
         appearCross(userPw);
-        document.getElementById("pwchecker").innerHTML = 'maaf, terlalu pendek. harus lebih dari 7 huruf';
+        information.innerHTML = 'maaf, terlalu pendek. harus lebih dari 7 huruf';
         pwAuth = 0;
     }
 });
 
-userPw2.addEventListener('change', function(){
+userPw2.addEventListener('blur', function(){
     if(userPw.value == userPw2.value && userPw.value.length > 7){
         appearCheck(userPw2);
         pwAuth = 2;
     }
     else{
         appearCross(userPw2);
-        document.getElementById("pwchecker").innerHTML = 'Tidak sama';
+        information.innerHTML = 'Tidak sama';
         pwAuth = 1;
     }
 });
@@ -67,11 +68,12 @@ userSexGirl.addEventListener('click', function(){
     gender.setAttribute('value', 'F');
 });
 
-userEmail.addEventListener('change', function(){
+userEmail.addEventListener('blur', function(){
     if(emailCheck.test(userEmail.value) === true){
         sendAjax('/aku/register', userEmail.value, 'mail');
     }
     else{
+        information.innerHTML = 'maaf, email ini tidak boleh dipakai';
         appearCross(userEmail);
         mailAuth = 0;
     }
@@ -84,7 +86,8 @@ function confirmRegister(){
 function checksubmit(){
     console.log(idAuth);
     console.log(pwAuth);
-    console.log(mailAuth);
+    console.log(sex);
+    console.log(checkboxValue);
     if(idAuth){
         if(pwAuth){
             if(mailAuth){
@@ -114,7 +117,6 @@ function checkboxCheck(target){
 function sendAjax(url, data, checkType){
     var sendingData = (checkType == 'id') ? {'type' : checkType, 'data' : data} : {'type' : checkType, 'data' : data}
     var markTarget = (checkType == 'id') ? userId : userEmail;
-    console.log(markTarget);
     sendingData = JSON.stringify(sendingData);
     var xhr = new XMLHttpRequest();
     xhr.open('post', url);
@@ -122,31 +124,27 @@ function sendAjax(url, data, checkType){
     xhr.send(sendingData);
     xhr.addEventListener('load', function(){
         var result = JSON.parse(xhr.responseText);
-        console.log(result);
         if(result.result !== 'ok') return;
          // 데이터가 있으면 결과값 표시
         if(parseInt(result.length) > 0){
-            console.log('no area');
             appearCross(markTarget);
             if(checkType == 'id'){
-                console.log('no for id');
-                document.getElementById("idchecker").innerHTML = 'maaf, sudah dipakai';
+                information.innerHTML = 'maaf, id ini sudah dipakai';
                 idAuth = 0;
             }
             else{
-                console.log('no afor mail');
+                information.innerHTML = 'maaf, email ini sudah dipakai';
                 mailAuth = 0;
             }
         }
         else{
-            console.log('yes area');
             appearCheck(markTarget);
             if(checkType == 'id'){
-                console.log('yes for id');
+                information.innerHTML = '';
                 idAuth = 1;
             }
             else{
-                console.log('yes for mail');
+                information.innerHTML = '';
                 mailAuth = 1;
             }
         }

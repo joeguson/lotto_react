@@ -34,7 +34,6 @@ exports.parseFrontPenobrol = function (packet) {
     penobrol.hashtags = packet.hashtags;
     penobrol.u_id =  packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id;
     penobrol.img = utils.getImage(packet.content);
-    console.log(penobrol.img);
     return penobrol;
 };
 
