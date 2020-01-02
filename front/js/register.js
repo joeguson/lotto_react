@@ -40,6 +40,7 @@ userPw.addEventListener('blur', function(){
 
 userPw2.addEventListener('blur', function(){
     if(userPw.value == userPw2.value && userPw.value.length > 7){
+        information.innerHTML = '';
         appearCheck(userPw2);
         pwAuth = 2;
     }

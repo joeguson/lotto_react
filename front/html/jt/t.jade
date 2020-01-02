@@ -1,36 +1,17 @@
 extends ../layout.jade
 
 block css
-    link(rel="stylesheet" href="../css/tandya.css" type="text/css")
+    link(rel="stylesheet" href="/css/tandya.css" type="text/css")
+    link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
     script(type="text/javascript" src="/js/jsForAllJade.js")
     script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
 
 block nav
-    ul
-        li: a(href='/aku') Aku
-        li: a(href='/cari') Cari
-        li: a(href='/penobrol') Penobrol
-        li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/tandya' style='color: #ffff97;') Tandya
-        br.clear
+    include ./tNavUl.jade
 
 block submain
     //.ad Advertisement
 
 block main
-    section.main(id='main')
-        .login
-            if(u_id)
-                a.addTandya(href='/tandya/add') +
-            else
-                a.addTandya(href='/aku') +
-        .t-terbaru
-            .t-title Tandya Terbaru
-            ul
-                each v in dateTopics
-                    b-thumbnail(jsonSrc="#{JSON.stringify(v)}")
-        .t-terkenal
-            .t-title Tandya Terkenal
-            ul
-                each w in scoreTopics
-                    b-thumbnail(jsonSrc="#{JSON.stringify(w)}")
-                //script(type="text/javascript" src="prank.js")
+    include ../mixIn.jade
+    +frontPage('tandya')

@@ -1,7 +1,7 @@
 const utils = require("./utils.js");
 
 function anonymouseMaker(username) {
-    return username.substr(0, 3) + '****';
+    return username.substring(0, 3) + '****';
 }
 
 function parseArticle(packet) {

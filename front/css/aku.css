@@ -36,12 +36,15 @@
   text-decoration: none;
   border-style: none;
 }
+.border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
 .li-border {
   border-top: 1px solid #5781a6;
   border-bottom: 1px solid #5781a6;
+  border-right: 1px solid #5781a6;
   margin-bottom: 10px;
-}
-.border-radius {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -121,25 +124,16 @@ form {
   border-bottom: 1px solid lightgray;
   margin-bottom: 10px;
   padding: 10px;
-  background-color: #ffffff;
+  background-color: white;
 }
-.p-penobrol {
+.personalArticle {
   width: 100%;
   box-sizing: border-box;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
   margin-bottom: 10px;
   padding: 10px;
-  background-color: #ffffff;
-}
-.p-tandya {
-  width: 100%;
-  box-sizing: border-box;
-  border-top: 1px solid lightgray;
-  border-bottom: 1px solid lightgray;
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #ffffff;
+  background-color: white;
 }
 .p-stat p {
   font-size: 18px;
@@ -174,65 +168,24 @@ form {
   color: #c91818;
   font-size: 20px;
 }
-.p-penobrol p {
+.personalArticle p {
   font-size: 20px;
   line-height: 30px;
   margin-bottom: 15px;
 }
-.p-penobrol dl {
+.thumbnailUl {
   width: 95%;
   margin: 0 auto;
   background-color: #fefff4;
   border-top: 1px solid #5781a6;
   border-bottom: 1px solid #5781a6;
+  border-right: 1px solid #5781a6;
   margin-bottom: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
   cursor: pointer;
   padding: 5px;
-}
-.p-tandya p {
-  font-size: 20px;
-  line-height: 30px;
-  margin-bottom: 15px;
-}
-.p-tandya dl {
-  width: 95%;
-  margin: 0 auto;
-  background-color: #fefff4;
-  border-top: 1px solid #5781a6;
-  border-bottom: 1px solid #5781a6;
-  margin-bottom: 10px;
-  cursor: pointer;
-  padding: 5px;
-}
-dl dt {
-  width: 90%;
-  height: 30px;
-  line-height: 20px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: bolder;
-}
-dd {
-  font-style: italic;
-  font-size: 12px;
-  display: inline;
-}
-dt a {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #0f4c81;
-  text-decoration: none;
-  font-size: 16px;
-}
-.login {
-  width: 100%;
-  box-sizing: border-box;
-  margin: 0px;
-  background-color: #ffffff;
-  border-top: 1px solid lightgray;
-  border-bottom: 1px solid lightgray;
+  list-style: none;
 }
 .logout {
   box-sizing: border-box;

@@ -14,6 +14,7 @@ class BeritamusThumbnail extends HTMLElement {
 
         li.appendChild(this.__buildArticle());
         li.appendChild(this.__buildImage());
+        li.className = "thumbnailLi"
 
         const br = document.createElement("br");
         br.className = "clear";
@@ -26,7 +27,7 @@ class BeritamusThumbnail extends HTMLElement {
         const type = this.src.identifier === 'p'? 'penobrol' : 'tandya';
 
         const article = document.createElement("dl");
-        article.className = "articleDiv";
+        article.className = "articleDl";
         article.onclick = () => {
             location.href = `${type}/${this.src.id}`;
         };
@@ -56,13 +57,13 @@ class BeritamusThumbnail extends HTMLElement {
 
     __buildImage() {
         const image = document.createElement("div");
-
+        image.className = "articleImage"
         if(this.src.img) {
             const img = document.createElement("img");
             img.src = this.src.img;
+            img.style.width = '100%'
             image.appendChild(img);
         }
-
         return image;
     }
 }

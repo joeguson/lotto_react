@@ -5,6 +5,7 @@ var key = require('../../info/beritamus-admin-2ff0df5d17ca.json');
 var dbcon = require('../../db/dbconnection');
 var parser = require('../../db/parser.js');
 var jsForBack = require('../../back/jsForBack.js');
+var db_config =require('../../config.json');
 
 exports.getFindMyIdPw =function(req, res){
     res.render('./ja/findMyIdPw');
@@ -95,7 +96,6 @@ exports.welcome = function(req, res){
     var sql11 = 'select count(c.t_id) as total from(select t.id, t.author, tl.t_id from tandya as t inner join t_like as tl on t.id = tl.t_id where t.author = ?) as c';
     var sql12 = 'select count(c.pc_id) as total from(select p.id, p.author, pl.pc_id from p_com as p inner join pc_like as pl on p.id = pl.pc_id where p.author = ?) as c';
     var sql13 = 'select count(c.ta_id) as total from(select t.id, t.author, tl.ta_id from t_ans as t inner join ta_like as tl on t.id = tl.ta_id where t.author = ?) as c';
-
 
     async function getUserRecord(){
         userInfo = await dbcon.twoArg(sql1, req.session.u_id);
@@ -192,21 +192,21 @@ exports.postDaftar = function(req, res){
       user: 'admin@beritamus.com',  // gmail 계정 아이디를 입력
       serviceClient: key.client_id,
       privateKey: key.private_key,
-      pass: 'TrueDream8783$$'          // gmail 계정의 비밀번호를 입력
+      pass: 'GoBeritamus$$'          // gmail 계정의 비밀번호를 입력
     }
   });
   var mailOptions = {
     from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
     to: u_email,                     // 수신 메일 주소
     subject: 'Email Verikasi Dari Beritamus',   // 제목
-    html: '<p>Welcome To Beritamus!</p>'+'<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://beritamus.com/aku/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
+    html: '<p>Welcome To Beritamus!</p>'+'<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://'+db_config.url+'/aku/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
   };
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
       console.log(error);
     }
   });
-  res.redirect("'/aku'");
+  res.redirect('/aku');
 };
 
 exports.getDaftar = function(req, res){

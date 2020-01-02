@@ -1,7 +1,8 @@
 extends ../layout.jade
 
 block css
-    link(rel='stylesheet', href='../css/cari.css' type="text/css")
+    link(rel='stylesheet', href='/css/cari.css' type="text/css")
+    link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
     script(type="text/javascript" src="/js/cari.js")
     script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
 
@@ -22,7 +23,7 @@ block submain
                 img(src="cari3.png" class="cariImage")
 
 block main
-    ul(id='uls')
+    ul.thumbnailUl(id='uls')
         for item in list
             b-thumbnail(jsonSrc="#{JSON.stringify(item)}")
     if !u_id

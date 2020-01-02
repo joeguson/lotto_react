@@ -36,13 +36,15 @@
   text-decoration: none;
   border-style: none;
 }
+.border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
 .li-border {
   border-top: 1px solid #5781a6;
   border-bottom: 1px solid #5781a6;
   border-right: 1px solid #5781a6;
   margin-bottom: 10px;
-}
-.border-radius {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -82,87 +84,6 @@
   background-color: white;
   font-size: 20px;
   margin-bottom: 10px;
-}
-.t-terbaru ul {
-  list-style: none;
-}
-.t-terkenal ul {
-  list-style: none;
-}
-.t-terbaru ul li {
-  width: 100%;
-  background-color: white;
-  border-top: 1px solid #5781a6;
-  border-bottom: 1px solid #5781a6;
-  border-right: 1px solid #5781a6;
-  margin-bottom: 10px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  padding: 5px;
-  box-sizing: border-box;
-}
-.t-terkenal ul li {
-  width: 100%;
-  background-color: white;
-  border-top: 1px solid #5781a6;
-  border-bottom: 1px solid #5781a6;
-  border-right: 1px solid #5781a6;
-  margin-bottom: 10px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  padding: 5px;
-  box-sizing: border-box;
-}
-.articleDiv {
-  width: 70%;
-  height: 100%;
-  float: left;
-  box-sizing: border-box;
-  line-height: 38px;
-  cursor: pointer;
-}
-.articleImgDiv {
-  width: 30%;
-  height: 100%;
-  float: left;
-  box-sizing: border-box;
-  text-align: center;
-  line-height: 38px;
-  cursor: pointer;
-}
-.t-dl {
-  cursor: pointer;
-}
-dl dt {
-  width: 90%;
-  height: 20px;
-  line-height: 20px;
-  margin-bottom: 5px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: bolder;
-}
-dd {
-  font-style: italic;
-  font-size: 12px;
-}
-dl .ddcontent {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  font-size: 12px;
-  line-height: 14px;
-  height: 28px;
-  font-style: normal;
-  margin-bottom: 5px;
-}
-dt a {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #0f4c81;
-  text-decoration: none;
 }
 @media (min-width: 768px) {
   .ad {

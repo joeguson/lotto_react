@@ -1,0 +1,58 @@
+//out: thumbnail.css
+
+// Variables
+@themes: "../css";
+// Usage
+@import "@{themes}/variable.less";
+
+//li - div(.articleDiv, .articleImgDiv) span, dl
+li .articleDiv{width:70%; height: 100%;float:left; box-sizing: border-box; line-height: 38px; cursor: pointer;}
+li .articleImgDiv{width: 30%; height:100%; float:left; box-sizing: border-box; text-align: center; line-height: 38px; cursor: pointer;}
+
+//.thumbnailUl
+.thumbnailUl{width: 100%; list-style: none; padding:5px;}
+
+//.thumbnailUl - .thumbnailLi
+.thumbnailLi{width:100%; background-color: white; margin-bottom: 5px; .li-border(); .border-radius();}
+
+//.thumbnailLi - .articleDl, .articleImage
+.articleDl{float:left; width:80%;}
+.articleImage{float:right; width:20%; text-align: center;}
+
+//.articleDl - dt, dd
+dt{width: 90%; height:20px; line-height: 20px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
+
+//.articleImage - 
+
+
+//ul - li
+.p-terbaru ul li{width:100%; background-color:white; .li-border(); .border-radius(); padding:5px; box-sizing: border-box;}
+.p-terkenal ul li{width:100%; background-color:white; .li-border(); .border-radius(); padding:5px; box-sizing: border-box;}
+
+//li - .articleDiv, .articleImgDiv
+.articleDiv{width:70%; height: 100%;float:left; box-sizing: border-box; line-height: 38px; cursor: pointer;}
+.articleImgDiv{width: 30%; height:100%; float:left; box-sizing: border-box; text-align: center; line-height: 38px; cursor: pointer;}
+
+//li - dl.p-dl
+.p-dl{cursor: pointer;}
+
+//dl.p-dl - dt, dd
+
+dd{font-style: italic; font-size: 12px;}
+dl .ddcontent{overflow: hidden; text-overflow: ellipsis; white-space:normal; font-size: 12px; line-height: 14px; height:28px; font-style: normal; margin-bottom: 5px;}
+
+//dt - a
+dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none;}
+
+/*for bigger windows*/
+@media (min-width:768px){
+
+    header{font-size: @header-text-size-big; height:120px; line-height: 100px;}
+    .sub-main{width:85%;}
+    .main{width:75%;}
+    //ul - li
+    nav ul li{height:40px; box-sizing: border-box; text-align: center;line-height: 40px;}
+    nav ul li:hover{opacity: .7;}
+    //li - a
+    nav ul li a{font-size: 20px;}
+}

@@ -36,13 +36,15 @@
   text-decoration: none;
   border-style: none;
 }
+.border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
 .li-border {
   border-top: 1px solid #5781a6;
   border-bottom: 1px solid #5781a6;
   border-right: 1px solid #5781a6;
   margin-bottom: 10px;
-}
-.border-radius {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }

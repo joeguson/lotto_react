@@ -1,0 +1,18 @@
+mixin frontPage(type)
+    .login
+        if(u_id)
+            -var href = 'penobrol/'+type+'/add';
+            a.addArticle(href= "#{href}") +
+        else
+            a.addArticle(href='/aku') +
+    .newArticle
+        .articleHeading Terbaru
+        ul.thumbnailUl
+            each v in dateTopics
+                b-thumbnail(jsonSrc="#{JSON.stringify(v)}")
+    .popArticle
+        .articleHeading Terkenal
+        ul.thumbnailUl
+            each w in scoreTopics
+                b-thumbnail(jsonSrc="#{JSON.stringify(w)}")
+            

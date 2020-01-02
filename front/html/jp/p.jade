@@ -1,33 +1,17 @@
 extends ../layout.jade
 
 block css
-    link(rel="stylesheet" href="../css/penobrol.css" type="text/css")
+    link(rel="stylesheet" href="/css/penobrol.css" type="text/css")
+    link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
+    script(type="text/javascript" src="/js/jsForAllJade.js")
     script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
 
 block nav
-    ul
-        li: a(href='/aku') Aku
-        li: a(href='/cari') Cari
-        li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/penobrol' style='color: #ffff97;') Penobrol
-        li: a(href='/tandya') Tandya
-        br.clear
+    include ./pNavUl.jade
 
 block submain
     //.ad Advertisement
 
 block main
-    .login
-        if(u_id)
-            a.addPenobrol(href='/penobrol/add') +
-        else
-            a.addPenobrol(href='/aku') +
-    .p-terbaru
-        .p-title Penobrol Terbaru
-        ul
-            each v in dateTopics
-                b-thumbnail(jsonSrc="#{JSON.stringify(v)}")
-    .p-terkenal
-        .p-title Penobrol Terkenal
-        ul
-            each w in scoreTopics
-                b-thumbnail(jsonSrc="#{JSON.stringify(w)}")
+    include ../mixIn.jade
+    +frontPage('penobrol')

@@ -8,8 +8,6 @@
 
 //.main - .login(div), .p-terbaru(div), .p-terkenal(div)
 .login{width:85%; margin:0 auto;}
-.p-terbaru, .p-terkenal{width:100%; padding:10px; .section-border(); background-color: white; box-sizing: border-box;}
-.p-terbaru{margin-bottom: @marginbottom-mbl;}
 
 //.login(div) - a.addPenobrol
 .login a{position:fixed; right:8%; bottom:8%; background-color: @main; width:35px; height:35px; text-align:center; text-decoration: none; color:white; line-height: 35px; border-radius: 35px;}
@@ -17,30 +15,9 @@
 
 //.p-terabaru(div), .p-terkenal(div) - .p-title(div), ul * 2
 .p-title{background-color: white; font-size: 20px; margin-bottom: @marginbottom-mbl;}
-.p-terbaru ul{list-style: none;}
-.p-terkenal ul{list-style: none;}
 
-//ul - li
-.p-terbaru ul li{width:100%; background-color:white; .li-border(); .border-radius(); padding:5px; box-sizing: border-box;}
-.p-terkenal ul li{width:100%; background-color:white; .li-border(); .border-radius(); padding:5px; box-sizing: border-box;}
-
-//li - .articleDiv, .articleImgDiv
-.articleDiv{width:70%; height: 100%;float:left; box-sizing: border-box; line-height: 38px; cursor: pointer;}
-.articleImgDiv{width: 30%; height:100%; float:left; box-sizing: border-box; text-align: center; line-height: 38px; cursor: pointer;}
-
-//li - dl.p-dl
-.p-dl{cursor: pointer;}
-
-//dl.p-dl - dt, dd
-dl dt{width: 90%; height:20px; line-height: 20px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
-dd{font-style: italic; font-size: 12px;}
-dl .ddcontent{overflow: hidden; text-overflow: ellipsis; white-space:normal; font-size: 12px; line-height: 14px; height:28px; font-style: normal; margin-bottom: 5px;}
-
-//dt - a
-dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none;}
 
 @media (min-width:768px){
-
     .ad{height:200px; margin-bottom: @marginbottom-com; font-size: 100px; line-height: 200px;}
 
     .p-terbaru, .p-terkenal{width:49%; padding:10px; .section-border(); background-color: white; box-sizing: border-box; display:inline-block;}

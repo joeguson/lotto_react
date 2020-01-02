@@ -77,8 +77,8 @@ exports.getSearch = function (req, res) {
 };
 
 exports.getLoad = function (req, res) {
-    var getRandomPenobrol = 'select * from penobrol limit 3';
-    var getRandomTandya = 'select * from tandya limit 3';
+    var getRandomPenobrol = 'select p.*, u.u_id from penobrol p join users as u on p.author = u.id order by rand () limit 3';
+    var getRandomTandya = 'select t.*, u.u_id from tandya t join users as u on t.author = u.id order by rand () limit 3';
     var getHashtagP = 'select * from penobrol_hashtag where p_id = ?';
     var getHashtagT = 'select * from tandya_hashtag where t_id = ?';
     var pResults = [];
