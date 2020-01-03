@@ -19,7 +19,6 @@ class BeritamusThumbnail extends HTMLElement {
         const br = document.createElement("br");
         br.className = "clear";
         li.appendChild(br);
-
         this.appendChild(li);
     }
 
@@ -45,6 +44,7 @@ class BeritamusThumbnail extends HTMLElement {
         article.appendChild(content);
 
         const hashtag = document.createElement("dd");
+        hashtag.className = "hashtag"
         hashtag.innerText = this.src.hashtags.map(e => `#${e.hash}`).join(' ');
         article.appendChild(hashtag);
 

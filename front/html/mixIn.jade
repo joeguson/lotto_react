@@ -15,4 +15,15 @@ mixin frontPage(type)
         ul.thumbnailUl
             each w in scoreTopics
                 b-thumbnail(jsonSrc="#{JSON.stringify(w)}")
+
+mixin basicInfo(author, date, view, comAnsCount)
+    - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' comments'
+    dd.basicInfo #{basicInfo}
+
+mixin hashtag(hashtags)
+    if(hashtags.length > 0)
+        dd.pview-dd.hashtag
+            - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
+            a #{hashtags}
+
             

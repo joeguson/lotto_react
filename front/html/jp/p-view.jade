@@ -1,5 +1,5 @@
 extends ../layout.jade
-
+include ../mixIn.jade
 block css
     link(rel="stylesheet" href="../css/penobrol_view.css" type="text/css")
     script(type="text/javascript" src="/js/jsForAllJade.js")
@@ -14,15 +14,11 @@ block main
     section.main(id='main')
         .title
             dl.pview-dl
-                - var date_result = 'by '+ topic.u_id + ' / '+topic.date+' / ' + 'view : ' + topic.view + ' / ' + ' comments'
                 dt.pview-dt= topic.title
                     if u_id === topic.u_id
                         a(onclick ='deletePenobrol()') delete
-                if(topic.hashtags.length > 0)
-                    dd.pview-dd.hashtag
-                        - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
-                        a #{hashtags}
-                dd.pview-dd #{date_result}
+                +hashtag(topic.hashtags)
+                +basicInfo(topic.u_id, topic.date, topic.view, 0)
                     if u_id === topic.u_id
                         a(href='/pedit/'+topic.id class='edit') edit
         .pcontent
