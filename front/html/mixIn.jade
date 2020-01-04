@@ -1,7 +1,7 @@
 mixin frontPage(type)
     .login
         if(u_id)
-            -var href = 'penobrol/'+type+'/add';
+            -var href = type+'/add';
             a.addArticle(href= "#{href}") +
         else
             a.addArticle(href='/aku') +

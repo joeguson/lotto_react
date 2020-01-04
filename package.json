@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/kylenoh128/beritamus#readme",
   "dependencies": {
+    "aws-sdk": "^2.597.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",

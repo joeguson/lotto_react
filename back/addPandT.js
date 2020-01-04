@@ -45,6 +45,7 @@ function uploadImage(id, data, onUploaded) {
         onUploaded(id, result);
     };
 }
+
 function replace(content, id, filename, index = 0) {
     filename = "./" + filename;
     var s = 0, e = 0;

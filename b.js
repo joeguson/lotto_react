@@ -20,6 +20,14 @@ var aku = require('./back/aku/aku');
 var cari = require('./back/cari/cari');
 var backSystem = require('./back/backsystem')
 var jsForBack = require('./back/jsForBack.js');
+const AWS = require('aws-sdk');
+console.log(db_config.AWS_ACCESS_KEY);
+const s3 = new AWS.S3({
+    accessKeyId: db_config.AWS_ACCESS_KEY,
+    secretAccessKey: db_config.AWS_SECRET_ACCESS_KEY,
+    region : 'ap-southeast-1'
+});
+
 app.use(useragent.express());
 app.use(favicon(path.join(__dirname,'./info', 'beritamus logo.png')));
 const pool = mysql2.createPool(
@@ -67,6 +75,7 @@ conn.connect();
 exports.app = app;
 exports.router = router;
 exports.conn = conn;
+exports.s3 = s3;
 exports.pool = pool;
 exports.sch = schedule;
 
@@ -86,9 +95,8 @@ app.get('/aku/daftar/auth/', aku.getDaftarAuth);
 app.post('/aku/register', aku.checkUserId);
 
 /************FOR CARI************/
-app.get(['/cari','/'], cari.getCari);
+app.get(['/cari','/', '/cari/load'], cari.getCari);
 app.get('/cari/search', cari.getSearch);
-app.get(['/cari/load'], cari.getLoad);
 
 /************FOR TANDYA************/
 app.get('/tandya/add', tandya.getAddTandya);
@@ -125,7 +133,6 @@ app.post('/pccommentdelete/:id', penobrol.postDeletePccomment);
 
 app.post('/image', (req, res) => {
     var img = req.body.img;
-    var d=new Date().valueOf();
     var data =img.replace(/^data:image\/\w+;base64,/, "");
     var buf = new Buffer(data, 'base64');
     var filename = jsForBack.generateFilename();
@@ -141,10 +148,41 @@ app.post('/image', (req, res) => {
     if("png"==img.split(";")[0].split("/")[1]){
         filename += '.png';
     }
-    fs.writeFile('./images/' + filename, buf, (err) => {
-        if(err) console.log(err);
-    });
+    var params = {
+        'Bucket':'beritamus',
+        'Key': 'images/'+filename,
+        'ACL':'public-read',
+        'ContentEncoding': 'base64',
+        'Body':buf
+    }
+    s3.putObject(params, function(err, data){
+        if(err){
+            console.log("err: ", err)
+        }
+        console.log('============')
+        console.log("data: ", data)
+    })
     res.json({'filename': filename});
+    // var img = req.body.img;
+    // var data =img.replace(/^data:image\/\w+;base64,/, "");
+    // var buf = new Buffer(data, 'base64');
+    // var filename = jsForBack.generateFilename();
+    // if("jpeg"==img.split(";")[0].split("/")[1]){
+    //     filename += '.jpg';
+    // }
+    // if("gif"==img.split(";")[0].split("/")[1]){
+    //     filename += '.gif';
+    // }
+    // if("x-icon"==img.split(";")[0].split("/")[1]){
+    //     filename += '.ico';
+    // }
+    // if("png"==img.split(";")[0].split("/")[1]){
+    //     filename += '.png';
+    // }
+    // fs.writeFile('./images/' + filename, buf, (err) => {
+    //     if(err) console.log(err);
+    // });
+    // res.json({'filename': filename});
 });
 
 

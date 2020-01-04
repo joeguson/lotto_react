@@ -408,7 +408,7 @@ exports.postDeletePenobrol = function(req, res){
         });
       }
       else{
-        res.redirect('/penobrol/'+deleteId);
+        res.redirect('/penobrol');
       }
     }
   });
