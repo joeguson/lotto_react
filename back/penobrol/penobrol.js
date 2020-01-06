@@ -1,8 +1,13 @@
 var conn = require('../../b');
+var s3 = require('../../b');
+const AWS = require('aws-sdk');
 var pool = require('../../b');
 var dbcon = require('../../db/dbconnection');
 var parser = require('../../db/parser.js');
 var jsForBack = require('../../back/jsForBack.js');
+var fs = require('fs');
+
+
 
 /************FOR PENOBROL************/
 exports.getPenobrol = function (req, res) {
@@ -10,7 +15,12 @@ exports.getPenobrol = function (req, res) {
     var sql2 = 'select p.*, u.u_id from penobrol as p join users as u on p.author = u.id ORDER BY score DESC limit 3';
     var sql3 = 'select * from penobrol_hashtag where p_id = ?';
     var sql4 = 'select * from penobrol_hashtag where p_id = ?';
-
+    // var params = { Bucket: config.bucket, Key: req.params.imageId };
+    // s3.getObject(params, function(err, data) {
+    //     res.writeHead(200, {'Content-Type': 'image/jpeg'});
+    //     res.write(data.Body, 'binary');
+    //     res.end(null, 'binary');
+    // });
     async function getOrderedP() {
         var byDate = (await dbcon.oneArg(sql1)).map(parser.parseFrontPenobrol);
         var byScore = (await dbcon.oneArg(sql2)).map(parser.parseFrontPenobrol);

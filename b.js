@@ -21,7 +21,6 @@ var cari = require('./back/cari/cari');
 var backSystem = require('./back/backsystem')
 var jsForBack = require('./back/jsForBack.js');
 const AWS = require('aws-sdk');
-console.log(db_config.AWS_ACCESS_KEY);
 const s3 = new AWS.S3({
     accessKeyId: db_config.AWS_ACCESS_KEY,
     secretAccessKey: db_config.AWS_SECRET_ACCESS_KEY,

@@ -3,7 +3,7 @@ var pwAuth = 0;
 var mailAuth = 0;
 
 var sex = '';
-var userIdCheck = RegExp(/^[A-Za-z0-9_\-]{4,20}$/);
+var userIdCheck = RegExp(/^[A-Za-z0-9_.\-]{4,30}$/);
 var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
 var checkboxValue;
 
@@ -14,7 +14,15 @@ const userSexBoy = document.getElementById('boy');
 const userSexGirl = document.getElementById('girl');
 const userEmail = document.getElementById('email');
 const gender = document.getElementById('gender');
-const information = document.getElementById('information');
+const idInfo = document.getElementById('idInfo');
+const pwInfo = document.getElementById('pwInfo');
+const emailInfo = document.getElementById('emailInfo');
+
+userId.addEventListener('keyup', function(){
+    var count = 30;
+    count -= userId.value.length;
+    idInfo.innerHTML = count + '/30';
+});
 
 userId.addEventListener('blur', function(){
     if(userIdCheck.test(userId.value)){
@@ -22,31 +30,43 @@ userId.addEventListener('blur', function(){
     }
     else{
         appearCross(userId);
-        information.innerHTML = 'maaf, minta pakai yang lain';
+        idInfo.innerHTML = 'maaf, minta pakai yang lain';
     }
 });
 
+userPw.addEventListener('keyup', function(){
+    var count = 50;
+    count -= userPw.value.length;
+    pwInfo.innerHTML = count + '/50';
+})
+userPw2.addEventListener('keyup', function(){
+    var count = 50;
+    count -= userPw2.value.length;
+    pwInfo.innerHTML = count + '/50';
+})
+
 userPw.addEventListener('blur', function(){
     if(userPw.value.length > 7){
+        pwInfo.innerHTML = '';
         appearCheck(userPw);
         pwAuth = 1;
     }
     else{
         appearCross(userPw);
-        information.innerHTML = 'maaf, terlalu pendek. harus lebih dari 7 huruf';
+        pwInfo.innerHTML = 'maaf, terlalu pendek. harus lebih dari 7 huruf';
         pwAuth = 0;
     }
 });
 
 userPw2.addEventListener('blur', function(){
     if(userPw.value == userPw2.value && userPw.value.length > 7){
-        information.innerHTML = '';
+        pwInfo.innerHTML = '';
         appearCheck(userPw2);
         pwAuth = 2;
     }
     else{
         appearCross(userPw2);
-        information.innerHTML = 'Tidak sama';
+        pwInfo.innerHTML = 'Tidak sama';
         pwAuth = 1;
     }
 });
@@ -69,12 +89,13 @@ userSexGirl.addEventListener('click', function(){
     gender.setAttribute('value', 'F');
 });
 
+
 userEmail.addEventListener('blur', function(){
     if(emailCheck.test(userEmail.value) === true){
         sendAjax('/aku/register', userEmail.value, 'mail');
     }
     else{
-        information.innerHTML = 'maaf, email ini tidak boleh dipakai';
+        emailInfo.innerHTML = 'maaf, email ini tidak boleh dipakai';
         appearCross(userEmail);
         mailAuth = 0;
     }
@@ -85,10 +106,6 @@ function confirmRegister(){
 }
 
 function checksubmit(){
-    console.log(idAuth);
-    console.log(pwAuth);
-    console.log(sex);
-    console.log(checkboxValue);
     if(idAuth){
         if(pwAuth){
             if(mailAuth){
@@ -130,22 +147,22 @@ function sendAjax(url, data, checkType){
         if(parseInt(result.length) > 0){
             appearCross(markTarget);
             if(checkType == 'id'){
-                information.innerHTML = 'maaf, id ini sudah dipakai';
+                idInfo.innerHTML = 'maaf, id ini sudah dipakai';
                 idAuth = 0;
             }
             else{
-                information.innerHTML = 'maaf, email ini sudah dipakai';
+                emailInfo.innerHTML = 'maaf, email ini sudah dipakai';
                 mailAuth = 0;
             }
         }
         else{
             appearCheck(markTarget);
             if(checkType == 'id'){
-                information.innerHTML = '';
+                idInfo.innerHTML = '';
                 idAuth = 1;
             }
             else{
-                information.innerHTML = '';
+                emailInfo.innerHTML = '';
                 mailAuth = 1;
             }
         }
@@ -168,24 +185,3 @@ function appearCheck(target){
     target.style.backgroundSize = "2%";
     target.style.backgroundColor = "white";
 }
-
-
-//var authenticate = authenticator1+authenticator2+authenticator3+authenticator4;
-//
-//function CheckboxCheck(checkbox){
-//    var submit = document.getElementById('submit');
-//    if(checkbox.checked && authenticate == '1111' && sex.length > 0){
-//        console.log("The check box is checked");
-//        submit.style.visibility = 'visible';
-//        submit.style.width = '100%';
-//    }
-//    else{
-//        console.log("The check box is not checked.");
-//        submit.style.visibility = 'hidden';
-//        submit.style.width = '0%';
-//    }
-//}
-//
-//document.getElementById('check').addEventListener('change', function(){
-//    CheckboxCheck();
-//});

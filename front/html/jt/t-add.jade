@@ -14,33 +14,45 @@ block submain
   //.ad Advertisement
   
 block main  
-  article
-      p
-        input(type='text' name='question' placeholder='what is your question' class="title" id="question" required)
-      p
-          label
-          input(id='rbP' type='radio' value='p' name="public" checked)
-          |public
-          label
-          input(id='rbA' type='radio' value='a' name="public")
-          |anonymous 
-      p
-        input(type='text' name='thumbnail' placeholder='thumbnail' class="thumbnail" id="thumbnail")
-      p
-        b-editor(id='editor' width="90%" height="600px" name="content")
-      p
-        input(type='text' id='hashtag' name='hashtag' placeholder='#put #hashtags #like #this' class="hashtag")
-      p
-        button(class="submit" onclick='postTandyaAdd();') ask
-      script.
-          function checksubmit(){
-              if(title.value.length < 5){
-                  alert('judulnya harus lebih dari 5 alphabet');
-                  return false;
-              }
-              if(content.value.length < 5){
-                  alert('kontennya harus lebih dari 5 alphabet');
-                  return false;
-              }
-              return true;
-          }
+    article
+        p
+            input(type='text' name='question' placeholder='what is your question' maxlength="200" class="title" id="question" required)
+        span(id='questionInfo') 200/200
+        p
+            label
+            input(id='rbP' type='radio' value='p' name="public" checked)
+            |public
+            label
+            input(id='rbA' type='radio' value='a' name="public")
+            |anonymous 
+        p
+            input(type='text' name='thumbnail' placeholder='thumbnail' maxlength="200" class="thumbnail" id="thumbnail")
+        span(id='thumbnailInfo') 200/200
+        p
+            b-editor(id='editor' width="90%" height="600px" name="content")
+        p
+            input(type='text' id='hashtag' name='hashtag' placeholder='#put #hashtags #like #this' class="hashtag")
+        p
+            button(class="submit" onclick='postTandyaAdd();') ask
+    script.
+        function checksubmit(){
+            if(title.value.length < 5){
+                alert('judulnya harus lebih dari 5 alphabet');
+                return false;
+            }
+            if(content.value.length < 5){
+                alert('kontennya harus lebih dari 5 alphabet');
+                return false;
+            }
+            return true;
+        }
+        thumbnail.addEventListener('keyup', function(){
+            var count = 200;
+            count -= thumbnail.value.length;
+            thumbnailInfo.innerHTML = count + '/200';
+        });
+        question.addEventListener('keyup', function(){
+            var count = 200;
+            count -= question.value.length;
+            questionInfo.innerHTML = count + '/200';
+        });

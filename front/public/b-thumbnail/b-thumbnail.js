@@ -22,7 +22,7 @@ class BeritamusThumbnail extends HTMLElement {
         }
         // if(this.img){
         //     this.img.onload = function(){
-        //         console.log(this.dl.height);
+        //         console.log(this);
         //         console.log(this.img.height);
         //     };
         // }

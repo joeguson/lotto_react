@@ -1,4 +1,5 @@
 config.json
+configAWS.json
 public/images/*
 images/*
 # intellij
