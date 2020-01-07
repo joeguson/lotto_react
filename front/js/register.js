@@ -170,16 +170,14 @@ function sendAjax(url, data, checkType){
 }
 
 function appearCross(target){
-    target.style.backgroundImage = "url('../no.svg')";
-    target.style.backgroundImage = "url('../no.svg')";
+    target.style.backgroundImage = "url('../icons/no.svg')";
     target.style.backgroundRepeat = "no-repeat";
     target.style.backgroundPosition = "99%";
     target.style.backgroundSize = "2%";
     target.style.backgroundColor = "white";
 }
 function appearCheck(target){
-    target.style.backgroundImage = "url('../check.svg')";
-    target.style.backgroundImage = "url('../check.svg')";
+    target.style.backgroundImage = "url('../icons/check.svg')";
     target.style.backgroundRepeat = "no-repeat";
     target.style.backgroundPosition = "99%";
     target.style.backgroundSize = "2%";

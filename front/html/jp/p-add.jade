@@ -2,6 +2,7 @@ extends ../layout.jade
 
 block css
     link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
+    script(type="text/javascript" src="/js/jsForAllJade.js")
     script(src="../../public/b-editor/b-editor.js")
     script(src='./penobrol/p-add.js')
     script(src='../addPandT.js')
@@ -16,17 +17,16 @@ block main
     article
         p 
             input(type='text' name='title' placeholder='title' maxlength="200" class="title" id="title" required)
-        span(id='titleInfo') 200/200
+        span(id='titleInfo' class='infoSpan') 200/200
         p
             label
-            input(id='rbP' type='radio' value='p' name="public" checked)
-            |public
-            label
-            input(id='rbA' type='radio' value='a' name="public")
-            |anonymous
+                input(id='rbP' type='radio' value='p' name="public" checked)
+                |public
+                input(id='rbA' type='radio' value='a' name="public")
+                |anonymous
         p 
             input(type='text' name='thumbnail' placeholder='thumbnail' maxlength="200" class="thumbnail" id="thumbnail")  
-        span(id='thumbnailInfo') 200/200
+        span(id='thumbnailInfo' class='infoSpan') 200/200
         p
             b-editor(id='editor' width="90%" height="600px" name="content")
         // textarea(name='content' class="content" id="content" required)

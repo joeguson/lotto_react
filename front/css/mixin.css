@@ -27,7 +27,7 @@
   width: 100%;
   height: 45px;
   box-sizing: border-box;
-  font-size: 20px;
+  font-size: 16px;
   color: white;
   background-color: #0f4c81;
   display: inline-block;
@@ -52,6 +52,11 @@
   width: 85%;
   margin: 0 auto;
 }
+.newArticle,
+.popArticle {
+  width: 100%;
+  padding: 10px;
+}
 .login a {
   position: fixed;
   right: 8%;
@@ -67,6 +72,26 @@
 }
 .clear {
   clear: both;
+}
+.articleHeading {
+  color: #0f4c81;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+.thumbnailUl {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+.basicInfo {
+  color: black;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+.viewHashtag {
+  color: black;
+  font-size: 12px;
+  margin-bottom: 5px;
 }
 .p-title {
   background-color: white;

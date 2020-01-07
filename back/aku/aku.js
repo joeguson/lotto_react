@@ -35,40 +35,43 @@ exports.checkUserId = function(req, res){
 }
 
 exports.login = function(req, res){
-  //login이 이뤄질때
-  var u_id = req.body.u_id;
-  var u_pw = req.body.u_pw;
-  var sql = 'SELECT * FROM users WHERE u_id = ?';
-  var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
-  var sql3 = 'UPDATE users SET last_login = NOW() WHERE u_id = ?';
-  conn.conn.query(sql2, [u_id], function(err, counts, fields){
-    if(counts[0].u_id){ //만약 로그인 하려는 id가 있다면
-      conn.conn.query(sql,[u_id], function(err, users, fields){ //회원의 모든 정보를 불러온다
-        if(err){console.log(err);}
-        else{
-          if(users[0].verification === 1){
-            if(users[0].u_id == u_id && users[0].u_pw == u_pw){ //아이디와 비밀번호가 맞다면
-              conn.conn.query(sql3, [u_id], function(err, login, fields){ //update를 한 후에 정보를 넘김
-                req.session.u_id = u_id;
-                req.session.save(function(){
-                    res.redirect('/aku');
-                });
-              });
-            }
-            else{
-              res.render('./ja/aku', {"message":"tolong cek Password Anda"});
-            }
-          }
-          else{
-            res.render('./ja/aku', {"message":"email Anda belum diverifikasi"});
-          }
+    //login이 이뤄질때
+    var u_id = req.body.u_id;
+    var u_pw = req.body.u_pw;
+    var sql = 'SELECT * FROM users WHERE u_id = ?';
+    var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
+    var sql3 = 'UPDATE users SET last_login = NOW() WHERE u_id = ?';
+    conn.conn.query(sql2, [u_id], function(err, counts, fields){
+        if(counts[0].u_id){ //만약 로그인 하려는 id가 있다면
+            conn.conn.query(sql,[u_id], function(err, users, fields){ //회원의 모든 정보를 불러온다
+                if(err){console.log(err);}
+                else{
+                    if(users[0].verify === 1){
+                        if(users[0].u_id == u_id && users[0].u_pw == u_pw){ //아이디와 비밀번호가 맞다면
+                            conn.conn.query(sql3, [u_id], function(err, login, fields){ //update를 한 후에 정보를 넘김
+                                console.log(users);
+                                req.session.u_id = u_id;
+                                req.session.id2 = users[0].id;
+                                console.log(req.session);
+                                req.session.save(function(){
+                                    res.redirect('/aku');
+                                });
+                            });
+                        }
+                        else{
+                        res.render('./ja/aku', {"message":"tolong cek Password Anda"});
+                        }
+                    }
+                    else{
+                        res.render('./ja/aku', {"message":"email Anda belum diverifikasi"});
+                    }
+                }
+            });
         }
-      });
-    }
-    else{//만약 로그인 하려는 id가 없다면
-      res.render('./ja/aku', {"message":"ID ini tidak ada"});
-    }
-  });
+        else{//만약 로그인 하려는 id가 없다면
+            res.render('./ja/aku', {"message":"ID ini tidak ada"});
+        }
+    });
 };
 
 exports.welcome = function(req, res){
@@ -115,7 +118,6 @@ exports.welcome = function(req, res){
         totalLikes.tandya = (await dbcon.twoArg(sql11, userInfo[0].id))[0].total;
         totalLikes.comment = (await dbcon.twoArg(sql12, userInfo[0].id))[0].total;
         totalLikes.answer = (await dbcon.twoArg(sql13, userInfo[0].id))[0].total;
-        console.log(userTandya);
         res.render('./ja/aku', {user:userInfo[0], penobrols:userPenobrol, tandyas:userTandya, totalLikes:totalLikes});
     }
     getUserRecord();
@@ -130,29 +132,29 @@ exports.hilang = function(req, res){
 };
 
 exports.getDaftarAuth = function(req, res){
-  var email = req.query.email;
-  var code = req.query.code;
-  var sql = 'SELECT * FROM users WHERE email = ?';
-  var sql2 = '';
-  conn.conn.query(sql, email, function(err, verify, fields){
-    if(verify[0]){
-      if(verify[0].vcode == code){
-        sql2 = 'UPDATE users set verification = true, verify_date = NOW() where email = ?';
-        conn.conn.query(sql2, email, function(err, verified, fields){
-          if(err){console.log(err);}
-          else{
-            res.redirect('./ja/aku');
-          }
-        });
-      }
-      else{
-        res.render('./ja/aku', {"message":"your verification code is wrong"});
-      }
-    }
-    else{
-      res.render('./ja/aku', {"message":"wrong approach"});
-    }
-  });
+    var email = req.query.email;
+    var code = req.query.code;
+    var sql = 'SELECT * FROM users WHERE email = ?';
+    var sql2 = '';
+    conn.conn.query(sql, email, function(err, verify, fields){
+        if(verify[0]){
+            if(verify[0].verify == code){
+                sql2 = 'UPDATE users set verify = 1, verify_date = NOW() where email = ?';
+                conn.conn.query(sql2, email, function(err, verified, fields){
+                    if(err){console.log(err);}
+                    else{
+                        res.render('./ja/aku');
+                    }
+                });
+            }
+            else{
+                res.render('./ja/aku', {"message":"your verification code is wrong"});
+            }
+        }
+        else{
+            res.render('./ja/aku', {"message":"wrong approach"});
+        }
+    });
 };
 
 exports.logout = function(req, res){
@@ -168,9 +170,11 @@ exports.postDaftar = function(req, res){
   var birthday = req.body.birthday;
   var u_sex = req.body.gender;
   var u_email = req.body.email;
-  var code = jsForBack.codeMaker();
+  var code = parseInt(jsForBack.codeMaker());
+  console.log(code);
+  console.log(typeof(code));
   var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
-  var sql = 'INSERT INTO users (u_id, u_pw, u_bday, email, sex, vcode) VALUES (?, ?, ?, ?, ?, ?)';
+  var sql = 'INSERT INTO users (u_id, u_pw, u_bday, email, sex, verify) VALUES (?, ?, ?, ?, ?, ?)';
   conn.conn.query(sql2, [u_id], function(err, check, fields){
     if(err){console.log(err);}
     else{

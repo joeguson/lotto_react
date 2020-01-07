@@ -2,6 +2,7 @@ extends ../layout.jade
 
 block css
     link(rel='stylesheet', href='/css/cari.css' type="text/css")
+    link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
     link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
     script(type="text/javascript" src="/js/cari.js")
     script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
@@ -22,14 +23,14 @@ block submain
         form(action='/cari/search' method='get')
             input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
             button(type='submit' class="submit" value="search")
-                img(src="cari3.png" class="cariImage")
+                img(src="icons/cari3.png" class="cariImage")
 
 block main
     ul.thumbnailUl(id='uls')
         for item in list
             b-thumbnail(jsonSrc="#{JSON.stringify(item)}")
     if !u_id
-        .login
+        .cariLogin
             a(href='/aku') Login Dulu
 
 block footer            

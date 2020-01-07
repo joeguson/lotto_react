@@ -1,17 +1,25 @@
-//out: penobrol.css
+//out: mixin.css
 // Variables
 @themes: "../css";
 // Usage
 @import "@{themes}/variable.less";
 
-//.sub-main - .ad(div)
-
-//.main - .login(div), .p-terbaru(div), .p-terkenal(div)
+//.main - .login(div), .newArticle(div), .popArticle(div)
 .login{width:85%; margin:0 auto;}
+.newArticle, .popArticle{width: 100%; padding:10px;}
 
 //.login(div) - a.addPenobrol
 .login a{position:fixed; right:8%; bottom:8%; background-color: @main; width:35px; height:35px; text-align:center; text-decoration: none; color:white; line-height: 35px; border-radius: 35px;}
 .clear{clear:both}
+
+//.newArticle(div), .popArticle(div) - .articleHeading(div), .thumbnailUl(ul)
+.articleHeading{color:@main; font-size: 20px; margin-bottom: 5px;}
+.thumbnailUl{list-style: none; padding:0px; margin:0px;}
+
+//.basicInfo(dd)
+.basicInfo{color:@font-color1; font-size: 12px; margin-bottom: 5px;}
+
+.viewHashtag{color:@font-color1; font-size: 12px; margin-bottom: 5px;}
 
 //.p-terabaru(div), .p-terkenal(div) - .p-title(div), ul * 2
 .p-title{background-color: white; font-size: 20px; margin-bottom: @marginbottom-mbl;}

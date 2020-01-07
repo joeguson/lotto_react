@@ -27,7 +27,7 @@
   width: 100%;
   height: 45px;
   box-sizing: border-box;
-  font-size: 20px;
+  font-size: 16px;
   color: white;
   background-color: #0f4c81;
   display: inline-block;
@@ -45,6 +45,12 @@
   border-bottom: 1px solid #5781a6;
   border-right: 1px solid #5781a6;
   margin-bottom: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.topBottom-border {
+  border-top: 1px solid #5781a6;
+  border-bottom: 1px solid #5781a6;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -106,7 +112,7 @@ form {
 #login {
   width: 100%;
   box-sizing: border-box;
-  font-size: 20px;
+  font-size: 16px;
   color: white;
   background-color: #0f4c81;
   display: inline-block;
@@ -188,19 +194,17 @@ form {
   list-style: none;
 }
 .logout {
+  width: 100%;
+  height: 45px;
   box-sizing: border-box;
   font-size: 16px;
-  color: black;
+  color: white;
   background-color: #0f4c81;
-  display: block;
+  display: inline-block;
   text-align: center;
-  line-height: 35px;
+  line-height: 40px;
   text-decoration: none;
-  margin: 0px auto 10px auto;
-  width: 85%;
-  height: 35px;
-  border-radius: 10px;
-  border: 1px solid #0f4c81;
+  border-style: none;
 }
 form {
   font-size: 0px;

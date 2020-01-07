@@ -27,20 +27,30 @@
   width: 100%;
   height: 45px;
   box-sizing: border-box;
-  font-size: 20px;
-  background-color: #5781a6;
+  font-size: 16px;
+  color: white;
+  background-color: #0f4c81;
   display: inline-block;
   text-align: center;
   line-height: 40px;
   text-decoration: none;
   border-style: none;
 }
-.li-border {
-  border-top: 1px solid #4c77b1;
-  border-bottom: 1px solid #4c77b1;
-  margin-bottom: 10px;
-}
 .border-radius {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.li-border {
+  border-top: 1px solid #5781a6;
+  border-bottom: 1px solid #5781a6;
+  border-right: 1px solid #5781a6;
+  margin-bottom: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.topBottom-border {
+  border-top: 1px solid #5781a6;
+  border-bottom: 1px solid #5781a6;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -55,11 +65,13 @@
 .pcontent {
   width: 100%;
   margin-bottom: 10px;
-  background-color: #ffffff;
+  background-color: white;
   text-align: justify;
-  padding: 10px 20px 30px 20px;
-  box-sizing: border-box;
-  border-top: 2px solid #0f4c81;
+  padding: 10px 20px;
+  border-top: 1px solid #5781a6;
+  border-bottom: 1px solid #5781a6;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .commentForm {
   width: 95%;
@@ -67,17 +79,15 @@
 }
 .pcomment {
   width: 100%;
-  background-color: #ffffff;
+  background-color: white;
   margin: 0px;
   padding: 5px;
   margin-bottom: 10px;
-  box-sizing: border-box;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
 }
 .pview-dl {
   width: 100%;
-  box-sizing: border-box;
 }
 .warn {
   display: block;
@@ -86,56 +96,7 @@
   padding: 0;
 }
 .content {
-  font-size: 16px;
-  line-height: 26px;
   margin-bottom: 10px;
-  font-weight: 300;
-}
-.plike {
-  font-size: 24px;
-  text-align: center;
-  margin: 20px 0px;
-  color: #c91818;
-}
-.plikeButton {
-  width: 40%;
-  background-color: #c91818;
-  border-radius: 20px;
-  height: 30px;
-  color: white;
-  line-height: 30px;
-  margin: 0px auto;
-  display: block;
-  border: 1px solid #c91818;
-}
-.pcomment-ul {
-  padding: 5px;
-  list-style: none;
-}
-.pview-dt {
-  color: black;
-  font-size: 16px;
-  text-align: justify;
-  margin-bottom: 10px;
-}
-.pview-dd {
-  color: black;
-  font-size: 12px;
-  margin-bottom: 5px;
-}
-.edit {
-  float: right;
-  text-decoration: none;
-  color: #0f4c81;
-}
-.pwarnButton {
-  background-color: #faff93;
-  border: 0px;
-  font-size: 10px;
-  border-radius: 13px;
-  height: 13px;
-  width: 13px;
-  text-align: center;
 }
 .pcInput {
   width: 80%;
@@ -143,15 +104,15 @@
   margin: 0 auto;
   height: 70px;
   border: 1px solid #0f4c81;
-  box-sizing: border-box;
   font-size: 12px;
 }
 .pcInputButton {
   width: 100%;
   height: 45px;
   box-sizing: border-box;
-  font-size: 20px;
-  background-color: #5781a6;
+  font-size: 16px;
+  color: white;
+  background-color: #0f4c81;
   display: inline-block;
   text-align: center;
   line-height: 40px;
@@ -166,13 +127,43 @@
   border-bottom-right-radius: 5px;
   float: right;
 }
+.pcomment-ul {
+  padding: 5px;
+  list-style: none;
+}
+.pview-dt {
+  color: black;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.edit {
+  float: right;
+  text-decoration: none;
+  color: #0f4c81;
+}
+.pwarnButton {
+  border: 0px;
+  width: 2%;
+}
+.plike {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #c91818;
+}
+.plikeButton {
+  width: 5%;
+  margin: 0px auto;
+  display: block;
+  border: none;
+}
 .pcomment-li {
   width: 100%;
   background-color: white;
-  border-top: 1px solid #4c77b1;
-  border-bottom: 1px solid #4c77b1;
-  margin-bottom: 10px;
-  box-sizing: border-box;
+  border-top: 1px solid #5781a6;
+  border-bottom: 1px solid #5781a6;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .pcomment-dl {
   padding: 5px 10px;
@@ -206,7 +197,13 @@
   margin-left: 10px;
 }
 .pccomment-dl:nth-child(odd) {
-  background-color: #eaeffd;
+  background-color: #e7edf2;
+}
+.trashImage {
+  width: 8%;
+}
+.warnImage {
+  width: 100%;
 }
 .pcomment-start a {
   float: right;
@@ -220,10 +217,12 @@
   float: right;
 }
 .pclikeButton {
-  background-color: #c91818;
-  color: white;
+  background-color: #faff93;
   border: 0px;
-  border-radius: 3px;
+  float: right;
+  border-radius: 13px;
+  height: 13px;
+  width: 13px;
 }
 .pcWarnButton {
   background-color: #faff93;
@@ -232,7 +231,6 @@
   border-radius: 13px;
   height: 13px;
   width: 13px;
-  text-align: center;
 }
 .dummy {
   width: 5px;
@@ -253,7 +251,7 @@
   box-sizing: border-box;
   font-size: 12px;
   color: black;
-  background-color: #5781a6;
+  background-color: #0f4c81;
   display: inline-block;
   text-align: center;
   line-height: 12px;

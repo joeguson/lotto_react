@@ -22,7 +22,7 @@ mixin basicInfo(author, date, view, comAnsCount)
 
 mixin hashtag(hashtags)
     if(hashtags.length > 0)
-        dd.pview-dd.hashtag
+        dd.viewHashtag
             - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
             a #{hashtags}
 

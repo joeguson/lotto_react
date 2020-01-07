@@ -42,16 +42,31 @@ block main
                     p.likeCount= totalLikes.answer
         .personalArticle
             p Penobrol
-                if penobrols
+                if penobrols.length > 0
                     ul.thumbnailUl
                         each p in penobrols
                             b-thumbnail(jsonSrc="#{JSON.stringify(p)}")
+                else 
+                    .kosong
+                        span K
+                        span 0
+                        span S
+                        span 0
+                        span NG
+                
         .personalArticle 
             p Tandya
-                if tandyas
+                if tandyas.length > 0
                     ul.thumbnailUl
                         each t in tandyas
                             b-thumbnail(jsonSrc="#{JSON.stringify(t)}")
+                else
+                    .kosong
+                        span K
+                        span 0
+                        span S
+                        span 0
+                        span NG
         a.logout(href= '/aku/logout') Logout
     else
         form(action='aku/login' method='post')

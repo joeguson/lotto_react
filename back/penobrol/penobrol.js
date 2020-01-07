@@ -39,6 +39,7 @@ exports.getPenobrol = function (req, res) {
 
 exports.getViewPenobrol = function (req, res) {
     var id = req.params.penobrol_no;
+    var writer = false;
     var checkId = /^[0-9]+$/;
     if (checkId.test(id)) {
         var sql1 = 'SELECT MAX(id) AS max from penobrol';
@@ -60,7 +61,11 @@ exports.getViewPenobrol = function (req, res) {
 
                     await dbcon.twoArg(sql2, id);
                     await dbcon.fourArg(sql3, id, id, id);
-                    var penobrol = parser.parsePenobrol((await dbcon.twoArg(sql4, id))[0]);
+                    var penobrol = await dbcon.twoArg(sql4, id);
+                    if(penobrol[0].u_id == req.session.u_id){
+                        writer = true;
+                    }
+                    penobrol = parser.parsePenobrol((await dbcon.twoArg(sql4, id))[0]);
                     penobrol.comments = (await dbcon.twoArg(sql5, id)).map(parser.parseComment);
                     penobrol.likes = (await dbcon.twoArg(sql8, id)).map(parser.parseLike);
                     penobrol.hashtags = (await dbcon.twoArg(sql6, id)).map(parser.parseHashtagP);
@@ -68,10 +73,11 @@ exports.getViewPenobrol = function (req, res) {
                         c.comments = (await dbcon.twoArg(sql7, c.id)).map(parser.parseCLike);
                         c.likes = (await dbcon.twoArg(sql9, c.id)).map(parser.parseCLike);
                     }
-
+                    console.log(writer);
                     res.render('./jp/p-view', {
                         topic: penobrol,
                         u_id: req.session.u_id,
+                        writer: writer
                     });
                 }
 
