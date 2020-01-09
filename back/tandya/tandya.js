@@ -65,7 +65,7 @@ exports.getViewTandya = function (req, res) {
                         a.likes = (await dbcon.twoArg(sql9, a.id)).map(parser.parseALike);
                         console.log(a);
                     }
-                    tandya.likes = (await dbcon.twoArg(sql8, id)).map(parser.parseLike);
+                    tandya.likes = (await dbcon.twoArg(sql8, id)).map(parser.parseTLike);
                     res.render('./jt/t-view', {
                         topic: tandya,
                         u_id: req.session.u_id,
@@ -173,18 +173,19 @@ exports.postAddAcomment = function (req, res) {
 
 
 exports.likesTandya = function (req, res) {
-    var clickValue = req.body.clickedValue;
-    var t_id = req.params.id;
+    var t_id = parseInt(req.body.t_id);
+    var ta_id = parseInt(req.body.ta_id);
+    var clickVal = parseInt(req.body.clickVal);
     var sql1 = '';
     var sql2 = 'UPDATE tandya SET score = ((select count(t_id) from t_ans where t_id = ?) *.3 + (select count(t_id) from t_like where t_id = ?)*.7)/t_view * 100 where id = ?'
     var sql3 = 'select count(t_id) as tlikeCount from t_like where t_id = ?';
     var buttonValue = '';
-    if (clickValue == 'Batal Suka') {
+    if (clickValue == 1) {
         sql1 = 'DELETE FROM t_like WHERE t_id = ? AND u_id = (select id from users where u_id = ?)';
-        buttonValue = "Suka";
+        buttonValue = 0;
     } else {
         sql1 = 'INSERT INTO t_like (t_id, u_id) VALUES (?, (select id from users where u_id = ?))';
-        buttonValue = "Batal Suka";
+        buttonValue = 1;
     }
     conn.conn.query(sql1, [t_id, req.session.u_id], function (err, action, fields) {
         if (err) {
@@ -205,19 +206,19 @@ exports.likesTandya = function (req, res) {
 };
 
 exports.likesAnswer = function (req, res) {
-    var clickValue = req.body.clickedValue;
-    var t_id = req.body.t_id;
-    var ta_id = req.body.ta_id;
+    var t_id = parseInt(req.body.t_id);
+    var ta_id = parseInt(req.body.ta_id);
+    var clickVal = parseInt(req.body.clickVal);
     var sql1 = '';
     var sql2 = 'UPDATE t_ans set score = ((select count(ta_id) from ta_com where ta_id = ?) *.3 + (select count(ta_id) from ta_like where ta_id = ?)*.7)/(select t_view from tandya where id = ?) * 100 where id = ?';
     var sql3 = 'select count(ta_id) as taLikeCount from ta_like where ta_id = ?';
     var buttonValue = '';
-    if (clickValue == 'Batal Suka') {
+    if (clickValue == 1) {
         sql1 = 'DELETE FROM ta_like WHERE ta_id = ? AND u_id = (select id from users where u_id = ?)';
-        buttonValue = 'Suka';
+        buttonValue = 0;
     } else {
         sql1 = 'INSERT INTO ta_like (ta_id, u_id) VALUES (?, (select id from users where u_id = ?))';
-        buttonValue = 'Batal Suka';
+        buttonValue = 1;
     }
     conn.conn.query(sql1, [ta_id, req.session.u_id], function (err, action, fields) {
         if (err) {

@@ -138,19 +138,22 @@ exports.parseAComment = function (packet) {
     };
 };
 
-exports.parseLike = function (packet) {
+exports.parsePLike = function (packet) {
     return {
-        like_id: packet.like_id,
+        p_id: packet.p_id,
+        u_id: packet.u_id
+    };
+};
+
+exports.parseTLike = function (packet) {
+    return {
+        t_id: packet.t_id,
         u_id: packet.u_id
     };
 };
 
 exports.parseCLike = function (packet) {
     return {
-        id: packet.id,
-        author: packet.author,
-        content: packet.content,
-        date: utils.dateMaker(packet.date),
         pc_id: packet.pc_id,
         u_id: packet.u_id
     };
@@ -158,10 +161,6 @@ exports.parseCLike = function (packet) {
 
 exports.parseALike = function (packet) {
     return {
-        id: packet.id,
-        author: packet.author,
-        content: packet.content,
-        date: utils.dateMaker(packet.date),
         ta_id: packet.ta_id,
         u_id: packet.u_id
     };

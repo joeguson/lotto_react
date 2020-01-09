@@ -26,11 +26,13 @@ block submain
                 img(src="icons/cari3.png" class="cariImage")
 
 block main
+    - var count = 6;
     ul.thumbnailUl(id='uls')
         for item in list
+            - count--;
             b-thumbnail(jsonSrc="#{JSON.stringify(item)}")
-    if !u_id
-        .cariLogin
-            a(href='/aku') Login Dulu
+        if count == 0 && !u_id
+            .cariLogin
+                a(href='/aku') Login Dulu
 
 block footer            

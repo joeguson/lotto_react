@@ -17,16 +17,19 @@ block main
     article
         p
             input(type='text' name='question' placeholder='what is your question' maxlength="200" class="title" id="question" required)
-        span(id='questionInfo' class='infoSpan') 200/200
+        p.infoP    
+            span(id='questionInfo' class='infoSpan') 200/200
         p
             label
                 input(id='rbP' type='radio' value='p' name="public" checked)
-                |public
+                span  public
+            label       
                 input(id='rbA' type='radio' value='a' name="public")
-                |anonymous 
+                span  anonymous
         p
             input(type='text' name='thumbnail' placeholder='thumbnail' maxlength="200" class="thumbnail" id="thumbnail")
-        span(id='thumbnailInfo' class='infoSpan') 200/200
+        p.infoP
+            span(id='thumbnailInfo' class='infoSpan') 200/200
         p
             b-editor(id='editor' width="90%" height="600px" name="content")
         p

@@ -4,7 +4,9 @@ block css
     link(rel='stylesheet', href='/css/aku.css' type="text/css")
     link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
     script(type="text/javascript" src="../js/aku.js")
+    script(type="text/javascript" src="/js/jsForAllJade.js")
     script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
+    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
 
 
 block nav
@@ -58,7 +60,7 @@ block main
             p Tandya
                 if tandyas.length > 0
                     ul.thumbnailUl
-                        each t in tandyas
+                        for t in tandyas
                             b-thumbnail(jsonSrc="#{JSON.stringify(t)}")
                 else
                     .kosong

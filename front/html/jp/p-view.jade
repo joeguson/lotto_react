@@ -4,6 +4,7 @@ block css
     link(rel="stylesheet" href="../css/penobrol_view.css" type="text/css")
     link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
     script(type="text/javascript" src="/js/jsForAllJade.js")
+    script(type="text/javascript" src="/js/likeArticle.js")
 
 block nav
     include ./pNavUl.jade
@@ -12,94 +13,95 @@ block submain
     //.ad Advertisement
 
 block main
-    section.main(id='main')
-        .title
-            dl.pview-dl
-                dt.pview-dt= topic.title
-                    if u_id === topic.u_id
-                        button(onclick ='deletePenobrol()' class="deleteButton")
-                            img(src="icons/trash.svg" class="trashImage")
-                        a(href='/pedit/'+topic.id class='edit') edit
-                +hashtag(topic.hashtags)
-                +basicInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
-        .pcontent
-            if u_id
-                p(class="warn")
-                    button(class="pwarnButton" type="submit" value='p/p/'+topic.id onclick="warningAjax(this)" )
-                        img(src="icons/warn.svg" class="warnImage")
-            div(class="content")
-                iframe(id="content" class="content" style="border: none;")
-                script.
-                    var iframe = document.getElementById("content");
-                    iframe.width = "100%";
-                    var page = iframe.contentWindow.document;
-                    var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
-                    page.body.innerHTML = content;
-                    const imgTags = page.getElementsByTagName("img");
-                    for(var t of imgTags) {
-                        t.onload = () => {
-                            var i = document.getElementById('content');
-                            var w = i.contentWindow.document.body.scrollWidth;
-                            var h = i.contentWindow.document.body.scrollHeight;
-                            i.height = h;
-                            i.width = w;
-                        };
-                    }
-                div(class="plike" id="plike")= topic.likes.length
-                if u_id
-                    button(id="plikeButton" class="plikeButton" type="submit" value="Suka")
-                        img(src="icons/highlight.png" class="warnImage")
+    .title
+        dl.pview-dl
+            dt.pview-dt= topic.title
+                if u_id === topic.u_id
+                    button(onclick ='deletePenobrol()' class="deleteButton")
+                        img(src="icons/trash.svg" class="trashImage")
+                    a(href='/pedit/'+topic.id class='edit') edit
+            +hashtag(topic.hashtags)
+            +basicInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
+    .pcontent(style="min-height:100%; height:100%;")
         if u_id
-            form(action='pcomment/' + topic.id method='post' class='commentForm' onsubmit='return pcChecksubmit();')
-                textarea(name='comment' class="pcInput" id='pcInput')
-                input(type='submit' value='comment' class="pcInputButton" id="pcInputButton")
-        if topic.comments.length > 0
-            .pcomment
-                ul.pcomment-ul
-                    each c in topic.comments
-                        li.pcomment-li
-                            dl.pcomment-dl(id='pc/' + topic.id + '/' + c.id)
-                                - var commentStart = '@'+ topic.u_id
-                                - var date_result2 = 'by '+c.u_id+' / '+c.date+' / like : '
-                                .pcomment-start #{commentStart}
-                                    if u_id === c.u_id
-                                        a(href='/pcedit/' + topic.id + '/' + c.id) Edit
-                                        button(value=c.id onclick ='postDeletePcomment(this)')
-                                            img(src="icons/trash.svg" class="trashImage")
-                                dt.pcomment-dt
-                                    pre(class="pcomment-dt") "#{c.content}"
-                                dd.pcomment-dd #{date_result2}
-                                    span.pclike(id="pCommentlikes" + c.id)= c.likes.length
-                                    if u_id
-                                        span.commentButton
-                                            //if(commentLikeChecker(pclikes[comments.indexOf(c)], c.id, u_id))
-                                            //    button(class="pclikeButton" type="submit" value=topic.id + '/' + c.id onclick="pcLikeSendAjax(this);") Batal Suka
-                                            //else
-                                            button(class="pclikeButton" type="submit" value=topic.id + '/' + c.id onclick="pcLikeSendAjax(this);")
-                                                img(src="icons/highlight.png" class="warnImage")
-                                            span.dummy
-                                            button(class="pcWarnButton" type="submit" value='p/pc/'+ c.id onclick="warningAjax(this);")
-                                                img(src="icons/warn.svg" class="warnImage")
-                                if u_id    
-                                    .ccommentForm
-                                        textarea(name='ccomment' class="pccInput" id='pccInput')
-                                        input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="comment" class="pccInputButton")
-                                    each ccs in c.comments
-                                        if ccs.pc_id === c.id
-                                            dl.pccomment-dl
-                                                - var ccommentStart = '- "'+ccs.content+'"'
-                                                dt.pccomment-dt
-                                                    pre(class="pccomment-dt") #{ccommentStart}
-                                                if topic.public === 'a'
-                                                    -var date_result3 = 'by ' + ccs.u_id + ' / '+ ccs.date
-                                                    // -var date_result3 = 'by ' + anonimmaker(cc.u_id) + ' / '+jsForBack.datemaker(cc.date)
-                                                else
-                                                    -var date_result3 = 'by ' + ccs.u_id + ' / '+ ccs.date
-                                                    // -var date_result3 = 'by ' + cc.u_id + ' / '+jsForBack.datemaker(cc.date)
-                                                dd.pccomment-dd #{date_result3}
-                                                    if u_id
-                                                        button(class="pccWarnButton" type="submit" value='p/pcc/'+ccs.id  onclick="warningAjax(this);")
-                                                            img(src="icons/warn.svg" class="warnImage")
+            p(class="warn")
+                button(class="pwarnButton" type="submit" value='p/p/'+topic.id onclick="warningAjax(this)" )
+                    img(src="icons/warn.svg" class="warnImage")
+        div(class="content")
+            iframe(id="content" class="content" style="border: none;")
+            script.
+                var iframe = document.getElementById("content");
+                iframe.width = "100%";
+                var page = iframe.contentWindow.document;
+                var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+                
+                var cssLink = document.createElement("link") 
+                cssLink.href = "./public/b-editor/__b-editor.css"; 
+                cssLink.rel = "stylesheet"; 
+                cssLink.type = "text/css"; 
+                page.head.appendChild(cssLink);
+            
+                page.body.innerHTML = content;
+                const imgTags = page.getElementsByTagName("img");
+                for(var t of imgTags) {
+                    t.onload = () => {
+                        var i = document.getElementById('content');
+                        var w = i.contentWindow.document.body.scrollWidth;
+                        var h = i.contentWindow.document.body.scrollHeight;
+                        i.height = h;
+                        i.width = w;
+                    };
+                }
+            div(class="plike" id="plike")= topic.likes.length
+            if u_id
+                +likeButton('p',topic.likes, id2)
+    if u_id
+        form(action='pcomment/' + topic.id method='post' class='commentForm' onsubmit='return pcChecksubmit();')
+            textarea(name='comment' class="pcInput" id='pcInput')
+            input(type='submit' value='comment' class="pcInputButton" id="pcInputButton")
+    if topic.comments.length > 0
+        .pcomment
+            ul.pcomment-ul
+                each c in topic.comments
+                    li.pcomment-li
+                        dl.pcomment-dl(id='pc/' + topic.id + '/' + c.id)
+                            - var commentStart = '@'+ topic.u_id
+                            - var date_result2 = 'by '+c.u_id+' / '+c.date+' / like : '
+                            .pcomment-start #{commentStart}
+                                if u_id === c.u_id
+                                    a(href='/pcedit/' + topic.id + '/' + c.id) Edit
+                                    button(value=c.id onclick ='postDeletePcomment(this)')
+                                        img(src="icons/trash.svg" class="trashImage")
+                            dt.pcomment-dt
+                                pre(class="pcomment-dt") "#{c.content}"
+                            dd.pcomment-dd #{date_result2}
+                                span.pclike(id="pCommentlikes" + c.id)= c.likes.length
+                                if u_id
+                                    span.commentButton
+                                        +likeButton2('pc',c.likes, id2, c.id)
+                                        span.dummy
+                                        button(class="pcWarnButton" type="submit" value='p/pc/'+ c.id onclick="warningAjax(this);")
+                                            img(src="icons/warn.svg" class="warnImage")
+                            if u_id    
+                                .ccommentForm
+                                    textarea(name='ccomment' class="pccInput" id='pccInput')
+                                    input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="comment" class="pccInputButton")
+                                each ccs in c.comments
+                                    if ccs.pc_id === c.id
+                                        dl.pccomment-dl
+                                            - var ccommentStart = '- "'+ccs.content+'"'
+                                            dt.pccomment-dt
+                                                pre(class="pccomment-dt") #{ccommentStart}
+                                            if topic.public === 'a'
+                                                -var date_result3 = 'by ' + ccs.u_id + ' / '+ ccs.date
+                                                // -var date_result3 = 'by ' + anonimmaker(cc.u_id) + ' / '+jsForBack.datemaker(cc.date)
+                                            else
+                                                -var date_result3 = 'by ' + ccs.u_id + ' / '+ ccs.date
+                                                // -var date_result3 = 'by ' + cc.u_id + ' / '+jsForBack.datemaker(cc.date)
+                                            dd.pccomment-dd #{date_result3}
+                                                if u_id
+                                                    button(class="pccWarnButton" type="submit" value='p/pcc/'+ccs.id  onclick="warningAjax(this);")
+                                                        img(src="icons/warn.svg" class="warnImage")
     script.
         function pcChecksubmit() {
             if (pcInput.value.length < 5) {

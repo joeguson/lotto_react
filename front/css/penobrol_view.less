@@ -5,8 +5,8 @@
 @import "@{themes}/variable.less";
 
 //.main - .title(div), .pcontent(div), .commentForm(form), .pcomment(div)
-.title{width:100%; box-sizing:border-box; .section-border(); background-color: white; padding: 10px 20px;}
-.pcontent{width:100%; margin-bottom: @marginbottom-mbl; background-color: white; text-align: justify; padding:10px 20px; .topBottom-border();}
+.title{width:100%; box-sizing:border-box; .section-border(); background-color: white; padding: 10px 20px; word-break:break-all;}
+.pcontent{width:100%; margin-bottom: @marginbottom-mbl; background-color: white; text-align: justify; padding:10px 20px; .topBottom-border(); }
 .commentForm{width:95%; margin: 0px auto @marginbottom-mbl auto;}
 .pcomment{width:100%; background-color:white; margin:0px; padding:5px; margin-bottom: @marginbottom-mbl; .section-border();}
 
@@ -54,6 +54,7 @@
 
 .trashImage{width:8%;}
 .warnImage{width:100%;}
+.likeImage{width:100%;}
 
 
 //.pcomment-start(div) - a

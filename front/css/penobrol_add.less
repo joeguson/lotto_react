@@ -7,13 +7,22 @@
 article{width:100%; background-color: @bgcolor1; padding:20px 25px; text-align: center; margin:0 auto;}
 
 article p{width:100%;}
+article p:nth-child(3){margin-bottom: @marginbottom-mbl;}
+article p:nth-child(5){margin-bottom: @marginbottom-mbl;}
+article p:nth-child(6){margin-bottom: @marginbottom-mbl;}
+article p:nth-child(7){margin-bottom: @marginbottom-mbl;}
+.infoP{width: 90%; text-align: right; margin: 0 auto;}
 
-p input{}
+//inside ps
+.title{height:40px; width:90%;}
+.infoSpan{text-align: right; font-size: 12px; color:darkred;}
+label{margin-bottom: @marginbottom-mbl;}
+.thumbnail{height:40px; width:90%;}
 
-input{border:1px solid lightgray; font-size: 16px; padding:10px; margin-bottom: @marginbottom-mbl; border:1px solid @main;}
+input{border:1px solid lightgray; font-size: 16px; padding:10px; border:1px solid @main;}
 textarea{border:1px solid lightgray; font-size: 16px; padding: 10px; margin-bottom: @marginbottom-mbl; border:1px solid @main;}
 
-.title{height:40px; width:90%;}
+
 .content{height:500px; width:90%;}
 .hashtag{height:40px; width:90%;}
 .submit{.button(); width:90%; margin:0 auto; display: block; .border-radius(); font-size: 14px; line-height: 35px; height:35px;}

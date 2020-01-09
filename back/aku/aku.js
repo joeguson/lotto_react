@@ -52,7 +52,6 @@ exports.login = function(req, res){
                                 console.log(users);
                                 req.session.u_id = u_id;
                                 req.session.id2 = users[0].id;
-                                console.log(req.session);
                                 req.session.save(function(){
                                     res.redirect('/aku');
                                 });
@@ -102,8 +101,8 @@ exports.welcome = function(req, res){
 
     async function getUserRecord(){
         userInfo = await dbcon.twoArg(sql1, req.session.u_id);
-        userPenobrol = (await dbcon.twoArg(sql2, userInfo[0].id)).map(parser.parsePenobrol);
-        userTandya = (await dbcon.twoArg(sql3, userInfo[0].id)).map(parser.parseTandya);
+        userPenobrol = (await dbcon.twoArg(sql2, userInfo[0].id)).map(parser.parseFrontPenobrol);
+        userTandya = (await dbcon.twoArg(sql3, userInfo[0].id)).map(parser.parseFrontTandya);
         for(var i = 0; i<userPenobrol.length;i++){
             userPenobrol[i].commentCount = (await dbcon.twoArg(sql4, userPenobrol[i].id))[0].count;
             userPenobrol[i].hashtags = (await dbcon.twoArg(sql6, userPenobrol[i].id)).map(parser.parseHashtagP);
@@ -128,7 +127,7 @@ exports.welcome = function(req, res){
 };
 
 exports.hilang = function(req, res){
-  res.redirect('/aku');
+    res.redirect('/aku');
 };
 
 exports.getDaftarAuth = function(req, res){

@@ -61,6 +61,7 @@
   border-bottom: 1px solid lightgray;
   background-color: white;
   padding: 10px 20px;
+  word-break: break-all;
 }
 .pcontent {
   width: 100%;
@@ -203,6 +204,9 @@
   width: 8%;
 }
 .warnImage {
+  width: 100%;
+}
+.likeImage {
   width: 100%;
 }
 .pcomment-start a {

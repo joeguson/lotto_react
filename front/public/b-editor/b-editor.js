@@ -45,7 +45,7 @@
         controls.style.boxSizing = "border-box";
         controls.style.borderBottom = "none";
         controls.style.padding = "8px";
-        controls.style.background = "#2e60f4";
+        controls.style.background = "#0f4c81";
         controls.style.color = "white";
         controls.style.borderRadius = "8px 8px 0 0";
         controls.style.width = w;
@@ -121,7 +121,7 @@
         ta.style.height = h;
         ta.style.margin = "0 auto";
         ta.style.boxSizing = "border-box";
-        ta.style.border = "2px solid #2e60f4";
+        ta.style.border = "1px solid #0f4c81";
 
         const iframe = this.iframe = document.createElement("iframe");
         iframe.style.border = "none";

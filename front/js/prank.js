@@ -36,7 +36,7 @@ function textScroll(scroll_el_id) {
     this.scrollspeed = 2; // 스크롤되는 px
     this.objTop = new Array(); // 각 li의 top 위치를 저장
     this.timer = null;
-    
+
     for(var i=0; i<this.num; i++){
         this.objLi[i].style.position = 'absolute';
         this.objTop[i] = this.height*i;
