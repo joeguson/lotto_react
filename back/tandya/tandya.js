@@ -23,7 +23,8 @@ exports.getTandya = function (req, res) {
         res.render('./jt/t', {
             dateTopics: byDate,
             scoreTopics: byScore,
-            u_id: req.session.u_id
+            u_id: req.session.u_id,
+            id2: req.session.id2
         });
     }
     getOrderedT();
@@ -53,8 +54,8 @@ exports.getViewTandya = function (req, res) {
                     var sql5 = 'SELECT t.*, u.u_id FROM t_ans as t join users as u on t.author = u.id WHERE t_id = ? order by score desc';
                     var sql6 = 'SELECT * FROM tandya_hashtag where t_id = ?';
                     var sql7 = 'SELECT t.*, u.u_id FROM ta_com as t join users as u on t.author = u.id WHERE t.ta_id = ?';
-                    var sql8 = 'SELECT t.t_id as like_id, t.u_id, u.u_id FROM t_like as t join users as u on t.u_id = u.id WHERE t.t_id = ?';
-                    var sql9 = 'SELECT t.ta_id as like_id, t.u_id, u.u_id FROM ta_like as t join users as u on t.u_id = u.id where t.ta_id = ?';
+                    var sql8 = 'SELECT * from t_like where t_id = ?';
+                    var sql9 = 'SELECT * from ta_like where ta_id = ?';
                     await dbcon.twoArg(sql2, id);
                     await dbcon.fourArg(sql3, id, id, id);
                     tandya = parser.parseTandya((await dbcon.twoArg(sql4, id))[0]);
@@ -69,6 +70,7 @@ exports.getViewTandya = function (req, res) {
                     res.render('./jt/t-view', {
                         topic: tandya,
                         u_id: req.session.u_id,
+                        id2: req.session.id2
                     });
                 }
 
@@ -180,7 +182,7 @@ exports.likesTandya = function (req, res) {
     var sql2 = 'UPDATE tandya SET score = ((select count(t_id) from t_ans where t_id = ?) *.3 + (select count(t_id) from t_like where t_id = ?)*.7)/t_view * 100 where id = ?'
     var sql3 = 'select count(t_id) as tlikeCount from t_like where t_id = ?';
     var buttonValue = '';
-    if (clickValue == 1) {
+    if (clickVal == 1) {
         sql1 = 'DELETE FROM t_like WHERE t_id = ? AND u_id = (select id from users where u_id = ?)';
         buttonValue = 0;
     } else {
@@ -213,7 +215,7 @@ exports.likesAnswer = function (req, res) {
     var sql2 = 'UPDATE t_ans set score = ((select count(ta_id) from ta_com where ta_id = ?) *.3 + (select count(ta_id) from ta_like where ta_id = ?)*.7)/(select t_view from tandya where id = ?) * 100 where id = ?';
     var sql3 = 'select count(ta_id) as taLikeCount from ta_like where ta_id = ?';
     var buttonValue = '';
-    if (clickValue == 1) {
+    if (clickVal == 1) {
         sql1 = 'DELETE FROM ta_like WHERE ta_id = ? AND u_id = (select id from users where u_id = ?)';
         buttonValue = 0;
     } else {
@@ -240,32 +242,32 @@ exports.likesAnswer = function (req, res) {
 exports.warningTandya = function (req, res) {
     var check_sql = '';
     var warn_sql = '';
-    switch(req.body.warnType){
+    switch(req.body.warnedItem){
         case 't':
-            check_sql = 'select u_id, t_id from t_warning where u_id = (select id from users where u_id = ?) AND t_id = ?';
-            warn_sql = 'insert into t_warning(u_id, t_id) values((select id from users where u_id = ?), ?)';
+            check_sql = 'select u_id, t_id from t_warning where u_id = ? AND t_id = ?';
+            warn_sql = 'insert into t_warning(u_id, t_id) values(?, ?)';
             break;
         case 'ta':
-            check_sql = 'select u_id, ta_id from ta_warning where u_id = (select id from users where u_id = ?) AND ta_id = ?';
-            warn_sql = 'insert into ta_warning(u_id, ta_id) values((select id from users where u_id = ?), ?)';
+            check_sql = 'select u_id, ta_id from ta_warning where u_id = ? AND ta_id = ?';
+            warn_sql = 'insert into ta_warning(u_id, ta_id) values(?, ?)';
             break;
         case 'tac':
-            check_sql = 'select u_id, tac_id from tac_warning where u_id = (select id from users where u_id = ?) AND tac_id = ?';
-            warn_sql = 'insert into tac_warning(u_id, tac_id) values((select id from users where u_id = ?), ?)';
+            check_sql = 'select u_id, tac_id from tac_warning where u_id = ? AND tac_id = ?';
+            warn_sql = 'insert into tac_warning(u_id, tac_id) values(?, ?)';
             break;
     }
-    conn.conn.query(check_sql, [req.session.u_id, req.body.warnId], function (err, checking, fields) {
+    conn.conn.query(check_sql, [req.session.id2, req.body.warnedId], function (err, checking, fields) {
         if (err) {
             console.log(err);
         } else {
             if (checking.length) {
-                res.json({"result": "alreadywarned"});
+                res.json({"result": 0});
             } else {
-                conn.conn.query(warn_sql, [req.session.u_id, req.body.warnId], function (err, warned, fields) {
+                conn.conn.query(warn_sql, [req.session.id2, req.body.warnedId], function (err, warned, fields) {
                     if (err) {
                         console.log(err);
                     } else {
-                        res.json({"result": "warned"});
+                        res.json({"result": 1});
                     }
                 });
 

@@ -28,7 +28,9 @@ mixin hashtag(hashtags)
             
 mixin likeButton(type ,likeObject, sessionId)
     -var likeChecker = function(likeObject, sessionId){
-    -    for(var i in likeObject){
+        -console.log(likeObject);
+        -console.log(sessionId);
+    -    for(var i of likeObject){
     -        if(i.u_id == sessionId){
     -            return true;
     -        }
@@ -38,29 +40,29 @@ mixin likeButton(type ,likeObject, sessionId)
     -var result = likeChecker(likeObject, sessionId);
     -if(type == 'p'){
         -if(result){
-            button(class="plikeButton" type="submit" value=topic.id + '/0/0' onclick="pLike(this);")
+            button(class="plikeButton" type="submit" value=topic.id + '/0/1' onclick="pLike(this);")
                 img(src="icons/nocap.svg" class="likeImage" id="likeImage")
         -}
         -else{
-            button(class="plikeButton" type="submit" value=topic.id + '/0/1' onclick="pLike(this);")
+            button(class="plikeButton" type="submit" value=topic.id + '/0/0' onclick="pLike(this);")
                 img(src="icons/cap.png" class="likeImage" id="likeImage")
         -}
     -}
     -else{
         -if(result){
-            button(class="tlikeButton" type="submit" value=topic.id + '/0/0' onclick="tLike(this);")
+            button(class="tlikeButton" type="submit" value=topic.id + '/0/1' onclick="tLike(this);")
                 img(src="icons/nocap.svg" class="likeImage" id="likeImage")
         -}
         -else{
-            button(class="tlikeButton" type="submit" value=topic.id + '/0/1' onclick="tLike(this);")
+            button(class="tlikeButton" type="submit" value=topic.id + '/0/0' onclick="tLike(this);")
                 img(src="icons/cap.png" class="likeImage" id="likeImage")
         -}
     -}
     
     
-mixin likeButton2(type ,likeObject, sessionId, id)
+mixin likeButton2(type, likeObject, sessionId, id)
     -var likeChecker = function(likeObject, sessionId){
-    -    for(var i in likeObject){
+    -    for(var i of likeObject){
     -        if(i.u_id == sessionId){
     -            return true;
     -        }
@@ -68,23 +70,24 @@ mixin likeButton2(type ,likeObject, sessionId, id)
     -     return false;
     -}
     -var result = likeChecker(likeObject, sessionId);
+
     -if(type == 'pc'){
         -if(result){
-            button(class="pclikeButton" type="submit" value=topic.id +'/'+id+'/0' onclick="pcLike(this);")
-                img(src="icons/cap.png" class="likeImage" id="likeImage")
-        -}
-        -else{
             button(class="pclikeButton" type="submit" value=topic.id +'/'+id+'/1' onclick="pcLike(this);")
                 img(src="icons/nocap.svg" class="likeImage" id="likeImage")
+        -}
+        -else{
+            button(class="pclikeButton" type="submit" value=topic.id +'/'+id+'/0' onclick="pcLike(this);")
+                img(src="icons/cap.png" class="likeImage" id="likeImage")
         -}
     -}
     -else{
         -if(result){
-            button(class="talikeButton" type="submit" value=topic.id + '/'+id+'/0' onclick="taLike(this);")
-                img(src="icons/cap.png" class="likeImage" id="likeImage")
-        -}
-        -else{
             button(class="talikeButton" type="submit" value=topic.id + '/'+id+'/1' onclick="taLike(this);")
                 img(src="icons/nocap.svg" class="likeImage" id="likeImage")
+        -}
+        -else{
+            button(class="talikeButton" type="submit" value=topic.id + '/'+id+'/0' onclick="taLike(this);")
+                img(src="icons/cap.png" class="likeImage" id="likeImage")
         -}
     -}

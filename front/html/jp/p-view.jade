@@ -5,6 +5,8 @@ block css
     link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
     script(type="text/javascript" src="/js/jsForAllJade.js")
     script(type="text/javascript" src="/js/likeArticle.js")
+    script(type="text/javascript" src="/js/warnArticle.js")
+    script(type="text/javascript" src="/js/deleteArticle.js")
 
 block nav
     include ./pNavUl.jade
@@ -25,7 +27,7 @@ block main
     .pcontent(style="min-height:100%; height:100%;")
         if u_id
             p(class="warn")
-                button(class="pwarnButton" type="submit" value='p/p/'+topic.id onclick="warningAjax(this)" )
+                button(class="pwarnButton" type="submit" value='p/p/'+topic.id onclick="warningArticle(this)" )
                     img(src="icons/warn.svg" class="warnImage")
         div(class="content")
             iframe(id="content" class="content" style="border: none;")
@@ -80,7 +82,7 @@ block main
                                     span.commentButton
                                         +likeButton2('pc',c.likes, id2, c.id)
                                         span.dummy
-                                        button(class="pcWarnButton" type="submit" value='p/pc/'+ c.id onclick="warningAjax(this);")
+                                        button(class="pcWarnButton" type="submit" value='p/pc/'+ c.id onclick="warningArticle(this);")
                                             img(src="icons/warn.svg" class="warnImage")
                             if u_id    
                                 .ccommentForm
@@ -90,17 +92,18 @@ block main
                                     if ccs.pc_id === c.id
                                         dl.pccomment-dl
                                             - var ccommentStart = '- "'+ccs.content+'"'
+                                            if id2 == ccs.author
+                                                button(value=ccs.id onclick ='postDeletePccomment(this)' class="deleteButton")
+                                                    img(src="icons/trash.svg" class="trashImage")
                                             dt.pccomment-dt
                                                 pre(class="pccomment-dt") #{ccommentStart}
                                             if topic.public === 'a'
                                                 -var date_result3 = 'by ' + ccs.u_id + ' / '+ ccs.date
-                                                // -var date_result3 = 'by ' + anonimmaker(cc.u_id) + ' / '+jsForBack.datemaker(cc.date)
                                             else
                                                 -var date_result3 = 'by ' + ccs.u_id + ' / '+ ccs.date
-                                                // -var date_result3 = 'by ' + cc.u_id + ' / '+jsForBack.datemaker(cc.date)
                                             dd.pccomment-dd #{date_result3}
                                                 if u_id
-                                                    button(class="pccWarnButton" type="submit" value='p/pcc/'+ccs.id  onclick="warningAjax(this);")
+                                                    button(class="pccWarnButton" type="submit" value='p/pcc/'+ccs.id  onclick="warningArticle(this);")
                                                         img(src="icons/warn.svg" class="warnImage")
     script.
         function pcChecksubmit() {

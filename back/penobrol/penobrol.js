@@ -71,7 +71,7 @@ exports.getViewPenobrol = function (req, res) {
                     penobrol.likes = (await dbcon.twoArg(sql8, id)).map(parser.parsePLike);
                     penobrol.hashtags = (await dbcon.twoArg(sql6, id)).map(parser.parseHashtagP);
                     for (const c of penobrol.comments) {
-                        c.comments = (await dbcon.twoArg(sql7, c.id)).map(parser.parseCLike);
+                        c.comments = (await dbcon.twoArg(sql7, c.id)).map(parser.parseCComment);
                         c.likes = (await dbcon.twoArg(sql9, c.id)).map(parser.parseCLike);
                     }
                     res.render('./jp/p-view', {
@@ -186,14 +186,14 @@ exports.likesPenobrol = function (req, res) {
     var sql2 = 'UPDATE penobrol SET score = ((select count(p_id) from p_com where p_id = ?) *.3 + (select count(p_id) from p_like where p_id = ?)*.7)/p_view * 100 where id = ?'
     var sql3 = 'select count(p_id) as plikeCount from p_like where p_id = ?';
     var buttonVal = '';
-    if (clickVal == 0) {
-        sql1 = 'DELETE FROM p_like WHERE p_id = ? AND u_id = (select id from users where u_id = ?)';
-        buttonVal = 1;
-    } else {
-        sql1 = 'INSERT INTO p_like (p_id, u_id) VALUES (?, (select id from users where u_id = ?))';
+    if (clickVal == 1) {
+        sql1 = 'DELETE FROM p_like WHERE p_id = ? AND u_id = ?';
         buttonVal = 0;
+    } else {
+        sql1 = 'INSERT INTO p_like (p_id, u_id) VALUES (?, ?)';
+        buttonVal = 1;
     }
-    conn.conn.query(sql1, [p_id, req.session.u_id], function (err, action, fields) {
+    conn.conn.query(sql1, [p_id, req.session.id2], function (err, action, fields) {
         if (err) {
             console.log(err);
         } else {
@@ -245,32 +245,33 @@ exports.likesComment = function (req, res) {
 exports.warningPenobrol = function (req, res) {
     var check_sql = '';
     var warn_sql = '';
-    switch(req.body.warnType){
+    console.log(req.body.warnedItem);
+    switch(req.body.warnedItem){
         case 'p':
-            check_sql = 'select u_id, p_id from p_warning where u_id = (select id from users where u_id = ?) AND p_id = ?';
-            warn_sql = 'insert into p_warning(u_id, p_id) values((select id from users where u_id = ?), ?)';
+            check_sql = 'select u_id, p_id from p_warning where u_id = ? AND p_id = ?';
+            warn_sql = 'insert into p_warning(u_id, p_id) values(?, ?)';
             break;
         case 'pc':
-            check_sql = 'select u_id, pc_id from pc_warning where u_id = (select id from users where u_id = ?) AND pc_id = ?';
-            warn_sql = 'insert into pc_warning(u_id, pc_id) values((select id from users where u_id = ?), ?)';
+            check_sql = 'select u_id, pc_id from pc_warning where u_id = ? AND pc_id = ?';
+            warn_sql = 'insert into pc_warning(u_id, pc_id) values(?, ?)';
             break;
         case 'pcc':
-            check_sql = 'select u_id, pcc_id from pcc_warning where u_id = (select id from users where u_id = ?) AND pcc_id = ?';
-            warn_sql = 'insert into pcc_warning(u_id, pcc_id) values((select id from users where u_id = ?), ?)';
+            check_sql = 'select u_id, pcc_id from pcc_warning where u_id = ? AND pcc_id = ?';
+            warn_sql = 'insert into pcc_warning(u_id, pcc_id) values(?, ?)';
             break;
     }
-    conn.conn.query(check_sql, [req.session.u_id, req.body.warnId], function (err, checking, fields) {
+    conn.conn.query(check_sql, [req.session.id2, req.body.warnedId], function (err, checking, fields) {
         if (err) {
             console.log(err);
         } else {
             if (checking.length) {
-                res.json({"result": "alreadywarned"});
+                res.json({"result": 0});
             } else {
-                conn.conn.query(warn_sql, [req.session.u_id, req.body.warnId], function (err, warned, fields) {
+                conn.conn.query(warn_sql, [req.session.id2, req.body.warnedId], function (err, warned, fields) {
                     if (err) {
                         console.log(err);
                     } else {
-                        res.json({"result": "warned"});
+                        res.json({"result": 1});
                     }
                 });
 

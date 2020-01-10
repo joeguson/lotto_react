@@ -30,7 +30,6 @@ function makeRequest(url, data) {
         };
     });
 }
-//////////////////////Button//////////////////////
 
 //////////////////////Penobrol//////////////////////
 function pLike(penobrol) {
@@ -56,10 +55,10 @@ function pLike(penobrol) {
         penobrol.value = data.p_id+'/'+data.pc_id+'/'+ajaxResult.button
         plikeNum.innerHTML = ajaxResult.p_like
         if(ajaxResult.button == 1){
-            penobrol.childNodes[0].src = "./icons/cap.png";
+            penobrol.childNodes[0].src = "./icons/nocap.svg";
         }
         else{
-            penobrol.childNodes[0].src = "./icons/nocap.svg";
+            penobrol.childNodes[0].src = "./icons/cap.png";
         }
     }
 }
@@ -84,11 +83,11 @@ function pcLike(comment) {
         ajaxResult = JSON.parse(ajaxResult);
         comment.value = data.p_id+'/'+data.pc_id+'/'+ajaxResult.button
         pclikeNum.innerHTML = ajaxResult.pc_like
-        if(ajaxResult.button == '0'){
-            comment.childNodes[0].src = "./icons/cap.png";
+        if(ajaxResult.button == 1){
+            comment.childNodes[0].src = "./icons/nocap.svg";
         }
         else{
-            comment.childNodes[0].src = "./icons/nocap.svg";
+            comment.childNodes[0].src = "./icons/cap.png";
         }
     }
 }
@@ -114,11 +113,11 @@ function tLike(tandya){
         ajaxResult = JSON.parse(ajaxResult);
         tandya.value = data.t_id+'/'+data.ta_id+'/'+ajaxResult.button
         tlikeNum.innerHTML = ajaxResult.t_like
-        if(ajaxResult.button == '0'){
-            tandya.childNodes[0].src = "./icons/cap.png";
+        if(ajaxResult.button == 1){
+            tandya.childNodes[0].src = "./icons/nocap.svg";
         }
         else{
-            tandya.childNodes[0].src = "./icons/nocap.svg";
+            tandya.childNodes[0].src = "./icons/cap.png";
         }
     }
 }
@@ -143,11 +142,11 @@ function taLike(answer){
         ajaxResult = JSON.parse(ajaxResult);
         answer.value = data.t_id+'/'+data.ta_id+'/'+ajaxResult.button
         talikeNum.innerHTML = ajaxResult.ta_like
-        if(ajaxResult.button == '0'){
-            answer.childNodes[0].src = "./icons/cap.png";
+        if(ajaxResult.button == 1){
+            answer.childNodes[0].src = "./icons/nocap.svg";
         }
         else{
-            answer.childNodes[0].src = "./icons/nocap.svg";
+            answer.childNodes[0].src = "./icons/cap.png";
         }
     }
 }

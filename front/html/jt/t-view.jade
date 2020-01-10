@@ -5,7 +5,10 @@ block css
     link(rel="stylesheet" href="../css/tandya_view.css" type="text/css")
     link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
     script(type="text/javascript" src="/js/jsForAllJade.js")
-
+    script(type="text/javascript" src="/js/likeArticle.js")
+    script(type="text/javascript" src="/js/warnArticle.js")
+    script(type="text/javascript" src="/js/deleteArticle.js")
+    
 block nav
     include ./tNavUl.jade
 
@@ -19,7 +22,7 @@ block main
     .tcontent-div
         if u_id
             p(class= "warn")
-                button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningAjax(this);") !
+                button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningArticle(this);") !
         div(class="content")
             iframe(id="content" class="content" style="border: none;")
             script.
@@ -55,7 +58,9 @@ block main
                 -var hashtagfinal = topic.hashtags.map(e => `#${e.hash}`).join(" ");
                 a #{hashtagfinal}
         p #{date_result}
-            if u_id === topic.u_id
+        -console.log(id2)
+        -console.log(topic.author)
+            if id2 == topic.author
                 a(href='/tedit/' + topic.id class='edit') Edit
     if u_id
         form(action='tandya/' + topic.id method='post' class='answerForm')
@@ -80,7 +85,7 @@ block main
                                     span.answerButton
                                         +likeButton2('ta', a.likes, id2, a.id)
                                         span.dummy
-                                        button(class="taWarnButton" type="submit" value='t/ta/'+a.id onclick="warningAjax(this);") !
+                                        button(class="taWarnButton" type="submit" value='t/ta/'+a.id onclick="warningArticle(this);") !
                             if u_id
                                 .acommentForm
                                     textarea(name='acomment' class="tacInput")
@@ -93,6 +98,6 @@ block main
                                     - var date_result3 = 'by : ' + acs.u_id + ' / '+acs.date
                                     dd.tacomment-dd #{date_result3}
                                         if u_id
-                                            button(class="tacWarnButton" type="submit" value='t/tac/'+acs.id onclick="warningAjax(this);")
+                                            button(class="tacWarnButton" type="submit" value='t/tac/'+acs.id onclick="warningArticle(this);")
 
     script(type="text/javascript" src="/js/tlikes.js")

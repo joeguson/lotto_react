@@ -86,8 +86,8 @@ exports.welcome = function(req, res){
     };
 
     var sql1 = 'SELECT * FROM users WHERE u_id= ?';
-    var sql2 = 'SELECT * from penobrol WHERE author = ?';
-    var sql3 = 'SELECT * from tandya WHERE author = ?';
+    var sql2 = 'SELECT * from penobrol WHERE author = ?  ORDER BY date DESC';
+    var sql3 = 'SELECT * from tandya  WHERE author = ? ORDER BY date DESC';
     var sql4 = 'select count(p_id) as count from p_com where p_id = ?';
     var sql5 = 'select count(t_id) as count from t_ans where t_id = ?';
     var sql6 = 'SELECT * FROM penobrol_hashtag where p_id = ?';
