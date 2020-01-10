@@ -51,3 +51,29 @@ function acommentSendAjax(acomment){
         console.log('double');
     }
 }
+var datemaker = function(date) {
+    var tempdate = new Date(date);
+    var nowdate = new Date();
+    var year = tempdate.getFullYear();
+    var year = tempdate.getFullYear();
+    var month = tempdate.getMonth();
+    var day = tempdate.getDate();
+    var diff = nowdate - tempdate;
+    if (diff > 864000000) {
+        return month + '-' + day;
+    } else {
+        if (diff > 86400000) {
+            return parseInt(diff / 86400000) + ' days ago';
+        } else {
+            if (diff > 3600000) {
+                return parseInt(diff / 3600000) + ' h ago';
+            } else {
+                if (diff > 60000) {
+                    return parseInt(diff / 60000) + ' min ago';
+                } else {
+                    return parseInt(diff / 1000) + ' sec ago';
+                }
+            }
+        }
+    }
+};

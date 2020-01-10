@@ -35,15 +35,14 @@ function makeRequest(url, data) {
 //////////////////////Penobrol//////////////////////
 function deletePenobrol() {
     var p_id = location.pathname.split('/')[2];
+    var url = '/penobroldelete/' + p_id;
     var original = {
         'deleteId': p_id
     };
-    var url = '/penobroldelete/' + p_id;
-    original = JSON.stringify(original);
     if (confirm("Are you sure to delete this content?")) {
         if(deleteP){
             deleteP = !deleteP;
-            deletePen(url, data);
+            deletePen(url, original);
             setTimeout(function(){
                 deleteP = true;
             },2000);
@@ -51,10 +50,9 @@ function deletePenobrol() {
         async function deletePen(url, data) {
             var ajaxResult = await makeRequest(url, data);
             ajaxResult = JSON.parse(ajaxResult);
-            var result = JSON.parse(xhr.responseText);
-            if (result.result == "deleted") {
+            if (ajaxResult.result == "deleted") {
                 alert('deleted');
-                window.location.replace("http://localhost:3000/penobrol/");
+                window.location.replace(location.origin + "/penobrol/");
             }
         }
     }
@@ -68,11 +66,10 @@ function postDeletePcomment(target) {
         'deleteId': pc_id,
         'penobrolId': p_id
     };
-    original = JSON.stringify(original);
     if (confirm("Are you sure to delete this content?")) {
         if(deletePc){
             deletePc = !deletePc;
-            deletePcom(url, data);
+            deletePcom(url, original);
             setTimeout(function(){
                 deletePc = true;
             },2000);
@@ -80,10 +77,9 @@ function postDeletePcomment(target) {
         async function deletePcom(url, data) {
             var ajaxResult = await makeRequest(url, data);
             ajaxResult = JSON.parse(ajaxResult);
-            var result = JSON.parse(xhr.responseText);
-            if (result.result == "deleted") {
+            if (ajaxResult.result == "deleted") {
                 alert('deleted');
-                window.location.replace("http://localhost:3000/penobrol/" + p_id);
+                window.location.replace(location.origin + "/penobrol/" + p_id);
             }
         }
 
@@ -91,8 +87,8 @@ function postDeletePcomment(target) {
 }
 
 function postDeletePccomment(target) {
+    console.log(location);
     var p_id = location.pathname.split('/')[2];
-    console.log(target.value);
     var pcc_id = target.getAttribute('value');
     var url = '/pccommentdelete/' + pcc_id;
     var original = {
@@ -112,9 +108,88 @@ function postDeletePccomment(target) {
             ajaxResult = JSON.parse(ajaxResult);
             if (ajaxResult.result == "deleted") {
                 alert('deleted');
-                window.location.replace("http://localhost:3000/penobrol/" + p_id);
+                window.location.replace(location.origin + "/penobrol/" + p_id);
             }
         }
     }
 }
 //////////////////////Tandya//////////////////////
+function deleteTandya() {
+    var t_id = location.pathname.split('/')[2];
+    var url = '/tandyadelete/' + t_id;
+    var original = {
+        'deleteId': t_id
+    };
+    if (confirm("Are you sure to delete this content?")) {
+        if(deleteT){
+            deleteT = !deleteT;
+            deleteTan(url, original);
+            setTimeout(function(){
+                deleteT = true;
+            },2000);
+        }
+        async function deleteTan(url, data) {
+            var ajaxResult = await makeRequest(url, data);
+            ajaxResult = JSON.parse(ajaxResult);
+            if (ajaxResult.result == "deleted") {
+                alert('deleted');
+                window.location.replace(location.origin + "/tandya");
+            }
+        }
+    }
+}
+
+function postDeleteTanswer(target) {
+    var t_id = location.pathname.split('/')[2];
+    var ta_id = target.getAttribute('value');
+    var url = '/tanswerdelete/' + ta_id;
+    var original = {
+        'deleteId': ta_id,
+        'tandyaId': t_id
+    };
+    if (confirm("Are you sure to delete this content?")) {
+        if(deleteTa){
+            deleteTa = !deleteTa;
+            deleteTans(url, original);
+            setTimeout(function(){
+                deleteTa = true;
+            },2000);
+        }
+        async function deleteTans(url, data) {
+            var ajaxResult = await makeRequest(url, data);
+            ajaxResult = JSON.parse(ajaxResult);
+            if (ajaxResult.result == "deleted") {
+                alert('deleted');
+                window.location.replace(location.origin + "/tandya/" + t_id);
+            }
+        }
+
+    }
+}
+
+function postDeleteTacomment(target) {
+    var t_id = location.pathname.split('/')[2];
+    var tac_id = target.getAttribute('value');
+    var url = '/tacommentdelete/' + tac_id;
+    var original = {
+        'deleteId': tac_id,
+        'tandyaId': t_id
+    };
+    if (confirm("Are you sure to delete this content?")) {
+        if(deleteTac){
+            deleteTac = !deleteTac;
+            deleteTacom(url, original);
+            setTimeout(function(){
+                deleteTac = true;
+            },2000);
+        }
+        async function deleteTacom(url, data) {
+            var ajaxResult = await makeRequest(url, data);
+            ajaxResult = JSON.parse(ajaxResult);
+            if (ajaxResult.result == "deleted") {
+                alert('deleted');
+                window.location.replace(location.origin + "/tandya/" + t_id);
+            }
+        }
+    }
+}

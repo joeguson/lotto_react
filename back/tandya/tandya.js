@@ -398,3 +398,70 @@ exports.postEditTanswer = function (req, res) {
         }
     });
 };
+exports.postDeleteTandya = function(req, res){
+  var deleteId = req.body.deleteId;
+  var checkAuthor = 'select t.author, u.u_id from tandya t inner join users u on t.author = u.id where t.id = ?';
+  var deleteQuery = 'Delete from tandya where id = ?';
+  conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
+    if(err){console.log(err);}
+    else{
+      if(getAuthor[0].u_id == req.session.u_id){
+        conn.conn.query(deleteQuery, deleteId, function(err, deleteT, fields){
+          if(err){console.log(err);}
+          else{
+            console.log(deleteT);
+            res.json({"result":"deleted"});
+          }
+        });
+      }
+      else{
+        res.redirect('/tandya');
+      }
+    }
+  });
+}
+
+exports.postDeleteTanswer = function(req, res){
+  var deleteId = req.body.deleteId;
+  var t_id = req.body.tandyaId
+  var checkAuthor = 'select t.author, u.u_id from t_ans t inner join users u on t.author = u.id where t.id = ?';
+  var deleteQuery = 'Delete from t_ans where id = ?';
+  conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
+    if(err){console.log(err);}
+    else{
+      if(getAuthor[0].u_id == req.session.u_id){
+        conn.conn.query(deleteQuery, deleteId, function(err, deleteT, fields){
+          if(err){console.log(err);}
+          else{
+            res.json({"result":"deleted"});
+          }
+        });
+      }
+      else{
+        res.redirect('/tandya/'+t_id);
+      }
+    }
+  });
+}
+exports.postDeleteTacomment = function(req, res){
+  var deleteId = req.body.deleteId;
+  var t_id = req.body.tandyaId
+  var checkAuthor = 'select t.author, u.u_id from ta_com t inner join users u on t.author = u.id where t.id = ?';
+  var deleteQuery = 'Delete from ta_com where id = ?';
+  conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
+    if(err){console.log(err);}
+    else{
+      if(getAuthor[0].u_id == req.session.u_id){
+        conn.conn.query(deleteQuery, deleteId, function(err, deleteT, fields){
+          if(err){console.log(err);}
+          else{
+            res.json({"result":"deleted"});
+          }
+        });
+      }
+      else{
+        res.redirect('/tandya/'+t_id);
+      }
+    }
+  });
+}

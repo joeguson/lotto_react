@@ -430,7 +430,6 @@ exports.postDeletePenobrol = function(req, res){
 
 exports.postDeletePcomment = function(req, res){
   var deleteId = req.body.deleteId;
-  console.log(req.body);
   var p_id = req.body.penobrolId
   var checkAuthor = 'select p.author, u.u_id from p_com p inner join users u on p.author = u.id where p.id = ?';
   var deleteQuery = 'Delete from p_com where id = ?';
@@ -452,8 +451,6 @@ exports.postDeletePcomment = function(req, res){
   });
 }
 exports.postDeletePccomment = function(req, res){
-  console.log('in delete');
-  console.log(req.body);
   var deleteId = req.body.deleteId;
   var p_id = req.body.penobrolId
   var checkAuthor = 'select p.author, u.u_id from pc_com p inner join users u on p.author = u.id where p.id = ?';

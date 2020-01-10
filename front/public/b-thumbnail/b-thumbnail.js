@@ -75,7 +75,7 @@ class BeritamusThumbnail extends HTMLElement {
         image.className = "articleImage"
         if(this.src.img) {
             this.img = document.createElement("img");
-            this.img.src = this.src.img;
+            this.img.src = this.src.img.src;
             image.appendChild(this.img);
         }
         return image;

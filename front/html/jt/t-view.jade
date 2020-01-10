@@ -58,10 +58,11 @@ block main
                 -var hashtagfinal = topic.hashtags.map(e => `#${e.hash}`).join(" ");
                 a #{hashtagfinal}
         p #{date_result}
-        -console.log(id2)
-        -console.log(topic.author)
             if id2 == topic.author
                 a(href='/tedit/' + topic.id class='edit') Edit
+                button(value=topic.id onclick ='deleteTandya(this)' class="deleteButton")
+                    img(src="icons/trash.svg" class="trashImage")
+            
     if u_id
         form(action='tandya/' + topic.id method='post' class='answerForm')
             textarea(name='answer' id="answer" class="taInput")
@@ -74,8 +75,10 @@ block main
                         dl.tanswer-dl(id='ta/' + topic.id + '/' + a.id)
                             - var answerStart = '@'+ topic.u_id
                             .tanswer-start #{answerStart}
-                                if u_id === a.author
+                                if id2 === a.author
                                     a(href='/taedit/' + topic.id + '/' + a.id) Edit
+                                    button(value=a.id onclick ='postDeleteTanswer(this)' class="deleteButton")
+                                        img(src="icons/trash.svg" class="trashImage")
                             dt.tanswer-dt
                                 pre(class="tanswer-dt") "#{a.answer}"
                             - var date_result2 = 'by '+ a.u_id + ' / '+a.date+' / suka : '
@@ -99,5 +102,8 @@ block main
                                     dd.tacomment-dd #{date_result3}
                                         if u_id
                                             button(class="tacWarnButton" type="submit" value='t/tac/'+acs.id onclick="warningArticle(this);")
+                                        if id2 == acs.author
+                                            button(value=acs.id onclick ='postDeleteTacomment(this)' class="deleteButton")
+                                                img(src="icons/trash.svg" class="trashImage")
 
     script(type="text/javascript" src="/js/tlikes.js")

@@ -18,7 +18,7 @@ block main
     .title
         dl.pview-dl
             dt.pview-dt= topic.title
-                if u_id === topic.u_id
+                if id2 === topic.author
                     button(onclick ='deletePenobrol()' class="deleteButton")
                         img(src="icons/trash.svg" class="trashImage")
                     a(href='/pedit/'+topic.id class='edit') edit
@@ -70,9 +70,9 @@ block main
                             - var commentStart = '@'+ topic.u_id
                             - var date_result2 = 'by '+c.u_id+' / '+c.date+' / like : '
                             .pcomment-start #{commentStart}
-                                if u_id === c.u_id
+                                if id2 === c.author
                                     a(href='/pcedit/' + topic.id + '/' + c.id) Edit
-                                    button(value=c.id onclick ='postDeletePcomment(this)')
+                                    button(value=c.id onclick ='postDeletePcomment(this)' class="deleteButton")
                                         img(src="icons/trash.svg" class="trashImage")
                             dt.pcomment-dt
                                 pre(class="pcomment-dt") "#{c.content}"

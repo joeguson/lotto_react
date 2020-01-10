@@ -111,6 +111,9 @@ app.get(['/tedit/:tandya_no'], tandya.getEditTandya);
 app.post(['/tedit/:tandya_no'], tandya.postEditTandya);
 app.get(['/taedit/:tandya_no/:tanswer_no'], tandya.getEditTanswer);
 app.post(['/taedit/:tandya_no/:tanswer_no'], tandya.postEditTanswer);
+app.post('/tandyadelete/:id', tandya.postDeleteTandya);
+app.post('/tanswerdelete/:id', tandya.postDeleteTanswer);
+app.post('/tacommentdelete/:id', tandya.postDeleteTacomment);
 
 /************FOR PENOBROL************/
 app.get('/penobrol/add', penobrol.getAddPenobrol);
