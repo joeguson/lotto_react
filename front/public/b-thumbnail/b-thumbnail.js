@@ -4,6 +4,7 @@ class BeritamusThumbnail extends HTMLElement {
         this.src = null;
         this.dl = null;
         this.img = null;
+        this.div = null;
     }
 
     connectedCallback() {
@@ -17,7 +18,72 @@ class BeritamusThumbnail extends HTMLElement {
             //     console.log(this.dl.offsetHeight);
             // };
             this.img.onload = () => {
-                this.img.style.height = this.dl.offsetHeight + 'px';
+                var src = this.src;
+                var img = this.img;
+                var div = this.div;
+                var diff = 0;
+                if(img.height <= img.width){
+                    if(src.img.rotate == 'rotate090' || src.img.rotate =='rotate270'){
+                        img.style.width = this.dl.offsetHeight + 'px';
+                        if(img.style.marginTop === '0px' || img.style.marginTop === ''){
+                            diff = Math.abs(img.width - img.height)/2;
+                            img.style.marginTop = diff+"px";
+                            img.style.marginBottom = diff+"px";
+                        }
+                        else{
+                            img.style.marginTop = '0px';
+                            img.style.marginBottom = '0px';
+                        }
+                        img.className = src.img.rotate;
+                        div.style.height = this.dl.offsetHeight + 'px';
+                    }
+                    else{
+                        img.style.width = div.offsetWidth + 'px';
+                        img.className = this.src.img.rotate;
+                    }
+                }
+                else{
+                    if(src.img.rotate == 'rotate090' || src.img.rotate =='rotate270'){
+                        img.style.height = this.dl.offsetHeight + 'px';
+                        img.className = src.img.rotate;
+                        div.style.height = this.dl.offsetHeight + 'px';
+                    }
+                    else{
+                        img.style.height = this.dl.offsetHeight + 'px';
+                        img.className = this.src.img.rotate;
+                    }
+
+                }
+
+
+                // if(img.height <= img.width){
+                //     if(img.className == 'rotate090' || img.className =='rotate270'){ //가로가 세로가 됨. 가로를 높이에 맞춤
+                //         div.style.height = this.dl.offsetHeight + 'px';
+                //         img.style.width = this.dl.offsetHeight + 'px';
+                //     }
+                //     else{//가로는 가로. 가로를 길이에 맞춤
+                //         img.style.width = div.offsetWidth + 'px';
+                //     }
+                // }
+                // else{
+                //     if(img.className == 'rotate090' || img.className =='rotate270'){//세로가 가로가 됨. 세로를 가로에 맞춤
+                //         div.style.height = this.dl.offsetHeight + 'px';
+                //         img.style.height = div.offsetWidth + 'px';
+                        // if(img.style.marginTop === '0px' || img.style.marginTop === ''){
+                        //     diff = Math.abs(img.width - img.height);
+                        //     img.style.marginTop = diff+"px";
+                        //     img.style.marginBottom = diff+"px";
+                        // }
+                        // else{
+                        //     img.style.marginTop = '0px';
+                        //     img.style.marginBottom = '0px';
+                        // }
+                //     }
+                //     else{//세로 맞추기
+                //         img.style.height = this.dl.offsetHeight + 'px';
+                //     }
+                //
+                // }
             };
         }
         // if(this.img){
@@ -71,14 +137,15 @@ class BeritamusThumbnail extends HTMLElement {
     }
 
     __buildImage() {
-        const image = document.createElement("div");
-        image.className = "articleImage"
+        this.div = document.createElement("div");
+        this.div.className = "articleImage"
         if(this.src.img) {
             this.img = document.createElement("img");
             this.img.src = this.src.img.src;
-            image.appendChild(this.img);
+            // this.img.className = this.src.img.rotate;
+            this.div.appendChild(this.img);
         }
-        return image;
+        return this.div;
     }
 }
 

@@ -90,7 +90,6 @@ li .articleImgDiv {
 .articleImage {
   float: right;
   width: 20%;
-  max-height: 77px;
   text-align: center;
   background-size: contain;
 }
