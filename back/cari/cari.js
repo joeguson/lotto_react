@@ -17,34 +17,52 @@ function shuffle(list) {
 exports.getSearch = function (req, res) {
     //search string 정리의 시간
     var rawCariString = req.query.search.split(' ');
-    console.log(rawCariString);
-    var getWords = jsForBack.extractWords(rawCariString);
-    var getHashes = jsForBack.extractHash(rawCariString);
-    var hsresult = [];
-    var hsforpt = [];
-    var cari_check = searchStringLengthChecker(cari);
-    var hashtagonly = [];
-    var hashtagonly2 = '';
-    var stringonly = [];
-    var stringonly2 = '';
+    var wordOnly = jsForBack.getWordOnly(rawCariString);
+    var hashOnly = jsForBack.getHashOnly(rawCariString);
     var penobrolsql = 'SELECT * FROM penobrol AS result WHERE MATCH(title, content) AGAINST(?)';
     var tandyasql = 'SELECT * FROM tandya AS result WHERE MATCH(question, content) AGAINST(?)';
+    var phashtagsql = 'select * from penobrol where id in (select distinct p_id from penobrol_hashtag where hash like ?)';
+    var thashtagsql = 'select * from tandya where id in (select distinct t_id from tandya_hashtag where hash like ?)';
+    var getHashtagP = 'select * from penobrol_hashtag where p_id = ?';
+    var getHashtagT = 'select * from tandya_hashtag where t_id = ?';
     var usersql = 'select * from users AS result WHERE MATCH(u_id) AGAINST(?)';
-    var hashtagsql = '';
-    var phtsql = '';
-    var thtsql = '';
-    for (var q = 0; q < cari_check.length; q++) {
-        if (cari_check[q].indexOf('#') != -1) {
-            hashtagonly.push(cari_check[q].substring(1));
-            hashtagonly2 = hashtagonly2 + cari_check[q].substring(1) + ' ';
-        } else {
-            stringonly.push(cari_check[q]);
-            stringonly2 = stringonly2 + cari_check[q] + ' ';
+    async function getSearchResult() {
+        var pResults = await dbcon.twoArg(penobrolsql, wordOnly);
+        var tResults = await dbcon.twoArg(tandyasql, wordOnly);
+        var phResults = [];
+        var thResults = [];
+        for(var h of hashOnly){
+            phResults.push(await dbcon.twoArg(phashtagsql, '%'+h+'%'));
+            thResults.push(await dbcon.twoArg(thashtagsql, '%'+h+'%'));
         }
-    }
-    hashtagonly2 = hashtagonly2.trim();
-    stringonly2 = stringonly2.trim();
+         
 
+        for (const p of pResults)
+            p.hashtags = (await dbcon.twoArg(getHashtagP, p.id)).map(parser.parseHashtagP);
+        pResults = pResults.map(parser.parseFrontPenobrol);
+        for (const t of tResults)
+            t.hashtags = (await dbcon.twoArg(getHashtagT, t.id)).map(parser.parseHashtagT);
+        tResults = tResults.map(parser.parseFrontTandya);
+
+        for (const ph of phResults){
+            console.log(ph);
+            ph.hashtags = (await dbcon.twoArg(getHashtagP, ph.id)).map(parser.parseHashtagP);
+        }
+        phResults = phResults.map(parser.parseFrontPenobrol);
+        for (const th of thResults)
+            th.hashtags = (await dbcon.twoArg(getHashtagT, th.id)).map(parser.parseHashtagT);
+        thResults = thResults.map(parser.parseFrontTandya);
+
+        var hResult = phResults.concat(thResults);
+        res.render('./jc/cari-result', {
+            penobrol: pResults,
+            tandya: tResults,
+            hashtag: hResult,
+            u_id: req.session.u_id,
+            id2 : req.session.id2
+        });
+        }
+    getSearchResult();
 };
 
 

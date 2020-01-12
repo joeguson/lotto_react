@@ -1,9 +1,12 @@
 extends ../layout.jade
 
 block css
-  link(rel='stylesheet', href='/css/cari.css' type="text/css")
-  script(type="text/javascript" src="/js/cari.js")
-
+    link(rel='stylesheet', href='/css/cari.css' type="text/css")
+    link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
+    link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
+    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
+    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
+    
 block nav
   ul
     li
@@ -17,67 +20,18 @@ block nav
     br.clear
 
 block submain
-  //.ad Advertising
-  .search
-    form(action='/cari/search' method='get')
+    //.ad Advertising
+    .search
+        form(action='/cari/search' method='get')
             input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
-            input(type='submit' class="submit" value="search")
+            button(type='submit' class="submit" value="search")
+                img(src="icons/cari3.png" class="cariImage")
 
 block main
-  if(penobrols.length > 0)
-      ul(class="ul-result")
-          .div-result Penobrol
-          each p in penobrols
-              li
-                  -var plink = 'penobrol/'+p.id
-                  dl(onclick ='location.href="#{plink}"')
-                      dt
-                          a(href='/penobrol/'+p.id)= p.title
-                      dd.ddcontent= p.content
-                      - var date_result = datemaker(p.date) + ' / ' + p.p_view + ' views' + ' / '+p.com + ' comments';
-                      -var hashtagfind = phashtagfinder(p.id, pthash);
-                      -var hashtagfinal = hashtagmaker(hashtagfind, p.hashtagcount);
-                      dd #{hashtagfinal}
-                      dd #{date_result}
-  if(tandyas.length > 0)
-      ul(class="ul-result")
-          .div-result Tandya
-          each t in tandyas
-              li
-                  -var tlink = 'tandya/'+t.id
-                  dl(onclick ='location.href="#{tlink}"')
-                      dt
-                          a(href='/tandya/'+t.id)= t.question
-                      dd.ddcontent= t.content
-                      - var date_result = datemaker(t.date) + ' / ' + t.t_view + ' views'+ ' / '+t.answer + ' answers';
-                      -var hashtagfind = thashtagfinder(t.id, pthash); 
-                      -var hashtagfinal = hashtagmaker(hashtagfind, t.hashtagcount);
-                      dd #{hashtagfinal}
-                      dd #{date_result}
-  if(hashtags.length > 0)
-      ul(class="ul-result")
-          .div-result Hashtag
-          each h in hashtags
-              li
-                  if(h.identifier =='p')
-                      -var plink = 'penobrol/'+h.id
-                      dl(onclick ='location.href="#{plink}"')
-                          dt
-                              a(href='/penobrol/'+h.id)= h.title
-                          dd.ddcontent= h.content
-                          - var date_result = datemaker(h.date) + ' / ' + h.p_view + ' views' + ' / '+h.com + ' comments';
-                          -var hashtagfind = phashtagfinder(h.id, pthash); 
-                          -var hashtagfinal = hashtagmaker(hashtagfind, h.hashtagcount);
-                          dd #{hashtagfinal}
-                          dd #{date_result}
-                  else
-                      -var tlink = 'tandya/'+h.id
-                      dl(onclick ='location.href="#{tlink}"')
-                          dt
-                              a(href='/tandya/'+h.id)= h.question
-                          dd.ddcontent= h.content
-                          - var date_result = datemaker(h.date) + ' / ' + h.t_view + ' views'+ ' / '+h.answer + ' answers';
-                          -var hashtagfind = thashtagfinder(h.id, pthash); 
-                          -var hashtagfinal = hashtagmaker(hashtagfind, h.hashtagcount);
-                          dd #{hashtagfinal}
-                          dd #{date_result}
+    ul.thumbnailUl(id='uls')
+        for item in penobrol
+            b-thumbnail(jsonSrc="#{JSON.stringify(item)}")
+        for items in tandya
+            b-thumbnail(jsonSrc="#{JSON.stringify(items)}")
+        for itemss in hashtag
+            b-thumbnail(jsonSrc="#{JSON.stringify(itemss)}")

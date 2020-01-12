@@ -117,3 +117,22 @@ exports.generateFilename = function() {
         Math.floor(Math.random() * 100000).toString();
     return str;
 }
+
+exports.getWordOnly = function(sentence){
+    var temp = '';
+    for (const ele of sentence) {
+        if(ele.indexOf('#') < 0){
+            temp += ele+' ';
+        }
+    }
+    return temp;
+}
+exports.getHashOnly = function(sentence){
+    var temp = [];
+    for (const ele of sentence) {
+        if(ele.indexOf('#') >= 0){
+            temp.push(ele.slice(1));
+        }
+    }
+    return temp;
+}
