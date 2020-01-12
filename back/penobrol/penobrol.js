@@ -292,11 +292,10 @@ exports.getEditPenobrol = function (req, res) {
                 if (err) {
                     console.log(err);
                 } else {
-                    var penobrol = parser.parsePenobrol(edit);
+                    var penobrol = parser.parsePenobrol(edit[0]);
                     penobrol.hashtags = hashtags.map(parser.parseHashtagP);
-                    console.log(penobrol);
-                    if(req.session.u_id == penobrol.u_id){
-                        res.render('./jp/p-edit', {u_id: 'y', edit_content: edit[0], hashtags: hashtags});
+                    if(req.session.id2 == penobrol.author){
+                        res.render('./jp/p-edit', {u_id: 'y', edit_content: penobrol});
                     } else {
                         res.redirect('/penobrol/' + p_id);
                     }
