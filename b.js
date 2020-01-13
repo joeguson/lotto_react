@@ -191,10 +191,16 @@ app.post('/image', (req, res) => {
 });
 
 
+
 app.listen(db_config.port, '0.0.0.0', function(){
-  console.log('Connected, 80 port!');
+    console.log('Connected, 80 port!');
+});
+
+app.use(function(req, res){
+    console.log('hi2');
 });
 
 app.all('*', function(req, res){
-   res.redirect('cari');
+    console.log('hi');
+    res.redirect('cari');
 });

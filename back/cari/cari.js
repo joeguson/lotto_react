@@ -15,7 +15,6 @@ function shuffle(list) {
 }
 
 exports.getSearch = function (req, res) {
-    //search string 정리의 시간
     var rawCariString = req.query.search.split(' ');
     var wordOnly = jsForBack.getWordOnly(rawCariString);
     var hashOnly = jsForBack.getHashOnly(rawCariString);
