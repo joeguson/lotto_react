@@ -31,21 +31,18 @@ exports.getSearch = function (req, res) {
         var tResults = await dbcon.twoArg(tandyasql, wordOnly);
         var phResults = [];
         var thResults = [];
+        var hResultArr = [];
         for(var h of hashOnly){
-            phResults.push(await dbcon.twoArg(phashtagsql, '%'+h+'%'));
-            thResults.push(await dbcon.twoArg(thashtagsql, '%'+h+'%'));
+            phResults = (await dbcon.twoArg(phashtagsql, '%'+h+'%')).reduce((acc, cur) => acc.concat(cur), []);
+            thResults = (await dbcon.twoArg(thashtagsql, '%'+h+'%')).reduce((acc, cur) => acc.concat(cur), []);
         }
-         
-
         for (const p of pResults)
             p.hashtags = (await dbcon.twoArg(getHashtagP, p.id)).map(parser.parseHashtagP);
         pResults = pResults.map(parser.parseFrontPenobrol);
         for (const t of tResults)
             t.hashtags = (await dbcon.twoArg(getHashtagT, t.id)).map(parser.parseHashtagT);
         tResults = tResults.map(parser.parseFrontTandya);
-
         for (const ph of phResults){
-            console.log(ph);
             ph.hashtags = (await dbcon.twoArg(getHashtagP, ph.id)).map(parser.parseHashtagP);
         }
         phResults = phResults.map(parser.parseFrontPenobrol);
