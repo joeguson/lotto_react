@@ -10,8 +10,16 @@
         this.imageInput = null;
     }
 
+    // returns content as html tags
     value() {
         return this.editor.body.innerHTML;
+    }
+    
+    // returns content as plain-text
+    text() {
+        return this.value()
+            .replace(/(<br>|<div>|<\/div>)/g, "\n")  // replace new lines
+            .replace(/<[^<>]+>/g, "");  // remove html tags
     }
 
     connectedCallback() {
