@@ -11,6 +11,37 @@ exports.getFindMyIdPw =function(req, res){
     res.render('./ja/findMyIdPw');
 }
 
+exports.postFindMyIdPw =function(req, res){
+    console.log(req.body);
+    var userId = req.body.u_id;
+    var birthday = req.body.birthday;
+    var u_sex = req.body.gender;
+    var u_email = req.body.email;
+    var checkSql = '';
+    if(req.body.u_id){
+        //pw를 잃어버린 경우
+        checkSql = 'select * from users where u_id = ?';
+        conn.conn.query(checkSql, [u_id], function(err, check, fields){
+            if(err){console.log(err);}
+            else{
+                console.log(check);
+            }
+        });
+
+    }
+    else{
+        //id를 잃어버린 경우
+        checkSql = 'select * from users where email = ?';
+        conn.conn.query(checkSql, [u_email], function(err, check, fields){
+            if(err){console.log(err);}
+            else{
+                console.log(check);
+            }
+        });
+    }
+}
+
+
 exports.checkUserId = function(req, res){
     var sql = "";
     if(req.body.type == 'id'){
@@ -124,10 +155,6 @@ exports.welcome = function(req, res){
   else{
     res.render('./ja/aku');
   }
-};
-
-exports.hilang = function(req, res){
-    res.redirect('/aku');
 };
 
 exports.getDaftarAuth = function(req, res){

@@ -1,25 +1,27 @@
 extends ../layout.jade
 
 block css
-  link(rel='stylesheet', href='../css/user-add.css' type="text/css")
+    link(rel='stylesheet', href='../css/user-add.css' type="text/css")
 
 block nav
-  ul
-    li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/aku' style='color: #ffff97;') Aku
-    li: a(href='/cari') Cari
-    li: a(href='/penobrol') Penobrol
-    li: a(href='/tandya') Tandya
-    br.clear
+    ul
+        li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/aku' style='color: #ffff97;') Aku
+        li: a(href='/cari') Cari
+        li: a(href='/penobrol') Penobrol
+        li: a(href='/tandya') Tandya
+        br.clear
 
 block submain
   //.ad Advertising
   
 block main
+    .buttonDiv
+        button(id='id') Id
+        button(id="pw") Password
     article
-        form(action='/daftar' method='post' onsubmit='return checksubmit();')
-            p
-                input(type='text' id="u_id" name='u_id' placeholder='Your interesting ID' required)
-            .idchecker(id="idchecker")
+        form(action='/aku/findMyIdPw' method='post' onsubmit='return checksubmit();')
+            p(id='userIdP' style="visibility: hidden;")
+                input(type='text' id="u_id" name='u_id' placeholder='Your ID' required)
             p
                 input(type='date' name='birthday' value='2019-08-31' id='inputDate' required)
             p
@@ -29,7 +31,5 @@ block main
             p
                 input(type='text' name='email' id='email' placeholder='emailAdress@yourEmail.com' required)
             p
-                input(type='submit' value='Get my Verification Mail' id='submit')
-            script.
-                a(href='/cari') Back
-      script(type="text/javascript" src="register.js")
+                input(type='submit' value='Verify Me' id='submit')
+    script(type="text/javascript" src="../../js/forgot.js")

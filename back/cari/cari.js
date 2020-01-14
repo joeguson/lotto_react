@@ -96,34 +96,3 @@ exports.getCari = function (req, res) {
     }
     getRandomPandT();
 };
-
-// //    var todayDate = new Date();
-// //    var todayDay = todayDate.getDate();
-// //    if(parseInt(req.cookies.visitDate) !== todayDay){
-// //        todayCount++;
-// //    }
-// //    res.cookie('visitDate', todayDay, {maxAge: 86400000, httpOnly: true });
-// //    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-//
-// //    var sql3 = '';
-// //    var sql4 = '';
-// var newpsql = '';
-// var newtsql = '';
-//
-// var searchStringSql = '';
-// var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-// if (req.session.u_id) {
-//     searchStringSql = 'INSERT INTO search_string (u_id, search_string, ipAddress) VALUES (?, ?, INET_ATON(?))';
-//     conn.query(searchStringSql, [req.session.u_id, cari, ipAddress], function (err, searchStringResult, field) {
-//         if (err) {
-//             console.log(err);
-//         }
-//     });
-// } else {
-//     searchStringSql = 'INSERT INTO search_string (search_string, ipAddress) VALUES (?, INET_ATON(?))';
-//     conn.query(searchStringSql, [cari, ipAddress], function (err, searchStringResult, field) {
-//         if (err) {
-//             console.log(err);
-//         }
-//     });
-// }

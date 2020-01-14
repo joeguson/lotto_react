@@ -14,7 +14,7 @@
     value() {
         return this.editor.body.innerHTML;
     }
-    
+
     // returns content as plain-text
     text() {
         return this.value()

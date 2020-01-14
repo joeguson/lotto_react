@@ -81,16 +81,37 @@ exports.s3 = s3;
 exports.pool = pool;
 exports.sch = schedule;
 
+var todayTotal = 0;
+var todayCount = 0;
+app.use(function(req, res, next){
+    var tmp = new Date();
+    var todayDay = tmp.getDate()+1;
+    var nowH = tmp.getHours() * 60 * 60;
+    var nowM = tmp.getMinutes() * 60;
+    var nowS = tmp.getSeconds();
+    var cookieAge = (86400000-((nowH + nowM + nowS) * 1000));
+    if(req.cookies.visitCount){
+        todayTotal++;
+        var count = parseInt(req.cookies.visitCount) +1;
+        res.cookie('visitCount', count, {maxAge: cookieAge, httpOnly: true });
+    }else{
+        todayTotal++;
+        todayCount++;
+        res.cookie('visitCount', 0, {maxAge: cookieAge, httpOnly: true });
+    }
+    next();
+});
+
 /************FOR SYSTEM************/
 app.get('/chonggwalpage', backSystem.getChonggwalpage);
 app.post('/chonggwalpage', backSystem.postChonggwalpage);
 
 /************FOR AKU************/
 app.get('/aku/findMyIdPw', aku.getFindMyIdPw);
+app.post('/aku/findMyIdPw', aku.postFindMyIdPw);
 app.post('/aku/login', aku.login);
 app.get(['/aku'], aku.welcome);
 app.get('/aku/logout', aku.logout);
-app.get('/aku/hilang', aku.hilang);
 app.post('/aku/daftar', aku.postDaftar);
 app.get('/aku/daftar', aku.getDaftar);
 app.get('/aku/daftar/auth/', aku.getDaftarAuth);
@@ -168,39 +189,12 @@ app.post('/image', (req, res) => {
         console.log("data: ", data)
     })
     res.json({'filename': filename});
-    // var img = req.body.img;
-    // var data =img.replace(/^data:image\/\w+;base64,/, "");
-    // var buf = new Buffer(data, 'base64');
-    // var filename = jsForBack.generateFilename();
-    // if("jpeg"==img.split(";")[0].split("/")[1]){
-    //     filename += '.jpg';
-    // }
-    // if("gif"==img.split(";")[0].split("/")[1]){
-    //     filename += '.gif';
-    // }
-    // if("x-icon"==img.split(";")[0].split("/")[1]){
-    //     filename += '.ico';
-    // }
-    // if("png"==img.split(";")[0].split("/")[1]){
-    //     filename += '.png';
-    // }
-    // fs.writeFile('./images/' + filename, buf, (err) => {
-    //     if(err) console.log(err);
-    // });
-    // res.json({'filename': filename});
 });
-
-
 
 app.listen(db_config.port, '0.0.0.0', function(){
     console.log('Connected, 80 port!');
 });
 
-app.use(function(req, res){
-    console.log('hi2');
-});
-
 app.all('*', function(req, res){
-    console.log('hi');
     res.redirect('cari');
 });
