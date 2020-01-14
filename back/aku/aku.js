@@ -6,6 +6,19 @@ var dbcon = require('../../db/dbconnection');
 var parser = require('../../db/parser.js');
 var jsForBack = require('../../back/jsForBack.js');
 var db_config =require('../../config.json');
+var transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    type: 'OAuth2',
+    user: 'admin@beritamus.com',  // gmail 계정 아이디를 입력
+    serviceClient: key.client_id,
+    privateKey: key.private_key,
+    pass: 'GoBeritamus$$'          // gmail 계정의 비밀번호를 입력
+  }
+});
+
 
 exports.getFindMyIdPw =function(req, res){
     res.render('./ja/findMyIdPw');
@@ -20,25 +33,70 @@ exports.postFindMyIdPw =function(req, res){
     var checkSql = '';
     if(req.body.u_id){
         //pw를 잃어버린 경우
-        checkSql = 'select * from users where u_id = ?';
+        checkSql = `select u_id, date_format(u_bday,'%Y-%m-%d') as u_bday, sex, email from users where u_id = ?`;
         conn.conn.query(checkSql, [u_id], function(err, check, fields){
             if(err){console.log(err);}
             else{
-                console.log(check);
+                if(check[0].u_bday == birthday && check[0].sex == u_sex && check[0].email == u_email){
+                    var newPw = jsForBack.pwMaker();
+                    console.log(newPw);
+                    var newPwSql = "update users set u_pw = ? where u_id = ?";
+                    //이메일로 랜덤한 비밀번호 8자리로 등록후 비밀번호를 보내준다
+                    conn.conn.query(newPwSql, [newPw, u_id], function(err, givePw, fields){
+                        if(err){console.log(err);}
+                        else{
+                            var mailOptions = {
+                              from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
+                              to: check[0].email,                     // 수신 메일 주소
+                              subject: 'Your new password for beritamus.com',   // 제목
+                              html: '<p>This is your new password.</p>'+'<p>password: <span style="text-decoration: underline">'+newPw+'</span></p>'+'<p>You can change your password any time!</p>'
+                            };
+                        }
+                    });
+                }else{
+                    //이메일로 누군가 찾으려 시도하였지만 정보가 잘못 되었다 라고 전달
+                    var mailOptions = {
+                      from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
+                      to:  check[0].email,                     // 수신 메일 주소
+                      subject: 'Your new password for beritamus.com',   // 제목
+                      html: '<p>Attempts were made to find your password</p>'+'<p>However, some information did not match with yours</p>'+'<p>Please try again or ignore this email</p>'
+                    };
+                }
             }
         });
 
     }
     else{
         //id를 잃어버린 경우
-        checkSql = 'select * from users where email = ?';
+        checkSql = `select u_id, date_format(u_bday,'%Y-%m-%d') as u_bday, sex, email from users where email = ?`;
         conn.conn.query(checkSql, [u_email], function(err, check, fields){
             if(err){console.log(err);}
             else{
-                console.log(check);
+                if(check[0].u_bday == birthday && check[0].sex == u_sex){
+                    //이메일로 아이디 정보를 보내준다
+                    var mailOptions = {
+                      from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
+                      to: u_email,                     // 수신 메일 주소
+                      subject: 'Your id information for Beritamus',   // 제목
+                      html: '<p>Below is your id for beritamus.com</p>'+check[0].u_id
+                    };
+                }else{
+                    //이메일로 누군가 찾으려 시도하였지만 정보가 잘못 되었다 라고 전달
+                    var mailOptions = {
+                      from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
+                      to: u_email,                     // 수신 메일 주소
+                      subject: 'Your id information for Beritamus',   // 제목
+                      html: '<p>Attempts were made to find your user ID</p>'+'<p>However, some information did not match with yours</p>'+'<p>Please try again or ignore this email</p>'
+                    };
+                }
             }
         });
     }
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      }
+    });
 }
 
 
@@ -197,8 +255,6 @@ exports.postDaftar = function(req, res){
   var u_sex = req.body.gender;
   var u_email = req.body.email;
   var code = parseInt(jsForBack.codeMaker());
-  console.log(code);
-  console.log(typeof(code));
   var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
   var sql = 'INSERT INTO users (u_id, u_pw, u_bday, email, sex, verify) VALUES (?, ?, ?, ?, ?, ?)';
   conn.conn.query(sql2, [u_id], function(err, check, fields){
@@ -211,18 +267,6 @@ exports.postDaftar = function(req, res){
                 if(err){console.log(err);}
             });
         }
-    }
-  });
-  var transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-      type: 'OAuth2',
-      user: 'admin@beritamus.com',  // gmail 계정 아이디를 입력
-      serviceClient: key.client_id,
-      privateKey: key.private_key,
-      pass: 'GoBeritamus$$'          // gmail 계정의 비밀번호를 입력
     }
   });
   var mailOptions = {

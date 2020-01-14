@@ -13,13 +13,16 @@ const userSexGirl = document.getElementById('girl');
 const userEmail = document.getElementById('email');
 const idButton = document.getElementById('id');
 const pwButton = document.getElementById('pw');
+const idOrPw = document.getElementById('idOrPw');
 
 idButton.addEventListener('click', function(){
     userIdP.style.visibility= 'hidden';
+    idOrPw.setAttribute('value', 'id');
 });
 
 pwButton.addEventListener('click', function(){
     userIdP.style.visibility= 'visible';
+    idOrPw.setAttribute('value', 'pw');
 });
 
 userSexBoy.addEventListener('click', function(){
@@ -45,8 +48,8 @@ function confirmRegister(){
 }
 
 function checksubmit(){
-    if(userIdCheck.test(userId.value)){
-        if(mailAuth){
+    if(idOrPw.value == 'id'){
+        if(emailCheck.test(userEmail.value)){
             if(sex){
                 var confirmR = confirmRegister();
                 if(confirmR ===true){
@@ -54,7 +57,18 @@ function checksubmit(){
                 }else{return false;}
             }else{return false;}
         }else{return false;}
-    }else{return false;}
+    }else{
+        if(userIdCheck.test(userId.value)){
+            if(emailCheck.test(userEmail.value)){
+                if(sex){
+                    var confirmR = confirmRegister();
+                    if(confirmR ===true){
+                        return true;
+                    }else{return false;}
+                }else{return false;}
+            }else{return false;}
+        }else{return false;}
+    }
 }
 
 function appearCross(target){
