@@ -51,6 +51,13 @@ exports.postFindMyIdPw =function(req, res){
                         else{
                             mailOptions.subject = 'Your new password for beritamus.com';
                             mailOptions.html = '<p>This is your new password.</p>'+'<p>password: <span style="text-decoration: underline">'+newPw+'</span></p>'+'<p>You can change your password any time!</p>';
+                            transporter.sendMail(mailOptions, function(error, info){
+                                console.log(mailOptions);
+                                if (error) {
+                                    console.log(error);
+                                }
+                            });
+                            res.redirect('/aku');
                         }
                     });
                 }else{
@@ -286,12 +293,3 @@ exports.postDaftar = function(req, res){
 exports.getDaftar = function(req, res){
   res.render('./ja/user-add');
 };
-
-
-
-
-
-
-
-
-///////////////
