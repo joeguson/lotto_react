@@ -1,4 +1,4 @@
-body{margin:10px;box-sizing: border-box;}
+body{box-sizing: border-box; scroll-padding: 5px;}
 div{width:100%;}
 .rotate000{
     transform: rotate(0deg);

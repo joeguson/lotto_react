@@ -115,6 +115,10 @@ app.get('/aku/logout', aku.logout);
 app.post('/aku/daftar', aku.postDaftar);
 app.get('/aku/daftar', aku.getDaftar);
 app.get('/aku/daftar/auth/', aku.getDaftarAuth);
+app.get('/aku/changeUserInfo', aku.getChangeUserInfo);
+app.post('/aku/changeUserInfo', aku.postChangeUserInfo);
+app.get('/aku/changeUserInfoLogin', aku.getChangeUserInfoLogin);
+app.post('/aku/changeUserInfoLogin', aku.postChangeUserInfoLogin);
 app.post('/aku/register', aku.checkUserId);
 
 /************FOR CARI************/

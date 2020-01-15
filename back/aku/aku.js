@@ -24,8 +24,67 @@ exports.getFindMyIdPw =function(req, res){
     res.render('./ja/findMyIdPw');
 }
 
+exports.getChangeUserInfoLogin =function(req, res){
+    if(req.session.id2){
+        res.render('./ja/changeUserInfoLogin');
+    }else{
+        res.redirect('/aku')
+    }
+}
+
+exports.postChangeUserInfoLogin =function(req, res){
+    if(req.session.id2){
+        console.log(req.body);
+        var u_id = req.body.u_id;
+        var u_pw = req.body.u_pw;
+        var sql = 'SELECT * FROM users WHERE u_id = ?';
+        var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
+        var sql3 = 'UPDATE users SET last_login = NOW() WHERE u_id = ?';
+        conn.conn.query(sql2, [u_id], function(err, counts, fields){
+            if(counts[0].u_id){ //만약 로그인 하려는 id가 있다면
+                conn.conn.query(sql,[u_id], function(err, users, fields){ //회원의 모든 정보를 불러온다
+                    if(err){console.log(err);}
+                    else{
+                        if(users[0].verify === 1){
+                            if(users[0].u_id == u_id && users[0].u_pw == u_pw){ //아이디와 비밀번호가 맞다면
+                                res.render('./ja/changeUserInfo', {user:users[0]});
+                            }
+                            else{
+                                res.render('./ja/aku', {"message":"tolong cek Password Anda"});
+                            }
+                        }
+                        else{
+                            res.render('./ja/aku', {"message":"email Anda belum diverifikasi"});
+                        }
+                    }
+                });
+            }
+            else{//만약 로그인 하려는 id가 없다면
+                res.render('./ja/aku', {"message":"ID ini tidak ada"});
+            }
+        });
+    }else{
+        res.redirect('/aku')
+    }
+}
+
+exports.getChangeUserInfo =function(req, res){
+    if(req.session.id2){
+        res.render('./ja/changeUserInfo');
+    }else{
+        res.redirect('/aku')
+    }
+}
+
+exports.postChangeUserInfo =function(req, res){
+    if(req.session.id2){
+
+    }else{
+        res.redirect('/aku')
+    }
+}
+
 exports.postFindMyIdPw =function(req, res){
-    console.log(req.body);
     var userId = req.body.u_id;
     var birthday = req.body.birthday;
     var u_sex = req.body.gender;
@@ -43,7 +102,6 @@ exports.postFindMyIdPw =function(req, res){
             else{
                 if(check[0].u_bday == birthday && check[0].sex == u_sex && check[0].email == u_email){
                     var newPw = jsForBack.pwMaker();
-                    console.log(newPw);
                     var newPwSql = "update users set u_pw = ? where u_id = ?";
                     //이메일로 랜덤한 비밀번호 8자리로 등록후 비밀번호를 보내준다
                     conn.conn.query(newPwSql, [newPw, userId], function(err, givePw, fields){
@@ -52,7 +110,6 @@ exports.postFindMyIdPw =function(req, res){
                             mailOptions.subject = 'Your new password for beritamus.com';
                             mailOptions.html = '<p>This is your new password.</p>'+'<p>password: <span style="text-decoration: underline">'+newPw+'</span></p>'+'<p>You can change your password any time!</p>';
                             transporter.sendMail(mailOptions, function(error, info){
-                                console.log(mailOptions);
                                 if (error) {
                                     console.log(error);
                                 }
@@ -62,23 +119,17 @@ exports.postFindMyIdPw =function(req, res){
                     });
                 }else{
                     //이메일로 누군가 찾으려 시도하였지만 정보가 잘못 되었다 라고 전달
-                    mailOptions = {
-                      from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
-                      to:  check[0].email,                     // 수신 메일 주소
-                      subject: 'Your new password for beritamus.com',   // 제목
-                      html: '<p>Attempts were made to find your password</p>'+'<p>However, some information did not match with yours</p>'+'<p>Please try again or ignore this email</p>'
-                    };
+                    mailOptions.subject = 'Your new password for beritamus.com';
+                    mailOptions.html = '<p>Attempts were made to find your password</p>'+'<p>However, some information did not match with yours</p>'+'<p>Please try again or ignore this email</p>';
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                            console.log(error);
+                        }
+                    });
+                    res.redirect('/aku');
                 }
-                transporter.sendMail(mailOptions, function(error, info){
-                    console.log(mailOptions);
-                    if (error) {
-                        console.log(error);
-                    }
-                });
-                res.redirect('/aku');
             }
         });
-
     }
     else{
         //id를 잃어버린 경우
@@ -145,7 +196,6 @@ exports.login = function(req, res){
                     if(users[0].verify === 1){
                         if(users[0].u_id == u_id && users[0].u_pw == u_pw){ //아이디와 비밀번호가 맞다면
                             conn.conn.query(sql3, [u_id], function(err, login, fields){ //update를 한 후에 정보를 넘김
-                                console.log(users);
                                 req.session.u_id = u_id;
                                 req.session.id2 = users[0].id;
                                 req.session.save(function(){

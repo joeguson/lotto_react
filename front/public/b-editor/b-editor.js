@@ -40,7 +40,6 @@
         transition: all 0.3s linear 0s;
     }
 </style>`;
-
         const ta = this.buildEditor(w, h);
         const controls = this.buildControls(w);
         this.appendChild(controls);
@@ -135,6 +134,7 @@
         iframe.style.border = "none";
         iframe.style.width = '100%';
         iframe.style.height = h;
+        iframe.style.padding = '10px';
         iframe.id="iframe";
         ta.appendChild(iframe);
 

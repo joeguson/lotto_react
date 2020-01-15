@@ -26,6 +26,8 @@ block submain
   
 block main
     if user
+        .pinfo
+            a.changinfo(href= '/aku/changeUserInfoLogin') change my info
         .p-stat
             -var likeCountChecker = function(num){if(num){return num;}else{return 0;}}
             .likeStat
@@ -49,12 +51,12 @@ block main
                         each p in penobrols
                             b-thumbnail(jsonSrc="#{JSON.stringify(p)}")
                 else 
-                    .kosong
-                        span K
-                        span 0
-                        span S
-                        span 0
-                        span NG
+                    .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
                 
         .personalArticle 
             p Tandya
@@ -63,17 +65,17 @@ block main
                         for t in tandyas
                             b-thumbnail(jsonSrc="#{JSON.stringify(t)}")
                 else
-                    .kosong
-                        span K
-                        span 0
-                        span S
-                        span 0
-                        span NG
+                    .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
         a.logout(href= '/aku/logout') Logout
     else
         form(action='aku/login' method='post')
-            input(type='text' name='u_id' placeholder='  ID' id="input_id")
-            input(type='password' name='u_pw' placeholder='  Password' id="input_pw")
+            input(type='text' name='u_id' placeholder='  ID' id="input_id" required)
+            input(type='password' name='u_pw' placeholder='  Password' id="input_pw" required)
             if message
                 p.message= message
             input(type='submit' value="Login" id="login" onclick='noDouble()')
