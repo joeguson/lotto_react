@@ -1,8 +1,8 @@
 {
-  "name": "beritamus-code",
+  "name": "beritamus_code",
   "version": "1.0.0",
-  "description": "start of beritamus",
-  "main": "b-test.js",
+  "description": "[Type]: [현재시제 명령조]",
+  "main": "b.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,11 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/kylenoh128/beritamus.git"
   },
-  "keywords": [
-    "berita",
-    "kamus"
-  ],
-  "author": "kyle noh",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kylenoh128/beritamus/issues"
@@ -28,6 +24,7 @@
     "express-favicon": "^2.0.1",
     "express-mysql-session": "^2.1.0",
     "express-useragent": "^1.0.13",
+    "image-thumbnail": "^1.0.6",
     "jade": "^1.11.0",
     "multer": "^1.4.2",
     "mysql2": "^2.0.2",
@@ -36,7 +33,7 @@
     "nodemailer": "^6.3.1",
     "path": "^0.12.7",
     "serve-favicon": "^2.5.0",
-    "session": "^0.1.0",
+    "session": "^0.1.0"
   },
   "directories": {
     "test": "test"
