@@ -34,33 +34,20 @@ exports.getChangeUserInfoLogin =function(req, res){
 
 exports.postChangeUserInfoLogin =function(req, res){
     if(req.session.id2){
-        console.log(req.body);
         var u_id = req.body.u_id;
         var u_pw = req.body.u_pw;
-        var sql = 'SELECT * FROM users WHERE u_id = ?';
-        var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
-        var sql3 = 'UPDATE users SET last_login = NOW() WHERE u_id = ?';
-        conn.conn.query(sql2, [u_id], function(err, counts, fields){
-            if(counts[0].u_id){ //만약 로그인 하려는 id가 있다면
-                conn.conn.query(sql,[u_id], function(err, users, fields){ //회원의 모든 정보를 불러온다
-                    if(err){console.log(err);}
-                    else{
-                        if(users[0].verify === 1){
-                            if(users[0].u_id == u_id && users[0].u_pw == u_pw){ //아이디와 비밀번호가 맞다면
-                                res.render('./ja/changeUserInfo', {user:users[0]});
-                            }
-                            else{
-                                res.render('./ja/aku', {"message":"tolong cek Password Anda"});
-                            }
-                        }
-                        else{
-                            res.render('./ja/aku', {"message":"email Anda belum diverifikasi"});
-                        }
-                    }
-                });
-            }
-            else{//만약 로그인 하려는 id가 없다면
-                res.render('./ja/aku', {"message":"ID ini tidak ada"});
+        var sql = 'SELECT * FROM users WHERE u_id = ? AND u_pw = ?';
+        conn.conn.query(sql,[u_id, u_pw], function(err, users, fields){ //회원의 모든 정보를 불러온다
+            if(err){console.log(err);}
+            else{
+                if(users[0]){ //아이디와 비밀번호가 맞다면
+                    req.session.valid = true;
+                    res.redirect('/aku/changeUserInfo');
+                }
+                else{
+                    req.session.valid = false;
+                    res.redirect('/aku/changeUserInfo');
+                }
             }
         });
     }else{
@@ -69,8 +56,12 @@ exports.postChangeUserInfoLogin =function(req, res){
 }
 
 exports.getChangeUserInfo =function(req, res){
-    if(req.session.id2){
-        res.render('./ja/changeUserInfo');
+    var sql = `select u_id, date_format(u_bday,'%Y-%m-%d') as u_bday, sex, email from users where id = ?`;
+    if(req.session.id2 && req.session.valid){
+        conn.conn.query(sql, [req.session.id2], function(err, users, fields){
+            console.log(users);
+            res.render('./ja/changeUserInfo', {user: users[0]});
+        });
     }else{
         res.redirect('/aku')
     }
@@ -78,7 +69,17 @@ exports.getChangeUserInfo =function(req, res){
 
 exports.postChangeUserInfo =function(req, res){
     if(req.session.id2){
-
+        console.log(req.body);
+        var u_pw = req.body.u_pw;
+        var birthday = req.body.birthday;
+        var u_sex = req.body.gender;
+        var sql = 'update users set u_pw = ?, u_bday = ?, sex = ? where id = ?';
+        conn.conn.query(sql, [u_pw, birthday, u_sex, req.session.id2], function(err, result, fields){
+            if(err){console.log(err);}
+            else{
+                res.redirect('/aku');
+            }
+        });
     }else{
         res.redirect('/aku')
     }
@@ -306,15 +307,15 @@ exports.logout = function(req, res){
 };
 
 exports.postDaftar = function(req, res){
-  var u_id = req.body.u_id;
-  var u_pw = req.body.u_pw;
-  var birthday = req.body.birthday;
-  var u_sex = req.body.gender;
-  var u_email = req.body.email;
-  var code = parseInt(jsForBack.codeMaker());
-  var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
-  var sql = 'INSERT INTO users (u_id, u_pw, u_bday, email, sex, verify) VALUES (?, ?, ?, ?, ?, ?)';
-  conn.conn.query(sql2, [u_id], function(err, check, fields){
+    var u_id = req.body.u_id;
+    var u_pw = req.body.u_pw;
+    var birthday = req.body.birthday;
+    var u_sex = req.body.gender;
+    var u_email = req.body.email;
+    var code = parseInt(jsForBack.codeMaker());
+    var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
+    var sql = 'INSERT INTO users (u_id, u_pw, u_bday, email, sex, verify) VALUES (?, ?, ?, ?, ?, ?)';
+    conn.conn.query(sql2, [u_id], function(err, check, fields){
     if(err){console.log(err);}
     else{
         if(check[0].u_id){
@@ -325,19 +326,19 @@ exports.postDaftar = function(req, res){
             });
         }
     }
-  });
-  var mailOptions = {
+    });
+    var mailOptions = {
     from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
     to: u_email,                     // 수신 메일 주소
     subject: 'Email Verikasi Dari Beritamus',   // 제목
     html: '<p>Welcome To Beritamus!</p>'+'<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://'+db_config.url+'/aku/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
-  };
-  transporter.sendMail(mailOptions, function(error, info){
+    };
+    transporter.sendMail(mailOptions, function(error, info){
     if (error) {
       console.log(error);
     }
-  });
-  res.redirect('/aku');
+    });
+    res.redirect('/aku');
 };
 
 exports.getDaftar = function(req, res){

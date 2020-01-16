@@ -1,8 +1,7 @@
 extends ../layout.jade
 
 block css
-  link(rel='stylesheet', href='../css/user-add.css' type="text/css")
-  
+    link(rel='stylesheet', href='../css/user-add.css' type="text/css")
 
 block nav
   ul
@@ -24,15 +23,12 @@ block main
                 input(type='password' id = 'u_pw2' maxlength="50" placeholder='Check Your Password One More Time')
             span(id='pwInfo')
             p
-                input(type='date' name='birthday' value='2019-08-31' id='inputDate' required)
+                input(type='date' name='birthday' value='#{user.u_bday}' id='inputDate' required)
             p
                 input(type='button' name='boy' id = 'boy' value='Male' class="sex" required)
                 input(type='button' name='girl' id = 'girl' value='Female' class="sex" required)
                 input(type="hidden" id="gender" name="gender" value="none")
+            p #{user.email}
             p
-                input(type='text' name='email' id='email' placeholder='emailAdress@yourEmail.com' required)
-            span(id='emailInfo')
-            
-            p
-                input(type='submit' value='Get my Verification Mail' id='submit')
-    script(type="text/javascript" src="../../js/register.js")
+                input(type='submit' value='Change My Info' id='submit')
+    script(type="text/javascript" src="../../js/changeInfo.js")
