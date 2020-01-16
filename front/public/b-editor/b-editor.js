@@ -186,19 +186,48 @@
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     editor.body.focus();
-//                    var newimage = new Image();
-//                    newimage.src = e.target.result
-//                    //value of width
-//                    console.log(editor.body.scrollWidth);
-//                    console.log(newimage.width);
-//                    console.log(newimage.height);
-                    const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + e.target.result+"'/>";
-                    editor.execCommand("insertHTML", false, imgHTML);
+                    async function resizeImg(imgData){
+                        var resizedImg = await resizeImage(imgData);
+                        console.log(resizedImg);
+                        const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + resizedImg +"'/>";
+                        editor.execCommand("insertHTML", false, imgHTML);
+                    }
+                    resizeImg(e.target.result);
                 };
                 reader.readAsDataURL(i.files[0]);
                 i.value = "";
             }
         };
+        function resizeImage(imgData){
+            return new Promise(function (resolve, reject) {
+                var img = document.createElement("img");
+                img.src = imgData;
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                var MAX_WIDTH = 400;
+                var MAX_HEIGHT = 400;
+                var width = img.width;
+                var height = img.height;
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, width, height);
+                var dataurl = canvas.toDataURL("image/png");
+                resolve(dataurl);
+            });
+        }
 
         this.controlButtons["Create link"].onclick = () =>
             this.cmd("CreateLink", false, prompt("Enter a URL", "www."))();
