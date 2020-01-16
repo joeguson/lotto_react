@@ -186,7 +186,6 @@ app.post('/image', (req, res) => {
         case "png": filename += '.png'; break;
         default: /* Raise error */ break;
     }
-
     imageThumbnail(data).then((thumbnail) => {
         saveImage("images", filename, data, (err) => {
             if(err) {

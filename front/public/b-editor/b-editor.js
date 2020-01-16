@@ -186,23 +186,45 @@
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     editor.body.focus();
-//                    var newimage = new Image();
-//                    newimage.src = e.target.result
-//                    //value of width
-//                    console.log(editor.body.scrollWidth);
-//                    console.log(newimage.width);
-//                    console.log(newimage.height);
-                    const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + e.target.result+"'/>";
-                    editor.execCommand("insertHTML", false, imgHTML);
+                    var img = document.createElement("img");
+                    img.src = e.target.result;
+                    //여기서 부터는 함수로 빼고 싶었지만 실패함.... 혹시 아이디어 있음?
+                    img.onload = function(){
+                        var canvas = document.createElement("canvas");
+                        var ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0);
+                        var MAX_WIDTH = 300;
+                        var MAX_HEIGHT = 300;
+                        var width = img.width;
+                        var height = img.height;
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        var ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+                        var dataurl = canvas.toDataURL("image/png");
+                        const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + dataurl +"'/>";
+                        editor.execCommand("insertHTML", false, imgHTML);
+                    }
                 };
                 reader.readAsDataURL(i.files[0]);
                 i.value = "";
             }
         };
         function resizeImage(imgData){
-            return new Promise(function (resolve, reject) {
-                var img = document.createElement("img");
-                img.src = imgData;
+            var img = document.createElement("img");
+            img.src = imgData;
+            img.onload = function(){
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0);
@@ -226,8 +248,7 @@
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, width, height);
                 var dataurl = canvas.toDataURL("image/png");
-                resolve(dataurl);
-            });
+            }
         }
 
         this.controlButtons["Create link"].onclick = () =>
