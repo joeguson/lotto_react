@@ -5,3 +5,4 @@ images/*
 # intellij
 .idea/
 *.iml
+node_modules/
