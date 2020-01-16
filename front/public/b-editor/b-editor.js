@@ -186,13 +186,14 @@
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     editor.body.focus();
-                    async function resizeImg(imgData){
-                        var resizedImg = await resizeImage(imgData);
-                        console.log(resizedImg);
-                        const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + resizedImg +"'/>";
-                        editor.execCommand("insertHTML", false, imgHTML);
-                    }
-                    resizeImg(e.target.result);
+//                    var newimage = new Image();
+//                    newimage.src = e.target.result
+//                    //value of width
+//                    console.log(editor.body.scrollWidth);
+//                    console.log(newimage.width);
+//                    console.log(newimage.height);
+                    const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + e.target.result+"'/>";
+                    editor.execCommand("insertHTML", false, imgHTML);
                 };
                 reader.readAsDataURL(i.files[0]);
                 i.value = "";
