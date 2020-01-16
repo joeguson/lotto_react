@@ -8,7 +8,7 @@ var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var mysql = require('mysql');
 const mysql2 = require('mysql2/promise');
-var path = require('path')
+var path = require('path');
 var favicon = require('serve-favicon');
 var schedule = require('node-schedule');
 var db_config =require('./config.json');
@@ -21,6 +21,7 @@ var cari = require('./back/cari/cari');
 var backSystem = require('./back/backsystem')
 var jsForBack = require('./back/jsForBack.js');
 const AWS = require('aws-sdk');
+const imageThumbnail = require('image-thumbnail');
 const s3 = new AWS.S3({
     accessKeyId: db_config.AWS_ACCESS_KEY,
     secretAccessKey: db_config.AWS_SECRET_ACCESS_KEY,
@@ -161,38 +162,48 @@ app.post('/penobroldelete/:id', penobrol.postDeletePenobrol);
 app.post('/pcommentdelete/:id', penobrol.postDeletePcomment);
 app.post('/pccommentdelete/:id', penobrol.postDeletePccomment);
 
+function saveImage(path, filename, data, callback) {
+    const params = {
+        'Bucket':'beritamus',
+        'Key': path + "/" + filename,
+        'ACL':'public-read',
+        'ContentEncoding': 'base64',
+        'Body': new Buffer(data, 'base64')
+    };
+
+    s3.putObject(params, callback);
+}
+
 app.post('/image', (req, res) => {
     var img = req.body.img;
     var data =img.replace(/^data:image\/\w+;base64,/, "");
-    var buf = new Buffer(data, 'base64');
     var filename = jsForBack.generateFilename();
-    if("jpeg"==img.split(";")[0].split("/")[1]){
-        filename += '.jpg';
+
+    switch (img.split(";")[0].split("/")[1]) {
+        case "jpeg": filename += '.jpg'; break;
+        case "gif": filename += '.gif'; break;
+        case "x-icon": filename += '.ico'; break;
+        case "png": filename += '.png'; break;
+        default: /* Raise error */ break;
     }
-    if("gif"==img.split(";")[0].split("/")[1]){
-        filename += '.gif';
-    }
-    if("x-icon"==img.split(";")[0].split("/")[1]){
-        filename += '.ico';
-    }
-    if("png"==img.split(";")[0].split("/")[1]){
-        filename += '.png';
-    }
-    var params = {
-        'Bucket':'beritamus',
-        'Key': 'images/'+filename,
-        'ACL':'public-read',
-        'ContentEncoding': 'base64',
-        'Body':buf
-    }
-    s3.putObject(params, function(err, data){
-        if(err){
-            console.log("err: ", err)
-        }
-        console.log('============')
-        console.log("data: ", data)
-    })
-    res.json({'filename': filename});
+
+    imageThumbnail(data).then((thumbnail) => {
+        saveImage("images", filename, data, (err) => {
+            if(err) {
+                console.log("err: ", err);
+                /* Raise error */
+            } else {
+                saveImage("images/thumbnail", filename, thumbnail, (err) => {
+                    if(err) {
+                        console.log("err: ", err);
+                        /* Raise error */
+                    } else {
+                        res.json({'filename': filename});
+                    }
+                })
+            }
+        });
+    });
 });
 
 app.listen(db_config.port, '0.0.0.0', function(){
