@@ -20,6 +20,8 @@ var aku = require('./back/aku/aku');
 var cari = require('./back/cari/cari');
 var backSystem = require('./back/backsystem')
 var jsForBack = require('./back/jsForBack.js');
+const imageThumbnail = require('image-thumbnail');
+const sharp = require('sharp');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3({
     accessKeyId: db_config.AWS_ACCESS_KEY,
@@ -187,12 +189,10 @@ app.post('/image', (req, res) => {
     }
     s3.putObject(params, function(err, data){
         if(err){
-            console.log("err: ", err)
+            console.log("err: ", err);
         }
-        console.log('============')
-        console.log("data: ", data)
+        res.json({'filename': filename});
     })
-    res.json({'filename': filename});
 });
 
 app.listen(db_config.port, '0.0.0.0', function(){
