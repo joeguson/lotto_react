@@ -1,5 +1,5 @@
 extends ../view_layout.jade
-include ../mixIn.jade
+include ../view_mixIn.jade
 
 block css
     link(rel="stylesheet" href="../css/penobrol_view.css" type="text/css")
@@ -14,18 +14,25 @@ block nav
 block submain
     //.ad Advertisement
 
-block dltitle
-    dt.dttitle= topic.title
-        if id2 === topic.author
-            button(onclick ='deletePenobrol()' class="deleteButton")
-                img(src="icons/trash.png" class="trashImage")
-            a(href='/pedit/'+topic.id class='edit') edit
+block article
+    +articleTitle('p', topic.title)
     +hashtag(topic.hashtags)
+    if id2 === topic.author
+        button(onclick ='deletePenobrol()' class="deleteButton")
+            img(src="icons/trash.png" class="trashImage")
+        a(href='/pedit/'+topic.id class='edit') edit
     +basicPInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
-            
-block contentLike
-    div(id="plike" class="ptlike")= topic.likes.length
-    
+    .articleContent
+        if u_id
+            p(class= "warn")
+                button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningArticle(this);")
+                    img(src="icons/warn.png" class="warnImage")
+        +articleContent(topic.content)
+        .articleLike
+            div.ptlike(id="plike")= topic.likes.length
+            if u_id
+                +likeButton(topic.identifier,topic.likes, id2)
+
 block commetOrAnswer
     if u_id
         +commentOrAnswer(topic.identifier)

@@ -1,5 +1,5 @@
 extends ../view_layout.jade
-include ../mixIn.jade
+include ../view_mixIn.jade
 
 block css
     link(rel="stylesheet" href="../css/tandya_view.css" type="text/css")
@@ -14,22 +14,26 @@ block nav
 block submain
     //.ad Advertisement
 
-block dltitle
-    dt.dttitle
-        span Q : 
-        span #{topic.question}
+block article
+    +articleTitle('t', topic.question)
     +hashtag(topic.hashtags)
-    
-block contentLike
-    div.ptlike(id="tlike")= topic.likes.length
-    
-    .tdetail-div
-        +basicTInfo(topic.u_id, topic.date, topic.view, topic.answers.length)
-        if id2 == topic.author           
-            a(href='/tedit/' + topic.id class='edit') Edit
-        button(value=topic.id onclick ='deleteTandya(this)' class="deleteButton")
-            img(src="icons/trash.png" class="trashImage")
-    
+    .articleContent
+        if u_id
+            p(class= "warn")
+                button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningArticle(this);")
+                    img(src="icons/warn.png" class="warnImage")
+        +articleContent(topic.content)
+        .articleLike
+            div.ptlike(id="tlike")= topic.likes.length
+            if u_id
+                +likeButton(topic.identifier,topic.likes, id2)
+        .tdetail-div
+            +basicTInfo(topic.u_id, topic.date, topic.view, topic.answers.length)
+            if id2 == topic.author           
+                a(href='/tedit/' + topic.id class='edit') Edit
+            button(value=topic.id onclick ='deleteTandya(this)' class="deleteButton")
+                img(src="icons/trash.png" class="trashImage")
+
 block commetOrAnswer
     if u_id
         +commentOrAnswer(topic.identifier)

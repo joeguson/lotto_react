@@ -90,13 +90,13 @@ header {
   width: 100%;
   font-size: 40px;
   height: 100px;
-  line-height: 90px;
   text-align: center;
   background-color: white;
+  padding: 10px 0px;
 }
 nav {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .sub-main {
   width: 100%;
@@ -127,7 +127,14 @@ header a {
   color: #0f4c81;
   text-decoration: none;
   font-family: 'Pattaya', sans-serif;
-  position: relative;
+  display: block;
+}
+header span {
+  font-size: 15px;
+  line-height: 15px;
+  display: block;
+  text-align: center;
+  color: #0f4c81;
 }
 nav ul {
   list-style: none;
@@ -136,11 +143,6 @@ nav ul {
 }
 .footer p {
   margin: 0px auto;
-}
-header a span {
-  font-size: 15px;
-  position: absolute;
-  margin: 5px;
 }
 nav ul li {
   width: 25%;
@@ -178,6 +180,11 @@ pre {
     font-size: 50px;
     height: 120px;
     line-height: 100px;
+  }
+  header a span {
+    font-size: 15px;
+    position: absolute;
+    margin: 5px;
   }
   .sub-main {
     width: 80%;

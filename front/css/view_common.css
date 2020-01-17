@@ -88,12 +88,15 @@
 .dlTitle {
   width: 100%;
 }
+.dttile {
+  width: 100%;
+}
 .articleContent {
   width: 100%;
   margin-bottom: 10px;
   background-color: white;
   text-align: justify;
-  padding: 10px 20px;
+  padding: 8px;
   border-top: 1px solid #5781a6;
   border-bottom: 1px solid #5781a6;
   border-top-right-radius: 5px;
