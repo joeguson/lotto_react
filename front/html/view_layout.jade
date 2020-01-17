@@ -1,0 +1,79 @@
+doctype html
+html(lang="id")
+    head
+        title beritamus
+        // what appears on the tab
+        base(href="/")
+        link(rel='stylesheet' href="/css/common.css" type="text/css")
+        // links css common files
+        // links css file
+        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css?family=Fruktur&display=swap" rel="stylesheet")
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        link(rel="stylesheet" href="../css/view_common.css" type="text/css")
+        link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
+        block css
+        // iphone에서 어플식으로 저장가능
+        // Lorem ipsum
+    body
+        .container
+            header
+                a(href='/cari') Beritamus  
+                    span /b'ritɛmus/
+            nav
+                block nav
+            section.sub-main
+                block submain
+            section.main(style = "min-height:500px; height:100%;")
+                .article
+                    .title
+                        dl(class='dlTitle')
+                            block dltitle
+                    .content
+                        .articleContent
+                            if u_id
+                                p(class= "warn")
+                                    button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningArticle(this);")
+                                        img(src="icons/warn.png" class="warnImage")
+                            iframe(id="content" class="content" style="border: none;")
+                            script.
+                                var iframe = document.getElementById("content");
+                                iframe.width = "100%";
+                                var page = iframe.contentWindow.document;
+                                var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+                                
+                                var cssLink = document.createElement("link") 
+                                cssLink.href = "./public/b-editor/__b-editor.css"; 
+                                cssLink.rel = "stylesheet"; 
+                                cssLink.type = "text/css"; 
+                                page.head.appendChild(cssLink);
+                                
+                                page.body.innerHTML = content;
+                                const imgTags = page.getElementsByTagName("img");
+                                for(var t of imgTags) {
+                                    t.onload = () => {
+                                        var i = document.getElementById('content');
+                                        var w = i.contentWindow.document.body.scrollWidth;
+                                        var h = i.contentWindow.document.body.scrollHeight;
+                                        i.height = h;
+                                        i.width = w;
+                                    };
+                                }
+                            
+                        .contentLike
+                            if u_id
+                                +likeButton(topic.identifier,topic.likes, id2)
+                            block contentLike
+                .comAns
+                    .commetOrAnswer
+                        block commetOrAnswer
+                    ul(class='ulCommentsAndAnswers')
+                        block ulCommentsAndAnswers
+                                
+            section.footer
+                block footer
+                    p contact : admin@beritamus.com
+                    p www.beritamus.com
+            

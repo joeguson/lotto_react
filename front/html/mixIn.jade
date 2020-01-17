@@ -16,8 +16,12 @@ mixin frontPage(type)
             for w in scoreTopics
                 b-thumbnail(jsonSrc="#{JSON.stringify(w)}")
 
-mixin basicInfo(author, date, view, comAnsCount)
+mixin basicPInfo(author, date, view, comAnsCount)
     - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' comments'
+    dd.basicInfo #{basicInfo}
+    
+mixin basicTInfo(author, date, view, comAnsCount)
+    - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' answers'
     dd.basicInfo #{basicInfo}
 
 mixin hashtag(hashtags)
@@ -28,8 +32,6 @@ mixin hashtag(hashtags)
             
 mixin likeButton(type ,likeObject, sessionId)
     -var likeChecker = function(likeObject, sessionId){
-        -console.log(likeObject);
-        -console.log(sessionId);
     -    for(var i of likeObject){
     -        if(i.u_id == sessionId){
     -            return true;
@@ -41,7 +43,7 @@ mixin likeButton(type ,likeObject, sessionId)
     -if(type == 'p'){
         -if(result){
             button(class="plikeButton" type="submit" value=topic.id + '/0/1' onclick="pLike(this);")
-                img(src="icons/nocap.svg" class="likeImage" id="likeImage")
+                img(src="icons/nocap.png" class="likeImage" id="likeImage")
         -}
         -else{
             button(class="plikeButton" type="submit" value=topic.id + '/0/0' onclick="pLike(this);")
@@ -51,7 +53,7 @@ mixin likeButton(type ,likeObject, sessionId)
     -else{
         -if(result){
             button(class="tlikeButton" type="submit" value=topic.id + '/0/1' onclick="tLike(this);")
-                img(src="icons/nocap.svg" class="likeImage" id="likeImage")
+                img(src="icons/nocap.png" class="likeImage" id="likeImage")
         -}
         -else{
             button(class="tlikeButton" type="submit" value=topic.id + '/0/0' onclick="tLike(this);")
@@ -74,7 +76,7 @@ mixin likeButton2(type, likeObject, sessionId, id)
     -if(type == 'pc'){
         -if(result){
             button(class="pclikeButton" type="submit" value=topic.id +'/'+id+'/1' onclick="pcLike(this);")
-                img(src="icons/nocap.svg" class="likeImage" id="likeImage")
+                img(src="icons/nocap.png" class="likeImage" id="likeImage")
         -}
         -else{
             button(class="pclikeButton" type="submit" value=topic.id +'/'+id+'/0' onclick="pcLike(this);")
@@ -84,10 +86,22 @@ mixin likeButton2(type, likeObject, sessionId, id)
     -else{
         -if(result){
             button(class="talikeButton" type="submit" value=topic.id + '/'+id+'/1' onclick="taLike(this);")
-                img(src="icons/nocap.svg" class="likeImage" id="likeImage")
+                img(src="icons/nocap.png" class="likeImage" id="likeImage")
         -}
         -else{
             button(class="talikeButton" type="submit" value=topic.id + '/'+id+'/0' onclick="taLike(this);")
                 img(src="icons/cap.png" class="likeImage" id="likeImage")
         -}
+    -}
+
+mixin commentOrAnswer(type)
+    -if(type == 't'){
+        form(action='tandya/' + topic.id method='post' class='answerForm' onsubmit='return taChecksubmit();')
+            textarea(name='answer' id="answer" class="taInput")
+            input(type='submit' value='answer' class="taInputButton" id='taInputButton')
+    -}
+    -else{
+        form(action='pcomment/' + topic.id method='post' class='commentForm' onsubmit='return pcChecksubmit();')
+            textarea(name='comment' class="pcInput" id='pcInput')
+            input(type='submit' value='comment' class="pcInputButton" id="pcInputButton")
     -}

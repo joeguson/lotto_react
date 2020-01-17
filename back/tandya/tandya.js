@@ -64,16 +64,14 @@ exports.getViewTandya = function (req, res) {
                     for(const a of tandya.answers) {
                         a.comments = (await dbcon.twoArg(sql7, a.id)).map(parser.parseAComment);
                         a.likes = (await dbcon.twoArg(sql9, a.id)).map(parser.parseALike);
-                        console.log(a);
                     }
                     tandya.likes = (await dbcon.twoArg(sql8, id)).map(parser.parseTLike);
                     res.render('./jt/t-view', {
-                        topic: tandya,
                         u_id: req.session.u_id,
-                        id2: req.session.id2
+                        id2: req.session.id2,
+                        topic: tandya,
                     });
                 }
-
                 getT();
             }
         });

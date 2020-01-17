@@ -8,16 +8,12 @@ block css
     script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
     
 block nav
-  ul
-    li
-        a(href='/aku') Aku
-    li(style='border-bottom: 3px solid #ffff97; opacity: .9')
-        a(href='/cari' style='color: #ffff97;') Cari
-    li
-        a(href='/penobrol') Penobrol
-    li    
-        a(href='/tandya') Tandya
-    br.clear
+    ul
+        li: a(href='/aku') aku
+        li(style='border-bottom: 3px solid #ffff97; opacity: .9'): a(href='/cari' style='color: #ffff97;') cari
+        li: a(href='/penobrol') penobrol
+        li: a(href='/tandya') tandya
+        br.clear
 
 block submain
     //.ad Advertising

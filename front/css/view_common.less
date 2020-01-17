@@ -1,0 +1,77 @@
+//out: view_common.css
+// Variables
+@themes: "../css";
+// Usage
+@import "@{themes}/variable.less";
+
+//divide html tree accordingly
+.article{width:100%; .section-border(); background-color: white; padding: 10px; word-break:break-all;}
+.comAns{width:100%; .section-border(); background-color:white; margin:0px; padding:5px; margin-bottom: @marginbottom-mbl;}
+
+//.article - .title, .content
+.title{width:100%;}
+.content{width:100%;}
+
+//.comAns - .commentOrAnswer, .ulCommentsAndAnswers
+.commentOrAnswer{width:95%; margin: 0px auto @marginbottom-mbl auto;}
+.ulCommentsAndAnswers{padding: 5px; list-style: none;}
+
+//divide html tree by block units
+
+//.title - .dlTitle - .dttitle - span(2), hashtag(mixin)
+.dlTitle{width:100%;}
+.dttile{}
+.dttile span{}
+
+//.content - .articleContent, .contentLike
+//.contentLike - .ptlike, likeButton(mixin)
+
+.articleContent{width:100%; margin-bottom: @marginbottom-mbl; background-color: white; text-align: justify; padding:10px 20px; .topBottom-border(); }
+.contentLike{font-size: 24px; text-align: center; margin-bottom: @marginbottom-mbl; color:@likeColor;}
+.ptlike{}
+
+
+//.commetOrAnswer - commentOrAnswer(mixin)
+
+//.ulCommentsAndAnswers - .liCommentsAndAnswers, .pccOrTac, .dlPccAndTac
+//.liCommentsAndAnswers - .dlCommentsAndAnswers
+//.dlCommentsAndAnswers - .comAnsStart, .comAnsStart-dt, .comAnsStart-dd
+//.comAnsStart - a(for edit), button(for delete)
+//.comAnsStart-dt - pre(content)
+//.comAnsStart-dd - .comAnsLike(span), .comAnsButton(like), .pctaWarnButton
+//.pccOrTac - .pccTacInput, .pccTacInputButton
+//.dlPccAndTac - dlPccAndTac-dt, dlPccAndTac-dd, 
+.liCommentsAndAnswers{width:100%; background-color:white;.topBottom-border();}
+.dlCommentsAndAnswers{padding:5px 10px;}
+.comAnsStart{}
+.comAnsStart-dt{}
+.comAnsStart-dd{}
+.comAnsLike{}
+.comAnsButton{}
+.pctaWarnButton{}
+.pccOrTac{width:100%; text-align: right; margin:5px 0px;}
+.pccTacInput{}
+.pccTacInputButton{}
+
+.dlPccAndTac{margin-left: 10px;}
+
+
+//.liCommentsAndAnswers - 
+
+//.liCommentsAndAnswers - .dlCommentsAndAnswers, .pccOrTac, .dlPccAndTac
+
+
+.dttitle{}
+
+.comAnsLike{}
+.comAnsButton{}
+.dlPccAndTac-dt{}
+.dlPccAndTac-dd{}
+
+
+
+/*for bigger windows*/
+@media(min-width:768px){
+
+
+}

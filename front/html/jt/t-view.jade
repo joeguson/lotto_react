@@ -1,9 +1,8 @@
-extends ../layout.jade
+extends ../view_layout.jade
 include ../mixIn.jade
 
 block css
     link(rel="stylesheet" href="../css/tandya_view.css" type="text/css")
-    link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
     script(type="text/javascript" src="/js/jsForAllJade.js")
     script(type="text/javascript" src="/js/likeArticle.js")
     script(type="text/javascript" src="/js/warnArticle.js")
@@ -15,95 +14,73 @@ block nav
 block submain
     //.ad Advertisement
 
-block main
-    .ttitle-div
+block dltitle
+    dt.dttitle
         span Q : 
         span #{topic.question}
-    .tcontent-div
-        if u_id
-            p(class= "warn")
-                button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningArticle(this);") !
-        div(class="content")
-            iframe(id="content" class="content" style="border: none;")
-            script.
-                var iframe = document.getElementById("content");
-                iframe.width = "100%";
-                var page = iframe.contentWindow.document;
-                var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
-                
-                var cssLink = document.createElement("link") 
-                cssLink.href = "./public/b-editor/__b-editor.css"; 
-                cssLink.rel = "stylesheet"; 
-                cssLink.type = "text/css"; 
-                page.head.appendChild(cssLink);
-                
-                page.body.innerHTML = content;
-                const imgTags = page.getElementsByTagName("img");
-                for(var t of imgTags) {
-                    t.onload = () => {
-                        var i = document.getElementById('content');
-                        var w = i.contentWindow.document.body.scrollWidth;
-                        var h = i.contentWindow.document.body.scrollHeight;
-                        i.height = h;
-                        i.width = w;
-                    };
-                }
-            div(id="tlike" class="tlike")= topic.likes.length
-            if u_id
-                +likeButton('t',topic.likes, id2)
+    +hashtag(topic.hashtags)
+    
+block contentLike
+    div.ptlike(id="tlike")= topic.likes.length
+    
     .tdetail-div
-        - var date_result = 'by '+ topic.u_id + ' /  '+topic.date+' / ' + 'view : ' + topic.view + ' / ' + 'jawaban : '
-        if(topic.hashtags.length > 0)
-            p
-                -var hashtagfinal = topic.hashtags.map(e => `#${e.hash}`).join(" ");
-                a #{hashtagfinal}
-        p #{date_result}
-            if id2 == topic.author
-                a(href='/tedit/' + topic.id class='edit') Edit
-                button(value=topic.id onclick ='deleteTandya(this)' class="deleteButton")
-                    img(src="icons/trash.svg" class="trashImage")
-            
+        +basicTInfo(topic.u_id, topic.date, topic.view, topic.answers.length)
+        if id2 == topic.author           
+            a(href='/tedit/' + topic.id class='edit') Edit
+        button(value=topic.id onclick ='deleteTandya(this)' class="deleteButton")
+            img(src="icons/trash.png" class="trashImage")
+    
+block commetOrAnswer
     if u_id
-        form(action='tandya/' + topic.id method='post' class='answerForm')
-            textarea(name='answer' id="answer" class="taInput")
-            input(type='submit' value='answer' class="taInputButton" id='taInputButton')
-    if topic.answers.length > 0
-        .tanswer
-            ul.tanswer-ul
-                each a in topic.answers
-                    li.tanswer-li
-                        dl.tanswer-dl(id='ta/' + topic.id + '/' + a.id)
-                            - var answerStart = '@'+ topic.u_id
-                            .tanswer-start #{answerStart}
-                                if id2 === a.author
-                                    a(href='/taedit/' + topic.id + '/' + a.id) Edit
-                                    button(value=a.id onclick ='postDeleteTanswer(this)' class="deleteButton")
-                                        img(src="icons/trash.svg" class="trashImage")
-                            dt.tanswer-dt
-                                pre(class="tanswer-dt") "#{a.answer}"
-                            - var date_result2 = 'by '+ a.u_id + ' / '+a.date+' / suka : '
-                            dd.tanswer-dd #{date_result2}
-                                span.talike(id="tAnswerlikes" + a.id)= a.likes.length
-                                if u_id
-                                    span.answerButton
-                                        +likeButton2('ta', a.likes, id2, a.id)
-                                        span.dummy
-                                        button(class="taWarnButton" type="submit" value='t/ta/'+a.id onclick="warningArticle(this);") !
-                            if u_id
-                                .acommentForm
-                                    textarea(name='acomment' class="tacInput")
-                                    input(type='submit' name=a.id onclick="acommentSendAjax(this);" value="komen" class="tacInputButton")
-                            each acs in a.comments
-                                dl.tacomment-dl
-                                    - var acommentStart = '- "'+acs.content+'"'
-                                    dt.tacomment-dt
-                                        pre(class="tacomment-dt") #{acommentStart}
-                                    - var date_result3 = 'by : ' + acs.u_id + ' / '+acs.date
-                                    dd.tacomment-dd #{date_result3}
-                                        if u_id
-                                            button(class="tacWarnButton" type="submit" value='t/tac/'+acs.id onclick="warningArticle(this);")
-                                        if id2 == acs.author
-                                            button(value=acs.id onclick ='postDeleteTacomment(this)' class="deleteButton")
-                                                img(src="icons/trash.svg" class="trashImage")
+        +commentOrAnswer(topic.identifier)
 
+block ulCommentsAndAnswers
+    if topic.answers.length > 0
+        each a in topic.answers
+            li.liCommentsAndAnswers
+                dl.dlCommentsAndAnswers(id='ta/' + topic.id + '/' + a.id)
+                    - var answerStart = '@'+ topic.u_id
+                    - var date_result2 = 'by '+ a.u_id + ' / '+a.date+' / like : '
+                    .comAnsStart #{answerStart}
+                        if id2 === a.author
+                            a(href='/taedit/' + topic.id + '/' + a.id) Edit
+                            button(value=a.id onclick ='postDeleteTanswer(this)' class="deleteButton")
+                                img(src="icons/trash.png" class="trashImage")
+                    dt.comAnsStart-dt
+                        pre(class="tanswer-dt") "#{a.answer}"
+                    dd.comAnsStart-dd #{date_result2}
+                        span.comAnsLike(id="tAnswerlikes" + a.id)= a.likes.length
+                        if u_id
+                            span.comAnsButton
+                                +likeButton2('ta', a.likes, id2, a.id)
+                                span.dummy
+                            button(class="pctaWarnButton" type="submit" value='t/ta/'+a.id onclick="warningArticle(this);")
+                                img(src="icons/warn.png" class="warnImage")
+            .pccOrTac
+                if u_id
+                    textarea(name='acomment' class="pccTacInput" id='tacInput')
+                    input(type='submit' name=a.id onclick="acommentSendAjax(this);" value="komen" class="pccTacInputButton")
+            each acs in a.comments
+                dl(class='dlPccAndTac')
+                    - var acommentStart = '- "'+acs.content+'"'
+                    - var date_result3 = 'by : ' + acs.u_id + ' / '+acs.date
+                    dt.dlPccAndTac-dt
+                        pre(class="tacomment-dt") #{acommentStart}
+                    dd.dlPccAndTac-dd #{date_result3}
+                        if u_id
+                            button(class="pccTacWarnButton" type="submit" value='t/tac/'+acs.id onclick="warningArticle(this);")
+                                img(src="icons/warn.png" class="warnImage")
+                        if id2 == acs.author
+                            button(value=acs.id onclick ='postDeleteTacomment(this)' class="deleteButton")
+                                img(src="icons/trash.png" class="trashImage")
+                            
+    script.
+        function taChecksubmit() {
+            if (pcInput.value.length < 5) {
+                alert('kontennya harus lebih dari 5 alphabet');
+                return false;
+            } else {
+                return true;
+            }
+        }
     script(type="text/javascript" src="/js/tlikes.js")

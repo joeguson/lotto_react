@@ -4,53 +4,32 @@
 // Usage
 @import "@{themes}/variable.less";
 
-//.main - .title(div), .pcontent(div), .commentForm(form), .pcomment(div)
-.title{width:100%; box-sizing:border-box; .section-border(); background-color: white; padding: 10px 20px; word-break:break-all;}
-.pcontent{width:100%; margin-bottom: @marginbottom-mbl; background-color: white; text-align: justify; padding:10px 20px; .topBottom-border(); }
-.commentForm{width:95%; margin: 0px auto @marginbottom-mbl auto;}
-.pcomment{width:100%; background-color:white; margin:0px; padding:5px; margin-bottom: @marginbottom-mbl; .section-border();}
-
-//.title(div) - .pview-dl(dl)
-.pview-dl{width:100%;}
-
 //.pcontent(div) - .warn(p), .content(p), .plike(div), .plikeButton(button)
 .warn{display:block; width:100%; text-align: right; padding:0;}
 .content{margin-bottom: @marginbottom-mbl;}
-
 
 //.commentForm(form) - #comment(textarea), .comment(input)
 .pcInput{width:80%; padding:5px; margin:0 auto; border: 1px solid @main; height:70px; border: 1px solid @main; font-size: 12px;}
 .pcInputButton{.button(); width: 20%; height:70px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 12px; .border-radius(); float:right;}
 
-//.pcomment(div) - .pcomment-ul(ul)
-.pcomment-ul{padding: 5px; list-style: none;}
-
-//.pview-dl(dl) - .pview-dt(dt), .pview-dd(dd)*2, .hashtag(for hashtags)
+//.pview-dl(dl) - .pview-dt(dt), .pview-dd(dd)*2
 .pview-dt{color:@font-color1; font-size: 16px; margin-bottom: 10px;}
 .edit{float:right; text-decoration: none; color:@main;}
+
 
 //.warn(p) - .warnButton(button)
 .pwarnButton{border:0px; width:2%;} 
 
 //.content(div) - .plike(div), .plikeButton(button)
-.plike{font-size: 24px; text-align: center; margin-bottom: @marginbottom-mbl; color:@likeColor;}
+
 .plikeButton{width:5%; margin:0px auto; display: block; border:none;}
 
-//.pcomment-ul(ul) - .pcomment-li(li)
-.pcomment-li{width:100%; background-color:white; .topBottom-border();}
-
-//.pcomment-li - .pcomment-dl(dl)
-.pcomment-dl{padding:5px 10px;}
 
 //.pcomment-dl(dl) - .pcomment-start(div), .pcomment-dt(dt), .pcomment-dd(dd), .ccommentForm(div), .pccomment-dl(dl)
 .pcomment-start{font-size: 12px; font-weight: bold; background-color: white; margin-bottom: 5px;}
 .pcomment-dt{font-size: 12px; font-weight:300; margin-bottom: 5px; margin-left: 5px;}
 .pcomment-dd{font-size: 12px; font-style: italic; border-bottom: 1px solid lightgray; display: block; background-color: white; margin-bottom: 8px;}
-.ccommentForm{width:100%; text-align: right; margin:5px 0px;}
-.pccomment-dl{margin-left: 10px;}
 .pccomment-dl:nth-child(odd){background-color: @mainlightest;}
-
-
 
 .trashImage{width:8%;}
 .warnImage{width:100%;}

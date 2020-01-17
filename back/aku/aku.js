@@ -59,7 +59,6 @@ exports.getChangeUserInfo =function(req, res){
     var sql = `select u_id, date_format(u_bday,'%Y-%m-%d') as u_bday, sex, email from users where id = ?`;
     if(req.session.id2 && req.session.valid){
         conn.conn.query(sql, [req.session.id2], function(err, users, fields){
-            console.log(users);
             res.render('./ja/changeUserInfo', {user: users[0]});
         });
     }else{
@@ -69,7 +68,6 @@ exports.getChangeUserInfo =function(req, res){
 
 exports.postChangeUserInfo =function(req, res){
     if(req.session.id2){
-        console.log(req.body);
         var u_pw = req.body.u_pw;
         var birthday = req.body.birthday;
         var u_sex = req.body.gender;

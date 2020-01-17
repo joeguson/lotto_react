@@ -4,24 +4,17 @@
 // Usage
 @import "@{themes}/variable.less";
 
-pre {
-    white-space: pre-wrap;       /* Since CSS 2.1 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
-}
-
 //.main - .ttitle-div(div), .tcontent-div, .tdetail-div, .answerForm(form), .tanswer(div)
-.ttitle-div{width:100%; box-sizing:border-box; .section-border();  padding:10px; background-color: white;}
-.tcontent-div{width:100%; box-sizing:border-box; background-color: white; padding:20px; border-top: 2px solid @main;}
-.tdetail-div{width:100%; box-sizing:border-box; .section-border(); background-color: white; padding:10px 20px; border-top:2px solid @main; margin-bottom: @marginbottom-mbl*2;}
+.ttitle-div{width:100%; .section-border();  padding:10px; background-color: white;}
+.tcontent-div{width:100%; background-color: white; padding:20px; border-top: 1px solid @main;}
+.tdetail-div{width:100%; .section-border(); background-color: white; padding:10px 20px; border-top:1px solid @main; margin-bottom: @marginbottom-mbl*2;}
 .answerForm{width:95%; margin: 10px auto @marginbottom-mbl auto;}
-.tanswer{width:100%; background-color:@bgcolor2; margin:0px; margin-bottom: @marginbottom-mbl; box-sizing: border-box;.section-border();}
+.tanswer{width:100%; background-color: white; margin:0px; margin-bottom: @marginbottom-mbl; .section-border();}
 
 //.ttitle-div(div) - span
 .ttitle-div span{color:@font-color1; font-size: 16px; text-align: justify; margin-bottom: 10px;}
-.ttitle-div span:first-child{color:@main; font-size: 16px; text-align: justify; margin-bottom: 10px;}
+.ttitle-div span:first-child{color:@main; font-size: 22px; text-align: justify; margin-bottom: 10px;}
+.ttitle-div dd{margin-top: 5px;}
 
 //.tcontent-div(div) - .warn(p), .content(p), .tlike(div), .tlikeButton(button)
 .warn{display:block; width:100%; text-align: right; padding:0;}
@@ -33,7 +26,7 @@ pre {
 .tdetail-div p{color:@font-color1; font-size: 12px; margin-bottom: 5px;}
 .edit{float:right; color:@main;}
 //.warn(p) - .warnButton(button)
-.twarnButton{float:right; background-color: @main2; border:0px; border-radius: 13px; height:13px; width:13px; text-align: center;}
+.twarnButton{border:0px; width:2%;}
 
 //.answerForm - .taInput(textarea), .taInputButton(button)
 .taInput{width:80%; padding:5px; margin:0 auto; border: 1px solid @main; height:70px; border: 1px solid @main; box-sizing: border-box; font-size: 12px;}
@@ -75,6 +68,10 @@ pre {
 .tacomment-dd{font-size: 10px; font-style: italic;}
 
 .tacWarnButton{float:right; background-color: @main2; border:0px; border-radius: 13px; height:13px; width:13px; text-align: center;}
+
+.trashImage{width:8%;}
+.warnImage{width:100%;}
+.likeImage{width:100%;}
 
 
 /*for bigger windows*/
