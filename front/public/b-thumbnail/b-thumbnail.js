@@ -54,8 +54,6 @@ class BeritamusThumbnail extends HTMLElement {
                     }
 
                 }
-
-
                 // if(img.height <= img.width){
                 //     if(img.className == 'rotate090' || img.className =='rotate270'){ //가로가 세로가 됨. 가로를 높이에 맞춤
                 //         div.style.height = this.dl.offsetHeight + 'px';

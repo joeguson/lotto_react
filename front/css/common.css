@@ -48,8 +48,8 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-.bottom-border {
-  border-bottom: 1px solid #5781a6;
+.top-border {
+  border-top: 1px solid #0f4c81;
 }
 * {
   font-family: 'Lato', sans-serif;

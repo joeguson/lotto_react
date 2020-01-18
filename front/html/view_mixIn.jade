@@ -90,21 +90,13 @@ mixin likeButton2(type, likeObject, sessionId, id)
             button(class="pctalikeButton" type="submit" value=topic.id + '/'+id+'/0' onclick="taLike(this);")
                 img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
 
-
-
-
-
-
-
-
-
 mixin basicPInfo(author, date, view, comAnsCount)
     - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' comments'
-    dd.basicInfo #{basicInfo}
+    dd.abasicInfo #{basicInfo}
     
 mixin basicTInfo(author, date, view, comAnsCount)
     - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' answers'
-    dd.basicInfo #{basicInfo}
+    dd.abasicInfo #{basicInfo}
             
 
     

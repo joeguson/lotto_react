@@ -37,8 +37,8 @@ block commentOrAnswer
 block ulComAndAns
     if topic.comments.length > 0
         each c in topic.comments
-            li.liComAndAns
-                dl.dlComAndAns(id='pc/' + topic.id + '/' + c.id)
+            li.liComAndAns(id='pc/' + topic.id + '/' + c.id)
+                dl.dlComAndAns
                     - var commentStart = '@'+ topic.u_id
                     - var date_result2 = 'by '+c.u_id+' / '+c.date+' / like : '
                     .comAnsStart #{commentStart}
@@ -61,17 +61,17 @@ block ulComAndAns
                         dt.dtPccAndTac
                             pre(class="pccomment-dt") #{ccommentStart}
                         dd.ddPccAndTac #{date_result3}
-script.
-    function pcChecksubmit() {
-        if (pcInput.value.length < 5) {
-            alert('kontennya harus lebih dari 5 alphabet');
-            return false;
-        } else {
-            return true;
+    script.
+        function pcChecksubmit() {
+            if (pcInput.value.length < 5) {
+                alert('kontennya harus lebih dari 5 alphabet');
+                return false;
+            } else {
+                return true;
+            }
         }
-    }
-script(type="text/javascript" src="/js/jsForAllJade.js")
-script(type="text/javascript" src="/js/plikes.js")
+    script(type="text/javascript" src="/js/jsForAllJade.js")
+    script(type="text/javascript" src="/js/plikes.js")
     //- if id2 === c.author
     //-     a(href='/pcedit/' + topic.id + '/' + c.id) Edit
     //-     button(value=c.id onclick ='postDeletePcomment(this)' class="pctaDeleteButton")

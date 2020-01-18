@@ -31,7 +31,9 @@ exports.getImage = function(contentString){
     const endIndex = contentString.indexOf('"', srcIndex+5);
     const endIndex2 = contentString.indexOf('"', rotIndex+7);
     if(imgIndex == -1 || srcIndex == -1 || endIndex == -1) return null;
+
     returnObj.src = contentString.substring(srcIndex + 5, endIndex);
     returnObj.rotate = contentString.substring(rotIndex+7, endIndex2);
+    returnObj.src = returnObj.src.substring(0, returnObj.src.indexOf('images/')+6)+ '/thumbnail'+returnObj.src.substring(returnObj.src.indexOf('images/')+6, endIndex);
     return returnObj;
 };

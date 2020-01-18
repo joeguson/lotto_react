@@ -82,6 +82,7 @@
 }
 .aTtileDt {
   font-weight: bold;
+  font-size: 20px;
 }
 .articleContent {
   width: 100%;
@@ -159,6 +160,7 @@
 }
 .dlPccAndTac {
   margin-left: 10px;
+  padding: 5px;
 }
 .dlPccAndTac:nth-child(odd) {
   background-color: #e7edf2;

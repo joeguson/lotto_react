@@ -51,4 +51,8 @@
 .top-border {
   border-top: 1px solid #0f4c81;
 }
+.articleDetail {
+  border-top: 1px solid #0f4c81;
+  padding-top: 5px;
+}
 /*for bigger windows*/

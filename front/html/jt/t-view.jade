@@ -22,7 +22,7 @@ block article
                 .ptlike(id="tlike")= topic.likes.length
                 if u_id
                     +likeButton(topic.identifier,topic.likes, id2)
-            .tdetail-div
+            .articleDetail
                 +basicTInfo(topic.u_id, topic.date, topic.view, topic.answers.length)
 //- if u_id
 //-     p(class= "ptWarn")
@@ -40,8 +40,8 @@ block commentOrAnswer
 block ulComAndAns
     if topic.answers.length > 0
         each a in topic.answers
-            li.liComAndAns
-                dl.dlComAndAns(id='ta/' + topic.id + '/' + a.id)
+            li.liComAndAns(id='ta/' + topic.id + '/' + a.id)
+                dl.dlComAndAns
                     - var answerStart = '@'+ topic.u_id
                     - var date_result2 = 'by '+ a.u_id + ' / '+a.date+' / like : '
                     .comAnsStart #{answerStart}
@@ -64,17 +64,17 @@ block ulComAndAns
                         dt.dtPccAndTac
                             pre(class="tacomment-dt") #{acommentStart}
                         dd.ddPccAndTac #{date_result3}    
-script.
-    function taChecksubmit() {
-        if (pcInput.value.length < 5) {
-            alert('kontennya harus lebih dari 5 alphabet');
-            return false;
-        } else {
-            return true;
+    script.
+        function taChecksubmit() {
+            if (pcInput.value.length < 5) {
+                alert('kontennya harus lebih dari 5 alphabet');
+                return false;
+            } else {
+                return true;
+            }
         }
-    }
-script(type="text/javascript" src="/js/tlikes.js")
-script(type="text/javascript" src="/js/jsForAllJade.js")
+    script(type="text/javascript" src="/js/tlikes.js")
+    script(type="text/javascript" src="/js/jsForAllJade.js")
 
 //- if id2 === a.author
 //-     a(href='/taedit/' + topic.id + '/' + a.id) Edit

@@ -61,9 +61,13 @@
 }
 .ptlikeButton {
   width: 10%;
+  background: none;
+  border: none;
 }
 .ptlikeImage {
   width: 100%;
+  background: none;
+  border: none;
 }
 .comansForm {
   width: 100%;
@@ -99,7 +103,15 @@
 }
 .pctalikeButton {
   width: 40%;
+  background: none;
+  border: none;
 }
 .pctalikeImage {
   width: 100%;
+  background: none;
+  border: none;
+}
+.abasicInfo {
+  font-size: 12px;
+  margin-bottom: 5px;
 }
