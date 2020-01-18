@@ -4,100 +4,51 @@
 // Usage
 @import "@{themes}/variable.less";
 
-//.pcontent(div) - .warn(p), .content(p), .plike(div), .plikeButton(button)
-.warn{display:block; width:100%; text-align: right; padding:0;}
-.content{margin-bottom: @marginbottom-mbl;}
-
-//.commentForm(form) - #comment(textarea), .comment(input)
-.pcInput{width:80%; padding:5px; margin:0 auto; border: 1px solid @main; height:70px; border: 1px solid @main; font-size: 12px;}
-.pcInputButton{.button(); width: 20%; height:70px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 12px; .border-radius(); float:right;}
-
-//.pview-dl(dl) - .pview-dt(dt), .pview-dd(dd)*2
-.pview-dt{color:@font-color1; font-size: 16px; margin-bottom: 10px;}
-.edit{float:right; text-decoration: none; color:@main;}
 
 
-//.warn(p) - .warnButton(button)
-.pwarnButton{border:0px; width:2%;} 
 
-//.content(div) - .plike(div), .plikeButton(button)
-
-.plikeButton{width:5%; margin:0px auto; display: block; border:none;}
-
-
-//.pcomment-dl(dl) - .pcomment-start(div), .pcomment-dt(dt), .pcomment-dd(dd), .ccommentForm(div), .pccomment-dl(dl)
-.pcomment-start{font-size: 12px; font-weight: bold; background-color: white; margin-bottom: 5px;}
-.pcomment-dt{font-size: 12px; font-weight:300; margin-bottom: 5px; margin-left: 5px;}
-.pcomment-dd{font-size: 12px; font-style: italic; border-bottom: 1px solid lightgray; display: block; background-color: white; margin-bottom: 8px;}
-.pccomment-dl:nth-child(odd){background-color: @mainlightest;}
-
-.trashImage{width:8%;}
-.warnImage{width:100%;}
-.likeImage{width:100%;}
-
-
-//.pcomment-start(div) - a
-.pcomment-start a{float:right;}
-
-//.pcomment-dd - .pclike(span), .pclikeButton(button), .dummy(span), .pcWarnButton(button)
-.pclike{font-size: 14px; color:@likeColor; font-style: italic;}
-.commentButton{float:right;}
-.pclikeButton{background-color: @main2; border:0px; float:right; border-radius: 13px; height:13px; width:13px;}
-.pcWarnButton{background-color: @main2; border:0px; float:right; border-radius: 13px; height:13px; width:13px;}
-.dummy{width:5px; float:right;}
-
-//.ccommentForm - .pccInput(textarea), .pccInputButton(button)
-.pccInput{width:80%; padding:5px; margin:0 auto; border: 1px solid @main; height:40px; font-size: 12px; box-sizing:border-box;}
-.pccInputButton{width: 20%; height: 40px; box-sizing: border-box; font-size: 12px; color: @font-color1; background-color:@button-color; display: inline-block; text-align: center; line-height: 12px; text-decoration: none; border-style: none; border: 1px solid @main; margin: 0px auto 10px auto; .border-radius(); float:right;}
-
-
-//.pccomment-dl - .pccomment-dt(dt), .pccomment-dd(dd)
-.pccomment-dt{font-size: 13px; font-weight:300;}
-.pccomment-dd{font-size: 10px; font-style: italic;}
-
-.pccWarnButton{float:right; background-color: @main2; border:0px; border-radius: 13px; height:13px; width:13px; text-align: center;}
 
 /*for bigger windows*/
 @media (min-width:768px){
-
-    .main{width:75%;}
-    .pcontent{margin-bottom: @marginbottom-com; padding:10px 30px 50px 30px;}
-    .commentForm{width:100%; margin: 0px auto @marginbottom-com auto;}
-    .pcomment{padding:10px; margin-bottom: @marginbottom-com;}
-
-    .pview-dl{padding:20px;}
-
-    .content{font-size: 20px; line-height: 30px; margin-bottom: @marginbottom-com; font-weight:300;}
-    .plike{font-size: 28px; text-align: center; margin: 50px 0px @marginbottom-com 0px; color:@likeColor;}
-    .plikeButton{width:30%; background-color: @likeColor; border-radius: 40px; height:50px; color: white; line-height: 30px; margin:0px auto; display: block;font-size: 20px;}
-
-    .pcomment-ul{padding: 15px; list-style: none;}
-
-    .pview-dt{color:@font-color1; font-size: 24px; margin-bottom: 15px;}
-    .pview-dd{color:@font-color1; font-size: 16px; margin-bottom: 10px;}
-
-    .pwarnButton{font-size: 14px;}
-
-    .pcInput{height:100px; padding:10px; font-size: 14px;}
-    .pcInputButton{height:100px;font-size: 24px; .border-radius(); line-height: 24px;}
-
-    .pcomment-li{margin-bottom: @marginbottom-com;}
-
-    .pcomment-dl{padding:10px 15px;}
-
-    .pcomment-start{font-size: 14px; font-weight: bold; background-color: white; margin-bottom: 10px;}
-    .pcomment-dt{font-size: 16px; font-weight: bold; margin-bottom: 5px;}
-    .pcomment-dd{font-size: 14px;}
-    .pccomment-dl{padding:10px 0 10px 20px; margin:5px;}
-
-    .pclike{font-size: 16px;}
-    .pclikeButton{background-color: @likeColor; color:white; border:0px; border-radius: 5px;}
-    .dummy{float:right; width:10px;}
-    .pcWarnButton{float:right; background-color: @main2; border:0px; border-radius: 5px;}
-
-    .pccInput{width:80%; padding:10px; margin:0 auto; height:60px; font-size: 14px;}
-    .pccInputButton{width: 20%; height: 60px; font-size: 16px; line-height: 16px; margin: 0px auto 15px auto; .border-radius();}
-
-    .pccomment-dt{font-size: 16px; font-weight: bold;}
-    .pccomment-dd{font-size: 12px; font-style: italic;}
+//
+//    .main{width:75%;}
+//    .pcontent{margin-bottom: @marginbottom-com; padding:10px 30px 50px 30px;}
+//    .commentForm{width:100%; margin: 0px auto @marginbottom-com auto;}
+//    .pcomment{padding:10px; margin-bottom: @marginbottom-com;}
+//
+//    .pview-dl{padding:20px;}
+//
+//    .content{font-size: 20px; line-height: 30px; margin-bottom: @marginbottom-com; font-weight:300;}
+//    .plike{font-size: 28px; text-align: center; margin: 50px 0px @marginbottom-com 0px; color:@likeColor;}
+//    .plikeButton{width:30%; background-color: @likeColor; border-radius: 40px; height:50px; color: white; line-height: 30px; margin:0px auto; display: block;font-size: 20px;}
+//
+//    .pcomment-ul{padding: 15px; list-style: none;}
+//
+//    .pview-dt{color:@font-color1; font-size: 24px; margin-bottom: 15px;}
+//    .pview-dd{color:@font-color1; font-size: 16px; margin-bottom: 10px;}
+//
+//    .pwarnButton{font-size: 14px;}
+//
+//    .pcInput{height:100px; padding:10px; font-size: 14px;}
+//    .pcInputButton{height:100px;font-size: 24px; .border-radius(); line-height: 24px;}
+//
+//    .pcomment-li{margin-bottom: @marginbottom-com;}
+//
+//    .pcomment-dl{padding:10px 15px;}
+//
+//    .pcomment-start{font-size: 14px; font-weight: bold; background-color: white; margin-bottom: 10px;}
+//    .pcomment-dt{font-size: 16px; font-weight: bold; margin-bottom: 5px;}
+//    .pcomment-dd{font-size: 14px;}
+//    .pccomment-dl{padding:10px 0 10px 20px; margin:5px;}
+//
+//    .pclike{font-size: 16px;}
+//    .pclikeButton{background-color: @likeColor; color:white; border:0px; border-radius: 5px;}
+//    .dummy{float:right; width:10px;}
+//    .pcWarnButton{float:right; background-color: @main2; border:0px; border-radius: 5px;}
+//
+//    .pccInput{width:80%; padding:10px; margin:0 auto; height:60px; font-size: 14px;}
+//    .pccInputButton{width: 20%; height: 60px; font-size: 16px; line-height: 16px; margin: 0px auto 15px auto; .border-radius();}
+//
+//    .pccomment-dt{font-size: 16px; font-weight: bold;}
+//    .pccomment-dd{font-size: 12px; font-style: italic;}
 }

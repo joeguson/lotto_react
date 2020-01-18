@@ -3,10 +3,6 @@ include ../view_mixIn.jade
 
 block css
     link(rel="stylesheet" href="../css/tandya_view.css" type="text/css")
-    script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/js/likeArticle.js")
-    script(type="text/javascript" src="/js/warnArticle.js")
-    script(type="text/javascript" src="/js/deleteArticle.js")
     
 block nav
     include ./tNavUl.jade
@@ -15,76 +11,80 @@ block submain
     //.ad Advertisement
 
 block article
-    +articleTitle('t', topic.question)
-    +hashtag(topic.hashtags)
-    .articleContent
-        if u_id
-            p(class= "warn")
-                button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningArticle(this);")
-                    img(src="icons/warn.png" class="warnImage")
-        +articleContent(topic.content)
-        .articleLike
-            div.ptlike(id="tlike")= topic.likes.length
-            if u_id
-                +likeButton(topic.identifier,topic.likes, id2)
-        .tdetail-div
-            +basicTInfo(topic.u_id, topic.date, topic.view, topic.answers.length)
-            if id2 == topic.author           
-                a(href='/tedit/' + topic.id class='edit') Edit
-            button(value=topic.id onclick ='deleteTandya(this)' class="deleteButton")
-                img(src="icons/trash.png" class="trashImage")
+    dl.aTtileDl
+        dt.aTtileDt
+            span Q : 
+            span #{topic.question}
+        +hashtag(topic.hashtags)
+        .articleContent
+            +articleContent(topic.content)
+            .articleLike
+                .ptlike(id="tlike")= topic.likes.length
+                if u_id
+                    +likeButton(topic.identifier,topic.likes, id2)
+            .tdetail-div
+                +basicTInfo(topic.u_id, topic.date, topic.view, topic.answers.length)
+//- if u_id
+//-     p(class= "ptWarn")
+//-         button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningArticle(this);")
+//-             img(src="icons/warn.png" class="twarnImage")
+//- if id2 == topic.author           
+//-     a(href='/tedit/' + topic.id class='edit') Edit
+//-     button(value=topic.id onclick ='deleteTandya(this)' class="deleteButton")
+//-         img(src="icons/trash.png" class="trashImage")
 
-block commetOrAnswer
+block commentOrAnswer
     if u_id
         +commentOrAnswer(topic.identifier)
 
-block ulCommentsAndAnswers
+block ulComAndAns
     if topic.answers.length > 0
         each a in topic.answers
-            li.liCommentsAndAnswers
-                dl.dlCommentsAndAnswers(id='ta/' + topic.id + '/' + a.id)
+            li.liComAndAns
+                dl.dlComAndAns(id='ta/' + topic.id + '/' + a.id)
                     - var answerStart = '@'+ topic.u_id
                     - var date_result2 = 'by '+ a.u_id + ' / '+a.date+' / like : '
                     .comAnsStart #{answerStart}
-                        if id2 === a.author
-                            a(href='/taedit/' + topic.id + '/' + a.id) Edit
-                            button(value=a.id onclick ='postDeleteTanswer(this)' class="deleteButton")
-                                img(src="icons/trash.png" class="trashImage")
-                    dt.comAnsStart-dt
+                    dt.dtComAndAns
                         pre(class="tanswer-dt") "#{a.answer}"
-                    dd.comAnsStart-dd #{date_result2}
+                    dd.ddComAndAns #{date_result2}
                         span.comAnsLike(id="tAnswerlikes" + a.id)= a.likes.length
                         if u_id
                             span.comAnsButton
                                 +likeButton2('ta', a.likes, id2, a.id)
                                 span.dummy
-                            button(class="pctaWarnButton" type="submit" value='t/ta/'+a.id onclick="warningArticle(this);")
-                                img(src="icons/warn.png" class="warnImage")
-            .pccOrTac
-                if u_id
-                    textarea(name='acomment' class="pccTacInput" id='tacInput')
-                    input(type='submit' name=a.id onclick="acommentSendAjax(this);" value="komen" class="pccTacInputButton")
-            each acs in a.comments
-                dl(class='dlPccAndTac')
-                    - var acommentStart = '- "'+acs.content+'"'
-                    - var date_result3 = 'by : ' + acs.u_id + ' / '+acs.date
-                    dt.dlPccAndTac-dt
-                        pre(class="tacomment-dt") #{acommentStart}
-                    dd.dlPccAndTac-dd #{date_result3}
-                        if u_id
-                            button(class="pccTacWarnButton" type="submit" value='t/tac/'+acs.id onclick="warningArticle(this);")
-                                img(src="icons/warn.png" class="warnImage")
-                        if id2 == acs.author
-                            button(value=acs.id onclick ='postDeleteTacomment(this)' class="deleteButton")
-                                img(src="icons/trash.png" class="trashImage")
-                            
-    script.
-        function taChecksubmit() {
-            if (pcInput.value.length < 5) {
-                alert('kontennya harus lebih dari 5 alphabet');
-                return false;
-            } else {
-                return true;
-            }
+                .pccOrTac
+                    if u_id
+                        textarea(name='acomment' class="pccTacInput" id='tacInput')
+                        input(type='submit' name=a.id onclick="acommentSendAjax(this);" value="comment" class="pccTacInputButton")
+                each acs in a.comments
+                    dl(class='dlPccAndTac')
+                        - var acommentStart = '- "'+acs.content+'"'
+                        - var date_result3 = 'by : ' + acs.u_id + ' / '+acs.date
+                        dt.dtPccAndTac
+                            pre(class="tacomment-dt") #{acommentStart}
+                        dd.ddPccAndTac #{date_result3}    
+script.
+    function taChecksubmit() {
+        if (pcInput.value.length < 5) {
+            alert('kontennya harus lebih dari 5 alphabet');
+            return false;
+        } else {
+            return true;
         }
-    script(type="text/javascript" src="/js/tlikes.js")
+    }
+script(type="text/javascript" src="/js/tlikes.js")
+script(type="text/javascript" src="/js/jsForAllJade.js")
+
+//- if id2 === a.author
+//-     a(href='/taedit/' + topic.id + '/' + a.id) Edit
+//-     button(value=a.id onclick ='postDeleteTanswer(this)' class="pctaDeleteButton")
+//-         img(src="icons/trash.png" class="pctaDeletemage")
+//- button(class="pctaWarnButton" type="submit" value='t/ta/'+a.id onclick="warningArticle(this);")
+//-     img(src="icons/warn.png" class="warnImage")
+//- if u_id
+//-     button(class="pccTacWarnButton" type="submit" value='t/tac/'+acs.id onclick="warningArticle(this);")
+//-         img(src="icons/warn.png" class="warnImage")
+//- if id2 == acs.author
+//-     button(value=acs.id onclick ='postDeleteTacomment(this)' class="pcctacDeleteButton")
+//-         img(src="icons/trash.png" class="pcctacDeleteButtonImage")

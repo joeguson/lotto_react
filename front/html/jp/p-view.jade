@@ -3,10 +3,6 @@ include ../view_mixIn.jade
 
 block css
     link(rel="stylesheet" href="../css/penobrol_view.css" type="text/css")
-    script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/js/likeArticle.js")
-    script(type="text/javascript" src="/js/warnArticle.js")
-    script(type="text/javascript" src="/js/deleteArticle.js")
 
 block nav
     include ./pNavUl.jade
@@ -15,75 +11,76 @@ block submain
     //.ad Advertisement
 
 block article
-    +articleTitle('p', topic.title)
-    +hashtag(topic.hashtags)
-    if id2 === topic.author
-        button(onclick ='deletePenobrol()' class="deleteButton")
-            img(src="icons/trash.png" class="trashImage")
-        a(href='/pedit/'+topic.id class='edit') edit
-    +basicPInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
-    .articleContent
-        if u_id
-            p(class= "warn")
-                button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningArticle(this);")
-                    img(src="icons/warn.png" class="warnImage")
-        +articleContent(topic.content)
-        .articleLike
-            div.ptlike(id="plike")= topic.likes.length
-            if u_id
-                +likeButton(topic.identifier,topic.likes, id2)
+    dl.aTtileDl
+        dt.aTtileDt #{topic.title}
+        +hashtag(topic.hashtags)
+        +basicPInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
+        .articleContent
+            +articleContent(topic.content)
+            .articleLike
+                .ptlike(id="plike")= topic.likes.length
+                if u_id
+                    +likeButton(topic.identifier,topic.likes, id2)
+//- if id2 === topic.author
+//-     button(onclick ='deletePenobrol()' class="deleteButton")
+//-         img(src="icons/trash.png" class="trashImage")
+//-     a(href='/pedit/'+topic.id class='edit') edit
+//- if u_id
+//-     p(class= "ptWarn")
+//-         button(class="twarnButton" type="submit" value='t/t/'+topic.id onclick="warningArticle(this);")
+//-             img(src="icons/warn.png" class="twarnImage")
 
-block commetOrAnswer
+block commentOrAnswer
     if u_id
         +commentOrAnswer(topic.identifier)
 
-block ulCommentsAndAnswers
+block ulComAndAns
     if topic.comments.length > 0
         each c in topic.comments
-            li.liCommentsAndAnswers
-                dl.dlCommentsAndAnswers(id='pc/' + topic.id + '/' + c.id)
+            li.liComAndAns
+                dl.dlComAndAns(id='pc/' + topic.id + '/' + c.id)
                     - var commentStart = '@'+ topic.u_id
                     - var date_result2 = 'by '+c.u_id+' / '+c.date+' / like : '
                     .comAnsStart #{commentStart}
-                        if id2 === c.author
-                            a(href='/pcedit/' + topic.id + '/' + c.id) Edit
-                            button(value=c.id onclick ='postDeletePcomment(this)' class="deleteButton")
-                                img(src="icons/trash.png" class="trashImage")
-                    dt.comAnsStart-dt
+                    dt.dtComAndAns
                         pre(class="pcomment-dt") "#{c.content}"
-                    dd.comAnsStart-dd #{date_result2}
+                    dd.ddComAndAns #{date_result2}
                         span.comAnsLike(id="pCommentlikes" + c.id)= c.likes.length
                         if u_id
                             span.comAnsButton
                                 +likeButton2('pc',c.likes, id2, c.id)
                                 span.dummy
-                            button(class="pctaWarnButton" type="submit" value='p/pc/'+ c.id onclick="warningArticle(this);")
-                                img(src="icons/warn.png" class="warnImage")
-            .pccOrTac
-                if u_id    
-                    textarea(name='ccomment' class="pccTacInput" id='pccInput')
-                    input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="comment" class="pccTacInputButton")
-            each ccs in c.comments
-                dl(class='dlPccAndTac')
-                    - var ccommentStart = '- "'+ccs.content+'"'
-                    - var date_result3 = 'by ' + ccs.u_id + ' / '+ ccs.date
-                    dt.dlPccAndTac-dt
-                        pre(class="pccomment-dt") #{ccommentStart}
-                    dd.dlPccAndTac-dd #{date_result3}
-                        if u_id
-                            button(class="pccTacWarnButton" type="submit" value='p/pcc/'+ccs.id  onclick="warningArticle(this);")
-                                img(src="icons/warn.png" class="warnImage")
-                        if id2 == ccs.author
-                            button(value=ccs.id onclick ='postDeletePccomment(this)' class="deleteButton")
-                                img(src="icons/trash.png" class="trashImage")
-    script.
-        function pcChecksubmit() {
-            if (pcInput.value.length < 5) {
-                alert('kontennya harus lebih dari 5 alphabet');
-                return false;
-            } else {
-                return true;
-            }
+                .pccOrTac
+                    if u_id    
+                        textarea(name='ccomment' class="pccTacInput" id='pccInput')
+                        input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="comment" class="pccTacInputButton")
+                each ccs in c.comments
+                    dl(class='dlPccAndTac')
+                        - var ccommentStart = '- "'+ccs.content+'"'
+                        - var date_result3 = 'by ' + ccs.u_id + ' / '+ ccs.date
+                        dt.dtPccAndTac
+                            pre(class="pccomment-dt") #{ccommentStart}
+                        dd.ddPccAndTac #{date_result3}
+script.
+    function pcChecksubmit() {
+        if (pcInput.value.length < 5) {
+            alert('kontennya harus lebih dari 5 alphabet');
+            return false;
+        } else {
+            return true;
         }
-    script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/js/plikes.js")
+    }
+script(type="text/javascript" src="/js/jsForAllJade.js")
+script(type="text/javascript" src="/js/plikes.js")
+    //- if id2 === c.author
+    //-     a(href='/pcedit/' + topic.id + '/' + c.id) Edit
+    //-     button(value=c.id onclick ='postDeletePcomment(this)' class="pctaDeleteButton")
+    //-         img(src="icons/trash.png" class="pctaDeletemage")
+    //- button(class="pctaWarnButton" type="submit" value='p/pc/'+ c.id onclick="warningArticle(this);")
+    //-     img(src="icons/warn.png" class="warnImage")
+    //- if u_id
+    //-     button(class="pccTacWarnButton" type="submit" value='p/pcc/'+ccs.id  onclick="warningArticle(this);")
+    //-         img(src="icons/warn.png" class="warnImage")
+    //- if id2 == ccs.author
+    //-     button(value=ccs.id onclick ='postDeletePccomment(this)' class="pcctacDeleteButton")
+    //-         img(src="icons/trash.png" class="pcctacDeleteImage")

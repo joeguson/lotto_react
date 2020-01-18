@@ -48,11 +48,8 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-.topBottom-border {
-  border-top: 1px solid #5781a6;
-  border-bottom: 1px solid #5781a6;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+.top-border {
+  border-top: 1px solid #0f4c81;
 }
 .login {
   width: 85%;

@@ -48,11 +48,8 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-.topBottom-border {
-  border-top: 1px solid #5781a6;
-  border-bottom: 1px solid #5781a6;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+.top-border {
+  border-top: 1px solid #0f4c81;
 }
 .article {
   width: 100%;
@@ -61,6 +58,11 @@
   background-color: white;
   padding: 10px;
   word-break: break-all;
+  margin-bottom: 10px;
+}
+.commentOrAnswer {
+  width: 100%;
+  margin-bottom: 10px;
 }
 .comAns {
   width: 100%;
@@ -71,53 +73,33 @@
   padding: 5px;
   margin-bottom: 10px;
 }
-.title {
-  width: 100%;
-}
-.content {
-  width: 100%;
-}
-.commentOrAnswer {
-  width: 95%;
-  margin: 0px auto 10px auto;
-}
-.ulCommentsAndAnswers {
+.ulComAndAns {
   padding: 5px;
   list-style: none;
 }
-.dlTitle {
+.aTtileDl {
   width: 100%;
 }
-.dttile {
-  width: 100%;
+.aTtileDt {
+  font-weight: bold;
 }
 .articleContent {
   width: 100%;
-  margin-bottom: 10px;
-  background-color: white;
+  padding: 0px;
   text-align: justify;
-  padding: 8px;
-  border-top: 1px solid #5781a6;
-  border-bottom: 1px solid #5781a6;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-top: 1px solid #0f4c81;
 }
-.contentLike {
-  font-size: 24px;
+.articleLike {
+  width: 100%;
   text-align: center;
-  margin-bottom: 10px;
+  font-size: 24px;
   color: #c91818;
 }
-.liCommentsAndAnswers {
+.liComAndAns {
   width: 100%;
   background-color: white;
-  border-top: 1px solid #5781a6;
-  border-bottom: 1px solid #5781a6;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-.dlCommentsAndAnswers {
-  padding: 5px 10px;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
 }
 .pccOrTac {
   width: 100%;
@@ -126,5 +108,67 @@
 }
 .dlPccAndTac {
   margin-left: 10px;
+}
+.dlComAndAns {
+  padding: 5px 8px;
+}
+.comAnsStart {
+  font-size: 14px;
+}
+.dtComAndAns {
+  font-size: 14px;
+}
+.ddComAndAns {
+  font-size: 12px;
+}
+.comAnsLike {
+  font-size: 16px;
+  color: #c91818;
+}
+.comAnsButton {
+  float: right;
+  text-align: right;
+}
+.pccOrTac {
+  width: 100%;
+  text-align: right;
+  margin: 5px 0px;
+}
+.pccTacInput {
+  width: 80%;
+  padding: 5px;
+  margin: 0 auto;
+  border: 1px solid #0f4c81;
+  height: 40px;
+  font-size: 12px;
+}
+.pccTacInputButton {
+  width: 20%;
+  height: 40px;
+  font-size: 12px;
+  color: white;
+  background-color: #0f4c81;
+  display: inline-block;
+  text-align: center;
+  line-height: 12px;
+  text-decoration: none;
+  border-style: none;
+  border: 1px solid #0f4c81;
+  margin: 0px auto 10px auto;
+  float: right;
+}
+.dlPccAndTac {
+  margin-left: 10px;
+}
+.dlPccAndTac:nth-child(odd) {
+  background-color: #e7edf2;
+}
+.dtPccAndTac {
+  font-size: 13px;
+  font-weight: 300;
+}
+.ddPccAndTac {
+  font-size: 10px;
+  font-style: italic;
 }
 /*for bigger windows*/

@@ -1,20 +1,11 @@
-mixin articleTitle(type, titleQuest)
-    dl.articleTitleDl
-        if(type =='p')
-            dt.articleTitleDt #{titleQuest}
-        else
-            dt.articleTitleDt 
-                span Q : 
-                span #{titleQuest}
-
 mixin hashtag(hashtags)
     if(hashtags.length > 0)
-        dd.viewHashtag
+        dd.aHashtag
             - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
             a #{hashtags}
 
 mixin articleContent(content)
-    iframe(id="content" class="content" style="border: none;")
+    iframe(id="content" class="aContent" style="border: none;")
     script.
         var iframe = document.getElementById("content");
         iframe.width = "100%";
@@ -38,27 +29,6 @@ mixin articleContent(content)
                 i.width = w;
             };
         }
-
-mixin commentOrAnswer(type)
-    if(type == 't')
-        form(action='tandya/' + topic.id method='post' class='answerForm' onsubmit='return taChecksubmit();')
-            textarea(name='answer' id="answer" class="taInput")
-            input(type='submit' value='answer' class="taInputButton" id='taInputButton')
-    else
-        form(action='pcomment/' + topic.id method='post' class='commentForm' onsubmit='return pcChecksubmit();')
-            textarea(name='comment' class="pcInput" id='pcInput')
-            input(type='submit' value='comment' class="pcInputButton" id="pcInputButton")
-
-mixin basicPInfo(author, date, view, comAnsCount)
-    - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' comments'
-    dd.basicInfo #{basicInfo}
-    
-mixin basicTInfo(author, date, view, comAnsCount)
-    - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' answers'
-    dd.basicInfo #{basicInfo}
-
-
-            
 mixin likeButton(type ,likeObject, sessionId)
     -var likeChecker = function(likeObject, sessionId){
     -    for(var i of likeObject){
@@ -69,28 +39,32 @@ mixin likeButton(type ,likeObject, sessionId)
     -     return false;
     -}
     -var result = likeChecker(likeObject, sessionId);
-    -if(type == 'p'){
-        -if(result){
-            button(class="plikeButton" type="submit" value=topic.id + '/0/1' onclick="pLike(this);")
-                img(src="icons/nocap.png" class="likeImage" id="likeImage")
-        -}
-        -else{
-            button(class="plikeButton" type="submit" value=topic.id + '/0/0' onclick="pLike(this);")
-                img(src="icons/cap.png" class="likeImage" id="likeImage")
-        -}
-    -}
-    -else{
-        -if(result){
-            button(class="tlikeButton" type="submit" value=topic.id + '/0/1' onclick="tLike(this);")
-                img(src="icons/nocap.png" class="likeImage" id="likeImage")
-        -}
-        -else{
-            button(class="tlikeButton" type="submit" value=topic.id + '/0/0' onclick="tLike(this);")
-                img(src="icons/cap.png" class="likeImage" id="likeImage")
-        -}
-    -}
-    
-    
+    if(type == 'p')
+        if(result)
+            button(class="ptlikeButton" type="submit" value=topic.id + '/0/1' onclick="pLike(this);")
+                img(src="icons/nocap.png" class="ptlikeImage" id="likeImage")
+        else
+            button(class="ptlikeButton" type="submit" value=topic.id + '/0/0' onclick="pLike(this);")
+                img(src="icons/cap.png" class="ptlikeImage" id="likeImage")
+    else
+        if(result)
+            button(class="ptlikeButton" type="submit" value=topic.id + '/0/1' onclick="tLike(this);")
+                img(src="icons/nocap.png" class="ptlikeImage" id="likeImage")
+
+        else
+            button(class="ptlikeButton" type="submit" value=topic.id + '/0/0' onclick="tLike(this);")
+                img(src="icons/cap.png" class="ptlikeImage" id="likeImage")
+
+mixin commentOrAnswer(type)
+    if(type == 't')
+        form(action='tandya/' + topic.id method='post' class='comansForm' onsubmit='return taChecksubmit();')
+            textarea(name='answer' id="answer" class="pctaInput")
+            input(type='submit' value='answer' class="pctaInputButton" id='taInputButton')
+    else
+        form(action='pcomment/' + topic.id method='post' class='comansForm' onsubmit='return pcChecksubmit();')
+            textarea(name='comment' id='pcInput' class="pctaInput")
+            input(type='submit' value='comment' class="pctaInputButton" id="pcInputButton")
+
 mixin likeButton2(type, likeObject, sessionId, id)
     -var likeChecker = function(likeObject, sessionId){
     -    for(var i of likeObject){
@@ -101,24 +75,37 @@ mixin likeButton2(type, likeObject, sessionId, id)
     -     return false;
     -}
     -var result = likeChecker(likeObject, sessionId);
+    if(type == 'pc')
+        if(result)
+            button(class="pctalikeButton" type="submit" value=topic.id +'/'+id+'/1' onclick="pcLike(this);")
+                img(src="icons/nocap.png" class="pctalikeImage" id="likeImage")
+        else
+            button(class="pctalikeButton" type="submit" value=topic.id +'/'+id+'/0' onclick="pcLike(this);")
+                img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
+    else
+        if(result)
+            button(class="pctalikeButton" type="submit" value=topic.id + '/'+id+'/1' onclick="taLike(this);")
+                img(src="icons/nocap.png" class="pctalikeImage" id="likeImage")
+        else
+            button(class="pctalikeButton" type="submit" value=topic.id + '/'+id+'/0' onclick="taLike(this);")
+                img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
 
-    -if(type == 'pc'){
-        -if(result){
-            button(class="pclikeButton" type="submit" value=topic.id +'/'+id+'/1' onclick="pcLike(this);")
-                img(src="icons/nocap.png" class="likeImage" id="likeImage")
-        -}
-        -else{
-            button(class="pclikeButton" type="submit" value=topic.id +'/'+id+'/0' onclick="pcLike(this);")
-                img(src="icons/cap.png" class="likeImage" id="likeImage")
-        -}
-    -}
-    -else{
-        -if(result){
-            button(class="talikeButton" type="submit" value=topic.id + '/'+id+'/1' onclick="taLike(this);")
-                img(src="icons/nocap.png" class="likeImage" id="likeImage")
-        -}
-        -else{
-            button(class="talikeButton" type="submit" value=topic.id + '/'+id+'/0' onclick="taLike(this);")
-                img(src="icons/cap.png" class="likeImage" id="likeImage")
-        -}
-    -}
+
+
+
+
+
+
+
+
+mixin basicPInfo(author, date, view, comAnsCount)
+    - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' comments'
+    dd.basicInfo #{basicInfo}
+    
+mixin basicTInfo(author, date, view, comAnsCount)
+    - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' answers'
+    dd.basicInfo #{basicInfo}
+            
+
+    
+    
