@@ -13,7 +13,7 @@ mixin articleContent(content)
         var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
 
         var cssLink = document.createElement("link") 
-        cssLink.href = "./public/b-editor/__b-editor.css"; 
+        cssLink.href = "./public/b-editor/__b-editor.css";
         cssLink.rel = "stylesheet"; 
         cssLink.type = "text/css"; 
         page.head.appendChild(cssLink);
@@ -97,6 +97,8 @@ mixin basicPInfo(author, date, view, comAnsCount)
 mixin basicTInfo(author, date, view, comAnsCount)
     - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' answers'
     dd.abasicInfo #{basicInfo}
+
+- '≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡'
             
 
     

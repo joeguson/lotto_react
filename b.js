@@ -30,6 +30,7 @@ const s3 = new AWS.S3({
 
 app.use(useragent.express());
 app.use(favicon(path.join(__dirname,'./info', 'beritamus logo.png')));
+
 const pool = mysql2.createPool(
   {
     host     : db_config.host,
@@ -38,6 +39,7 @@ const pool = mysql2.createPool(
     database : db_config.database
   }
 );
+
 app.use(session({
     secret : 'hithere@#',
     resave: false,

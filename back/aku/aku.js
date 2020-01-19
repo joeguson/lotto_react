@@ -6,6 +6,7 @@ var dbcon = require('../../db/dbconnection');
 var parser = require('../../db/parser.js');
 var jsForBack = require('../../back/jsForBack.js');
 var db_config =require('../../config.json');
+var userDao = require('../../db/b-dao/userDao')
 var transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
@@ -18,6 +19,114 @@ var transporter = nodemailer.createTransport({
     pass: 'GoBeritamus$$'          // gmail 계정의 비밀번호를 입력
   }
 });
+
+exports.login = function(req, res){
+    //login이 이뤄질때
+    var u_id = req.body.u_id;
+    var u_pw = req.body.u_pw;
+    async function userLogin(){
+        var result = await userDao.userDao.credentialMatch(u_id, u_pw);
+        if(result[0]){
+            if(parseInt(result[0].verify) == 1){
+                req.session.u_id = u_id;
+                req.session.id2 = result[0].id;
+                req.session.save(function(){
+                    res.redirect('/aku');
+                });
+            }else{
+                res.render('./ja/aku', {"message":"this email is not verified"});
+            }
+        }else{
+            res.render('./ja/aku', {"message":"please check your id or password"});
+        }
+    }
+    userLogin();
+
+    // conn.conn.query(sql2, [u_id], function(err, counts, fields){
+    //     if(counts[0].u_id){ //만약 로그인 하려는 id가 있다면
+    //         conn.conn.query(sql,[u_id], function(err, users, fields){ //회원의 모든 정보를 불러온다
+    //             if(err){console.log(err);}
+    //             else{
+    //                 if(users[0].verify === 1){
+    //                     if(users[0].u_id == u_id && users[0].u_pw == u_pw){ //아이디와 비밀번호가 맞다면
+    //                         conn.conn.query(sql3, [u_id], function(err, login, fields){ //update를 한 후에 정보를 넘김
+    //                             req.session.u_id = u_id;
+    //                             req.session.id2 = users[0].id;
+    //                             req.session.save(function(){
+    //                                 res.redirect('/aku');
+    //                             });
+    //                         });
+    //                     }
+    //                     else{
+    //                     res.render('./ja/aku', {"message":"tolong cek Password Anda"});
+    //                     }
+    //                 }
+    //                 else{
+    //                     res.render('./ja/aku', {"message":"email Anda belum diverifikasi"});
+    //                 }
+    //             }
+    //         });
+    //     }
+    //     else{//만약 로그인 하려는 id가 없다면
+    //         res.render('./ja/aku', {"message":"ID ini tidak ada"});
+    //     }
+    // });
+};
+
+exports.welcome = function(req, res){
+  if(req.session.u_id){
+    var userInfo = [];
+    var userPenobrol = [];
+    var userTandya = [];
+    var totalLikes = {
+        "penobrol" : 0,
+        "tandya" : 0,
+        "comment" : 0,
+        "answer" : 0
+    };
+
+    var sql1 = 'SELECT * FROM users WHERE u_id= ?';
+    var sql2 = 'SELECT * from penobrol WHERE author = ?  ORDER BY date DESC';
+    var sql3 = 'SELECT * from tandya  WHERE author = ? ORDER BY date DESC';
+    var sql4 = 'select count(p_id) as count from p_com where p_id = ?';
+    var sql5 = 'select count(t_id) as count from t_ans where t_id = ?';
+    var sql6 = 'SELECT * FROM penobrol_hashtag where p_id = ?';
+    var sql7 = 'SELECT * FROM tandya_hashtag where t_id = ?';
+    var sql8 = 'select count(p_id) as count from p_like where p_id = ?';
+    var sql9 = 'select count(t_id) as count from t_like where t_id = ?';
+    var sql10 = 'select count(c.p_id) as total from(select p.id, p.author, pl.p_id from penobrol as p inner join p_like as pl on p.id = pl.p_id where p.author = ?) as c';
+    var sql11 = 'select count(c.t_id) as total from(select t.id, t.author, tl.t_id from tandya as t inner join t_like as tl on t.id = tl.t_id where t.author = ?) as c';
+    var sql12 = 'select count(c.pc_id) as total from(select p.id, p.author, pl.pc_id from p_com as p inner join pc_like as pl on p.id = pl.pc_id where p.author = ?) as c';
+    var sql13 = 'select count(c.ta_id) as total from(select t.id, t.author, tl.ta_id from t_ans as t inner join ta_like as tl on t.id = tl.ta_id where t.author = ?) as c';
+
+    async function getUserRecord(){
+        userInfo = await dbcon.twoArg(sql1, req.session.u_id);
+        userPenobrol = (await dbcon.twoArg(sql2, userInfo[0].id)).map(parser.parseFrontPenobrol);
+        userTandya = (await dbcon.twoArg(sql3, userInfo[0].id)).map(parser.parseFrontTandya);
+        for(var i = 0; i<userPenobrol.length;i++){
+            userPenobrol[i].commentCount = (await dbcon.twoArg(sql4, userPenobrol[i].id))[0].count;
+            userPenobrol[i].hashtags = (await dbcon.twoArg(sql6, userPenobrol[i].id)).map(parser.parseHashtagP);
+            userPenobrol[i].likeCount = (await dbcon.twoArg(sql8, userPenobrol[i].id))[0].count;
+        }
+        for(var j = 0; j<userTandya.length;j++){
+            userTandya[j].answerCount = (await dbcon.twoArg(sql5, userTandya[j].id))[0].count;
+            userTandya[j].hashtags = (await dbcon.twoArg(sql7, userTandya[j].id)).map(parser.parseHashtagT);
+            userTandya[j].likeCount = (await dbcon.twoArg(sql9, userTandya[j].id))[0].count;
+        }
+        totalLikes.penobrol = (await dbcon.twoArg(sql10, userInfo[0].id))[0].total;
+        totalLikes.tandya = (await dbcon.twoArg(sql11, userInfo[0].id))[0].total;
+        totalLikes.comment = (await dbcon.twoArg(sql12, userInfo[0].id))[0].total;
+        totalLikes.answer = (await dbcon.twoArg(sql13, userInfo[0].id))[0].total;
+        res.render('./ja/aku', {user:userInfo[0], penobrols:userPenobrol, tandyas:userTandya, totalLikes:totalLikes});
+    }
+    getUserRecord();
+  }
+  else{
+    res.render('./ja/aku');
+  }
+};
+
+
 
 
 exports.getFindMyIdPw =function(req, res){
@@ -180,97 +289,6 @@ exports.checkUserId = function(req, res){
     });
 }
 
-exports.login = function(req, res){
-    //login이 이뤄질때
-    var u_id = req.body.u_id;
-    var u_pw = req.body.u_pw;
-    var sql = 'SELECT * FROM users WHERE u_id = ?';
-    var sql2 = 'SELECT COUNT(u_id) AS u_id from users WHERE u_id = ?';
-    var sql3 = 'UPDATE users SET last_login = NOW() WHERE u_id = ?';
-    conn.conn.query(sql2, [u_id], function(err, counts, fields){
-        if(counts[0].u_id){ //만약 로그인 하려는 id가 있다면
-            conn.conn.query(sql,[u_id], function(err, users, fields){ //회원의 모든 정보를 불러온다
-                if(err){console.log(err);}
-                else{
-                    if(users[0].verify === 1){
-                        if(users[0].u_id == u_id && users[0].u_pw == u_pw){ //아이디와 비밀번호가 맞다면
-                            conn.conn.query(sql3, [u_id], function(err, login, fields){ //update를 한 후에 정보를 넘김
-                                req.session.u_id = u_id;
-                                req.session.id2 = users[0].id;
-                                req.session.save(function(){
-                                    res.redirect('/aku');
-                                });
-                            });
-                        }
-                        else{
-                        res.render('./ja/aku', {"message":"tolong cek Password Anda"});
-                        }
-                    }
-                    else{
-                        res.render('./ja/aku', {"message":"email Anda belum diverifikasi"});
-                    }
-                }
-            });
-        }
-        else{//만약 로그인 하려는 id가 없다면
-            res.render('./ja/aku', {"message":"ID ini tidak ada"});
-        }
-    });
-};
-
-exports.welcome = function(req, res){
-  if(req.session.u_id){
-    var userInfo = [];
-    var userPenobrol = [];
-    var userTandya = [];
-    var totalLikes = {
-        "penobrol" : 0,
-        "tandya" : 0,
-        "comment" : 0,
-        "answer" : 0
-    };
-
-    var sql1 = 'SELECT * FROM users WHERE u_id= ?';
-    var sql2 = 'SELECT * from penobrol WHERE author = ?  ORDER BY date DESC';
-    var sql3 = 'SELECT * from tandya  WHERE author = ? ORDER BY date DESC';
-    var sql4 = 'select count(p_id) as count from p_com where p_id = ?';
-    var sql5 = 'select count(t_id) as count from t_ans where t_id = ?';
-    var sql6 = 'SELECT * FROM penobrol_hashtag where p_id = ?';
-    var sql7 = 'SELECT * FROM tandya_hashtag where t_id = ?';
-    var sql8 = 'select count(p_id) as count from p_like where p_id = ?';
-    var sql9 = 'select count(t_id) as count from t_like where t_id = ?';
-    var sql10 = 'select count(c.p_id) as total from(select p.id, p.author, pl.p_id from penobrol as p inner join p_like as pl on p.id = pl.p_id where p.author = ?) as c';
-    var sql11 = 'select count(c.t_id) as total from(select t.id, t.author, tl.t_id from tandya as t inner join t_like as tl on t.id = tl.t_id where t.author = ?) as c';
-    var sql12 = 'select count(c.pc_id) as total from(select p.id, p.author, pl.pc_id from p_com as p inner join pc_like as pl on p.id = pl.pc_id where p.author = ?) as c';
-    var sql13 = 'select count(c.ta_id) as total from(select t.id, t.author, tl.ta_id from t_ans as t inner join ta_like as tl on t.id = tl.ta_id where t.author = ?) as c';
-
-    async function getUserRecord(){
-        userInfo = await dbcon.twoArg(sql1, req.session.u_id);
-        userPenobrol = (await dbcon.twoArg(sql2, userInfo[0].id)).map(parser.parseFrontPenobrol);
-        userTandya = (await dbcon.twoArg(sql3, userInfo[0].id)).map(parser.parseFrontTandya);
-        for(var i = 0; i<userPenobrol.length;i++){
-            userPenobrol[i].commentCount = (await dbcon.twoArg(sql4, userPenobrol[i].id))[0].count;
-            userPenobrol[i].hashtags = (await dbcon.twoArg(sql6, userPenobrol[i].id)).map(parser.parseHashtagP);
-            userPenobrol[i].likeCount = (await dbcon.twoArg(sql8, userPenobrol[i].id))[0].count;
-        }
-        for(var j = 0; j<userTandya.length;j++){
-            userTandya[j].answerCount = (await dbcon.twoArg(sql5, userTandya[j].id))[0].count;
-            userTandya[j].hashtags = (await dbcon.twoArg(sql7, userTandya[j].id)).map(parser.parseHashtagT);
-            userTandya[j].likeCount = (await dbcon.twoArg(sql9, userTandya[j].id))[0].count;
-        }
-        totalLikes.penobrol = (await dbcon.twoArg(sql10, userInfo[0].id))[0].total;
-        totalLikes.tandya = (await dbcon.twoArg(sql11, userInfo[0].id))[0].total;
-        totalLikes.comment = (await dbcon.twoArg(sql12, userInfo[0].id))[0].total;
-        totalLikes.answer = (await dbcon.twoArg(sql13, userInfo[0].id))[0].total;
-        res.render('./ja/aku', {user:userInfo[0], penobrols:userPenobrol, tandyas:userTandya, totalLikes:totalLikes});
-    }
-    getUserRecord();
-  }
-  else{
-    res.render('./ja/aku');
-  }
-};
-
 exports.getDaftarAuth = function(req, res){
     var email = req.query.email;
     var code = req.query.code;
@@ -298,10 +316,10 @@ exports.getDaftarAuth = function(req, res){
 };
 
 exports.logout = function(req, res){
-  delete req.session.u_id;
-  req.session.save(function(){
-    res.redirect('/aku');
-  });
+    delete req.session.u_id;
+    req.session.save(function(){
+        res.redirect('/aku');
+    });
 };
 
 exports.postDaftar = function(req, res){
@@ -340,5 +358,5 @@ exports.postDaftar = function(req, res){
 };
 
 exports.getDaftar = function(req, res){
-  res.render('./ja/user-add');
+    res.render('./ja/user-add');
 };
