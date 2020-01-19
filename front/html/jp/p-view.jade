@@ -15,6 +15,8 @@ block article
         dt.aTtileDt #{topic.title}
         +hashtag(topic.hashtags)
         +basicPInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
+        if u_id
+            +articlePop(id2, topic.author)
         .articleContent
             +articleContent(topic.content)
             .articleLike
@@ -68,6 +70,21 @@ block ulComAndAns
                 return false;
             } else {
                 return true;
+            }
+        }
+        function myFunction() {
+            document.getElementById("aPopDiv").classList.toggle("show");
+        }
+        window.onclick = function(event) {
+            if (!event.target.matches('.aPopButton')) {
+                var dropdowns = document.getElementsByClassName("aPopDiv");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
             }
         }
     script(type="text/javascript" src="/js/jsForAllJade.js")

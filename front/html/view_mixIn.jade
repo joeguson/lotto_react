@@ -99,5 +99,13 @@ mixin basicTInfo(author, date, view, comAnsCount)
     dd.abasicInfo #{basicInfo}
             
 
+mixin articlePop(loginUser, articleAuthor)
+    .aPop
+        button.aPopButton(onclick="myFunction()") click
+            div.aPopDiv(id='aPopDiv')
+                span(class="aPopMenu" id="myPopup1") warn
+                span(class="aPopMenu" id="myPopup2") edit
+                span(class="aPopMenu" id="myPopup3") delete
+
     
     
