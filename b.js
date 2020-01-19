@@ -22,6 +22,7 @@ var backSystem = require('./back/backsystem')
 var jsForBack = require('./back/jsForBack.js');
 const AWS = require('aws-sdk');
 const imageThumbnail = require('image-thumbnail');
+
 const s3 = new AWS.S3({
     accessKeyId: db_config.AWS_ACCESS_KEY,
     secretAccessKey: db_config.AWS_SECRET_ACCESS_KEY,

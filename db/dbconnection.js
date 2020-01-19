@@ -1,9 +1,10 @@
 var conn = require('../b');
 
-exports.doQuery = function(pool, query, arg) {
+exports.doQuery = function(pool, sql, arg) {
     return new Promise(function(resolve, reject){
         pool.getConnection(function(err, connection) {
-            connection.query(query, arg, function(err, rows) {
+            if(err){console.log(err)}
+            connection.query(sql, arg, function(err, rows) {
                 if(err){console.log(err);}
                 else{
                     resolve(rows);

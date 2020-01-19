@@ -7,8 +7,6 @@ var parser = require('../../db/parser.js');
 var jsForBack = require('../../back/jsForBack.js');
 var fs = require('fs');
 
-
-
 /************FOR PENOBROL************/
 exports.getPenobrol = function (req, res) {
     var sql1 = 'select p.*, u.u_id from penobrol as p join users as u on p.author = u.id order by date desc limit 3';

@@ -1,14 +1,19 @@
-const mysql2 = require('mysql');
-var dbcon = require('../dbconnection');
-const poolConfig = require('../../b');
-const pool = mysql2.createPool(poolConfig);
+const mysql = require('mysql');
+// const poolConfig = require('../../b');
+var db_config =require('../../config.json');
+const poolConfig = {
+    host     : db_config.host,
+    user     : db_config.user,
+    password : db_config.password,
+    database : db_config.database
+};
+const pool = mysql.createPool(poolConfig);
+const dbcon = require('../dbconnection');
 
 exports.userDao = {
     matchCredential: (id, pw) => dbcon.doQuery(
         pool,
-        `SELECT id, verify
-        FROM users
-        WHERE u_id = ? AND u_pw = ?`,
+        `SELECT id, verify FROM users WHERE u_id = ? AND u_pw = ?`,
         [id, pw]
     ),
     updateLoginDate: (id) => dbcon.doQuery(

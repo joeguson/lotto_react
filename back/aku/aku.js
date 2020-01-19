@@ -4,6 +4,8 @@ var key = require('../../info/beritamus-admin-2ff0df5d17ca.json');
 var parser = require('../../db/parser.js');
 var jsForBack = require('../../back/jsForBack.js');
 var userDao = require('../../db/b-dao/userDao')
+var dbcon = require('../../db/dbconnection');
+
 var transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
