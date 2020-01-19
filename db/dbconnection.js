@@ -1,5 +1,19 @@
 var conn = require('../b');
-var pool = require('../b');
+
+exports.doQuery = function(pool, query, arg) {
+    return new Promise(function(resolve, reject){
+        pool.getConnection(function(err, connection) {
+            connection.query(query, arg, function(err, rows) {
+                if(err){console.log(err);}
+                else{
+                    resolve(rows);
+                }
+                connection.release();
+            });
+        })
+    });
+}
+
 
 exports.oneArg = function(query){
     return new Promise(function(resolve, reject){

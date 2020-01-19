@@ -33,11 +33,12 @@ html(lang="id")
             section.main
                 .article
                     block article
-                .commentOrAnswer
-                    block commentOrAnswer
-                .comAns
-                    ul(class='ulComAndAns')
-                        block ulComAndAns
+                if(u_id)
+                    .commentOrAnswer
+                        block commentOrAnswer
+                    .comAns
+                        ul(class='ulComAndAns')
+                            block ulComAndAns
             section.footer
                 block footer
                     p contact : admin@beritamus.com
