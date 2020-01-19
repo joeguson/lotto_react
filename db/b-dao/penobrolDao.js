@@ -3,7 +3,7 @@ var dbcon = require('../dbconnection');
 const poolConfig = require('../../b');
 const pool = mysql2.createPool(poolConfig);
 
-exports.userDao = {
+exports.penobrolDao = {
     matchCredential: (id, pw) => dbcon.doQuery(
         pool,
         `SELECT id, verify

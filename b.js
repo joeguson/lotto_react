@@ -31,14 +31,12 @@ const s3 = new AWS.S3({
 app.use(useragent.express());
 app.use(favicon(path.join(__dirname,'./info', 'beritamus logo.png')));
 
-const pool = mysql2.createPool(
-  {
+const poolConfig = {
     host     : db_config.host,
     user     : db_config.user,
     password : db_config.password,
     database : db_config.database
-  }
-);
+};
 
 app.use(session({
     secret : 'hithere@#',
@@ -81,8 +79,8 @@ exports.app = app;
 exports.router = router;
 exports.conn = conn;
 exports.s3 = s3;
-exports.pool = pool;
 exports.sch = schedule;
+exports.poolConfig = poolConfig;
 
 var todayTotal = 0;
 var todayCount = 0;
