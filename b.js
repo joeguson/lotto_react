@@ -14,12 +14,6 @@ var schedule = require('node-schedule');
 var db_config =require('./config.json');
 var fs = require('fs');
 var useragent = require('express-useragent');
-var penobrol = require('./back/penobrol/penobrol');
-var tandya = require('./back/tandya/tandya');
-var aku = require('./back/aku/aku');
-var cari = require('./back/cari/cari');
-var backSystem = require('./back/backsystem')
-var jsForBack = require('./back/jsForBack.js');
 const AWS = require('aws-sdk');
 const imageThumbnail = require('image-thumbnail');
 
@@ -31,13 +25,6 @@ const s3 = new AWS.S3({
 
 app.use(useragent.express());
 app.use(favicon(path.join(__dirname,'./info', 'beritamus logo.png')));
-
-const poolConfig = {
-    host     : db_config.host,
-    user     : db_config.user,
-    password : db_config.password,
-    database : db_config.database
-};
 
 app.use(session({
     secret : 'hithere@#',
@@ -76,12 +63,26 @@ app.use(cookieParser());
 
 conn.connect();
 
+const poolConfig = {
+    host     : db_config.host,
+    user     : db_config.user,
+    password : db_config.password,
+    database : db_config.database
+};
+
 exports.app = app;
 exports.router = router;
 exports.conn = conn;
 exports.s3 = s3;
 exports.sch = schedule;
 exports.poolConfig = poolConfig;
+
+var penobrol = require('./back/penobrol/penobrol');
+var tandya = require('./back/tandya/tandya');
+var aku = require('./back/aku/aku');
+var cari = require('./back/cari/cari');
+var backSystem = require('./back/backsystem')
+var jsForBack = require('./back/jsForBack.js');
 
 var todayTotal = 0;
 var todayCount = 0;

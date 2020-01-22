@@ -24,11 +24,10 @@ exports.login = function(req, res){
     var u_id = req.body.u_id;
     var u_pw = req.body.u_pw;
     async function userLogin(){
-        var result = await userDao.userDao.matchCredential(u_id, u_pw);
-        var update = await userDao.userDao.updateLoginDate(u_id);
+        var result = await userDao.matchCredential(u_id, u_pw);
+        var update = await userDao.updLoginDate(u_id);
         if(result[0]){
             if(parseInt(result[0].verify) == 1){
-                console.log(result);
                 req.session.u_id = u_id;
                 req.session.id2 = result[0].id;
                 req.session.save(function(){
@@ -56,7 +55,6 @@ exports.welcome = function(req, res){
             "answer" : 0
         };
 
-        var sql1 = 'SELECT * FROM users WHERE u_id= ?';
         var sql2 = 'SELECT * from penobrol WHERE author = ?  ORDER BY date DESC';
         var sql3 = 'SELECT * from tandya  WHERE author = ? ORDER BY date DESC';
         var sql4 = 'select count(p_id) as count from p_com where p_id = ?';
@@ -112,20 +110,19 @@ exports.postChangeUserInfoLogin =function(req, res){
     if(req.session.id2){
         var u_id = req.body.u_id;
         var u_pw = req.body.u_pw;
-        var sql = 'SELECT * FROM users WHERE u_id = ? AND u_pw = ?';
-        conn.conn.query(sql,[u_id, u_pw], function(err, users, fields){ //회원의 모든 정보를 불러온다
-            if(err){console.log(err);}
-            else{
-                if(users[0]){ //아이디와 비밀번호가 맞다면
-                    req.session.valid = true;
-                    res.redirect('/aku/changeUserInfo');
-                }
-                else{
-                    req.session.valid = false;
-                    res.redirect('/aku/changeUserInfo');
-                }
+        async function getUserInfo(){
+            var result = await userDao.matchCredential(req.session.id2);
+            console.log(result);
+            if(result[0]){ //아이디와 비밀번호가 맞다면
+                req.session.valid = true;
+                res.redirect('/aku/changeUserInfo');
             }
-        });
+            else{
+                req.session.valid = false;
+                res.redirect('/aku/changeUserInfo');
+            }
+        }
+        getUserInfo();
     }else{
         res.redirect('/aku')
     }
@@ -134,7 +131,7 @@ exports.postChangeUserInfoLogin =function(req, res){
 exports.getChangeUserInfo =function(req, res){
     if(req.session.id2 && req.session.valid){
         async function getUserInfo(){
-            var result = await userDao.userDao.matchCredential(req.session.id2);
+            var result = await userDao.matchCredential(req.session.id2);
             res.render('./ja/changeUserInfo', {user: result[0]});
         }
         getUserInfo();
