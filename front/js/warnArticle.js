@@ -30,6 +30,7 @@ function makeRequest(url, data) {
 }
 //////////////////////Any Article//////////////////////
 function warningArticle(warning){
+    console.log(warning.value);
     var url = '';
     var warningValue = warning.value.split("/");
     var confirmWarning = function(){

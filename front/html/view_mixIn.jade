@@ -97,17 +97,66 @@ mixin basicPInfo(author, date, view, comAnsCount)
 mixin basicTInfo(author, date, view, comAnsCount)
     - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' answers'
     dd.abasicInfo #{basicInfo}
-
-- '≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡'
             
 
-mixin articlePop(loginUser, articleAuthor)
-    .aPop
-        button.aPopButton(onclick="myFunction()") click
-            div.aPopDiv(id='aPopDiv')
-                span(class="aPopMenu" id="myPopup1") warn
-                span(class="aPopMenu" id="myPopup2") edit
-                span(class="aPopMenu" id="myPopup3") delete
-
+mixin articlePop(type, loginUser, articleAuthor)
+    .aPopButton(onclick="aMenuButton()") ≡
+        .aPopDiv(id='aPopDiv')
+            if(type == 'p')
+                button(class="aPopMenu" value='p/p/'+topic.id onclick="warningArticle(this);")
+                    img(src="./icons/warn.png")
+                if(loginUser == articleAuthor)
+                    button(class="aPopMenu" id="myPopup2")
+                        img(src="./icons/edit.png")
+                    button(class="aPopMenu" onclick ="deletePenobrol()")
+                        img(src="./icons/trash.png")
+            else
+                button(class="aPopMenu" value='t/t/'+topic.id onclick="warningArticle(this);")
+                    img(src="./icons/warn.png")
+                if(loginUser == articleAuthor)
+                    button(class="aPopMenu" id="myPopup2")
+                        img(src="./icons/edit.png")
+                    button(class="aPopMenu" onclick="deleteTandya()")
+                        img(src="./icons/trash.png")
+                    
+mixin caPop(type, loginUser, caAuthor, caId)
+    .caPopButton(onclick="caMenuButton(this)") ≡
+        .caPopDiv(id='caId')
+            if(type == 'p')
+                button(class="caPopMenu" value='p/pc/'+caId onclick="warningArticle(this);")
+                    img(src="./icons/warn.png")
+                if(loginUser == caAuthor)
+                    button(class="caPopMenu" id="myPopup2")
+                        img(src="./icons/edit.png")
+                    button(class="caPopMenu" value=caId onclick="postDeletePcomment(this);")
+                        img(src="./icons/trash.png")
+            else
+                button(class="caPopMenu" value='t/ta/'+caId onclick="warningArticle(this);")
+                    img(src="./icons/warn.png")
+                if(loginUser == caAuthor)
+                    button(class="caPopMenu" id="myPopup2")
+                        img(src="./icons/edit.png")
+                    button(class="caPopMenu" value=caId onclick="postDeleteTanswer(this);")
+                        img(src="./icons/trash.png")
+                        
+mixin pcctacPop(type, loginUser, pcctacAuthor, pcctacId)
+    .pcctacPopButton(onclick="pcctacMenuButton(this)") ≡
+        .pcctacPopDiv(id='pcctacId')
+            if(type == 'p')
+                button(class="pcctacPopMenu" value='p/pcc/'+pcctacId onclick="warningArticle(this);")
+                    img(src="./icons/warn.png")
+                if(loginUser == pcctacAuthor)
+                    button(class="pcctacPopMenu" id="myPopup2")
+                        img(src="./icons/edit.png")
+                    button(class="pcctacPopMenu" value=pcctacId onclick ='postDeletePccomment(this)')
+                        img(src="./icons/trash.png")
+            else
+                button(class="pcctacPopMenu" value='t/tac/'+pcctacId onclick="warningArticle(this);")
+                    img(src="./icons/warn.png")
+                if(loginUser == pcctacAuthor)
+                    button(class="pcctacPopMenu" id="myPopup2")
+                        img(src="./icons/edit.png")
+                    button(class="pcctacPopMenu" value=pcctacId onclick ='postDeleteTacomment(this)')
+                        img(src="./icons/trash.png")
     
     

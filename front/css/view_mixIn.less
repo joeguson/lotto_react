@@ -23,45 +23,59 @@
 .abasicInfo{font-size: 12px; margin-bottom: 5px;}
 
 
-
-.aPopButton {
-  background-color: #3498DB;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
+.aPopButton, .caPopButton, .pcctacPopButton {
+    background-color: none;
+    color: black;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    padding:0px;
+    float:right;
 }
 
-.aPopButton:hover, .aPopButton:focus {
-  background-color: #2980B9;
+.aPopButton:hover, .aPopButton:focus, .caPopButton:hover, .caPopButton:focus, .pcctacPopButton:hover, .pcctacPopButton:focus{
+    background-color: darkgray;
 }
 
-.aPop {
-  position: relative;
-  display: inline-block;
-}
-
-.aPopDiv{
+.aPopDiv, .caPopDiv, .pcctacPopDiv{
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 160px;
+  min-width: 50px;
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
 
-.aPopDiv span {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
+.aPopDiv button {
+    color: black;
+    padding: 5px;
+    text-decoration: none;
+    width:100%;
+    display: block;
 }
 
-.aPop span:hover {background-color: #ddd;}
+.caPopDiv button {
+    color: black;
+    padding: 5px;
+    text-decoration: none;
+    width:100%;
+    display: block;
+}
 
-.show {display: block;}
+.pcctacPopDiv button {
+    color: black;
+    padding: 5px;
+    text-decoration: none;
+    width:100%;
+    display: block;
+}
+
+.aPopButton .aPopDiv button img{width:40%;}
+.caPopButton .caPopDiv button img{width:40%;}
+.pcctacPopButton .pcctacPopDiv button img{width:40%;}
+
+.show {display: block; right: 0;}
 
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {

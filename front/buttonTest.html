@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/view_mixin.css" type="text/css">
+        <script>
+            function aMenuButton() {
+                document.getElementById("aPopDiv").classList.toggle("show");
+            }
+            function caMenuButton() {
+                document.getElementById("caPopDiv").classList.toggle("show");
+            }
+            window.onclick = function(event) {
+                if (!event.target.matches('.aPopButton')) {
+                    var dropdowns = document.getElementsByClassName("aPopDiv");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+                if (!event.target.matches('.caPopButton')) {
+                    var dropdowns = document.getElementsByClassName("caPopDiv");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            }
+            function trash() {
+                console.log('hi1');
+            }
+            function warn() {
+                console.log('hi2');
+            }
+            function edit() {
+                console.log('hi3');
+            }
+            function trash2() {
+                console.log('hi1');
+            }
+            function warn2() {
+                console.log('hi2');
+            }
+            function edit2() {
+                console.log('hi3');
+            }
+        </script>
+    </head>
+    <body>
+        <div class="aPopButton" onclick="aMenuButton()">≡
+            <div class="aPopDiv" id="aPopDiv">
+                <button class="aPopMenu" onclick="trash()">
+                    <img src="./icons/trash.png"/>
+                </button>
+                <button class="aPopMenu" onclick="trash()">
+                    <img src="./icons/trash.png"/>
+                </button>
+                <button class="aPopMenu" onclick="trash()">
+                    <img src="./icons/trash.png"/>
+                </button>
+            </div>
+        </div>
+    </body>
+</html>
