@@ -3,7 +3,8 @@ var nodemailer = require('nodemailer');
 var key = require('../../info/beritamus-admin-2ff0df5d17ca.json');
 var parser = require('../../db/parser.js');
 var jsForBack = require('../../back/jsForBack.js');
-var userDao = require('../../db/b-dao/userDao')
+var userDao = require('../../db/b-dao/userDao');
+var penobrolDao = require('../../db/b-dao/penobrolDao');
 var dbcon = require('../../db/dbconnection');
 
 var transporter = nodemailer.createTransport({
@@ -112,15 +113,8 @@ exports.postChangeUserInfoLogin =function(req, res){
         var u_pw = req.body.u_pw;
         async function getUserInfo(){
             var result = await userDao.matchCredential(req.session.id2);
-            console.log(result);
-            if(result[0]){ //아이디와 비밀번호가 맞다면
-                req.session.valid = true;
-                res.redirect('/aku/changeUserInfo');
-            }
-            else{
-                req.session.valid = false;
-                res.redirect('/aku/changeUserInfo');
-            }
+            req.session.valid = result[0];
+            res.redirect('/aku/changeUserInfo');
         }
         getUserInfo();
     }else{

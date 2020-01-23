@@ -2,7 +2,7 @@ exports.dateMaker = function(date) {
     const tempDate = new Date(date);
     const nowDate = new Date();
     // const year = tempDate.getFullYear();
-    const month = tempDate.getMonth();
+    const month = (tempDate.getMonth()) + 1;
     const day = tempDate.getDate();
     const diff = nowDate - tempDate;
 

@@ -1,32 +1,22 @@
 var conn = require('../../b');
 var parser = require('../../db/parser.js');
 var jsForBack = require('../../back/jsForBack.js');
-var penobrolDao = require('../../db/b-dao/penobrolDao')
+var penobrolDao = require('../../db/b-dao/penobrolDao');
 var s3 = require('../../b');
 const AWS = require('aws-sdk');
-var pool = require('../../b');
-var dbcon = require('../../db/dbconnection');
 var fs = require('fs');
+//delete dbcon after daofy
+var dbcon = require('../../db/dbconnection');
 
 /************FOR PENOBROL************/
 exports.getPenobrol = function (req, res) {
-    var sql1 = 'select p.*, u.u_id from penobrol as p join users as u on p.author = u.id order by date desc limit 3';
-    var sql2 = 'select p.*, u.u_id from penobrol as p join users as u on p.author = u.id ORDER BY score DESC limit 3';
-    var sql3 = 'select * from penobrol_hashtag where p_id = ?';
-    var sql4 = 'select * from penobrol_hashtag where p_id = ?';
-    // var params = { Bucket: config.bucket, Key: req.params.imageId };
-    // s3.getObject(params, function(err, data) {
-    //     res.writeHead(200, {'Content-Type': 'image/jpeg'});
-    //     res.write(data.Body, 'binary');
-    //     res.end(null, 'binary');
-    // });
     async function getOrderedP() {
-        var byDate = (await dbcon.oneArg(sql1)).map(parser.parseFrontPenobrol);
-        var byScore = (await dbcon.oneArg(sql2)).map(parser.parseFrontPenobrol);
+        var byDate = (await penobrolDao.penobrolByDate()).map(parser.parseFrontPenobrol);
+        var byScore = (await penobrolDao.penobrolByScore()).map(parser.parseFrontPenobrol);
         for(const p of byDate)
-            p.hashtags = (await dbcon.twoArg(sql3, p.id)).map(parser.parseHashtagP);
+            p.hashtags = (await penobrolDao.penobrolHashtagById(p.id)).map(parser.parseHashtagP);
         for(const p of byScore)
-            p.hashtags = (await dbcon.twoArg(sql4, p.id)).map(parser.parseHashtagP);
+            p.hashtags = (await penobrolDao.penobrolHashtagById(p.id)).map(parser.parseHashtagP);
         res.render('./jp/p', {
             dateTopics: byDate,
             scoreTopics: byScore,
@@ -40,49 +30,33 @@ exports.getViewPenobrol = function (req, res) {
     var id = req.params.penobrol_no;
     var writer = false;
     var checkId = /^[0-9]+$/;
-    if (checkId.test(id)) {
-        var sql1 = 'SELECT MAX(id) AS max from penobrol';
-        conn.conn.query(sql1, function (err, maxValue, fields) {
-            if (err) {
-                console.error(err);
-            } else if (maxValue[0].max < id) {
+    if(checkId.test(id)){
+        async function getP() {
+            var maxCheck = await penobrolDao.penobrolMaxId();
+            if(maxCheck[0].max < id){
                 res.redirect('/penobrol/');
-            } else {
-                async function getP() {
-                    var sql2 = 'UPDATE penobrol SET p_view = p_view + 1 WHERE id = ?';
-                    var sql3 = 'UPDATE penobrol SET score = ((select count(p_id) from p_com where p_id = ?) *.3 + (select count(p_id) from p_like where p_id = ?)*.7)/p_view * 100 where id = ?';
-                    var sql4 = 'select p.*, u.u_id from penobrol as p join users as u on p.author = u.id where p.id = ?';
-                    var sql5 = 'SELECT p.*, u.u_id FROM p_com as p join users as u on p.author = u.id WHERE p_id = ? order by score desc';
-                    var sql6 = 'SELECT * FROM penobrol_hashtag where p_id = ?';
-                    var sql7 = 'SELECT p.*, u.u_id FROM pc_com as p join users as u on p.author = u.id WHERE p.pc_id = ?';
-                    var sql8 = 'SELECT * FROM p_like WHERE p_id = ?';
-                    var sql9 = 'SELECT * FROM pc_like where pc_id = ?';
-
-                    await dbcon.twoArg(sql2, id);
-                    await dbcon.fourArg(sql3, id, id, id);
-
-                    var penobrol = await dbcon.twoArg(sql4, id);
-                    if(penobrol[0].u_id == req.session.u_id){
-                        writer = true;
-                    }
-                    penobrol = parser.parsePenobrol((await dbcon.twoArg(sql4, id))[0]);
-                    penobrol.comments = (await dbcon.twoArg(sql5, id)).map(parser.parseComment);
-                    penobrol.likes = (await dbcon.twoArg(sql8, id)).map(parser.parsePLike);
-                    penobrol.hashtags = (await dbcon.twoArg(sql6, id)).map(parser.parseHashtagP);
-                    for (const c of penobrol.comments) {
-                        c.comments = (await dbcon.twoArg(sql7, c.id)).map(parser.parseCComment);
-                        c.likes = (await dbcon.twoArg(sql9, c.id)).map(parser.parseCLike);
-                    }
-                    res.render('./jp/p-view', {
-                        topic: penobrol,
-                        u_id: req.session.u_id,
-                        id2: req.session.id2
-                    });
-                }
-                getP();
             }
-        });
-    } else {
+            else{
+                await penobrolDao.updatePenobrolView(id);
+                await penobrolDao.updatePenobrolScore(id, id, id);
+                var penobrol = parser.parsePenobrol((await penobrolDao.penobrolById(id))[0]);
+                penobrol.comments = (await penobrolDao.penobrolComByScore(id)).map(parser.parseComment);
+                penobrol.likes = (await penobrolDao.penobrolLikeById(id)).map(parser.parsePLike);
+                penobrol.hashtags = (await penobrolDao.penobrolHashtagById(id)).map(parser.parseHashtagP);
+                for (const c of penobrol.comments) {
+                    c.comments = (await penobrolDao.penobrolComComById(c.id)).map(parser.parseCComment);
+                    c.likes = (await penobrolDao.penobrolComLikeById(c.id)).map(parser.parseCLike);
+                }
+                res.render('./jp/p-view', {
+                    topic: penobrol,
+                    u_id: req.session.u_id,
+                    id2: req.session.id2
+                });
+            }
+        }
+        getP();
+    }
+    else{
         res.redirect('/penobrol/');
     }
 };
@@ -94,6 +68,7 @@ exports.getAddPenobrol = function (req, res) {
         res.redirect('/penobrol/');
     }
 };
+
 exports.postAddPenobrol = function (req, res) {
     var author = req.session.u_id;
     var content = req.body.content;
