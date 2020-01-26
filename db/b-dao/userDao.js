@@ -29,7 +29,7 @@ exports.userInfoById = (id) => doQuery(
     id
 )
 ////////////////Update////////////////
-exports.upddateLoginDate = (id) => doQuery(
+exports.updateLoginDate = (id) => doQuery(
     `UPDATE users
     SET last_login = NOW()
     WHERE u_id = ?`,

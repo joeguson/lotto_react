@@ -76,26 +76,17 @@ exports.postAddPenobrol = function (req, res) {
     var title = req.body.title;
     var rawhashtags = req.body.hashtag;
     var public = req.body.public;
-    var finalhashtag = jsForBack.finalHashtagMaker(rawhashtags);
-
-    var sql = "INSERT INTO penobrol (author, title, content, public, thumbnail) VALUES ((select id from users where u_id = ?), ?, ?, ?, ?)";
-    var sql2 = "INSERT INTO penobrol_hashtag (p_id, hash) VALUES (?, ?)";
-
-    async function insertHashtag(query, id, hashtagArray) {
-        for (var i = 0; i < hashtagArray.length; i++) {
-            await dbcon.threeArg(query, id, hashtagArray[i]);
+    var finalHashtag = jsForBack.finalHashtagMaker(rawhashtags);
+    async function postPenobrol(author, title, content, public, thumbnail) {
+        var penobrol = await penobrolDao.insertPenobrol(author, title, content, public, thumbnail);
+        for (var i = 0; i < finalHashtag.length; i++) {
+            await penobrolDao.insertPenobrolHash(penobrol.insertId, finalHashtag[i]);
         }
         res.json({
-            "id" : id
+            "id" : penobrol.insertId
         });
     }
-    conn.conn.query(sql, [author, title, content, public, thumbnail], function (err, result, fields) {
-        if (err) {
-            console.log(err);
-        } else {
-            insertHashtag(sql2, result.insertId, finalhashtag);
-        }
-    });
+    postPenobrol(author, title, content, public, thumbnail);
 };
 
 exports.postAddComment = function (req, res) {
@@ -103,21 +94,12 @@ exports.postAddComment = function (req, res) {
     var content = req.body.comment;
     var p_id = req.params.penobrol_no;
     //when connection is more than two, divide
-    var sql1 = 'INSERT INTO p_com (author, content, p_id) VALUES ((select id from users where u_id = ?), ?, ?)';
-    var sql2 = 'UPDATE penobrol SET score = ((select count(p_id) from p_com where p_id = ?) *.3 + (select count(p_id) from p_like where p_id = ?)*.7)/p_view * 100 where id = ?'
-    conn.conn.query(sql1, [author, content, p_id], function (err, result, fields) {
-        if (err) {
-            console.log(err);
-        } else {
-            conn.conn.query(sql2, [p_id, p_id, p_id], function (err, result2, fields) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.redirect('/penobrol/' + p_id);
-                }
-            });
-        }
-    });
+    async function postPenobrolComment(author, content, p_id){
+        var comment = await penobrolDao.insertPenobrolCom(author, content, p_id);
+        await penobrolDao.updatePenobrolScore(p_id);
+        res.redirect('/penobrol/' + p_id);
+    }
+    postPenobrolComment(author, content, p_id);
 };
 
 exports.postAddCcomment = function (req, res) {
@@ -125,31 +107,42 @@ exports.postAddCcomment = function (req, res) {
     var content = req.body.ccommentContent;
     var p_id = req.params.p_id;
     var pc_id = req.params.pc_id;
+    async function postPenobrolComCom(author, content, pc_id, p_id){
+        await penobrolDao.updatePenobrolComScore(pc_id, pc_id, p_id, pc_id);
+        var postCom = await penobrolDao.insertPenobrolComCom(author, content, pc_id);
+        var postedCom = await penobrolDao.penobrolComComById(postCom[0].insertId);
+        res.json({
+            "ccomment_id": postedCom[0].id,
+            "ccomment_author": postedCom[0].u_id,
+            "ccomment_content": postedCom[0].content,
+            "ccomment_date": postedCom[0].date
+        });
+    }
+    postPenobrolComCom(author, content, pc_id, p_id);
     //when connection is more than two, divide
-    var sql1 = 'UPDATE p_com set score = ((select count(pc_id) from pc_com where pc_id = ?) *.3 + (select count(pc_id) from pc_like where pc_id = ?)*.7)/(select p_view from penobrol where id = ?) * 100 where id = ?';
-    var sql2 = 'INSERT INTO pc_com (author, content, pc_id) VALUES ((select id from users where u_id = ?), ?, ?)';
-    var sql3 = 'SELECT p.*, u.u_id FROM pc_com as p join users as u on p.author = u.id where p.id = ?';
-
-    conn.conn.query(sql1, [pc_id, pc_id, p_id, pc_id], function (err, result, fields) {
-        if (err) {
-            console.log(err);
-        } else {
-            conn.conn.query(sql2, [author, content, pc_id], function (err, result2, fields) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    conn.conn.query(sql3, result2.insertId, function (err, ajaxResult, fields) {
-                        res.json({
-                            "ccomment_id": ajaxResult[0].id,
-                            "ccomment_author": ajaxResult[0].u_id,
-                            "ccomment_content": ajaxResult[0].content,
-                            "ccomment_date": ajaxResult[0].date
-                        });
-                    });
-                }
-            });
-        }
-    });
+    // var sql1 = 'UPDATE p_com set score = ((select count(pc_id) from pc_com where pc_id = ?) *.3 + (select count(pc_id) from pc_like where pc_id = ?)*.7)/(select p_view from penobrol where id = ?) * 100 where id = ?';
+    // var sql2 = 'INSERT INTO pc_com (author, content, pc_id) VALUES ((select id from users where u_id = ?), ?, ?)';
+    // var sql3 = 'SELECT p.*, u.u_id FROM pc_com as p join users as u on p.author = u.id where p.id = ?';
+    // conn.conn.query(sql1, [pc_id, pc_id, p_id, pc_id], function (err, result, fields) {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         conn.conn.query(sql2, [author, content, pc_id], function (err, result2, fields) {
+    //             if (err) {
+    //                 console.log(err);
+    //             } else {
+    //                 conn.conn.query(sql3, result2.insertId, function (err, ajaxResult, fields) {
+    //                     res.json({
+    //                         "ccomment_id": ajaxResult[0].id,
+    //                         "ccomment_author": ajaxResult[0].u_id,
+    //                         "ccomment_content": ajaxResult[0].content,
+    //                         "ccomment_date": ajaxResult[0].date
+    //                     });
+    //                 });
+    //             }
+    //         });
+    //     }
+    // });
 };
 
 exports.likesPenobrol = function (req, res) {
@@ -199,7 +192,6 @@ exports.likesComment = function (req, res) {
         sql1 = 'INSERT INTO pc_like (pc_id, u_id) VALUES (?, (select id from users where u_id = ?))';
         buttonValue = 1;
     }
-
     conn.conn.query(sql1, [pc_id, req.session.u_id], function (err, action, fields) {
         if (err) {
             console.log(err);

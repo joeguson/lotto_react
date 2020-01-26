@@ -7,7 +7,6 @@ const dbcon = require('../dbconnection');
 function doQuery(query, args) {
     return dbcon.doQuery(pool, query, args);
 }
-
 ////////////////////////////////Penobrol////////////////////////////////
 ////////////////Select////////////////
 exports.penobrolMaxId = () => doQuery(
@@ -36,7 +35,7 @@ exports.penobrolByScore = () => doQuery(
     DESC limit 3`
 );
 ////////////////Update////////////////
-exports.updatePenobrolContent = (title, content, public, id) => doQuery(
+exports.updatePenobrol = (title, content, public, id) => doQuery(
     `UPDATE penobrol
     SET title = ?, content = ?, public = ?
     where id = ?`
@@ -61,10 +60,10 @@ exports.updatePenobrolDate = (id) => doQuery(
     [id]
 );
 ////////////////Insert////////////////
-exports.insertPenobrol = (id, title, content, public, thumbnail) => doQuery(
+exports.insertPenobrol = (u_id, title, content, public, thumbnail) => doQuery(
     `INSERT INTO penobrol (author, title, content, public, thumbnail)
     VALUES ((select id from users where u_id = ?), ?, ?, ?, ?)`,
-    [id, title, content, public, thumbnail]
+    [u_id, title, content, public, thumbnail]
 );
 ////////////////Delete////////////////
 exports.deletePenobrol = (id) => doQuery(
@@ -84,17 +83,13 @@ exports.penobrolComByScore = (id) => doQuery(
     id
 );
 exports.penobrolComById = (id) => doQuery(
-    `select * from p_com
+    `select *
+    from p_com as p
+    join users as u on p.author = u.id
     where id = ?`,
     id
 );
 ////////////////Update////////////////
-exports.updatePenobrolComScore = (id) => doQuery(
-    `UPDATE p_com
-    set score = ((select count(pc_id) from pc_com where pc_id = ?) *.3 + (select count(pc_id) from pc_like where pc_id = ?)*.7)/(select p_view from penobrol where id = ?) * 100
-    where id = ?`,
-    id
-);
 exports.updatePenobrolCom = (content, id, p_id) => doQuery(
     `UPDATE p_com
     SET content = ?, changed_date = now()
@@ -102,46 +97,91 @@ exports.updatePenobrolCom = (content, id, p_id) => doQuery(
     AND p_id = ?`
     [content, id, p_id]
 );
+exports.updatePenobrolComScore = (pc_id, pc_id, p_id, pc_id) => doQuery(
+    `UPDATE p_com
+    set score = ((select count(pc_id) from pc_com where pc_id = ?) *.3 + (select count(pc_id) from pc_like where pc_id = ?)*.7)/(select p_view from penobrol where id = ?) * 100
+    where id = ?`,
+    [pc_id, pc_id, p_id, pc_id]
+);
 ////////////////Insert////////////////
 exports.insertPenobrolCom = (author, content, p_id) => doQuery(
     `INSERT INTO p_com (author, content, p_id)
     VALUES ((select id from users where u_id = ?), ?, ?)`,
     [author, content, p_id]
 );
-
 ////////////////Delete////////////////
 exports.deletePenobrolCom = (id) => doQuery(
     `Delete from p_com
     where id = ?`,
     id
 );
-
-
 ////////////////////////////////Penobrol Comment Comment////////////////////////////////
 ////////////////Select////////////////
-exports.penobrolComComById = (id) => doQuery(
+exports.penobrolComComByPcId = (id) => doQuery(
     `SELECT p.*, u.u_id
     FROM pc_com as p
     join users as u on p.author = u.id
     WHERE p.pc_id = ?`,
     id
 );
+exports.penobrolComComById = (id) => doQuery(
+    `SELECT p.*, u.u_id
+    FROM pc_com as p
+    join users as u on p.author = u.id
+    where p.id = ?`,
+    id
+);
 ////////////////Update////////////////
 
 ////////////////Insert////////////////
-
+exports.insertPenobrolComCom = (author, content, pc_id) => doQuery(
+    `INSERT INTO pc_com (author, content, pc_id)
+    VALUES ((select id from users where u_id = ?), ?, ?)';`,
+    [author, content, pc_id]
+);
 ////////////////Delete////////////////
 exports.deletePenobrolComCom = (id) => doQuery(
     `Delete from pc_com
     where id = ?`,
     id
 );
-
-
 ////////////////////////////////Penobrol Hashtag&Like&Warn////////////////////////////////
 ////////////////Select////////////////
-'select count(p_id) as plikeCount from p_like where p_id = ?'
-'select count(pc_id) as pcLikeCount from pc_like where pc_id = ?'
+exports.penobrolLikeCount = (id) => doQuery(
+    `select count(p_id)
+    as plikeCount
+    from p_like
+    where p_id = ?`,
+    id
+);
+exports.penobrolComLikeCount = (id) => doQuery(
+    `select count(pc_id)
+    as pcLikeCount
+    from pc_like
+    where pc_id = ?`,
+    id
+);
+exports.penobrolWarnById = (id, userId) => doQuery(
+    `select u_id, p_id
+    from p_warning
+    where u_id = ?
+    AND p_id = ?`,
+    [userId, id]
+);
+exports.penobrolComWarnById = (id, userId) => doQuery(
+    `select u_id, pc_id
+    from pc_warning
+    where u_id = ?
+    AND pc_id = ?`,
+    [userId, id]
+);
+exports.penobrolComComWarnById = (id, userId) => doQuery(
+    `select u_id, pcc_id
+    from pcc_warning
+    where u_id = ?
+    AND pcc_id = ?';`,
+    [userId, id]
+);
 exports.penobrolHashtagById = (id) => doQuery(
     `select *
     from penobrol_hashtag
@@ -159,29 +199,6 @@ exports.penobrolComLikeById = (id) => doQuery(
     FROM pc_like
     where pc_id = ?`,
     id
-);
-exports.penobrolWarnById = (id, userId) => doQuery(
-    `select u_id, p_id
-    from p_warning
-    where u_id = ?
-    AND p_id = ?`,
-    [userId, id]
-);
-
-exports.penobrolComWarnById = (id, userId) => doQuery(
-    `select u_id, pc_id
-    from pc_warning
-    where u_id = ?
-    AND pc_id = ?`,
-    [userId, id]
-);
-
-exports.penobrolComComWarnById = (id, userId) => doQuery(
-    `select u_id, pcc_id
-    from pcc_warning
-    where u_id = ?
-    AND pcc_id = ?';`,
-    [userId, id]
 );
 ////////////////Update////////////////
 
@@ -206,7 +223,6 @@ exports.insertPenobrolWarn = (u_id, p_id) => doQuery(
     values(?, ?)`,
     [u_id, p_id]
 );
-
 exports.insertPenobrolComWarn = (u_id, pc_id) => doQuery(
     `insert into pc_warning(u_id, pc_id)
     values(?, ?)`,
@@ -219,6 +235,11 @@ exports.insertPenobrolComWarn = (u_id, pcc_id) => doQuery(
     [u_id, pcc_id]
 );
 ////////////////Delete////////////////
+exports.deletePenobrolHash = (id) => doQuery(
+    `Delete from penobrol_hashtag
+    where p_id = ?`,
+    id
+);
 exports.deletePenobrolLike = (id, u_id) => doQuery(
     `DELETE FROM p_like
     WHERE p_id = ? AND u_id = ?`,

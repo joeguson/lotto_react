@@ -26,7 +26,7 @@ exports.login = function(req, res){
     var u_pw = req.body.u_pw;
     async function userLogin(){
         var result = await userDao.matchCredential(u_id, u_pw);
-        var update = await userDao.updLoginDate(u_id);
+        var update = await userDao.updateLoginDate(u_id);
         if(result[0]){
             if(parseInt(result[0].verify) == 1){
                 req.session.u_id = u_id;
