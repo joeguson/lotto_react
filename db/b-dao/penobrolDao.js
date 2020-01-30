@@ -35,11 +35,11 @@ exports.penobrolByScore = () => doQuery(
     DESC limit 3`
 );
 ////////////////Update////////////////
-exports.updatePenobrol = (title, content, public, id) => doQuery(
+exports.updatePenobrol = (title, content, public, thumbnail, id) => doQuery(
     `UPDATE penobrol
-    SET title = ?, content = ?, public = ?
+    SET title = ?, content = ?, public = ?, thumbnail = ?
     where id = ?`
-    [title, content, public, id]
+    [title, content, public, thumbnail, id]
 );
 exports.updatePenobrolView = (id) => doQuery(
     `UPDATE penobrol

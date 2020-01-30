@@ -77,7 +77,8 @@ exports.postAddPenobrol = function (req, res) {
     var rawhashtags = req.body.hashtag;
     var public = req.body.public;
     var finalHashtag = jsForBack.finalHashtagMaker(rawhashtags);
-    async function postPenobrol(author, title, content, public, thumbnail) {
+
+    async function postPenobrol(author, title, content, public, thumbnail, finalHashtag) {
         var penobrol = await penobrolDao.insertPenobrol(author, title, content, public, thumbnail);
         for (var i = 0; i < finalHashtag.length; i++) {
             await penobrolDao.insertPenobrolHash(penobrol.insertId, finalHashtag[i]);
@@ -86,7 +87,7 @@ exports.postAddPenobrol = function (req, res) {
             "id" : penobrol.insertId
         });
     }
-    postPenobrol(author, title, content, public, thumbnail);
+    postPenobrol(author, title, content, public, thumbnail, finalHashtag);
 };
 
 exports.postAddComment = function (req, res) {
@@ -199,27 +200,17 @@ exports.warningPenobrol = function (req, res) {
 
 exports.getEditPenobrol = function (req, res) {
     var p_id = req.params.penobrol_no;
-    var sql = 'select p.*, u.u_id from penobrol p join users u on p.author = u.id where p.id = ?';
-    var sql2 = 'select * from penobrol_hashtag where p_id = ?';
-    conn.conn.query(sql, p_id, function (err, edit, fields) {
-        if (err) {
-            console.log(err);
-        } else {
-            conn.conn.query(sql2, p_id, function (err, hashtags, fields) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    var penobrol = parser.parsePenobrol(edit[0]);
-                    penobrol.hashtags = hashtags.map(parser.parseHashtagP);
-                    if(req.session.id2 == penobrol.author){
-                        res.render('./jp/p-edit', {u_id: 'y', edit_content: penobrol});
-                    } else {
-                        res.redirect('/penobrol/' + p_id);
-                    }
-                }
-            });
+    async function getEditPenobrol(p_id, u_id){
+        var penobrol = (await penobrolDao.penobrolById(p_id)).map(parser.parseFrontPenobrol);
+        penobrol.hashtags = (await penobrolDao.penobrolHashtagById(p_id)).map(parser.parseHashtagP);
+        if(u_id == penobrol.author){
+            res.render('./jp/p-edit', {u_id: 'y', edit_content: penobrol});
         }
-    });
+        else{
+            res.redirect('/penobrol/' + p_id);
+        }
+    }
+    getEditPenobrol(p_id, req.session.id2);
 };
 
 exports.postEditPenobrol = function (req, res) {
@@ -227,79 +218,42 @@ exports.postEditPenobrol = function (req, res) {
     var content = req.body.content;
     var rawhashtags = req.body.hashtag;
     var public = req.body.public;
-    var hashtagCount = 0;
     var p_id = req.params.penobrol_no;
-    var finalHashtag = jsForBack.finalHashtagMaker(rawhashtags);;
-    //for inserts
-    var sql = 'UPDATE penobrol SET title = ?, content = ?, hashtagcount = ?, public = ? where id = ?';
-    var sql4 = 'Delete from hashtag where p_id = ?';
-    var sql5 = '';
-    //for updates
-    var sql2 = 'UPDATE penobrol set changed_date = now() WHERE id = ?';
+    var finalHashtag = jsForBack.finalHashtagMaker(rawhashtags);
 
-    //update connection
-    conn.conn.query(sql2, [p_id], function (err, update, fields) {
-        if (err) {
-            console.log(err);
+    async function postEditPenobrol(p_id, author, title, content, public, thumbnail, finalHashtag) {
+        await penobrolDao.deletePenobrolHash(p_id);
+        await penobrolDao.updatePenobrolDate(p_id);
+        var penobrol = await penobrolDao.updatePenobrol(title, content, public, thumbnail, p_id);
+        for (var i = 0; i < finalHashtag.length; i++) {
+            await penobrolDao.insertPenobrolHash(p_id, finalHashtag[i]);
         }
-    });
-    //insert connection
-    conn.conn.query(sql, [title, content, hashtagCount, public, p_id], function (err, result, fields) {
-        if (err) {
-            console.log(err);
-        } else {
-            conn.conn.query(sql4, p_id, function (err, dhashtag, fields) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    sql5 = insertHashtagSqlMaker(p_id, finalhashtag);
-                    conn.conn.query(sql5, function (err, hashtag, fields) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            res.redirect('/penobrol/' + p_id);
-                        }
-                    });
-                }
-            });
-        }
-    });
+        res.json({
+            "id" : p_id
+        });
+    }
+    postEditPenobrol(p_id, author, title, content, public, thumbnail, finalHashtag);
 };
 
 exports.getEditPcomment = function (req, res) {
     var pc_id = req.params.pcomment_no;
     var p_id = req.params.penobrol_no;
-    var sql = 'select * from p_com where id = ?';
-    var sql2 = 'select * from penobrol where id = ?';
-    var sql3 = 'select * from hashtag where p_id = ?';
-    conn.conn.query(sql, pc_id, function (err, pcomment, fields) {
-        if (err) {
-            console.log(err);
-        } else {
-            conn.conn.query(sql2, p_id, function (err, penobrol, fields) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    conn.conn.query(sql3, p_id, function (err, hashtag, fields) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            if (req.session.u_id == pcomment[0].author) {
-                                res.render('./jp/pc-edit', {
-                                    u_id: 'y',
-                                    topic: penobrol[0],
-                                    edit_content: pcomment[0],
-                                    hashtag: hashtag
-                                });
-                            } else {
-                                res.redirect('/penobrol/' + p_id);
-                            }
-                        }
-                    });
-                }
+    async function getEditPenobrol(p_id, pc_id, u_id){
+        var penobrol = (await penobrolDao.penobrolById(p_id)).map(parser.parseFrontPenobrol);
+        penobrol.hashtags = (await penobrolDao.penobrolHashtagById(p_id)).map(parser.parseHashtagP);
+        var pcomment = await penobrolDao.penobrolComById(pc_id);
+        if(u_id == pcomment[0].author){
+            res.render('./jp/pc-edit', {
+                u_id: 'y',
+                topic: penobrol[0],
+                edit_content:pcomment[0],
             });
         }
-    });
+        else{
+            res.redirect('/penobrol/' + p_id);
+        }
+    }
+    getEditPenobrolCom(p_id, pc_id, req.session.id2)
 };
 
 exports.postEditPcomment = function (req, res) {
