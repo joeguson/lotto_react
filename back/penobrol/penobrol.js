@@ -93,7 +93,6 @@ exports.postAddComment = function (req, res) {
     var author = req.session.u_id;
     var content = req.body.comment;
     var p_id = req.params.penobrol_no;
-    //when connection is more than two, divide
     async function postPenobrolComment(author, content, p_id){
         var comment = await penobrolDao.insertPenobrolCom(author, content, p_id);
         await penobrolDao.updatePenobrolScore(p_id);
@@ -119,62 +118,26 @@ exports.postAddCcomment = function (req, res) {
         });
     }
     postPenobrolComCom(author, content, pc_id, p_id);
-    //when connection is more than two, divide
-    // var sql1 = 'UPDATE p_com set score = ((select count(pc_id) from pc_com where pc_id = ?) *.3 + (select count(pc_id) from pc_like where pc_id = ?)*.7)/(select p_view from penobrol where id = ?) * 100 where id = ?';
-    // var sql2 = 'INSERT INTO pc_com (author, content, pc_id) VALUES ((select id from users where u_id = ?), ?, ?)';
-    // var sql3 = 'SELECT p.*, u.u_id FROM pc_com as p join users as u on p.author = u.id where p.id = ?';
-    // conn.conn.query(sql1, [pc_id, pc_id, p_id, pc_id], function (err, result, fields) {
-    //     if (err) {
-    //         console.log(err);
-    //     } else {
-    //         conn.conn.query(sql2, [author, content, pc_id], function (err, result2, fields) {
-    //             if (err) {
-    //                 console.log(err);
-    //             } else {
-    //                 conn.conn.query(sql3, result2.insertId, function (err, ajaxResult, fields) {
-    //                     res.json({
-    //                         "ccomment_id": ajaxResult[0].id,
-    //                         "ccomment_author": ajaxResult[0].u_id,
-    //                         "ccomment_content": ajaxResult[0].content,
-    //                         "ccomment_date": ajaxResult[0].date
-    //                     });
-    //                 });
-    //             }
-    //         });
-    //     }
-    // });
 };
 
 exports.likesPenobrol = function (req, res) {
     var p_id = parseInt(req.body.p_id);
-    var pc_id = parseInt(req.body.pc_id);
     var clickVal = parseInt(req.body.clickVal);
-    var sql1 = '';
-    var sql2 = 'UPDATE penobrol SET score = ((select count(p_id) from p_com where p_id = ?) *.3 + (select count(p_id) from p_like where p_id = ?)*.7)/p_view * 100 where id = ?'
-    var sql3 = 'select count(p_id) as plikeCount from p_like where p_id = ?';
-    var buttonVal = '';
-    if (clickVal == 1) {
-        sql1 = 'DELETE FROM p_like WHERE p_id = ? AND u_id = ?';
-        buttonVal = 0;
-    } else {
-        sql1 = 'INSERT INTO p_like (p_id, u_id) VALUES (?, ?)';
-        buttonVal = 1;
-    }
-    conn.conn.query(sql1, [p_id, req.session.id2], function (err, action, fields) {
-        if (err) {
-            console.log(err);
-        } else {
-            conn.conn.query(sql2, [p_id, p_id, p_id], function (err, update, fields) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    conn.conn.query(sql3, p_id, function (err, ajaxResult, fields) {
-                        res.json({"p_like": ajaxResult[0].plikeCount, "button": buttonVal});
-                    });
-                }
-            });
+    async function likePenobrolArticle(p_id, pc_id, clickVal, u_id){
+        var buttonVal = 0;
+        if(clickVal == 1){
+            await penobrolDao.deletePenobrolLike(p_id, req.session.id2)
+            buttonVal = 0;
         }
-    });
+        else{
+            await penobrolDao.insertPenobrolLike(p_id, req.session.id2)
+            buttonVal = 1;
+        }
+        await penobrolDao.updatePenobrolScore(p_id);
+        var ajaxResult = await penobrolDao.penobrolLikeCount(p_id);
+        res.json({"p_like": ajaxResult[0].plikeCount, "button": buttonVal});
+    }
+    likePenobrolArticle(p_id, clickVal, req.session.id2);
 };
 
 exports.likesComment = function (req, res) {
@@ -360,80 +323,77 @@ exports.postEditPcomment = function (req, res) {
     var content = req.body.comment;
     var p_id = req.params.penobrol_no;
     var pc_id = req.params.pcomment_no;
-    var sql = 'UPDATE p_com SET content = ?, changed_date = now() where id = ? AND p_id = ?';
-    conn.conn.query(sql, [content, pc_id, p_id], function (err, updated, fields) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.redirect('/penobrol/' + p_id);
-        }
-    });
+    async function editPcomment(content, pc_id, p_id){
+        await penobrolDao.updatePenobrolCom(content, pc_id, p_id);
+        res.redirect('/penobrol/' + p_id);
+    }
+    editPcomment(content, pc_id, p_id);
 };
 
 exports.postDeletePenobrol = function(req, res){
-  var deleteId = req.body.deleteId;
-  var checkAuthor = 'select p.author, u.u_id from penobrol p inner join users u on p.author = u.id where p.id = ?';
-  var deleteQuery = 'Delete from penobrol where id = ?';
-  conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
-    if(err){console.log(err);}
-    else{
-      if(getAuthor[0].u_id == req.session.u_id){
-        conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
-          if(err){console.log(err);}
-          else{
-            console.log(deleteP);
-            res.json({"result":"deleted"});
-          }
-        });
-      }
-      else{
-        res.redirect('/penobrol');
-      }
-    }
-  });
+    var deleteId = req.body.deleteId;
+    var checkAuthor = 'select p.author, u.u_id from penobrol p inner join users u on p.author = u.id where p.id = ?';
+    var deleteQuery = 'Delete from penobrol where id = ?';
+    conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
+        if(err){console.log(err);}
+        else{
+            if(getAuthor[0].u_id == req.session.u_id){
+                conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
+                    if(err){console.log(err);}
+                    else{
+                        console.log(deleteP);
+                        res.json({"result":"deleted"});
+                    }
+                });
+            }
+            else{
+                res.redirect('/penobrol');
+            }
+        }
+    });
 }
 
 exports.postDeletePcomment = function(req, res){
-  var deleteId = req.body.deleteId;
-  var p_id = req.body.penobrolId
-  var checkAuthor = 'select p.author, u.u_id from p_com p inner join users u on p.author = u.id where p.id = ?';
-  var deleteQuery = 'Delete from p_com where id = ?';
-  conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
-    if(err){console.log(err);}
-    else{
-      if(getAuthor[0].u_id == req.session.u_id){
-        conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
-          if(err){console.log(err);}
-          else{
-            res.json({"result":"deleted"});
-          }
-        });
-      }
-      else{
-        res.redirect('/penobrol/'+p_id);
-      }
-    }
-  });
+    var deleteId = req.body.deleteId;
+    var p_id = req.body.penobrolId
+    var checkAuthor = 'select p.author, u.u_id from p_com p inner join users u on p.author = u.id where p.id = ?';
+    var deleteQuery = 'Delete from p_com where id = ?';
+    conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
+        if(err){console.log(err);}
+        else{
+            if(getAuthor[0].u_id == req.session.u_id){
+                conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
+                    if(err){console.log(err);}
+                    else{
+                        res.json({"result":"deleted"});
+                    }
+                });
+            }
+            else{
+                res.redirect('/penobrol/'+p_id);
+            }
+        }
+    });
 }
 exports.postDeletePccomment = function(req, res){
-  var deleteId = req.body.deleteId;
-  var p_id = req.body.penobrolId
-  var checkAuthor = 'select p.author, u.u_id from pc_com p inner join users u on p.author = u.id where p.id = ?';
-  var deleteQuery = 'Delete from pc_com where id = ?';
-  conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
-    if(err){console.log(err);}
-    else{
-      if(getAuthor[0].u_id == req.session.u_id){
-        conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
-          if(err){console.log(err);}
-          else{
-            res.json({"result":"deleted"});
-          }
-        });
-      }
-      else{
-        res.redirect('/penobrol/'+p_id);
-      }
-    }
-  });
+    var deleteId = req.body.deleteId;
+    var p_id = req.body.penobrolId;
+    var checkAuthor = 'select p.author, u.u_id from pc_com p inner join users u on p.author = u.id where p.id = ?';
+    var deleteQuery = 'Delete from pc_com where id = ?';
+    conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
+        if(err){console.log(err);}
+        else{
+            if(getAuthor[0].u_id == req.session.u_id){
+                conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
+                    if(err){console.log(err);}
+                    else{
+                        res.json({"result":"deleted"});
+                    }
+                });
+            }
+            else{
+                res.redirect('/penobrol/'+p_id);
+            }
+        }
+    });
 }

@@ -3,7 +3,7 @@ const b = require('../../b.js');
 const pool = mysql.createPool(b.poolConfig);
 const dbcon = require('../dbconnection');
 
-//query가 없을때에는
+//query가 없을때에는?
 function doQuery(query, args) {
     return dbcon.doQuery(pool, query, args);
 }
@@ -97,7 +97,7 @@ exports.updatePenobrolCom = (content, id, p_id) => doQuery(
     AND p_id = ?`
     [content, id, p_id]
 );
-exports.updatePenobrolComScore = (pc_id, pc_id, p_id, pc_id) => doQuery(
+exports.updatePenobrolComScore = (pc_id, p_id) => doQuery(
     `UPDATE p_com
     set score = ((select count(pc_id) from pc_com where pc_id = ?) *.3 + (select count(pc_id) from pc_like where pc_id = ?)*.7)/(select p_view from penobrol where id = ?) * 100
     where id = ?`,
