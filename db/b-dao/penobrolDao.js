@@ -229,7 +229,7 @@ exports.insertPenobrolComWarn = (u_id, pc_id) => doQuery(
     [u_id, pc_id]
 );
 
-exports.insertPenobrolComWarn = (u_id, pcc_id) => doQuery(
+exports.insertPenobrolComComWarn = (u_id, pcc_id) => doQuery(
     `insert into pcc_warning(u_id, pcc_id)
     values(?, ?)`,
     [u_id, pcc_id]

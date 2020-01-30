@@ -123,7 +123,7 @@ exports.postAddCcomment = function (req, res) {
 exports.likesPenobrol = function (req, res) {
     var p_id = parseInt(req.body.p_id);
     var clickVal = parseInt(req.body.clickVal);
-    async function likePenobrolArticle(p_id, pc_id, clickVal, u_id){
+    async function likePenobrolArticle(p_id, clickVal, u_id){
         var buttonVal = 0;
         if(clickVal == 1){
             await penobrolDao.deletePenobrolLike(p_id, req.session.id2)
@@ -144,69 +144,57 @@ exports.likesComment = function (req, res) {
     var p_id = parseInt(req.body.p_id);
     var pc_id = parseInt(req.body.pc_id);
     var clickVal = parseInt(req.body.clickVal);
-    var sql1 = '';
-    var sql2 = 'UPDATE p_com set score = ((select count(pc_id) from pc_com where pc_id = ?) *.3 + (select count(pc_id) from pc_like where pc_id = ?)*.7)/(select p_view from penobrol where id = ?) * 100 where id = ?';
-    var sql3 = 'select count(pc_id) as pcLikeCount from pc_like where pc_id = ?';
-    var buttonValue = '';
-    if (clickVal == 1) {
-        sql1 = 'DELETE FROM pc_like WHERE pc_id = ? AND u_id = (select id from users where u_id = ?)';
-        buttonValue = 0;
-    } else {
-        sql1 = 'INSERT INTO pc_like (pc_id, u_id) VALUES (?, (select id from users where u_id = ?))';
-        buttonValue = 1;
-    }
-    conn.conn.query(sql1, [pc_id, req.session.u_id], function (err, action, fields) {
-        if (err) {
-            console.log(err);
-        } else {
-            conn.conn.query(sql2, [pc_id, pc_id, p_id, pc_id], function (err, update, fields) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    conn.conn.query(sql3, pc_id, function (err, ajaxresult, fields) {
-                        res.json({"pc_like": ajaxresult[0].pcLikeCount, "button": buttonValue});
-                    });
-                }
-            });
+    async function likePenobrolComment(p_id, pc_id, clickVal, u_id){
+        var buttonVal = 0;
+        if(clickVal == 1){
+            await penobrolDao.deletePenobrolComLike(pc_id, req.session.id2)
+            buttonVal = 0;
         }
-    });
+        else{
+            await penobrolDao.insertPenobrolComLike(pc_id, req.session.id2)
+            buttonVal = 1;
+        }
+        await penobrolDao.updatePenobrolComScore(pc_id, p_id);
+        var ajaxResult = await penobrolDao.penobrolComLikeCount(pc_id);
+        res.json({"pc_like": ajaxResult[0].pcLikeCount, "button": buttonValue});
+    }
+    likePenobrolComment(p_id, pc_id, clickVal, req.session.id2);
 };
 exports.warningPenobrol = function (req, res) {
     var check_sql = '';
     var warn_sql = '';
-    console.log(req.body.warnedItem);
-    switch(req.body.warnedItem){
-        case 'p':
-            check_sql = 'select u_id, p_id from p_warning where u_id = ? AND p_id = ?';
-            warn_sql = 'insert into p_warning(u_id, p_id) values(?, ?)';
-            break;
-        case 'pc':
-            check_sql = 'select u_id, pc_id from pc_warning where u_id = ? AND pc_id = ?';
-            warn_sql = 'insert into pc_warning(u_id, pc_id) values(?, ?)';
-            break;
-        case 'pcc':
-            check_sql = 'select u_id, pcc_id from pcc_warning where u_id = ? AND pcc_id = ?';
-            warn_sql = 'insert into pcc_warning(u_id, pcc_id) values(?, ?)';
-            break;
-    }
-    conn.conn.query(check_sql, [req.session.id2, req.body.warnedId], function (err, checking, fields) {
-        if (err) {
-            console.log(err);
-        } else {
-            if (checking.length) {
-                res.json({"result": 0});
-            } else {
-                conn.conn.query(warn_sql, [req.session.id2, req.body.warnedId], function (err, warned, fields) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        res.json({"result": 1});
-                    }
-                });
-
-            }
+    async function warnPenobrol(warnedItem, warnedId){
+        var checking = '';
+        switch(warnedItem){
+            case 'p':
+                checking = await penobrolDao.penobrolWarnById(warnedId, req.session.id2)
+                break;
+            case 'pc':
+                checking = await penobrolDao.penobrolComWarnById(warnedId, req.session.id2)
+                break;
+            case 'pcc':
+                checking = await penobrolDao.penobrolComComWarnById(warnedId, req.session.id2)
+                break;
         }
-    });
+        if(checking.length){
+            res.json({"result": 0});
+        }
+        else{
+            switch(warnedItem){
+                case 'p':
+                    await penobrolDao.insertPenobrolWarn(req.session.id2, warnedId)
+                    break;
+                case 'pc':
+                    checking = await penobrolDao.insertPenobrolComWarn(req.session.id2, warnedId)
+                    break;
+                case 'pcc':
+                    checking = await penobrolDao.insertPenobrolComComWarn(req.session.id2, warnedId)
+                    break;
+            }
+            res.json({"result": 1});
+        }
+    }
+    warnPenobrol(req.body.warnedItem, req.body.warnedId);
 };
 
 exports.getEditPenobrol = function (req, res) {
@@ -241,12 +229,7 @@ exports.postEditPenobrol = function (req, res) {
     var public = req.body.public;
     var hashtagCount = 0;
     var p_id = req.params.penobrol_no;
-    while (rawhashtags.indexOf(' ') >= 0) {
-        rawhashtags = rawhashtags.replace(' ', "");
-    }
-    var finalhashtag = rawhashtags.split('#');
-    finalhashtag.splice(0, 1);
-    hashtagCount = finalhashtag.length;
+    var finalHashtag = jsForBack.finalHashtagMaker(rawhashtags);;
     //for inserts
     var sql = 'UPDATE penobrol SET title = ?, content = ?, hashtagcount = ?, public = ? where id = ?';
     var sql4 = 'Delete from hashtag where p_id = ?';
@@ -332,68 +315,50 @@ exports.postEditPcomment = function (req, res) {
 
 exports.postDeletePenobrol = function(req, res){
     var deleteId = req.body.deleteId;
-    var checkAuthor = 'select p.author, u.u_id from penobrol p inner join users u on p.author = u.id where p.id = ?';
-    var deleteQuery = 'Delete from penobrol where id = ?';
-    conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
-        if(err){console.log(err);}
-        else{
-            if(getAuthor[0].u_id == req.session.u_id){
-                conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
-                    if(err){console.log(err);}
-                    else{
-                        console.log(deleteP);
-                        res.json({"result":"deleted"});
-                    }
-                });
-            }
-            else{
-                res.redirect('/penobrol');
-            }
+    async function deletePenobrol(deleteId, u_id){
+        var checkAuthor = await penobrolDao.penobrolComById(deleteId);
+        if(checkAuthor[0].u_id == u_id){
+            await penobrolDao.deletePenobrol(deleteId);
+            res.json({"result":"deleted"});
         }
-    });
+        else{
+            res.redirect('/penobrol');
+        }
+
+    }
+    deletePenobrol(deleteId, req.session.id2);
 }
 
 exports.postDeletePcomment = function(req, res){
     var deleteId = req.body.deleteId;
     var p_id = req.body.penobrolId
-    var checkAuthor = 'select p.author, u.u_id from p_com p inner join users u on p.author = u.id where p.id = ?';
-    var deleteQuery = 'Delete from p_com where id = ?';
-    conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
-        if(err){console.log(err);}
-        else{
-            if(getAuthor[0].u_id == req.session.u_id){
-                conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
-                    if(err){console.log(err);}
-                    else{
-                        res.json({"result":"deleted"});
-                    }
-                });
-            }
-            else{
-                res.redirect('/penobrol/'+p_id);
-            }
+    async function deletePenobrolCom(deleteId, p_id, u_id){
+        var checkAuthor = await penobrolDao.penobrolComById(deleteId);
+        if(checkAuthor[0].u_id == u_id){
+            await penobrolDao.deletePenobrolCom(deleteId);
+            res.json({"result":"deleted"});
         }
-    });
+        else{
+            res.redirect('/penobrol/'+ p_id);
+        }
+
+    }
+    deletePenobrolCom(deleteId, p_id, req.session.id2);
 }
+
 exports.postDeletePccomment = function(req, res){
     var deleteId = req.body.deleteId;
     var p_id = req.body.penobrolId;
-    var checkAuthor = 'select p.author, u.u_id from pc_com p inner join users u on p.author = u.id where p.id = ?';
-    var deleteQuery = 'Delete from pc_com where id = ?';
-    conn.conn.query(checkAuthor, deleteId, function(err, getAuthor, fields){
-        if(err){console.log(err);}
-        else{
-            if(getAuthor[0].u_id == req.session.u_id){
-                conn.conn.query(deleteQuery, deleteId, function(err, deleteP, fields){
-                    if(err){console.log(err);}
-                    else{
-                        res.json({"result":"deleted"});
-                    }
-                });
-            }
-            else{
-                res.redirect('/penobrol/'+p_id);
-            }
+    async function deletePenobrolComCom(deleteId, p_id, u_id){
+        var checkAuthor = await penobrolDao.penobrolComComById(deleteId);
+        if(checkAuthor[0].u_id == u_id){
+            await penobrolDao.deletePenobrolComCom(deleteId);
+            res.json({"result":"deleted"});
         }
-    });
+        else{
+            res.redirect('/penobrol/'+ p_id);
+        }
+
+    }
+    deletePenobrolComCom(deleteId, p_id, req.session.id2);
 }
