@@ -4,8 +4,7 @@ block css
     link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
     script(type="text/javascript" src="/js/jsForAllJade.js")
     script(src="../../public/b-editor/b-editor.js")
-    script(src='./penobrol/p-add.js') //나중에 지워야함
-    script(src='./penobrol/p-add.js')
+    script(src='./penobrol/p-edit.js') 
     script(src='../addPandT.js')
 
 block nav
@@ -35,7 +34,7 @@ block main
                 label
                     input(id='rbA' type='radio' value='a' name="public")
                     span  anonymous
-        p 
+        p
             input(type='text' name='thumbnail' placeholder='thumbnail' maxlength="200" class="thumbnail" id="thumbnail" value=edit_content.thumbnail)  
         p.infoP
             span(id='thumbnailInfo' class='infoSpan') 
@@ -67,6 +66,16 @@ block main
                 titleInfo.innerHTML = count + '/200';
             });
             window.addEventListener('load', function(){
+                var count = 200;
+                count -= thumbnail.value.length;
+                thumbnailInfo.innerHTML = count + '/200';
+            });
+            title.addEventListener('keyup', function(){
+                var count = 200;
+                count -= title.value.length;
+                titleInfo.innerHTML = count + '/200';
+            });
+            thumbnail.addEventListener('keyup', function(){
                 var count = 200;
                 count -= thumbnail.value.length;
                 thumbnailInfo.innerHTML = count + '/200';

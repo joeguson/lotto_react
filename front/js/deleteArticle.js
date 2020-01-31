@@ -87,7 +87,6 @@ function postDeletePcomment(target) {
 }
 
 function postDeletePccomment(target) {
-    console.log(location);
     var p_id = location.pathname.split('/')[2];
     var pcc_id = target.getAttribute('value');
     var url = '/pccommentdelete/' + pcc_id;

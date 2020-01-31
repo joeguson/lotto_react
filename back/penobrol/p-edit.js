@@ -33,12 +33,14 @@ function postEditPenobrol() {
     const public = document.getElementById('rbP').checked ? 'p' : 'a';
     var content = document.getElementById('editor').value();
     const hashtag = document.getElementById('hashtag').value;
+    const thumbnail = document.getElementById('thumbnail').value;
     var deleteImage;
     const req = {
         title: title,
         public: public,
         content: content,
-        hashtag: hashtag
+        hashtag: hashtag,
+        thumbnail: thumbnail
     };
     const parsed = parseImgTags(content);
     content = parsed.content;
@@ -176,7 +178,6 @@ function finalPost(body) {
     xhr.send(JSON.stringify(body));
     xhr.onload = () => {
         var id = JSON.parse(xhr.responseText).id;
-        console.log(id);
         window.location.href = location.origin + "/penobrol/" + id.toString();
     };
 }

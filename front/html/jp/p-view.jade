@@ -23,8 +23,6 @@ block article
                 .ptlike(id="plike")= topic.likes.length
                 if u_id
                     +likeButton(topic.identifier,topic.likes, id2)
-//-         img(src="icons/trash.png" class="trashImage")
-//-     a(href='/pedit/'+topic.id class='edit') edit
 
 block commentOrAnswer
     if u_id
@@ -104,5 +102,3 @@ block ulComAndAns
         }
     script(type="text/javascript" src="/js/jsForAllJade.js")
     script(type="text/javascript" src="/js/plikes.js")
-    //- if id2 === c.author
-    //-     a(href='/pcedit/' + topic.id + '/' + c.id) Edit
