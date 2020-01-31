@@ -249,7 +249,8 @@ exports.deletePenobrolHash = (id) => doQuery(
 );
 exports.deletePenobrolLike = (id, u_id) => doQuery(
     `DELETE FROM p_like
-    WHERE p_id = ? AND u_id = ?`,
+    WHERE p_id = ?
+    AND u_id = ?`,
     [id, u_id]
 );
 exports.deletePenobrolComLike = (id, u_id) => doQuery(

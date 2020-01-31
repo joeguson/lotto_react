@@ -1,9 +1,6 @@
 var parser = require('../../db/parser.js');
 var jsForBack = require('../../back/jsForBack.js');
 var penobrolDao = require('../../db/b-dao/penobrolDao');
-var s3 = require('../../b');
-const AWS = require('aws-sdk');
-var fs = require('fs');
 
 /************FOR PENOBROL************/
 exports.getPenobrol = function (req, res) {
@@ -25,7 +22,6 @@ exports.getPenobrol = function (req, res) {
 
 exports.getViewPenobrol = function (req, res) {
     var id = req.params.penobrol_no;
-    var writer = false;
     var checkId = /^[0-9]+$/;
     if(checkId.test(id)){
         async function getP() {
@@ -159,9 +155,8 @@ exports.likesComment = function (req, res) {
     }
     likePenobrolComment();
 };
+
 exports.warningPenobrol = function (req, res) {
-    var check_sql = '';
-    var warn_sql = '';
     async function warnPenobrol(warnedItem, warnedId){
         var checking = '';
         switch(warnedItem){
@@ -184,10 +179,10 @@ exports.warningPenobrol = function (req, res) {
                     await penobrolDao.insertPenobrolWarn(req.session.id2, warnedId)
                     break;
                 case 'pc':
-                    checking = await penobrolDao.insertPenobrolComWarn(req.session.id2, warnedId)
+                    await penobrolDao.insertPenobrolComWarn(req.session.id2, warnedId)
                     break;
                 case 'pcc':
-                    checking = await penobrolDao.insertPenobrolComComWarn(req.session.id2, warnedId)
+                    await penobrolDao.insertPenobrolComComWarn(req.session.id2, warnedId)
                     break;
             }
             res.json({"result": 1});
@@ -198,13 +193,12 @@ exports.warningPenobrol = function (req, res) {
 
 exports.getEditPenobrol = function (req, res) {
     var p_id = req.params.penobrol_no;
+
     async function getEditPenobrol(){
         var penobrol = parser.parsePenobrol((await penobrolDao.penobrolById(p_id))[0]);
-        penobrol.comments = (await penobrolDao.penobrolComByScore(p_id)).map(parser.parseComment);
-        penobrol.likes = (await penobrolDao.penobrolLikeById(p_id)).map(parser.parsePLike);
         penobrol.hashtags = (await penobrolDao.penobrolHashtagById(p_id)).map(parser.parseHashtagP);
         if(req.session.id2 == penobrol.author){
-            res.render('./jp/p-edit', {u_id: 'y', edit_content: penobrol});
+            res.render('./jp/p-edit', {u_id: req.session.id2, edit_content: penobrol});
         }
         else{
             res.redirect('/penobrol/' + p_id);
@@ -225,7 +219,7 @@ exports.postEditPenobrol = function (req, res) {
     async function postEditPenobrol() {
         await penobrolDao.deletePenobrolHash(p_id);
         await penobrolDao.updatePenobrolDate(p_id);
-        var penobrol = await penobrolDao.updatePenobrol(title, content, public, thumbnail, p_id);
+        await penobrolDao.updatePenobrol(title, content, public, thumbnail, p_id);
         for (var i = 0; i < finalHashtag.length; i++) {
             await penobrolDao.insertPenobrolHash(p_id, finalHashtag[i]);
         }
@@ -239,14 +233,15 @@ exports.postEditPenobrol = function (req, res) {
 exports.getEditPcomment = function (req, res) {
     var pc_id = req.params.pcomment_no;
     var p_id = req.params.penobrol_no;
-    async function getEditPenobrol(p_id, pc_id, u_id){
+
+    async function getEditPenobrolCom(){
         var penobrol = (await penobrolDao.penobrolById(p_id)).map(parser.parseFrontPenobrol);
         penobrol.hashtags = (await penobrolDao.penobrolHashtagById(p_id)).map(parser.parseHashtagP);
         var pcomment = await penobrolDao.penobrolComById(pc_id);
         if(u_id == pcomment[0].author){
             res.render('./jp/pc-edit', {
                 u_id: 'y',
-                topic: penobrol[0],
+                topic: penobrol,
                 edit_content:pcomment[0],
             });
         }
@@ -254,22 +249,24 @@ exports.getEditPcomment = function (req, res) {
             res.redirect('/penobrol/' + p_id);
         }
     }
-    getEditPenobrolCom(p_id, pc_id, req.session.id2)
+    getEditPenobrolCom();
 };
 
 exports.postEditPcomment = function (req, res) {
     var content = req.body.comment;
     var p_id = req.params.penobrol_no;
     var pc_id = req.params.pcomment_no;
-    async function editPcomment(content, pc_id, p_id){
+
+    async function editPcomment(){
         await penobrolDao.updatePenobrolCom(content, pc_id, p_id);
         res.redirect('/penobrol/' + p_id);
     }
-    editPcomment(content, pc_id, p_id);
+    editPcomment();
 };
 
 exports.postDeletePenobrol = function(req, res){
     var deleteId = req.body.deleteId;
+
     async function deletePenobrol(){
         var checkAuthor = await penobrolDao.penobrolById(deleteId);
         if(checkAuthor[0].author == req.session.id2){
@@ -286,6 +283,7 @@ exports.postDeletePenobrol = function(req, res){
 exports.postDeletePcomment = function(req, res){
     var deleteId = req.body.deleteId;
     var p_id = req.body.penobrolId
+
     async function deletePenobrolCom(){
         var checkAuthor = await penobrolDao.penobrolComById(deleteId);
         if(checkAuthor[0].author == req.session.id2){

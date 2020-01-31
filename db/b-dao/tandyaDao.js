@@ -9,17 +9,6 @@ function doQuery(query, args) {
 }
 ////////////////////////////////Tandya////////////////////////////////
 ////////////////Select////////////////
-exports.tandyaMaxId = () => doQuery(
-    `SELECT MAX(id) AS max
-    from tandya`
-);
-exports.tandyaById = (id) => doQuery(
-    `select t.*, u.u_id
-    from tandya as t
-    join users as u on t.author = u.id
-    where t.id = ?`,
-    id
-);
 exports.tandyaByDate = () => doQuery(
     `select t.*, u.u_id
     from tandya as t
@@ -35,12 +24,23 @@ exports.tandyaByScore = () => doQuery(
     ORDER BY score
     DESC limit 3`
 );
+exports.tandyaMaxId = () => doQuery(
+    `SELECT MAX(id) AS max
+    from tandya`
+);
+exports.tandyaById = (id) => doQuery(
+    `select t.*, u.u_id
+    from tandya as t
+    join users as u on t.author = u.id
+    where t.id = ?`,
+    id
+);
 ////////////////Update////////////////
-exports.updateTandya = (question, content, public, id) => doQuery(
+exports.updateTandya = (question, content, public, thumbnail, id) => doQuery(
     `UPDATE tandya
-    SET question = ?, content = ?, public = ?
+    SET question = ?, content = ?, public = ?, thumbnail = ?
     where id = ?`,
-    [question, content, public, id]
+    [question, content, public, thumbnail, id]
 );
 exports.updateTandyaView = (id) => doQuery(
     `UPDATE tandya
@@ -50,7 +50,10 @@ exports.updateTandyaView = (id) => doQuery(
 );
 exports.updateTandyaScore = (id) => doQuery(
     `UPDATE tandya
-    SET score = ((select count(t_id) from t_ans where t_id = ?) *.3 + (select count(t_id) from t_like where t_id = ?)*.7)/t_view * 100
+    SET score = (
+        (select count(t_id) from t_ans where t_id = ?) *.3
+        + (select count(t_id) from t_like where t_id = ?)*.7
+    )/t_view * 100
     where id = ?`,
     [id, id, id]
 );
@@ -63,7 +66,7 @@ exports.updateTandyaDate = (id) => doQuery(
 ////////////////Insert////////////////
 exports.insertTandya = (author, question, content, public, thumbnail) => doQuery(
     `INSERT INTO tandya(author, question, content, public, thumbnail)
-    VALUES ((select id from users where u_id = ?), ?, ?, ?, ?)`,
+    VALUES (?, ?, ?, ?, ?)`,
     [author, question, content, public, thumbnail]
 );
 
@@ -78,16 +81,16 @@ exports.deleteTandya = (id) => doQuery(
 ////////////////Select////////////////
 exports.tandyaAnsByScore = (id) => doQuery(
     `SELECT t.*, u.u_id
-    FROM t_ans as t join users as u on t.author = u.id
-    WHERE t_id = ?
-    order by score desc';`,
+    FROM t_ans as t
+    join users as u on t.author = u.id
+    WHERE t.t_id = ?
+    order by score desc`,
     id
 );
 exports.tandyaAnsById = (id) => doQuery(
-    `select t.author, u.u_id
-    from t_ans as t
-    join users as u on t.author = u.id
-    where t.id = ?`,
+    `select *
+    from t_ans
+    where id = ?`,
     id
 );
 ////////////////Update////////////////
@@ -98,16 +101,19 @@ exports.updateTandyaAns = (content, id, t_id) => doQuery(
     AND t_id = ?`,
     [content, id, t_id]
 );
-exports.updateTandyaAnsScore = (id, t_id) => doQuery(
+exports.updateTandyaAnsScore = (ta_id, t_id) => doQuery(
     `UPDATE t_ans
-    set score = ((select count(ta_id) from ta_com where ta_id = ?) *.3 + (select count(ta_id) from ta_like where ta_id = ?)*.7)/(select t_view from tandya where id = ?) * 100
+    set score = (
+        (select count(ta_id) from ta_com where ta_id = ?) *.3
+        + (select count(ta_id) from ta_like where ta_id = ?)*.7
+    )/(select t_view from tandya where id = ?) * 100
     where id = ?`,
-    [id, id, t_id]
+    [ta_id, ta_id, t_id, ta_id]
 );
 ////////////////Insert////////////////
 exports.insertTandyaAns = (author, answer, t_id) => doQuery(
     `INSERT INTO t_ans (author, answer, t_id)
-    VALUES ((select id from users where u_id = ?), ?, ?)`,
+    VALUES (?, ?, ?)`,
     [author, answer, t_id]
 );
 ////////////////Delete////////////////
@@ -121,14 +127,16 @@ exports.deleteTandyaAns = (id) => doQuery(
 exports.tandyaAnsComByTaId = (id) => doQuery(
     `SELECT t.*, u.u_id
     FROM ta_com as t
-    join users as u on t.author = u.id
+    join users as u
+    on t.author = u.id
     WHERE t.ta_id = ?`,
     id
 );
 exports.tandyaAnsComById = (id) => doQuery(
-    `select t.author, u.u_id
+    `select t.*, u.u_id
     from ta_com as t
-    join users u on t.author = u.id
+    join users as u
+    on t.author = u.id
     where t.id = ?`,
     id
 );
@@ -137,7 +145,7 @@ exports.tandyaAnsComById = (id) => doQuery(
 ////////////////Insert////////////////
 exports.insertTandyaAnsCom = (author, content, ta_id) => doQuery(
     `INSERT INTO ta_com (author, content, ta_id)
-    VALUES ((select id from users where u_id = ?), ?, ?)`,
+    VALUES (?, ?, ?)`,
     [author, content, ta_id]
 );
 ////////////////Delete////////////////
@@ -148,6 +156,18 @@ exports.deleteTandyaAnsCom = (id) => doQuery(
 );
 ////////////////////////////////Tandya Hashtag&Like&Warn////////////////////////////////
 ////////////////Select////////////////
+exports.tandyaLikeById = (id) => doQuery(
+    `SELECT *
+    from t_like
+    where t_id = ?`,
+    id
+);
+exports.tandyaAnsLikeById = (id) => doQuery(
+    `SELECT *
+    from ta_like
+    where ta_id = ?`,
+    id
+);
 exports.tandyaLikeCount = (id) => doQuery(
     `select count(t_id)
     as tlikeCount
@@ -169,7 +189,7 @@ exports.tandyaWarningById = (u_id, id) => doQuery(
     AND t_id = ?`,
     [u_id, id]
 );
-exports.tandyaAnsWarningById = (u_id, id) => doQuery(
+exports.tandyaAnsWarnById = (u_id, id) => doQuery(
     `select u_id, ta_id
     from ta_warning
     where u_id = ?
@@ -183,22 +203,10 @@ exports.tandyaAnsComWarningById = (u_id, id) => doQuery(
     AND tac_id = ?`,
     [u_id, id]
 );
-exports.tandyaHashById = (id) => doQuery(
+exports.tandyaHashtagById = (id) => doQuery(
     `SELECT *
     FROM tandya_hashtag
     where t_id = ?`,
-    id
-);
-exports.tandyaLikeById = (id) => doQuery(
-    `SELECT *
-    from t_like
-    where t_id = ?`,
-    id
-);
-exports.tandyaAnsLikeById = (id) => doQuery(
-    `SELECT *
-    from ta_like
-    where ta_id = ?`,
     id
 );
 ////////////////Update////////////////
@@ -211,12 +219,12 @@ exports.insertTandyaHash = (t_id, hash) => doQuery(
 );
 exports.insertTandyaLike = (t_id, u_id) => doQuery(
     `INSERT INTO t_like (t_id, u_id)
-    VALUES (?, (select id from users where u_id = ?))`,
+    VALUES (?, ?)`,
     [t_id, u_id]
 );
 exports.insertTandyaAnsLike = (ta_id, u_id) => doQuery(
     `INSERT INTO ta_like (ta_id, u_id)
-    VALUES (?, (select id from users where u_id = ?))`,
+    VALUES (?, ?)`,
     [ta_id, u_id]
 );
 exports.insertTandyaWarn = (t_id, u_id) => doQuery(
@@ -243,12 +251,12 @@ exports.deleteTandyaHash = (id) => doQuery(
 exports.deleteTandyaAnswerLike = (id, u_id) => doQuery(
     `DELETE FROM ta_like
     WHERE ta_id = ?
-    AND u_id = (select id from users where u_id = ?)`,
+    AND u_id = ?`,
     [id, u_id]
 );
 exports.deleteTandyaLike = (id, u_id) => doQuery(
     `DELETE FROM t_like
     WHERE t_id = ?
-    AND u_id = (select id from users where u_id = ?)`,
+    AND u_id = ?`,
     [id, u_id]
 );

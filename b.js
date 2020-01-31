@@ -1,4 +1,4 @@
-var express = require('express');
+ var express = require('express');
 var app = express();
 var nodemailer = require('nodemailer');
 var router = express.Router();
@@ -129,17 +129,17 @@ app.get(['/cari','/', '/cari/load'], cari.getCari);
 app.get('/cari/search', cari.getSearch);
 
 /************FOR TANDYA************/
+app.get('/tandya', tandya.getTandya);
+app.get(['/tandya/:tandya_no'], tandya.getViewTandya);
 app.get('/tandya/add', tandya.getAddTandya);
 app.post('/tandya/add', tandya.postAddTandya);
-app.get('/tandya', tandya.getTandya);
-app.post('/tandya/:tandya_no', tandya.postAddAnswer);
-app.get(['/tandya/:tandya_no'], tandya.getViewTandya);
 app.post('/tlikes/:id', tandya.likesTandya);
-app.post('/tAnswerlikes/:id', tandya.likesAnswer);
-app.post('/tandya/:tandya_no/:answer_no', tandya.postAddAcomment);
 app.post('/twarning/', tandya.warningTandya);
 app.get(['/tedit/:tandya_no'], tandya.getEditTandya);
 app.post(['/tedit/:tandya_no'], tandya.postEditTandya);
+app.post('/tanswer/:tandya_no', tandya.postAddAnswer);
+app.post('/tAnswerlikes/:id', tandya.likesAnswer);
+app.post('/tacomment/:t_id/:ta_id', tandya.postAddAcomment);
 app.get(['/taedit/:tandya_no/:tanswer_no'], tandya.getEditTanswer);
 app.post(['/taedit/:tandya_no/:tanswer_no'], tandya.postEditTanswer);
 app.post('/tandyadelete/:id', tandya.postDeleteTandya);
@@ -147,17 +147,17 @@ app.post('/tanswerdelete/:id', tandya.postDeleteTanswer);
 app.post('/tacommentdelete/:id', tandya.postDeleteTacomment);
 
 /************FOR PENOBROL************/
-app.get('/penobrol/add', penobrol.getAddPenobrol);
-app.post('/penobrol/add', penobrol.postAddPenobrol);
-app.post('/pcomment/:penobrol_no', penobrol.postAddComment);
 app.get(['/penobrol'], penobrol.getPenobrol);
 app.get(['/penobrol/:penobrol_no'], penobrol.getViewPenobrol);
+app.get('/penobrol/add', penobrol.getAddPenobrol);
+app.post('/penobrol/add', penobrol.postAddPenobrol);
 app.post('/plikes/:id', penobrol.likesPenobrol);
-app.post('/pCommentlikes/:id', penobrol.likesComment);
-app.post('/pccomment/:p_id/:pc_id', penobrol.postAddCcomment);
 app.post('/pwarning/', penobrol.warningPenobrol);
 app.get(['/pedit/:penobrol_no'], penobrol.getEditPenobrol);
 app.post(['/pedit/:penobrol_no'], penobrol.postEditPenobrol);
+app.post('/pcomment/:penobrol_no', penobrol.postAddComment);
+app.post('/pCommentlikes/:id', penobrol.likesComment);
+app.post('/pccomment/:p_id/:pc_id', penobrol.postAddCcomment);
 app.get(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.getEditPcomment);
 app.post(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.postEditPcomment);
 app.post('/penobroldelete/:id', penobrol.postDeletePenobrol);

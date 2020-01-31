@@ -15,7 +15,7 @@ function acommentSendAjax(acomment){
         else{
             original = JSON.stringify(original);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/tandya/'+tandyaId[2]+'/'+answerId);
+            xhr.open('POST', '/tacomment/'+tandyaId[2]+'/'+answerId);
             xhr.setRequestHeader('Content-type', "application/json");
             xhr.send(original);
             // 데이터 수신이 완료되면 표시
