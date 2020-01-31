@@ -248,7 +248,7 @@ exports.deleteTandyaHash = (id) => doQuery(
     where t_id = ?`,
     id
 );
-exports.deleteTandyaAnswerLike = (id, u_id) => doQuery(
+exports.deleteTandyaAnsLike = (id, u_id) => doQuery(
     `DELETE FROM ta_like
     WHERE ta_id = ?
     AND u_id = ?`,

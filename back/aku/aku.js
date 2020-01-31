@@ -276,6 +276,7 @@ exports.getDaftarAuth = function(req, res){
 
 exports.logout = function(req, res){
     delete req.session.u_id;
+    delete req.session.id2;
     req.session.save(function(){
         res.redirect('/aku');
     });

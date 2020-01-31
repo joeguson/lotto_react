@@ -37,7 +37,7 @@ exports.getViewTandya = function (req, res) {
                 tandya.likes = (await tandyaDao.tandyaLikeById(id)).map(parser.parseTLike);
                 tandya.hashtags = (await tandyaDao.tandyaHashtagById(id)).map(parser.parseHashtagT);
                 for(const a of tandya.answers) {
-                    a.comments = (await tandyaDao.tandyaAnsComByPcId(a.id)).map(parser.parseAComment);
+                    a.comments = (await tandyaDao.tandyaAnsComByTaId(a.id)).map(parser.parseAComment);
                     a.likes = (await tandyaDao.tandyaAnsLikeById(a.id)).map(parser.parseALike);
                 }
                 res.render('./jt/t-view', {
@@ -55,8 +55,8 @@ exports.getViewTandya = function (req, res) {
 };
 
 exports.getAddTandya = function (req, res) {
-    if (req.session.u_id) {
-        res.render('./jt/t-add', {u_id: 'y'});
+    if (req.session.id2) {
+        res.render('./jt/t-add', {id2: req.session.id2});
     } else {
         res.redirect('/tandya/');
     }
@@ -72,7 +72,7 @@ exports.postAddTandya = function (req, res) {
     var finalhashtag = jsForBack.finalHashtagMaker(rawhashtags);
 
     async function postTandya() {
-        var tandya = await tandyaDao.insertTandya(author, title, content, public, thumbnail);
+        var tandya = await tandyaDao.insertTandya(author, question, content, public, thumbnail);
         for (var i = 0; i < finalhashtag.length; i++) {
             await tandyaDao.insertTandyaHash(tandya.insertId, finalhashtag[i]);
         }
@@ -84,12 +84,13 @@ exports.postAddTandya = function (req, res) {
 };
 
 exports.postAddAnswer = function (req, res) {
+    console.log(req.body);
     var author = req.session.id2;
     var answer = req.body.answer;
     var t_id = req.params.tandya_no;
 
     async function postTandyaAnswer(){
-        var answer = await tandyaDao.insertTandyaAns(author, answer, t_id);
+        await tandyaDao.insertTandyaAns(author, answer, t_id);
         await tandyaDao.updateTandyaScore(t_id);
         res.redirect('/tandya/' + t_id);
     }
@@ -150,8 +151,8 @@ exports.likesAnswer = function (req, res) {
             buttonVal = 1;
         }
         await tandyaDao.updateTandyaAnsScore(ta_id, t_id);
-        var ajaxResult = await tandyaDao.TandyaAnsLikeCount(ta_id);
-        res.json({"ta_like": ajaxresult[0].taLikeCount, "button": buttonVal});
+        var ajaxResult = await tandyaDao.tandyaAnsLikeCount(ta_id);
+        res.json({"ta_like": ajaxResult[0].taLikeCount, "button": buttonVal});
     }
     likeTandyaAnswer();
 };

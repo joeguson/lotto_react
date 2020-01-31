@@ -131,7 +131,7 @@ app.get('/cari/search', cari.getSearch);
 /************FOR TANDYA************/
 app.get('/tandya', tandya.getTandya);
 app.get(['/tandya/:tandya_no'], tandya.getViewTandya);
-app.get('/tandya/add', tandya.getAddTandya);
+app.get('/addTandya', tandya.getAddTandya);
 app.post('/tandya/add', tandya.postAddTandya);
 app.post('/tlikes/:id', tandya.likesTandya);
 app.post('/twarning/', tandya.warningTandya);
@@ -149,7 +149,7 @@ app.post('/tacommentdelete/:id', tandya.postDeleteTacomment);
 /************FOR PENOBROL************/
 app.get(['/penobrol'], penobrol.getPenobrol);
 app.get(['/penobrol/:penobrol_no'], penobrol.getViewPenobrol);
-app.get('/penobrol/add', penobrol.getAddPenobrol);
+app.get('/addPenobrol', penobrol.getAddPenobrol);
 app.post('/penobrol/add', penobrol.postAddPenobrol);
 app.post('/plikes/:id', penobrol.likesPenobrol);
 app.post('/pwarning/', penobrol.warningPenobrol);
