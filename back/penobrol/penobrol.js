@@ -158,33 +158,16 @@ exports.likesComment = function (req, res) {
 
 exports.warningPenobrol = function (req, res) {
     async function warnPenobrol(warnedItem, warnedId){
-        var checking = '';
-        switch(warnedItem){
-            case 'p':
-                checking = await penobrolDao.penobrolWarnById(warnedId, req.session.id2)
-                break;
-            case 'pc':
-                checking = await penobrolDao.penobrolComWarnById(warnedId, req.session.id2)
-                break;
-            case 'pcc':
-                checking = await penobrolDao.penobrolComComWarnById(warnedId, req.session.id2)
-                break;
-        }
-        if(checking.length){
-            res.json({"result": 0});
-        }
-        else{
-            switch(warnedItem){
-                case 'p':
-                    await penobrolDao.insertPenobrolWarn(req.session.id2, warnedId)
-                    break;
-                case 'pc':
-                    await penobrolDao.insertPenobrolComWarn(req.session.id2, warnedId)
-                    break;
-                case 'pcc':
-                    await penobrolDao.insertPenobrolComComWarn(req.session.id2, warnedId)
-                    break;
-            }
+        const fs = {
+            p: [penobrolDao.penobrolWarnById, penobrolDao.insertPenobrolWarn],
+            pc: [penobrolDao.penobrolComWarnById, penobrolDao.insertPenobrolComWarn],
+            pcc: [penobrolDao.penobrolComComWarnById, penobrolDao.insertPenobrolComComWarn]
+        };
+        // 공통 로직
+        const checking = await fs[warnedItem](warnedId, req.session.id2);
+        if(checking.length) res.json({"result": 0});
+        else {
+            await fs[warnedItem](req.session.id2, warnedId);
             res.json({"result": 1});
         }
     }
@@ -220,9 +203,11 @@ exports.postEditPenobrol = function (req, res) {
         await penobrolDao.deletePenobrolHash(p_id);
         await penobrolDao.updatePenobrolDate(p_id);
         await penobrolDao.updatePenobrol(title, content, public, thumbnail, p_id);
-        for (var i = 0; i < finalHashtag.length; i++) {
-            await penobrolDao.insertPenobrolHash(p_id, finalHashtag[i]);
-        }
+        await Promise.all(
+            Array.from({length: finalHashtag.length}, (x,i) => i)
+            .map(it => finalHashtag[it])
+            .map(it => penobrolDao.insertPenobrolHash(p_id, it))
+        );
         res.json({
             "id" : p_id
         });

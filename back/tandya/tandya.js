@@ -84,7 +84,6 @@ exports.postAddTandya = function (req, res) {
 };
 
 exports.postAddAnswer = function (req, res) {
-    console.log(req.body);
     var author = req.session.id2;
     var answer = req.body.answer;
     var t_id = req.params.tandya_no;
@@ -159,33 +158,16 @@ exports.likesAnswer = function (req, res) {
 
 exports.warningTandya = function (req, res) {
     async function warnTandya(warnedItem, warnedId){
-        var checking = '';
-        switch(warnedItem){
-            case 't':
-                checking = await tandyaDao.tandyaWarnById(warnedId, req.session.id2)
-                break;
-            case 'ta':
-                checking = await tandyaDao.tandyaAnsWarnById(warnedId, req.session.id2)
-                break;
-            case 'tac':
-                checking = await tandyaDao.tandyaAnsComWarnById(warnedId, req.session.id2)
-                break;
-        }
-        if(checking.length){
-            res.json({"result": 0});
-        }
-        else{
-            switch(warnedItem){
-                case 't':
-                    await tandyaDao.insertTandyaWarn(req.session.id2, warnedId)
-                    break;
-                case 'ta':
-                    await tandyaDao.insertTandyaAnsWarn(req.session.id2, warnedId)
-                    break;
-                case 'tac':
-                    await tandyaDao.insertTandyaAnsComWarn(req.session.id2, warnedId)
-                    break;
-            }
+        const fs = {
+            t: [tandyaDao.tandyaWarnById, tandyaDao.insertTandyaWarn],
+            ta: [tandyaDao.tandyaAnsWarnById, tandyaDao.insertTandyaAnsWarn],
+            tac: [tandyaDao.tandyaAnsComWarnById, tandyaDao.insertTandyaAnsComWarn]
+        };
+        // 공통 로직
+        const checking = await fs[warnedItem](warnedId, req.session.id2);
+        if(checking.length) res.json({"result": 0});
+        else {
+            await fs[warnedItem](req.session.id2, warnedId);
             res.json({"result": 1});
         }
     }
@@ -220,10 +202,12 @@ exports.postEditTandya = function (req, res) {
     async function postEditTandya() {
         await tandyaDao.deleteTandyaHash(t_id);
         await tandyaDao.updateTandyaDate(t_id);
-        await tandyaDao.updateTandya(title, content, public, thumbnail, t_id);
-        for (var i = 0; i < finalHashtag.length; i++) {
-            await tandyaDao.insertTandyaHash(t_id, finalHashtag[i]);
-        }
+        await tandyaDao.updateTandya(question, content, public, thumbnail, t_id);
+        await Promise.all(
+            Array.from({length: finalHashtag.length}, (x,i) => i)
+            .map(it => finalHashtag[it])
+            .map(it => tandyaDao.insertTandyaHash(t_id, it))
+        );
         res.json({
             "id" : t_id
         });
