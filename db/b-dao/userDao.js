@@ -26,6 +26,32 @@ exports.userInfoById = (id) => doQuery(
     where id = ?`,
     id
 );
+exports.userCountById = (id) => doQuery(
+    `SELECT COUNT(u_id)
+    AS total
+    from users
+    WHERE u_id = ?`,
+    id
+);
+exports.userCountByEmail = (email) => doQuery(
+    `SELECT COUNT(email)
+    AS total
+    from users
+    WHERE email = ?`,
+    email
+);
+exports.userBasicInfoById = (id) => doQuery(
+    `select u_id, date_format(u_bday,'%Y-%m-%d') as u_bday, sex, email
+    from users
+    where u_id = ?`,
+    id
+);
+exports.userBasicInfoByEmail = (email) => doQuery(
+    `select u_id, date_format(u_bday,'%Y-%m-%d') as u_bday, sex, email
+    from users
+    where email = ?`,
+    email
+);
 ////////////////Update////////////////
 exports.updateLoginDate = (id) => doQuery(
     `UPDATE users
@@ -33,7 +59,7 @@ exports.updateLoginDate = (id) => doQuery(
     WHERE u_id = ?`,
     id
 );
-exports.updateUserInfo = (id, pw, bday, gender) => doQuery(
+exports.updateUserInfo = (pw, bday, gender, id) => doQuery(
     `update users
     set u_pw = ?,
     u_bday = ?,
@@ -41,7 +67,7 @@ exports.updateUserInfo = (id, pw, bday, gender) => doQuery(
     where id = ?`,
     [pw, bday, gender, id]
 );
-exports.updateUserPw = (id, pw) => doQuery(
+exports.updateUserPw = (pw, id) => doQuery(
     `update users
     set u_pw = ?
     where u_id = ?`,

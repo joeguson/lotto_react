@@ -9,6 +9,28 @@ function doQuery(query, args) {
 }
 ////////////////////////////////Tandya////////////////////////////////
 ////////////////Select////////////////
+exports.tandyaByAuthor = (id) => doQuery(
+    `SELECT *
+    from tandya
+    WHERE author = ?
+    ORDER BY date DESC`,
+    id
+);
+exports.tandyaByRand = () => doQuery(
+    `select t.*, u.u_id
+    from tandya as t
+    join users as u on t.author = u.id
+    order by rand()
+    limit 3`
+);
+exports.tandyaSearch = (string) => doQuery(
+    `SELECT *
+    FROM tandya
+    AS result
+    WHERE MATCH(question, content)
+    AGAINST(?)`,
+    [string]
+);
 exports.tandyaByDate = () => doQuery(
     `select t.*, u.u_id
     from tandya as t
@@ -16,7 +38,6 @@ exports.tandyaByDate = () => doQuery(
     order by date
     desc limit 3`
 );
-
 exports.tandyaByScore = () => doQuery(
     `select t.*, u.u_id
     from tandya as t
@@ -91,6 +112,13 @@ exports.tandyaAnsById = (id) => doQuery(
     `select *
     from t_ans
     where id = ?`,
+    id
+);
+exports.tandyaAnsCountById = (id) => doQuery(
+    `select count(t_id)
+    as count
+    from t_ans
+    where t_id = ?`,
     id
 );
 ////////////////Update////////////////
@@ -175,11 +203,39 @@ exports.tandyaLikeCount = (id) => doQuery(
     where t_id = ?`,
     id
 );
+exports.tandyaLikeCountByAuthor = (id) => doQuery(
+    `select count(c.t_id)
+    as total
+    from(
+        select t.id, t.author, tl.t_id
+        from tandya
+        as t
+        inner join t_like
+        as tl
+        on t.id = tl.t_id
+        where t.author = ?
+    )
+    as c`,
+    id
+);
 exports.tandyaAnsLikeCount = (id) => doQuery(
     `select count(ta_id)
     as taLikeCount
     from ta_like
     where ta_id = ?`,
+    id
+);
+exports.tandyaAnsLikeCountByAuthor = (id) => doQuery(
+    `select count(c.ta_id)
+    as total from(
+        select t.id, t.author, tl.ta_id
+        from t_ans
+        as t
+        inner join ta_like
+        as tl
+        on t.id = tl.ta_id
+        where t.author = ?
+    ) as c`,
     id
 );
 exports.tandyaWarningById = (u_id, id) => doQuery(
@@ -208,6 +264,13 @@ exports.tandyaHashtagById = (id) => doQuery(
     FROM tandya_hashtag
     where t_id = ?`,
     id
+);
+exports.tandyaSearchByHash = (hash) => doQuery(
+    `select *
+    from tandya
+    where id in
+    (select distinct t_id from tandya_hashtag where hash like ?)`,
+    hash
 );
 ////////////////Update////////////////
 

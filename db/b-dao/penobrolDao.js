@@ -9,6 +9,28 @@ function doQuery(query, args) {
 }
 ////////////////////////////////Penobrol////////////////////////////////
 ////////////////Select////////////////
+exports.penobrolByAuthor = (id) => doQuery(
+    `SELECT *
+    from penobrol
+    WHERE author = ?
+    ORDER BY date DESC`,
+    id
+);
+exports.penobrolByRand = () => doQuery(
+    `select p.*, u.u_id
+    from penobrol as p
+    join users as u on p.author = u.id
+    order by rand()
+    limit 3`
+);
+exports.penobrolSearch = (string) => doQuery(
+    `SELECT *
+    FROM penobrol
+    AS result
+    WHERE MATCH(title, content)
+    AGAINST(?)`,
+    [string]
+);
 exports.penobrolByDate = () => doQuery(
     `select p.*, u.u_id
     from penobrol as p
@@ -89,6 +111,13 @@ exports.penobrolComById = (id) => doQuery(
     `select *
     from p_com
     where id = ?`,
+    id
+);
+exports.penobrolComCountById = (id) => doQuery(
+    `select count(p_id)
+    as count
+    from p_com
+    where p_id = ?`,
     id
 );
 ////////////////Update////////////////
@@ -173,11 +202,39 @@ exports.penobrolLikeCount = (id) => doQuery(
     where p_id = ?`,
     id
 );
+exports.penobrolLikeCountByAuthor = (id) => doQuery(
+    `select count(c.p_id)
+    as total from(
+        select p.id, p.author, pl.p_id
+        from penobrol
+        as p
+        inner join p_like
+        as pl
+        on p.id = pl.p_id
+        where p.author = ?
+    )
+    as c`,
+    id
+);
 exports.penobrolComLikeCount = (id) => doQuery(
     `select count(pc_id)
     as pcLikeCount
     from pc_like
     where pc_id = ?`,
+    id
+);
+exports.penobrolComLikeCountByAuthor = (id) => doQuery(
+    `select count(c.pc_id)
+    as total from(
+        select p.id, p.author, pl.pc_id
+        from p_com
+        as p
+        inner join pc_like
+        as pl
+        on p.id = pl.pc_id
+        where p.author = ?
+    )
+    as c`,
     id
 );
 exports.penobrolWarnById = (id, userId) => doQuery(
@@ -206,6 +263,13 @@ exports.penobrolHashtagById = (id) => doQuery(
     from penobrol_hashtag
     where p_id = ?`,
     id
+);
+exports.penobrolSearchByHash = (hash) => doQuery(
+    `select *
+    from penobrol
+    where id in
+    (select distinct p_id from penobrol_hashtag where hash like ?)`,
+    hash
 );
 ////////////////Update////////////////
 
