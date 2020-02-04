@@ -45,14 +45,11 @@ exports.tandyaByScore = () => doQuery(
     ORDER BY score
     DESC limit 3`
 );
-exports.tandyaMaxId = () => doQuery(
-    `SELECT MAX(id) AS max
-    from tandya`
-);
 exports.tandyaById = (id) => doQuery(
     `select t.*, u.u_id
     from tandya as t
-    join users as u on t.author = u.id
+    join users as u
+    on t.author = u.id
     where t.id = ?`,
     id
 );

@@ -7,10 +7,14 @@ exports.getPenobrol = function (req, res) {
     async function getOrderedP() {
         var byDate = (await penobrolDao.penobrolByDate()).map(parser.parseFrontPenobrol);
         var byScore = (await penobrolDao.penobrolByScore()).map(parser.parseFrontPenobrol);
-        for(const p of byDate)
+        for(const p of byDate){
             p.hashtags = (await penobrolDao.penobrolHashtagById(p.id)).map(parser.parseHashtagP);
-        for(const p of byScore)
+            p.commentCount = (await penobrolDao.penobrolComCountById(p.id))[0].count;
+        }
+        for(const p of byScore){
             p.hashtags = (await penobrolDao.penobrolHashtagById(p.id)).map(parser.parseHashtagP);
+            p.commentCount = (await penobrolDao.penobrolComCountById(p.id))[0].count;
+        }
         res.render('./jp/p', {
             dateTopics: byDate,
             scoreTopics: byScore,
@@ -25,11 +29,9 @@ exports.getViewPenobrol = function (req, res) {
     var checkId = /^[0-9]+$/;
     if(checkId.test(id)){
         async function getP() {
-            var maxCheck = await penobrolDao.penobrolMaxId();
-            if(maxCheck[0].max < id){
-                res.redirect('/penobrol/');
-            }
-            else{
+            var idCheck = await penobrolDao.penobrolById(id);
+            console.log(idCheck);
+            if(idCheck[0]){
                 await penobrolDao.updatePenobrolView(id);
                 await penobrolDao.updatePenobrolScore(id);
                 var penobrol = parser.parsePenobrol((await penobrolDao.penobrolById(id))[0]);
@@ -45,6 +47,9 @@ exports.getViewPenobrol = function (req, res) {
                     u_id: req.session.u_id,
                     id2: req.session.id2
                 });
+            }
+            else{
+                res.redirect('/penobrol/');
             }
         }
         getP();

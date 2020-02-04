@@ -45,10 +45,6 @@ exports.penobrolByScore = () => doQuery(
     ORDER BY score
     DESC limit 3`
 );
-exports.penobrolMaxId = () => doQuery(
-    `SELECT MAX(id) AS max
-    from penobrol`,
-);
 exports.penobrolById = (id) => doQuery( //select penobrol with userId
     `select p.*, u.u_id
     from penobrol as p

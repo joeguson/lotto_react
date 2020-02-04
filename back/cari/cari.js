@@ -18,7 +18,7 @@ exports.getSearch = function (req, res) {
     var wordOnly = jsForBack.getWordOnly(rawCariString);
     var hashOnly = jsForBack.getHashOnly(rawCariString);
 
-    var usersql = 'select * from users AS result WHERE MATCH(u_id) AGAINST(?)';
+    //var usersql = 'select * from users AS result WHERE MATCH(u_id) AGAINST(?)';
 
     async function getSearchResult() {
         var pResults = await penobrolDao.penobrolSearch(wordOnly);
@@ -58,14 +58,17 @@ exports.getSearch = function (req, res) {
 
 exports.getCari = function (req, res) {
     async function getRandomPandT() {
-        var pResults = await penobrolDao.penobrolByRand();
-        var tResults = await tandyaDao.tandyaByRand();
-        for (const p of pResults)
+        (await penobrolDao.penobrolByDate()).map(parser.parseFrontPenobrol)
+        var pResults = (await penobrolDao.penobrolByRand()).map(parser.parseFrontPenobrol);
+        var tResults = (await tandyaDao.tandyaByRand()).map(parser.parseFrontTandya);
+        for (const p of pResults){
             p.hashtags = (await penobrolDao.penobrolHashtagById(p.id)).map(parser.parseHashtagP);
-        pResults = pResults.map(parser.parseFrontPenobrol);
-        for (const t of tResults)
+            p.commentCount = (await penobrolDao.penobrolComCountById(p.id))[0].count;
+        }
+        for (const t of tResults){
             t.hashtags = (await tandyaDao.tandyaHashtagById(t.id)).map(parser.parseHashtagT);
-        tResults = tResults.map(parser.parseFrontTandya);
+            t.answerCount = (await tandyaDao.tandyaAnsCountById(t.id))[0].count;
+        };
         var result = pResults.concat(tResults);
         shuffle(result);
         // u_id 가 없으면 어차피 undefined 로 들어가므로 통합 가능

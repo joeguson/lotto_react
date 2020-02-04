@@ -7,10 +7,14 @@ exports.getTandya = function (req, res) {
     async function getOrderedT() {
         var byDate = (await tandyaDao.tandyaByDate()).map(parser.parseFrontTandya);
         var byScore = (await tandyaDao.tandyaByScore()).map(parser.parseFrontTandya);
-        for(const t of byDate)
+        for(const t of byDate){
             t.hashtags = (await tandyaDao.tandyaHashtagById(t.id)).map(parser.parseHashtagT);
-        for(const t of byScore)
+            t.answerCount = (await tandyaDao.tandyaAnsCountById(t.id))[0].count;
+        }
+        for(const t of byScore){
+            t.answerCount = (await tandyaDao.tandyaAnsCountById(t.id))[0].count;
             t.hashtags = (await tandyaDao.tandyaHashtagById(t.id)).map(parser.parseHashtagT);
+        }
         res.render('./jt/t', {
             dateTopics: byDate,
             scoreTopics: byScore,
@@ -25,11 +29,8 @@ exports.getViewTandya = function (req, res) {
     var checkId = /^[0-9]+$/;
     if (checkId.test(id)) {
         async function getT() {
-            var maxCheck = await tandyaDao.tandyaMaxId();
-            if(maxCheck[0].max < id){
-                res.redirect('/tandya/');
-            }
-            else{
+            var idCheck = await tandyaDao.tandyaById(id);
+            if(idCheck[0]){
                 await tandyaDao.updateTandyaView(id);
                 await tandyaDao.updateTandyaScore(id);
                 var tandya = parser.parseTandya((await tandyaDao.tandyaById(id))[0]);
@@ -45,6 +46,9 @@ exports.getViewTandya = function (req, res) {
                     u_id: req.session.u_id,
                     id2: req.session.id2,
                 });
+            }
+            else{
+                res.redirect('/tandya/');
             }
         }
         getT();

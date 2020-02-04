@@ -5,8 +5,9 @@ exports.dateMaker = function(date) {
     const month = (tempDate.getMonth()) + 1;
     const day = tempDate.getDate();
     const diff = nowDate - tempDate;
-
-    if (diff >= 864000000)
+    if(diff >=31536000000)
+        return 'over a year ago';
+    else if (diff > 864000000)
         return month + '-' + day;
     else if (diff > 86400000)
         return Math.round(diff/86400000) + ' days ago';
