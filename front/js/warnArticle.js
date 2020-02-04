@@ -39,10 +39,10 @@ function warningArticle(warning){
     var confirmedValue = confirmWarning();
     var original = {'warnedType' : warningValue[0], "warnedItem" : warningValue[1], "warnedId" : warningValue[2]};
     if(original.warnedType == 'p'){
-        url = '/pwarning/';
+        url = '/penobrol/warn/';
     }
     else{
-        url = '/twarning/';
+        url = '/tandya/warn/';
     }
     if(confirmedValue == true){
         async function warnPenobrol(url, data) {

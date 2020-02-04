@@ -91,7 +91,7 @@ exports.postAddAnswer = function (req, res) {
     async function postTandyaAnswer(){
         await tandyaDao.insertTandyaAns(author, answer, t_id);
         await tandyaDao.updateTandyaScore(t_id);
-        res.redirect('/tandya/' + t_id);
+        res.redirect('/tandya/view/' + t_id);
     }
     postTandyaAnswer();
 };
@@ -184,7 +184,7 @@ exports.getEditTandya = function (req, res) {
             res.render('./jt/t-edit', {u_id: req.session.id2, edit_content: tandya});
         }
         else{
-            res.redirect('/tandya/' + t_id);
+            res.redirect('/tandya/view/' + t_id);
         }
     }
     getEditTandya();
@@ -231,7 +231,7 @@ exports.getEditTanswer = function (req, res) {
             });
         }
         else{
-            res.redirect('/tandya/' + t_id);
+            res.redirect('/tandya/view/' + t_id);
         }
     }
     getEditTandyaAns();
@@ -276,7 +276,7 @@ exports.postDeleteTanswer = function(req, res){
             res.json({"result":"deleted"});
         }
         else{
-            res.redirect('/tandya/'+ t_id);
+            res.redirect('/tandya/view/'+ t_id);
         }
     }
     deleteTandyaAns();
@@ -292,7 +292,7 @@ exports.postDeleteTacomment = function(req, res){
             res.json({"result":"deleted"});
         }
         else{
-            res.redirect('/tandya/'+ t_id);
+            res.redirect('/tandya/view/'+ t_id);
         }
     }
     deleteTandyaAnsCom();

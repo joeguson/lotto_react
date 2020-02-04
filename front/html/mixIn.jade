@@ -1,7 +1,7 @@
 mixin frontPage(type)
     .login
         if(id2)
-            -var href= '/add'+type
+            -var href= type+'/add/article'
             a.addArticle(href= "#{href}") +
         else
             a.addArticle(href='/aku') +
@@ -96,12 +96,12 @@ mixin likeButton2(type, likeObject, sessionId, id)
 
 mixin commentOrAnswer(type)
     -if(type == 't'){
-        form(action='tandya/' + topic.id method='post' class='answerForm' onsubmit='return taChecksubmit();')
+        form(action='tandya/add/answer/' + topic.id method='post' class='answerForm' onsubmit='return taChecksubmit();')
             textarea(name='answer' id="answer" class="taInput")
             input(type='submit' value='answer' class="taInputButton" id='taInputButton')
     -}
     -else{
-        form(action='pcomment/' + topic.id method='post' class='commentForm' onsubmit='return pcChecksubmit();')
+        form(action='penobrol/add/comment/' + topic.id method='post' class='commentForm' onsubmit='return pcChecksubmit();')
             textarea(name='comment' class="pcInput" id='pcInput')
             input(type='submit' value='comment' class="pcInputButton" id="pcInputButton")
     -}

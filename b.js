@@ -105,11 +105,11 @@ app.use(function(req, res, next){
     next();
 });
 
-/************FOR SYSTEM************/
+/************************FOR SYSTEM************************/
 app.get('/chonggwalpage', backSystem.getChonggwalpage);
 app.post('/chonggwalpage', backSystem.postChonggwalpage);
 
-/************FOR AKU************/
+/************************FOR AKU************************/
 app.get('/aku/findMyIdPw', aku.getFindMyIdPw);
 app.post('/aku/findMyIdPw', aku.postFindMyIdPw);
 app.post('/aku/login', aku.login);
@@ -124,45 +124,71 @@ app.get('/aku/changeUserInfoLogin', aku.getChangeUserInfoLogin);
 app.post('/aku/changeUserInfoLogin', aku.postChangeUserInfoLogin);
 app.post('/aku/register', aku.checkUserId);
 
-/************FOR CARI************/
+/************************FOR CARI************************/
 app.get(['/cari','/', '/cari/load'], cari.getCari);
 app.get('/cari/search', cari.getSearch);
 
-/************FOR TANDYA************/
+/************************FOR TANDYA************************/
 app.get('/tandya', tandya.getTandya);
-app.get(['/tandya/:tandya_no'], tandya.getViewTandya);
-app.get('/addTandya', tandya.getAddTandya);
-app.post('/tandya/add', tandya.postAddTandya);
-app.post('/tlikes/:id', tandya.likesTandya);
-app.post('/twarning/', tandya.warningTandya);
-app.get(['/tedit/:tandya_no'], tandya.getEditTandya);
-app.post(['/tedit/:tandya_no'], tandya.postEditTandya);
-app.post('/tanswer/:tandya_no', tandya.postAddAnswer);
-app.post('/tAnswerlikes/:id', tandya.likesAnswer);
-app.post('/tacomment/:t_id/:ta_id', tandya.postAddAcomment);
-app.get(['/taedit/:tandya_no/:tanswer_no'], tandya.getEditTanswer);
-app.post(['/taedit/:tandya_no/:tanswer_no'], tandya.postEditTanswer);
-app.post('/tandyadelete/:id', tandya.postDeleteTandya);
-app.post('/tanswerdelete/:id', tandya.postDeleteTanswer);
-app.post('/tacommentdelete/:id', tandya.postDeleteTacomment);
 
-/************FOR PENOBROL************/
+/************view************/
+app.get(['/tandya/view/:tandya_no'], tandya.getViewTandya);
+
+/************add************/
+app.get('/tandya/add/article', tandya.getAddTandya);
+app.post('/tandya/add/article', tandya.postAddTandya);
+app.post('/tandya/add/answer/:tandya_no', tandya.postAddAnswer);
+app.post('/tandya/add/acomment/:t_id/:ta_id;', tandya.postAddAcomment);
+
+/************like************/
+app.post('/tandya/like/article/:id', tandya.likesTandya);
+app.post('/tandya/like/answer/:id', tandya.likesAnswer);
+
+/************warn************/
+app.post('/tandya/warn/', tandya.warningTandya);
+
+/************edit************/
+app.get(['/tandya/edit/article/:tandya_no'], tandya.getEditTandya);
+app.post(['/tandya/edit/article/:tandya_no'], tandya.postEditTandya);
+app.get(['/tandya/edit/answer/:tandya_no/:tanswer_no'], tandya.getEditTanswer);
+app.post(['/tandya/edit/answer/:tandya_no/:tanswer_no'], tandya.postEditTanswer);
+
+/************delete************/
+app.post('/tandya/delete/article/:id', tandya.postDeleteTandya);
+app.post('/tandya/delete/answer/:id', tandya.postDeleteTanswer);
+app.post('/tandya/delete/acomment/:id', tandya.postDeleteTacomment);
+
+
+/************************FOR PENOBROL************************/
 app.get(['/penobrol'], penobrol.getPenobrol);
-app.get(['/penobrol/:penobrol_no'], penobrol.getViewPenobrol);
-app.get('/addPenobrol', penobrol.getAddPenobrol);
-app.post('/penobrol/add', penobrol.postAddPenobrol);
-app.post('/plikes/:id', penobrol.likesPenobrol);
-app.post('/pwarning/', penobrol.warningPenobrol);
-app.get(['/pedit/:penobrol_no'], penobrol.getEditPenobrol);
-app.post(['/pedit/:penobrol_no'], penobrol.postEditPenobrol);
-app.post('/pcomment/:penobrol_no', penobrol.postAddComment);
-app.post('/pCommentlikes/:id', penobrol.likesComment);
-app.post('/pccomment/:p_id/:pc_id', penobrol.postAddCcomment);
-app.get(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.getEditPcomment);
-app.post(['/pcedit/:penobrol_no/:pcomment_no'], penobrol.postEditPcomment);
-app.post('/penobroldelete/:id', penobrol.postDeletePenobrol);
-app.post('/pcommentdelete/:id', penobrol.postDeletePcomment);
-app.post('/pccommentdelete/:id', penobrol.postDeletePccomment);
+
+/************view************/
+app.get(['/penobrol/view/:penobrol_no'], penobrol.getViewPenobrol);
+
+/************add************/
+app.get('/penobrol/add/article', penobrol.getAddPenobrol);
+app.post('/penobrol/add/article', penobrol.postAddPenobrol);
+app.post('/penobrol/add/comment/:penobrol_no', penobrol.postAddComment);
+app.post('/penobrol/add/ccomment/:p_id/:pc_id', penobrol.postAddCcomment);
+
+/************like************/
+app.post('/penobrol/like/article/:id', penobrol.likesPenobrol);
+app.post('/penobrol/like/comment/:id', penobrol.likesComment);
+
+/************warn************/
+app.post('/penobrol/warn/', penobrol.warningPenobrol);
+
+/************edit************/
+app.get(['/penobrol/edit/article/:penobrol_no'], penobrol.getEditPenobrol);
+app.post(['/penobrol/edit/article/:penobrol_no'], penobrol.postEditPenobrol);
+app.get(['/penobrol/edit/comment/:penobrol_no/:pcomment_no'], penobrol.getEditPcomment);
+app.post(['/penobrol/edit/comment/:penobrol_no/:pcomment_no'], penobrol.postEditPcomment);
+
+/************delete************/
+app.post('/penobrol/delete/article/:id', penobrol.postDeletePenobrol);
+app.post('/penobrol/delete/comment/:id', penobrol.postDeletePcomment);
+app.post('/penobrol/delete/ccomment/:id', penobrol.postDeletePccomment);
+
 
 function saveImage(path, filename, data, callback) {
     const params = {
@@ -170,9 +196,8 @@ function saveImage(path, filename, data, callback) {
         'Key': path + "/" + filename,
         'ACL':'public-read',
         'ContentEncoding': 'base64',
-        'Body': new Buffer(data, 'base64')
+        'Body': Buffer.from(data, 'base64')
     };
-
     s3.putObject(params, callback);
 }
 

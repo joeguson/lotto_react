@@ -28,7 +28,7 @@ function checkImage(imageObject){
     }
 }
 
-function postEditPenobrol() {
+function postEditTandya() {
     const title = document.getElementById('title').value;
     const public = document.getElementById('rbP').checked ? 'p' : 'a';
     var content = document.getElementById('editor').value();
@@ -93,7 +93,7 @@ function postEditPenobrol() {
             xhr.onload = () => {
                 var id = JSON.parse(xhr.responseText).id;
                 console.log(id);
-                window.location.href = location.origin + "/penobrol/" + id.toString();
+                window.location.href = location.origin + "/tandya/view/" + id.toString();
             };
         }
     }
@@ -177,6 +177,6 @@ function finalPost(body) {
     xhr.onload = () => {
         var id = JSON.parse(xhr.responseText).id;
         console.log(id);
-        window.location.href = location.origin + "/penobrol/" + id.toString();
+        window.location.href = location.origin + "/tandya/view/" + id.toString();
     };
 }

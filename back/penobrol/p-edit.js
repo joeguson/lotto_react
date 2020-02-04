@@ -95,7 +95,7 @@ function postEditPenobrol() {
             xhr.onload = () => {
                 var id = JSON.parse(xhr.responseText).id;
                 console.log(id);
-                window.location.href = location.origin + "/penobrol/" + id.toString();
+                window.location.href = location.origin + "/penobrol/view/" + id.toString();
             };
         }
     }
@@ -178,6 +178,6 @@ function finalPost(body) {
     xhr.send(JSON.stringify(body));
     xhr.onload = () => {
         var id = JSON.parse(xhr.responseText).id;
-        window.location.href = location.origin + "/penobrol/" + id.toString();
+        window.location.href = location.origin + "/penobrol/view/" + id.toString();
     };
 }

@@ -91,7 +91,7 @@ exports.postAddComment = function (req, res) {
     async function postPenobrolComment(){
         var comment = await penobrolDao.insertPenobrolCom(author, content, p_id);
         await penobrolDao.updatePenobrolScore(p_id);
-        res.redirect('/penobrol/' + p_id);
+        res.redirect('/penobrol/view/' + p_id);
     }
     postPenobrolComment();
 };
@@ -184,7 +184,7 @@ exports.getEditPenobrol = function (req, res) {
             res.render('./jp/p-edit', {u_id: req.session.id2, edit_content: penobrol});
         }
         else{
-            res.redirect('/penobrol/' + p_id);
+            res.redirect('/penobrol/view/' + p_id);
         }
     }
     getEditPenobrol();
@@ -231,7 +231,7 @@ exports.getEditPcomment = function (req, res) {
             });
         }
         else{
-            res.redirect('/penobrol/' + p_id);
+            res.redirect('/penobrol/view/' + p_id);
         }
     }
     getEditPenobrolCom();
@@ -244,16 +244,17 @@ exports.postEditPcomment = function (req, res) {
 
     async function editPcomment(){
         await penobrolDao.updatePenobrolCom(content, pc_id, p_id);
-        res.redirect('/penobrol/' + p_id);
+        res.redirect('/penobrol/view/' + p_id);
     }
     editPcomment();
 };
 
 exports.postDeletePenobrol = function(req, res){
     var deleteId = req.body.deleteId;
-
     async function deletePenobrol(){
+        console.log(req.body);
         var checkAuthor = await penobrolDao.penobrolById(deleteId);
+        console.log(checkAuthor);
         if(checkAuthor[0].author == req.session.id2){
             await penobrolDao.deletePenobrol(deleteId);
             res.json({"result":"deleted"});
@@ -276,7 +277,7 @@ exports.postDeletePcomment = function(req, res){
             res.json({"result":"deleted"});
         }
         else{
-            res.redirect('/penobrol/'+ p_id);
+            res.redirect('/penobrol/view/'+ p_id);
         }
     }
     deletePenobrolCom();
@@ -292,7 +293,7 @@ exports.postDeletePccomment = function(req, res){
             res.json({"result":"deleted"});
         }
         else{
-            res.redirect('/penobrol/'+ p_id);
+            res.redirect('/penobrol/view/'+ p_id);
         }
     }
     deletePenobrolComCom();

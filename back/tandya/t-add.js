@@ -35,12 +35,12 @@ function postTandyaAdd() {
 
 function finalPost(body) {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/tandya/add', true);
+    xhr.open('POST', '/tandya/add/article', true);
     xhr.setRequestHeader('Content-type', "application/json");
     xhr.withCredentials = true;
     xhr.send(JSON.stringify(body));
     xhr.onload = () => {
         var id = JSON.parse(xhr.responseText).id;
-        window.location.href = location.origin + "/tandya/" + id.toString();
+        window.location.href = location.origin + "/tandya/view/" + id.toString();
     };
 }

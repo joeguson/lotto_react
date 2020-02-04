@@ -39,7 +39,7 @@ function pLike(penobrol) {
         "pc_id" : penobrol.value.split('/')[1],
         "clickVal" : penobrol.value.split('/')[2]
     }
-    var url = '/plikes/'+penobrol.value.split('/')[0];
+    var url = '/penobrol/like/article/'+penobrol.value.split('/')[0];
     if(pLikeClick){
         pLikeClick = !pLikeClick;
         likePenobrol(url, data);
@@ -70,7 +70,7 @@ function pcLike(comment) {
         "pc_id" : comment.value.split('/')[1],
         "clickVal" : comment.value.split('/')[2]
     }
-    var url = '/pCommentlikes/'+comment.value.split('/')[1];
+    var url = '/penobrol/like/comment/'+comment.value.split('/')[1];
     if(pcLikeClick){
         pcLikeClick = !pcLikeClick;
         likePcomment(url, data);
@@ -100,7 +100,7 @@ function tLike(tandya){
         "ta_id" : tandya.value.split('/')[1],
         "clickVal" : tandya.value.split('/')[2]
     }
-    var url = '/tlikes/'+tandya.value.split('/')[0];
+    var url = '/tandya/like/article/'+tandya.value.split('/')[0];
     if(tLikeClick){
         tLikeClick = !tLikeClick;
         likeTandya(url, data);
@@ -129,7 +129,7 @@ function taLike(answer){
         "ta_id" : answer.value.split('/')[1],
         "clickVal" : answer.value.split('/')[2]
     }
-    var url = '/tAnswerlikes/'+answer.value.split('/')[0];
+    var url = '/tandya/like/answer/'+answer.value.split('/')[0];
     if(taLikeClick){
         taLikeClick = !taLikeClick;
         likeTanswer(url, data);

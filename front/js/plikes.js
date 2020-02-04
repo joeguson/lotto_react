@@ -55,13 +55,13 @@ function ccommentSendAjax(ccomment) {
         } else {
             original = JSON.stringify(original);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/pccomment/' + penobrolId[2] + '/' + commentId);
+            xhr.open('POST', '/penobrol/add/ccomment/' + penobrolId[3] + '/' + commentId);
             xhr.setRequestHeader('Content-type', "application/json");
             xhr.send(original);
             // 데이터 수신이 완료되면 표시
             xhr.addEventListener('load', function() {
                 var result = JSON.parse(xhr.responseText);
-                var pCcomment = document.getElementById("pc/" + penobrolId[2] + '/' + commentId);
+                var pCcomment = document.getElementById("pc/" + penobrolId[3] + '/' + commentId);
                 var dls = document.createElement('dl');
                 var dts = document.createElement('dt');
                 var dds = document.createElement('dd');

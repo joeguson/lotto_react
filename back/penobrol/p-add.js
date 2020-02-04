@@ -35,12 +35,12 @@ function postPenobrolAdd() {
 
 function finalPost(body) {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/penobrol/add', true);
+    xhr.open('POST', '/penobrol/add/article', true);
     xhr.setRequestHeader('Content-type', "application/json");
     xhr.withCredentials = true;
     xhr.send(JSON.stringify(body));
     xhr.onload = () => {
         var id = JSON.parse(xhr.responseText).id;
-        window.location.href = location.origin + "/penobrol/" + id.toString();
+        window.location.href = location.origin + "/penobrol/view/" + id.toString();
     };
 }

@@ -38,7 +38,8 @@ class BeritamusThumbnail extends HTMLElement {
                         div.style.height = this.dl.offsetHeight + 'px';
                     }
                     else{
-                        img.style.width = div.offsetWidth + 'px';
+                        div.style.height = this.dl.offsetHeight + 'px';
+                        img.style.width = div.offsetHeight + 'px';
                         img.className = this.src.img.rotate;
                     }
                 }
@@ -107,12 +108,12 @@ class BeritamusThumbnail extends HTMLElement {
         this.dl = document.createElement("dl");
         this.dl.className = "articleDl";
         this.dl.onclick = () => {
-            location.href = `${type}/${this.src.id}`;
+            location.href = `${type}/`+'view/'+`${this.src.id}`;
         };
 
         const dt = document.createElement("dt");
         const title = document.createElement("a");
-        title.href = `/${type}/${this.src.id}`;
+        title.href = `${type}/`+'view/'+`${this.src.id}`;
         title.innerText = this.src.identifier === 'p'? this.src.title : this.src.question;
         dt.appendChild(title);
         this.dl.appendChild(dt);

@@ -26,8 +26,8 @@ block submain
   
 block main
     if user
-        .pinfo
-            a.changinfo(href= '/aku/changeUserInfoLogin') change my info
+        .p-info
+            a.changinfo(href= '/aku/changeUserInfoLogin') #{u_id}
         .p-stat
             -var likeCountChecker = function(num){if(num){return num;}else{return 0;}}
             .likeStat

@@ -15,13 +15,13 @@ function acommentSendAjax(acomment){
         else{
             original = JSON.stringify(original);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/tacomment/'+tandyaId[2]+'/'+answerId);
+            xhr.open('POST', '/tandya/add/acomment/'+tandyaId[3]+'/'+answerId);
             xhr.setRequestHeader('Content-type', "application/json");
             xhr.send(original);
             // 데이터 수신이 완료되면 표시
             xhr.addEventListener('load', function(){
                 var result = JSON.parse(xhr.responseText);
-                var tAcomment = document.getElementById("ta/"+tandyaId[2]+'/'+answerId);
+                var tAcomment = document.getElementById("ta/"+tandyaId[3]+'/'+answerId);
                 var dls = document.createElement('dl');
                 var dts = document.createElement('dt');
                 var dds = document.createElement('dd');
@@ -29,11 +29,6 @@ function acommentSendAjax(acomment){
                 dls.setAttribute('class', 'dlPccAndTac');
                 dts.setAttribute('class', 'dtPccAndTac');
                 dds.setAttribute('class', 'ddPccAndTac');
-                // warnButton.setAttribute('class', 'tacWarnButton');
-                // warnButton.setAttribute('type', 'submit');
-                // warnButton.setAttribute('value', 't/tac/'+result.acomment_id);
-                // warnButton.setAttribute('onclick', 'warningAjax(this)');
-                // warnButton.innerHTML = '!';
                 acomment.previousSibling.previousSibling.value = '';
                 dts.innerHTML = '- "' +result.acomment_content+'"';
                 dds.innerHTML = 'by '+result.acomment_author+' / '+ datemaker(result.acomment_date);

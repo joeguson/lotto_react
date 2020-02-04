@@ -73,6 +73,7 @@ exports.welcome = function(req, res){
             totalLikes.answer = (await tandyaDao.tandyaAnsLikeCountByAuthor(req.session.id2))[0].total;
             res.render('./ja/aku', {
                 user:req.session.id2,
+                u_id:req.session.u_id,
                 penobrols:userPenobrol,
                 tandyas:userTandya,
                 totalLikes:totalLikes
