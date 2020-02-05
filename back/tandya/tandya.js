@@ -53,37 +53,25 @@ exports.postAddTandya = function (req, res) {
 };
 
 exports.postAddAnswer = function (req, res) {
-    var author = req.session.id2;
-    var answer = req.body.answer;
-    var t_id = req.params.tandya_no;
-
-    async function postTandyaAnswer() {
-        await tandyaDao.insertTandyaAns(author, answer, t_id);
-        await tandyaDao.updateTandyaScore(t_id);
-        res.redirect('/tandya/view/' + t_id);
-    }
-
-    postTandyaAnswer();
+    const t_id = req.params.tandya_no;
+    tandyaService.postAnswer(
+        t_id,
+        req.session.id2,
+        req.body.answer
+    ).then(() => res.redirect('/tandya/view/' + t_id));
 };
 
 exports.postAddAcomment = function (req, res) {
-    var author = req.session.id2;
-    var content = req.body.acommentContent;
-    var ta_id = req.params.ta_id;
-
-    async function postTandyaAnsCom() {
-        await tandyaDao.updateTandyaAnsScore(ta_id);
-        var postCom = await tandyaDao.insertTandyaAnsCom(author, content, ta_id);
-        var postedCom = await tandyaDao.tandyaAnsComById(postCom.insertId);
-        res.json({
-            "acomment_id": postedCom[0].id,
-            "acomment_author": postedCom[0].u_id,
-            "acomment_content": postedCom[0].content,
-            "acomment_date": postedCom[0].date
-        });
-    }
-
-    postTandyaAnsCom();
+    tandyaService.postAnswerCom(
+        req.params.ta_id,
+        req.session.id2,
+        req.body.acommentContent
+    ).then(com => res.json({
+        "acomment_id": com.id,
+        "acomment_author": com.u_id,
+        "acomment_content": com.content,
+        "acomment_date": com.date
+    }));
 };
 
 exports.likesTandya = function (req, res) {
