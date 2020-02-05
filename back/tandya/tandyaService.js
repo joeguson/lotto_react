@@ -73,6 +73,40 @@ exports.postAnswerCom = async function(ta_id, author, content) {
     return (await tandyaDao.tandyaAnsComById(postCom.insertId))[0];
 };
 
+exports.likeTandya = async function(t_id, user, val) {
+    if(val) await tandyaDao.deleteTandyaLike(t_id, user);
+    else await tandyaDao.insertTandyaLike(t_id, user);
+    await tandyaDao.updateTandyaScore(t_id);
+    return Number(!val);
+};
+
+exports.tandyaLikeCount = async function(t_id) {
+    return (await tandyaDao.tandyaLikeCount(t_id))[0].tlikeCount;
+};
+
+exports.likeTandyaAnswer = async function(ta_id, user, val) {
+    if(val) await tandyaDao.deleteTandyaAnsLike(ta_id, user);
+    else await tandyaDao.insertTandyaAnsLike(ta_id, user);
+    await tandyaDao.updateTandyaAnsScore(ta_id);
+    return Number(!val);
+};
+
+exports.tandyaAnsLikeCount = async function(ta_id) {
+    return (await tandyaDao.tandyaAnsLikeCount(ta_id))[0].taLikeCount;
+};
+
+const fs = {
+    t: [tandyaDao.tandyaWarnById, tandyaDao.insertTandyaWarn],
+    ta: [tandyaDao.tandyaAnsWarnById, tandyaDao.insertTandyaAnsWarn],
+    tac: [tandyaDao.tandyaAnsComWarnById, tandyaDao.insertTandyaAnsComWarn]
+};
+exports.warnTandya = async function(warnedItem, warnedId, user) {
+    const checking = await fs[warnedItem][0](warnedId, user);
+    if(checking.length) return 0;
+    await fs[warnedItem][1](warnedId, user);
+    return 1;
+};
+
 /* ===== local functions ===== */
 
 // 하나의 tandya 에 hashtag 와 answer 개수를 넣어주는 함수

@@ -75,67 +75,42 @@ exports.postAddAcomment = function (req, res) {
 };
 
 exports.likesTandya = function (req, res) {
-    var t_id = parseInt(req.body.t_id);
-    var clickVal = parseInt(req.body.clickVal);
-
-    async function likeTandyaArticle() {
-        var buttonVal = 0;
-        if (clickVal == 1) {
-            await tandyaDao.deleteTandyaLike(t_id, req.session.id2)
-            buttonVal = 0;
-        }
-        else {
-            await tandyaDao.insertTandyaLike(t_id, req.session.id2)
-            buttonVal = 1;
-        }
-        await tandyaDao.updateTandyaScore(t_id);
-        var ajaxResult = await tandyaDao.tandyaLikeCount(t_id);
-        res.json({"t_like": ajaxResult[0].tlikeCount, "button": buttonVal});
-    }
-
-    likeTandyaArticle();
+    const t_id = req.body.t_id;
+    tandyaService.likeTandya(
+        t_id,
+        req.session.id2,
+        parseInt(req.body.clickVal)
+    ).then(val => {
+        tandyaService.tandyaLikeCount(t_id).then(count =>
+            res.json({
+                "t_like": count,
+                "button": val
+            })
+        );
+    });
 };
 
 exports.likesAnswer = function (req, res) {
-    var t_id = parseInt(req.body.t_id);
-    var ta_id = parseInt(req.body.ta_id);
-    var clickVal = parseInt(req.body.clickVal);
-
-    async function likeTandyaAnswer() {
-        var buttonVal = 0;
-        if (clickVal == 1) {
-            await tandyaDao.deleteTandyaAnsLike(ta_id, req.session.id2)
-            buttonVal = 0;
-        }
-        else {
-            await tandyaDao.insertTandyaAnsLike(ta_id, req.session.id2)
-            buttonVal = 1;
-        }
-        await tandyaDao.updateTandyaAnsScore(ta_id);
-        var ajaxResult = await tandyaDao.tandyaAnsLikeCount(ta_id);
-        res.json({"ta_like": ajaxResult[0].taLikeCount, "button": buttonVal});
-    }
-
-    likeTandyaAnswer();
+    const ta_id = req.body.ta_id;
+    tandyaService.likeTandyaAnswer(
+        ta_id,
+        req.session.id2,
+        parseInt(req.body.clickVal)
+    ).then(val => {
+        tandyaService.tandyaAnsLikeCount(ta_id).then(count =>
+            res.json({
+                "ta_like": count,
+                "button": val
+            })
+        );
+    });
 };
 
 exports.warningTandya = function (req, res) {
-    async function warnTandya(warnedItem, warnedId) {
-        const fs = {
-            t: [tandyaDao.tandyaWarnById, tandyaDao.insertTandyaWarn],
-            ta: [tandyaDao.tandyaAnsWarnById, tandyaDao.insertTandyaAnsWarn],
-            tac: [tandyaDao.tandyaAnsComWarnById, tandyaDao.insertTandyaAnsComWarn]
-        };
-        // 공통 로직
-        const checking = await fs[warnedItem](warnedId, req.session.id2);
-        if (checking.length) res.json({"result": 0});
-        else {
-            await fs[warnedItem](req.session.id2, warnedId);
-            res.json({"result": 1});
-        }
-    }
-
-    warnTandya(req.body.warnedItem, req.body.warnedId);
+    tandyaService.warnTandya(
+        req.body.warnedItem,
+        req.body.warnedId
+    ).then(result => res.json({ "result": result }));
 };
 
 exports.getEditTandya = function (req, res) {
