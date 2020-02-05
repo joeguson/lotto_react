@@ -114,46 +114,25 @@ exports.warningTandya = function (req, res) {
 };
 
 exports.getEditTandya = function (req, res) {
-    var t_id = req.params.tandya_no;
+    const t_id = req.params.tandya_no;
+    const u_id = req.session.id2;
 
-    async function getEditTandya() {
-        var tandya = parser.parseTandya((await tandyaDao.tandyaById(t_id))[0]);
-        tandya.hashtags = (await tandyaDao.tandyaHashtagById(t_id)).map(parser.parseHashtagT);
-        if (req.session.id2 == tandya.author) {
-            res.render('./jt/t-edit', {u_id: req.session.id2, edit_content: tandya});
-        }
-        else {
-            res.redirect('/tandya/view/' + t_id);
-        }
-    }
-
-    getEditTandya();
+    tandyaService.getFullTandyaById(t_id).then(tandya => {
+        if(tandya != null && tandya.author === u_id)
+            res.render('./jt/t-edit', {u_id: u_id, edit_content: tandya});
+        else res.redirect('/tandya/view/' + t_id);
+    });
 };
 
 exports.postEditTandya = function (req, res) {
-    var question = req.body.question;
-    var content = req.body.content;
-    var thumbnail = req.body.thumbnail;
-    var public = req.body.public;
-    var t_id = req.params.tandya_no;
-    var rawhashtags = req.body.hashtag;
-    var finalHashtag = jsForBack.finalHashtagMaker(rawhashtags);
-
-    async function postEditTandya() {
-        await tandyaDao.deleteTandyaHash(t_id);
-        await tandyaDao.updateTandyaDate(t_id);
-        await tandyaDao.updateTandya(question, content, public, thumbnail, t_id);
-        await Promise.all(
-            Array.from({length: finalHashtag.length}, (x, i) => i)
-                .map(it => finalHashtag[it])
-                .map(it => tandyaDao.insertTandyaHash(t_id, it))
-        );
-        res.json({
-            "id": t_id
-        });
-    }
-
-    postEditTandya();
+    tandyaService.editTandya(
+        req.params.tandya_no,
+        req.body.question,
+        req.body.content,
+        req.body.public,
+        req.body.thumbnail,
+        jsForBack.finalHashtagMaker(req.body.hashtag)
+    ).then(t_id => res.json({ "id": t_id }));
 };
 
 exports.getEditTanswer = function (req, res) {

@@ -49,10 +49,8 @@ exports.updateTandyaView = async function(id) {
 // tandya 와 hashtag 를 post 하고 id를 반환하는 함수
 exports.postTandya = async function(author, question, content, publicCode, thumbnail, hashtags) {
     const tandya = await tandyaDao.insertTandya(author, question, content, publicCode, thumbnail);
-    if(hashtags != null && hashtags.length > 0) {
-        const insertHashtag = (hashtag) => tandyaDao.insertTandyaHash(tandya.insertId, hashtag);
-        await applyAsyncToAll(hashtags, insertHashtag);
-    }
+    if(hashtags != null && hashtags.length > 0)
+        insertHashtags(tandya.insertId, hashtags);
     return tandya.insertId;
 };
 
@@ -107,6 +105,15 @@ exports.warnTandya = async function(warnedItem, warnedId, user) {
     return 1;
 };
 
+exports.editTandya = async function(t_id, question, content, publicCode, thumbnail, hashtags) {
+    tandyaDao.updateTandyaDate(t_id);
+    tandyaDao.updateTandya(question, content, publicCode, thumbnail, t_id);
+    await tandyaDao.deleteTandyaHash(t_id);
+    if(hashtags != null && hashtags.length > 0)
+        await insertHashtags(t_id, hashtags);
+    return t_id;
+};
+
 /* ===== local functions ===== */
 
 // 하나의 tandya 에 hashtag 와 answer 개수를 넣어주는 함수
@@ -131,6 +138,11 @@ async function getFullAnswer(answer) {
     answer.comments = commentsResult.map(parser.parseAComment);
     answer.likes = commentsResult.map(parser.parseALike);
     return answer;
+}
+
+function insertHashtags(t_id, hashtags) {
+    const insertHashtag = (hashtag) => tandyaDao.insertTandyaHash(t_id, hashtag);
+    return applyAsyncToAll(hashtags, insertHashtag);
 }
 
 function applyAsyncToAll(list, asyncFun) {
