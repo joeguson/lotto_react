@@ -184,6 +184,7 @@ function saveImage(path, filename, data, callback) {
 
 app.post('/image', (req, res) => {
     var img = req.body.img;
+    console.log(img);
     var data =img.replace(/^data:image\/\w+;base64,/, "");
     var filename = jsForBack.generateFilename();
 
