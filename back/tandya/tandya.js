@@ -107,7 +107,8 @@ exports.likesAnswer = function (req, res) {
 exports.warningTandya = function (req, res) {
     tandyaService.warnTandya(
         req.body.warnedItem,
-        req.body.warnedId
+        req.body.warnedId,
+        req.session.id2
     ).then(result => res.json({ "result": result }));
 };
 

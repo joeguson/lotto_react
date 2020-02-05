@@ -14,137 +14,57 @@ class BeritamusThumbnail extends HTMLElement {
     }
     __start(){
         if(this.img){
-            // this.dl.onload = () => {
-            //     console.log(this.dl.offsetHeight);
-            // };
             this.img.onload = () => {
                 const src = this.src;
                 const img = this.img;
                 const div = this.div;
                 let diff = 0;
-                //check div's height and width
+
+                //set frame size
                 div.style.height = this.dl.offsetHeight + 'px';
-                if(this.dl.offsetHeight < div.offsetWidth){// 틀이 가로형태
-                    if(img.width > img.height){// 그림이 가로
-                        if(src.img.rotate == 'rotate090' || src.img.rotate =='rotate270'){ // 그림이 세로가 됨
-                            img.style.width = this.dl.offsetHeight+'px';
-                            if(img.style.marginTop === '0px' || img.style.marginTop === ''){
-                                diff = Math.abs(this.dl.offsetHeight - img.height)/2;
-                                img.style.marginTop = diff+"px";
-                                img.style.marginBottom = diff+"px";
-                            }
-                            else{
-                                img.style.marginTop = '0px';
-                                img.style.marginBottom = '0px';
-                            }
-                        }
-                        else{
-                            (div.offsetWidth / this.dl.offsetHeight) > (img.width / img.height) ? img.style.height = this.dl.offsetHeight+'px' : img.style.width = div.offsetWidth+'px';
-                        }
-                    }
-                    else if(img.height === img.width){// 그림이 정사각
-                        img.style.height = this.dl.offsetHeight+'px';
-                        if(img.style.marginLeft === '0px' || img.style.marginLeft === ''){
-                            diff = Math.abs(div.offsetWidth - img.width)/2;
-                            img.style.marginLeft = diff+"px";
-                            img.style.marginRight = diff+"px";
-                        }
-                        else{
-                            img.style.marginLeft = '0px';
-                            img.style.marginRight = '0px';
+
+                //get frame's width, height and ratio
+                let frameWidth = div.offsetWidth;
+                let frameHeight = div.offsetHeight;
+                let frameRatio = frameWidth / frameHeight;
+
+                //get img's width, height and ratio
+                //img ratio can be altered due to rotation
+                let imgWidth = img.offsetWidth;
+                let imgHeight = img.offsetHeight;
+                let imgRatio = 0;
+
+                if(src.img.rotate == 'rotate090' || src.img.rotate =='rotate270'){
+                    imgRatio = imgHeight / imgWidth;
+                    if(frameRatio > imgRatio){
+                        img.style.width = frameHeight  + 'px'; //양옆 세로에 맞춤
+                        if(img.style.marginTop === '0px' || img.style.marginTop === ''){
+                            diff = Math.abs(frameHeight - img.height)/2;
+                            img.style.marginTop = diff+"px";
+                            img.style.marginBottom = diff+"px";
                         }
                     }
-                    else{// 그림이 세로
-                        if(src.img.rotate == 'rotate090' || src.img.rotate =='rotate270'){// 그림이 가로가 됨
-                            (div.offsetWidth / this.dl.offsetHeight) > (img.height / img.width) ? img.style.height = this.dl.offsetHeight+'px' : img.style.width = div.offsetWidth+'px';
-                        }
-                        else{
-                            img.style.height = this.dl.offsetHeight+'px';
-                        }
+                    else{
+                        img.style.height = frameWidth + 'px'; //위아래 가로에 맞춤.
+                        img.style.marginTop = ((-frameHeight/2)+15)+"px";
                     }
                 }
-                else if(this.dl.offsetHeight === div.offsetWidth){ // 틀이 정사각형
-                    if(img.width > img.height){// 그림이 가로
-                        img.style.width = div.offsetWidth+'px';
+                else{
+                    imgRatio = imgWidth / imgHeight;
+                    if(frameRatio > imgRatio){
+                        img.style.height = frameHeight  + 'px'; //위아래 세로에 맞춤
                         if(img.style.marginTop === '0px' || img.style.marginTop === ''){
                             diff = Math.abs(this.dl.offsetHeight - img.height)/2;
                             img.style.marginTop = diff+"px";
                             img.style.marginBottom = diff+"px";
                         }
-                        else{
-                            img.style.marginTop = '0px';
-                            img.style.marginBottom = '0px';
-                        }
                     }
-                    else if(img.height === img.width){// 그림이 정사각
-                        img.style.width = div.offsetWidth+'px';
-                    }
-                    else{// 그림이 세로
-                        img.style.height = div.offsetWidth+'px';
+                    else{
+                        img.style.width = frameWidth + 'px'; //양옆 가로에 맞춤
                         if(img.style.marginLeft === '0px' || img.style.marginLeft === ''){
                             diff = Math.abs(div.offsetWidth - img.width)/2;
                             img.style.marginLeft = diff+"px";
                             img.style.marginRight = diff+"px";
-                        }
-                        else{
-                            img.style.marginLeft = '0px';
-                            img.style.marginRight = '0px';
-                        }
-                    }
-                }
-                else{ // 틀이 세로형태
-                    if(img.width > img.height){// 그림이 가로
-                        if(src.img.rotate == 'rotate090' || src.img.rotate =='rotate270'){ // 그림이 세로가 됨
-                            if(img.style.marginTop === '0px' || img.style.marginTop === ''){
-                                diff = Math.abs(this.dl.offsetHeight - img.height)/2;
-                                img.style.marginTop = diff+"px";
-                                img.style.marginBottom = diff+"px";
-                            }
-                            else{
-                                img.style.marginTop = '0px';
-                                img.style.marginBottom = '0px';
-                            }
-                        }
-                        else{
-                            img.style.width = div.offsetWidth+'px';
-                            if(img.style.marginTop === '0px' || img.style.marginTop === ''){
-                                diff = Math.abs(this.dl.offsetHeight - img.height)/2;
-                                img.style.marginTop = diff+"px";
-                                img.style.marginBottom = diff+"px";
-                            }
-                            else{
-                                img.style.marginTop = '0px';
-                                img.style.marginBottom = '0px';
-                            }
-                        }
-                    }
-                    else if(img.height === img.width){// 그림이 정사각
-                        img.style.width = div.offsetWidth+'px';
-                        if(img.style.marginTop === '0px' || img.style.marginTop === ''){
-                            diff = Math.abs(this.dl.offsetHeight - img.height)/2;
-                            img.style.marginTop = diff+"px";
-                            img.style.marginBottom = diff+"px";
-                        }
-                        else{
-                            img.style.marginTop = '0px';
-                            img.style.marginBottom = '0px';
-                        }
-                    }
-                    else{// 그림이 세로
-                        if(src.img.rotate == 'rotate090' || src.img.rotate =='rotate270'){// 그림이 가로가 됨
-                            img.style.height = div.offsetWidth+'px';
-                            if(img.style.marginTop === '0px' || img.style.marginTop === ''){
-                                diff = Math.abs(this.dl.offsetHeight - img.height)/2;
-                                img.style.marginTop = diff+"px";
-                                img.style.marginBottom = diff+"px";
-                            }
-                            else{
-                                img.style.marginTop = '0px';
-                                img.style.marginBottom = '0px';
-                            }
-                        }
-                        else{
-                            (div.offsetWidth / this.dl.offsetHeight) > (img.width / img.height) ? img.style.height = this.dl.offsetHeight+'px' : img.style.width = div.offsetWidth+'px';
                         }
                     }
                 }

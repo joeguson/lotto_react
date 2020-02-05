@@ -26,6 +26,7 @@ function parseImgTags(content) {
         const post = content.substring(posMaps[id].e);
         content = prev + id.toString() + post;
     }
+    console.log(imgMaps);
     return {
         content: content,
         imgs: imgMaps

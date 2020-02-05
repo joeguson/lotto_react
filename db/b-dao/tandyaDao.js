@@ -235,7 +235,7 @@ exports.tandyaAnsLikeCountByAuthor = (id) => doQuery(
     ) as c`,
     id
 );
-exports.tandyaWarningById = (u_id, id) => doQuery(
+exports.tandyaWarnById = (u_id, id) => doQuery(
     `select u_id, t_id
     from t_warning
     where u_id = ?
@@ -249,7 +249,7 @@ exports.tandyaAnsWarnById = (u_id, id) => doQuery(
     AND ta_id = ?`,
     [u_id, id]
 );
-exports.tandyaAnsComWarningById = (u_id, id) => doQuery(
+exports.tandyaAnsComWarnById = (u_id, id) => doQuery(
     `select u_id, tac_id
     from tac_warning
     where u_id = ?

@@ -19,7 +19,7 @@ exports.getOrderedTandya = async function() {
 
 // tandya id 로 tandya 관련된 모든 정보를 읽어오는 함수
 exports.getFullTandyaById = async function(id) {
-    const tandyaResult = await tandyaDao.tandyaById(id)[0];
+    const tandyaResult = (await tandyaDao.tandyaById(id))[0];
 
     if(tandyaResult == null) return null;
 
@@ -99,7 +99,7 @@ const fs = {
     tac: [tandyaDao.tandyaAnsComWarnById, tandyaDao.insertTandyaAnsComWarn]
 };
 exports.warnTandya = async function(warnedItem, warnedId, user) {
-    const checking = await fs[warnedItem][0](warnedId, user);
+    const checking = await fs[warnedItem][0](user, warnedId);
     if(checking.length) return 0;
     await fs[warnedItem][1](warnedId, user);
     return 1;

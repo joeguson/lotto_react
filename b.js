@@ -138,7 +138,7 @@ app.get(['/tandya/view/:tandya_no'], tandya.getViewTandya);
 app.get('/tandya/add/article', tandya.getAddTandya);
 app.post('/tandya/add/article', tandya.postAddTandya);
 app.post('/tandya/add/answer/:tandya_no', tandya.postAddAnswer);
-app.post('/tandya/add/acomment/:t_id/:ta_id;', tandya.postAddAcomment);
+app.post('/tandya/add/acomment/:t_id/:ta_id', tandya.postAddAcomment);
 
 /************like************/
 app.post('/tandya/like/article/:id', tandya.likesTandya);
@@ -203,6 +203,7 @@ function saveImage(path, filename, data, callback) {
 
 app.post('/image', (req, res) => {
     var img = req.body.img;
+    console.log(img);
     var data =img.replace(/^data:image\/\w+;base64,/, "");
     var filename = jsForBack.generateFilename();
 
