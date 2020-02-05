@@ -1,6 +1,4 @@
-var parser = require('../../db/parser.js');
-var jsForBack = require('../../back/jsForBack.js');
-var tandyaDao = require('../../db/b-dao/tandyaDao');
+const jsForBack = require('../../back/jsForBack.js');
 const tandyaService = require('./tandyaService.js');
 
 /************FOR TANDYA************/
