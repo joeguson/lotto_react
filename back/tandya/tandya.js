@@ -136,90 +136,58 @@ exports.postEditTandya = function (req, res) {
 };
 
 exports.getEditTanswer = function (req, res) {
-    var ta_id = req.params.tanswer_no;
-    var t_id = req.params.tandya_no;
+    const t_id = req.params.tandya_no;
+    const ta_id = req.params.tanswer_no;
+    const u_id = req.session.id2;
 
-    async function getEditTandyaAns() {
-        var tandya = (await tandyaDao.tandyaById(t_id)).map(parser.parseFrontTandya);
-        tandya.hashtags = (await tandyaDao.tandyaHashtagById(t_id)).map(parser.parseHashtagT);
-        var tanswer = await tandyaDao.tandyaAnsById(ta_id);
-        if (u_id == pcomment[0].author) {
+    tandyaService.getAnswerById(ta_id).then(answer => {
+        if (u_id !== answer.author) res.redirect('/tandya/view/' + t_id);
+        else tandyaService.getFullTandyaById(t_id).then(tandya => {
             res.render('./jt/ta-edit', {
                 u_id: 'y',
                 topic: tandya,
-                edit_content: tanswer[0],
+                edit_content: answer
             });
-        }
-        else {
-            res.redirect('/tandya/view/' + t_id);
-        }
-    }
-
-    getEditTandyaAns();
+        });
+    });
 };
 
 exports.postEditTanswer = function (req, res) {
-    var content = req.body.answer;
-    var t_id = req.params.tandya_no;
-    var ta_id = req.params.tanswer_no;
+    const t_id = req.params.tandya_no;
 
-    async function editTanswer() {
-        await tandyaDao.updateTandyaAns(content, ta_id, t_id);
-        res.redirect('/tandya/' + t_id);
-    }
-
-    editTanswer();
+    tandyaService.editAnswer(
+        req.params.tanswer_no,
+        t_id,
+        req.body.answer
+    ).then(() => res.redirect('/tandya/' + t_id));
 };
 
 exports.postDeleteTandya = function (req, res) {
-    var deleteId = req.body.deleteId;
-
-    async function deleteTandya() {
-        var checkAuthor = await tandyaDao.tandyaById(deleteId);
-        if (checkAuthor[0].author == req.session.id2) {
-            await tandyaDao.deleteTandya(deleteId);
-            res.json({"result": "deleted"});
-        }
-        else {
-            res.redirect('/tandya');
-        }
-    }
-
-    deleteTandya();
-}
+    tandyaService.deleteTandya(
+        req.body.deleteId,
+        req.session.id2
+    ).then(result => {
+        if(result) res.json({"result": "deleted"});
+        else res.redirect('/tandya');
+    });
+};
 
 exports.postDeleteTanswer = function (req, res) {
-    var deleteId = req.body.deleteId;
-    var t_id = req.body.tandyaId
-
-    async function deleteTandyaAns() {
-        var checkAuthor = await tandyaDao.tandyaAnsById(deleteId);
-        if (checkAuthor[0].author == req.session.id2) {
-            await tandyaDao.deleteTandyaAns(deleteId);
-            res.json({"result": "deleted"});
-        }
-        else {
-            res.redirect('/tandya/view/' + t_id);
-        }
-    }
-
-    deleteTandyaAns();
-}
+    tandyaService.deleteAnswer(
+        req.body.deleteId,
+        req.session.id2
+    ).then(result => {
+        if(result) res.json({"result": "deleted"});
+        else res.redirect('/tandya/view/' + req.body.tandyaId);
+    });
+};
 
 exports.postDeleteTacomment = function (req, res) {
-    var deleteId = req.body.deleteId;
-    var t_id = req.body.tandyaId
-
-    async function deleteTandyaAnsCom() {
-        var checkAuthor = await tandyaDao.tandyaAnsComById(deleteId);
-        if (checkAuthor[0].author == req.session.id2) {
-            await tandyaDao.deleteTandyaAnsCom(deleteId);
-            res.json({"result": "deleted"});
-        }
-        else {
-            res.redirect('/tandya/view/' + t_id);
-        }
-    }
-
-    deleteTandyaAnsCom();
-}
+    tandyaService.deleteComment(
+        req.body.deleteId,
+        req.session.id2
+    ).then(result => {
+        if(result) res.json({"result": "deleted"});
+        else res.redirect('/tandya/view/' + req.body.tandyaId);
+    });
+};
