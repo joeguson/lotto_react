@@ -19,7 +19,7 @@ block submain
     //.ad Advertising
     .search
         form(action='/cari/search' method='get')
-            input(type='text' name='search' placeholder='   Cari Penobrol / Tandya')
+            input(type='text' name='search' value='#{search_string}')
             button(type='submit' class="submit" value="search")
                 img(src="icons/cari3.png" class="cariImage")
 

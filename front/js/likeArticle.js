@@ -1,8 +1,8 @@
 //////////////////////Variables//////////////////////
-var pLikeClick = true;
-var tLikeClick = true;
-var pcLikeClick = true;
-var taLikeClick = true;
+let pLikeClick = true;
+let tLikeClick = true;
+let pcLikeClick = true;
+let taLikeClick = true;
 
 //////////////////////Ajax//////////////////////
 function makeRequest(url, data) {

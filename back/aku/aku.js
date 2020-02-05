@@ -5,18 +5,13 @@ var jsForBack = require('../../back/jsForBack.js');
 var userDao = require('../../db/b-dao/userDao');
 var penobrolDao = require('../../db/b-dao/penobrolDao');
 var tandyaDao = require('../../db/b-dao/tandyaDao');
+var config =require('../../config.json');
 
 var transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,
-    auth: {
-        type: 'OAuth2',
-        user: 'admin@beritamus.com',  // gmail 계정 아이디를 입력
-        serviceClient: key.client_id,
-        privateKey: key.private_key,
-        pass: 'GoBeritamus$$'          // gmail 계정의 비밀번호를 입력
-    }
+    auth: key.mail_config
 });
 
 exports.login = function(req, res){
@@ -209,7 +204,6 @@ exports.postFindMyIdPw =function(req, res){
 
 exports.checkUserId = function(req, res){
     var result = 0;
-
     async function checkUserCount(){
         var count = [];
         if(req.body.type == 'id'){
@@ -217,6 +211,7 @@ exports.checkUserId = function(req, res){
         }else{
             count = await userDao.userCountByEmail(req.body.data);
         }
+        console.log(count);
         if(parseInt(count[0].total) > 0){
             result = 1;
         }
@@ -230,20 +225,15 @@ exports.checkUserId = function(req, res){
 }
 
 exports.getDaftarAuth = function(req, res){
-    var email = req.query.email;
-    var code = req.query.code;
-    var sql = 'SELECT * FROM users WHERE email = ?';
-    var sql2 = '';
-    conn.conn.query(sql, email, function(err, verify, fields){
+    let email = req.query.email;
+    let code = req.query.code;
+
+    async function verifyUser(){
+        var verify = await userDao.userInfoByEmail(email);
         if(verify[0]){
             if(verify[0].verify == code){
-                sql2 = 'UPDATE users set verify = 1, verify_date = NOW() where email = ?';
-                conn.conn.query(sql2, email, function(err, verified, fields){
-                    if(err){console.log(err);}
-                    else{
-                        res.render('./ja/aku');
-                    }
-                });
+                let verified  = await userDao.verifyUser(email);
+                res.render('./ja/aku');
             }
             else{
                 res.render('./ja/aku', {"message":"your verification code is wrong"});
@@ -252,7 +242,8 @@ exports.getDaftarAuth = function(req, res){
         else{
             res.render('./ja/aku', {"message":"wrong approach"});
         }
-    });
+    }
+    verifyUser();
 };
 
 exports.logout = function(req, res){
@@ -281,7 +272,7 @@ exports.postDaftar = function(req, res){
         from: 'admin@beritamus.com',    // 발송 메일 주소 (위에서 작성한 gmail 계정 아이디)
         to: u_email,                     // 수신 메일 주소
         subject: 'Email Verikasi Dari Beritamus',   // 제목
-        html: '<p>Welcome To Beritamus!</p>'+'<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://'+db_config.url+'/aku/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
+        html: '<p>Welcome To Beritamus!</p>'+'<p>Selamat Datang!</p>'+'<p>Please click the url below</p>'+'<a href="http://'+config.url+'/aku/daftar/auth/?email='+u_email+'&code='+code+'">Masuk Beritamus</a>'
     };
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {

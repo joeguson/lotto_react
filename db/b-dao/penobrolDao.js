@@ -251,7 +251,7 @@ exports.penobrolComComWarnById = (id, userId) => doQuery(
     `select u_id, pcc_id
     from pcc_warning
     where u_id = ?
-    AND pcc_id = ?';`,
+    AND pcc_id = ?`,
     [userId, id]
 );
 exports.penobrolHashtagById = (id) => doQuery(

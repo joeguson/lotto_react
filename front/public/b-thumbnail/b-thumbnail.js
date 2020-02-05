@@ -14,9 +14,6 @@ class BeritamusThumbnail extends HTMLElement {
     }
     __start(){
         if(this.img){
-            // this.dl.onload = () => {
-            //     console.log(this.dl.offsetHeight);
-            // };
             this.img.onload = () => {
                 const src = this.src;
                 const img = this.img;
@@ -56,7 +53,9 @@ class BeritamusThumbnail extends HTMLElement {
                     }
                     else{// 그림이 세로
                         if(src.img.rotate == 'rotate090' || src.img.rotate =='rotate270'){// 그림이 가로가 됨
-                            (div.offsetWidth / this.dl.offsetHeight) > (img.height / img.width) ? img.style.height = this.dl.offsetHeight+'px' : img.style.width = div.offsetWidth+'px';
+                            img.style.height = this.dl.offsetHeight+'px';
+                            // img.className = this.src.img.rotate;
+                            // (div.offsetWidth / this.dl.offsetHeight) > (img.height / img.width) ? img.style.width = this.dl.offsetHeight+'px' : img.style.height = div.offsetWidth+'px';
                         }
                         else{
                             img.style.height = this.dl.offsetHeight+'px';
@@ -145,6 +144,7 @@ class BeritamusThumbnail extends HTMLElement {
                         }
                         else{
                             (div.offsetWidth / this.dl.offsetHeight) > (img.width / img.height) ? img.style.height = this.dl.offsetHeight+'px' : img.style.width = div.offsetWidth+'px';
+
                         }
                     }
                 }
@@ -191,7 +191,7 @@ class BeritamusThumbnail extends HTMLElement {
 
         const date = document.createElement("dd");
         date.innerText = this.src.identifier === 'p'? this.src.commentCount +' comments': this.src.answerCount + ' answers';
-        date.innerText = date.innerText +  ' / ' + this.src.date + ' / ' + this.src.view + ' views';
+        date.innerText = date.innerText +  ' / ' + this.src.date + ' / ' + this.src.view + ' views / ' +this.src.likeCount + ' likes';
         this.dl.appendChild(date);
 
         return this.dl;

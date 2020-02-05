@@ -35,6 +35,8 @@ block main
         // textarea(name='content' class="content" id="content" required)
         p
             input(id='hashtag' type='text' name='hashtag' placeholder='#put #hashtags #like #this' class="hashtag")
+        p.infoP
+            span(id='hashInfo' class='infoSpan') 20/20
         p
             button(class="submit" onclick='postPenobrolAdd();') share
     script.
@@ -53,9 +55,23 @@ block main
             var count = 200;
             count -= title.value.length;
             titleInfo.innerHTML = count + '/200';
+            if(count < 1){
+                titleInfo.innerHTML = 'exceeds the limit';
+            }
         });
         thumbnail.addEventListener('keyup', function(){
             var count = 200;
             count -= thumbnail.value.length;
             thumbnailInfo.innerHTML = count + '/200';
+            if(count < 1){
+                thumbnailInfo.innerHTML = 'exceeds the limit';
+            }
+        });
+        hashtag.addEventListener('keydown', function(){
+            var count = 20;
+            count -= (hashtag.value.match(/#/gi) || []).length;
+            hashInfo.innerHTML = count + '/20';
+            if(count < 1){ // 아직 구현 못함
+                hashInfo.innerHTML = 'exceeds the limit';
+            }
         });

@@ -15,8 +15,8 @@ exports.matchCredential = (id, pw) => doQuery(
   [id, pw]
 );
 exports.userInfoByEmail = (email) => doQuery(
-    `SELECT COUNT(email) AS total
-    from users
+    `SELECT id, u_id, verify
+    FROM users
     WHERE email = ?`,
     email
 );

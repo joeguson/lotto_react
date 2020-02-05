@@ -10,10 +10,12 @@ exports.getTandya = function (req, res) {
         for(const t of byDate){
             t.hashtags = (await tandyaDao.tandyaHashtagById(t.id)).map(parser.parseHashtagT);
             t.answerCount = (await tandyaDao.tandyaAnsCountById(t.id))[0].count;
+            t.likeCount = (await tandyaDao.tandyaLikeCount(t.id))[0].tlikeCount
         }
         for(const t of byScore){
             t.answerCount = (await tandyaDao.tandyaAnsCountById(t.id))[0].count;
             t.hashtags = (await tandyaDao.tandyaHashtagById(t.id)).map(parser.parseHashtagT);
+            t.likeCount = (await tandyaDao.tandyaLikeCount(t.id))[0].tlikeCount
         }
         res.render('./jt/t', {
             dateTopics: byDate,
@@ -168,10 +170,10 @@ exports.warningTandya = function (req, res) {
             tac: [tandyaDao.tandyaAnsComWarnById, tandyaDao.insertTandyaAnsComWarn]
         };
         // 공통 로직
-        const checking = await fs[warnedItem](warnedId, req.session.id2);
+        const checking = await fs[warnedItem][0](warnedId, req.session.id2);
         if(checking.length) res.json({"result": 0});
         else {
-            await fs[warnedItem](req.session.id2, warnedId);
+            await fs[warnedItem][1](warnedId, req.session.id2);
             res.json({"result": 1});
         }
     }

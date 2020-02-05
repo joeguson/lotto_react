@@ -1,37 +1,44 @@
+let add = true;
+if(add){
+    add = !add;
+    function postPenobrolAdd() {
+        const title = document.getElementById('title').value;
+        const public = document.getElementById('rbP').checked ? 'p' : 'a';
+        var content = document.getElementById('editor').value();
+        const hashtag = document.getElementById('hashtag').value;
+        const thumbnail = document.getElementById('thumbnail').value;
 
-function postPenobrolAdd() {
-    const title = document.getElementById('title').value;
-    const public = document.getElementById('rbP').checked ? 'p' : 'a';
-    var content = document.getElementById('editor').value();
-    const hashtag = document.getElementById('hashtag').value;
-    const thumbnail = document.getElementById('thumbnail').value;
+        const req = {
+            title: title,
+            thumbnail: thumbnail,
+            public: public,
+            content: content,
+            hashtag: hashtag
+        };
 
-    const req = {
-        title: title,
-        thumbnail: thumbnail,
-        public: public,
-        content: content,
-        hashtag: hashtag
-    };
+        const parsed = parseImgTags(content);
+        content = parsed.content;
 
-    const parsed = parseImgTags(content);
-    content = parsed.content;
-
-    const imgCount = Object.keys(parsed.imgs).length;
-    if(imgCount == 0) finalPost(req);
-    else {
-        var done = 0;
-        for(var id in parsed.imgs) {
-            uploadImage(id, parsed.imgs[id], (id, filename) => {
-            content = replace(content, id, filename);
-            req.content = content;
-            done++;
-            if(done == imgCount)
-                finalPost(req);
-        });
+        const imgCount = Object.keys(parsed.imgs).length;
+        if(imgCount == 0) finalPost(req);
+        else {
+            var done = 0;
+            for(var id in parsed.imgs) {
+                uploadImage(id, parsed.imgs[id], (id, filename) => {
+                    content = replace(content, id, filename);
+                    req.content = content;
+                    done++;
+                    if(done == imgCount)
+                    finalPost(req);
+                });
+            }
+        }
     }
-    }
+    setTimeout(function(){
+        add = true;
+    },2000);
 }
+
 
 function finalPost(body) {
     var xhr = new XMLHttpRequest();

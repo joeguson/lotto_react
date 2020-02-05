@@ -11,17 +11,13 @@ const mysql2 = require('mysql2/promise');
 var path = require('path');
 var favicon = require('serve-favicon');
 var schedule = require('node-schedule');
-var db_config =require('./config.json');
+var config =require('./config.json');
 var fs = require('fs');
 var useragent = require('express-useragent');
 const AWS = require('aws-sdk');
 const imageThumbnail = require('image-thumbnail');
 
-const s3 = new AWS.S3({
-    accessKeyId: db_config.AWS_ACCESS_KEY,
-    secretAccessKey: db_config.AWS_SECRET_ACCESS_KEY,
-    region : 'ap-southeast-1'
-});
+const s3 = new AWS.S3(config.aws_config);
 
 app.use(useragent.express());
 app.use(favicon(path.join(__dirname,'./info', 'beritamus logo.png')));
@@ -30,21 +26,10 @@ app.use(session({
     secret : 'hithere@#',
     resave: false,
     saveUninitialized: true,
-    store: new MySQLStore({
-        host     : db_config.host,
-        user     : db_config.user,
-        password : db_config.password,
-        database : db_config.database
-    })
+    store: new MySQLStore(config.db_config)
 }));
-var conn = mysql.createConnection(
-  {
-    host     : db_config.host,
-    user     : db_config.user,
-    password : db_config.password,
-    database : db_config.database
-  }
-);
+
+var conn = mysql.createConnection(config.db_config);
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 app.use(express.json({ limit : "50mb" }));
@@ -63,12 +48,7 @@ app.use(cookieParser());
 
 conn.connect();
 
-const poolConfig = {
-    host     : db_config.host,
-    user     : db_config.user,
-    password : db_config.password,
-    database : db_config.database
-};
+const poolConfig = config.db_config;
 
 exports.app = app;
 exports.router = router;
@@ -86,6 +66,7 @@ var jsForBack = require('./back/jsForBack.js');
 
 var todayTotal = 0;
 var todayCount = 0;
+
 app.use(function(req, res, next){
     var tmp = new Date();
     var todayDay = tmp.getDate()+1;
@@ -138,7 +119,7 @@ app.get(['/tandya/view/:tandya_no'], tandya.getViewTandya);
 app.get('/tandya/add/article', tandya.getAddTandya);
 app.post('/tandya/add/article', tandya.postAddTandya);
 app.post('/tandya/add/answer/:tandya_no', tandya.postAddAnswer);
-app.post('/tandya/add/acomment/:t_id/:ta_id;', tandya.postAddAcomment);
+app.post('/tandya/add/acomment/:t_id/:ta_id', tandya.postAddAcomment);
 
 /************like************/
 app.post('/tandya/like/article/:id', tandya.likesTandya);
@@ -232,8 +213,8 @@ app.post('/image', (req, res) => {
     });
 });
 
-app.listen(db_config.port, '0.0.0.0', function(){
-    console.log('Connected, 80 port!');
+app.listen(config.port, '0.0.0.0', function(){
+    console.log('Connected, ' + config.port + ' port!');
 });
 
 app.all('*', function(req, res){

@@ -10,10 +10,12 @@ exports.getPenobrol = function (req, res) {
         for(const p of byDate){
             p.hashtags = (await penobrolDao.penobrolHashtagById(p.id)).map(parser.parseHashtagP);
             p.commentCount = (await penobrolDao.penobrolComCountById(p.id))[0].count;
+            p.likeCount = (await penobrolDao.penobrolLikeCount(p.id))[0].plikeCount
         }
         for(const p of byScore){
             p.hashtags = (await penobrolDao.penobrolHashtagById(p.id)).map(parser.parseHashtagP);
             p.commentCount = (await penobrolDao.penobrolComCountById(p.id))[0].count;
+            p.likeCount = (await penobrolDao.penobrolLikeCount(p.id))[0].plikeCount
         }
         res.render('./jp/p', {
             dateTopics: byDate,
@@ -169,10 +171,10 @@ exports.warningPenobrol = function (req, res) {
             pcc: [penobrolDao.penobrolComComWarnById, penobrolDao.insertPenobrolComComWarn]
         };
         // 공통 로직
-        const checking = await fs[warnedItem](warnedId, req.session.id2);
+        const checking = await fs[warnedItem][0](warnedId, req.session.id2);
         if(checking.length) res.json({"result": 0});
         else {
-            await fs[warnedItem](req.session.id2, warnedId);
+            await fs[warnedItem][1](req.session.id2, warnedId);
             res.json({"result": 1});
         }
     }
