@@ -126,14 +126,14 @@ exports.updateTandyaAns = (content, id, t_id) => doQuery(
     AND t_id = ?`,
     [content, id, t_id]
 );
-exports.updateTandyaAnsScore = (ta_id, t_id) => doQuery(
+exports.updateTandyaAnsScore = (ta_id) => doQuery(
     `UPDATE t_ans
     set score = (
         (select count(ta_id) from ta_com where ta_id = ?) *.3
         + (select count(ta_id) from ta_like where ta_id = ?)*.7
-    )/(select t_view from tandya where id = ?) * 100
+    )/(select t_view from tandya where id = t_id) * 100
     where id = ?`,
-    [ta_id, ta_id, t_id, ta_id]
+    [ta_id, ta_id, ta_id]
 );
 ////////////////Insert////////////////
 exports.insertTandyaAns = (author, answer, t_id) => doQuery(

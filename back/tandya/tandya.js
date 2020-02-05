@@ -69,11 +69,10 @@ exports.postAddAnswer = function (req, res) {
 exports.postAddAcomment = function (req, res) {
     var author = req.session.id2;
     var content = req.body.acommentContent;
-    var t_id = req.params.t_id;
     var ta_id = req.params.ta_id;
 
     async function postTandyaAnsCom() {
-        await tandyaDao.updateTandyaAnsScore(ta_id, t_id);
+        await tandyaDao.updateTandyaAnsScore(ta_id);
         var postCom = await tandyaDao.insertTandyaAnsCom(author, content, ta_id);
         var postedCom = await tandyaDao.tandyaAnsComById(postCom.insertId);
         res.json({
@@ -124,7 +123,7 @@ exports.likesAnswer = function (req, res) {
             await tandyaDao.insertTandyaAnsLike(ta_id, req.session.id2)
             buttonVal = 1;
         }
-        await tandyaDao.updateTandyaAnsScore(ta_id, t_id);
+        await tandyaDao.updateTandyaAnsScore(ta_id);
         var ajaxResult = await tandyaDao.tandyaAnsLikeCount(ta_id);
         res.json({"ta_like": ajaxResult[0].taLikeCount, "button": buttonVal});
     }
