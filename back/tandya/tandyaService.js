@@ -133,7 +133,7 @@ exports.deleteAnswer = async function(ta_id, u_id) {
     return await deleteProcess(ta_id, u_id, tandyaDao.tandyaAnsById, tandyaDao.deleteTandyaAns);
 };
 
-exports.deleteComment = async function(tac_id, u_id) {
+exports.deleteAComment = async function(tac_id, u_id) {
     return await deleteProcess(tac_id, u_id, tandyaDao.tandyaAnsComById, tandyaDao.deleteTandyaAnsCom);
 };
 
@@ -142,13 +142,15 @@ exports.deleteComment = async function(tac_id, u_id) {
 // 하나의 tandya 에 hashtag 와 answer 개수를 넣어주는 함수
 async function getFullTandya(tandya) {
     // hashtag 를 가져오는 작업과 answer 개수를 가져오는 작업을 병렬로 처리
-    const [hashtagResult, ansCountResult] = await Promise.all([
+    const [hashtagResult, ansCountResult, tandyaLikeCount] = await Promise.all([
         tandyaDao.tandyaHashtagById(tandya.id),
-        tandyaDao.tandyaAnsCountById(tandya.id)
+        tandyaDao.tandyaAnsCountById(tandya.id),
+        tandyaDao.tandyaLikeCount(tandya.id)
     ]);
 
     tandya.hashtags = hashtagResult.map(parser.parseHashtagT);
     tandya.answerCount = ansCountResult[0].count;
+    tandya.likeCount = tandyaLikeCount[0].tlikeCount;
     return tandya;
 }
 

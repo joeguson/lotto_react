@@ -23,7 +23,8 @@ exports.getViewTandya = function (req, res) {
                     topic: result,
                     u_id: req.session.u_id,
                     id2: req.session.id2,
-                }));
+                })
+            );
         });
     }
     else {
@@ -158,7 +159,7 @@ exports.postEditTanswer = function (req, res) {
         req.params.tanswer_no,
         t_id,
         req.body.answer
-    ).then(() => res.redirect('/tandya/' + t_id));
+    ).then(() => res.redirect('/tandya/'+ t_id));
 };
 
 exports.postDeleteTandya = function (req, res) {
@@ -182,7 +183,7 @@ exports.postDeleteTanswer = function (req, res) {
 };
 
 exports.postDeleteTacomment = function (req, res) {
-    tandyaService.deleteComment(
+    tandyaService.deleteAComment(
         req.body.deleteId,
         req.session.id2
     ).then(result => {

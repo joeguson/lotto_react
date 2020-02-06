@@ -32,9 +32,9 @@ class BeritamusThumbnail extends HTMLElement {
                 //img ratio can be altered due to rotation
                 let imgWidth = img.offsetWidth;
                 let imgHeight = img.offsetHeight;
-                let imgRatio = 0;
+                let imgRatio;
 
-                if(src.img.rotate == 'rotate090' || src.img.rotate =='rotate270'){
+                if(src.img.rotate === 'rotate090' || src.img.rotate ==='rotate270'){
                     imgRatio = imgHeight / imgWidth;
                     if(frameRatio > imgRatio){
                         img.style.width = frameHeight  + 'px'; //양옆 세로에 맞춤
@@ -46,7 +46,7 @@ class BeritamusThumbnail extends HTMLElement {
                     }
                     else{
                         img.style.height = frameWidth + 'px'; //위아래 가로에 맞춤.
-                        img.style.marginTop = ((-frameHeight/2)+15)+"px";
+                        img.style.marginTop = ((frameHeight/2)-15)*(-0.5)+"px";
                     }
                 }
                 else{
@@ -77,7 +77,7 @@ class BeritamusThumbnail extends HTMLElement {
         const li = document.createElement("li");
         li.appendChild(this.__buildArticle());
         li.appendChild(this.__buildImage());
-        li.className = "thumbnailLi"
+        li.className = "thumbnailLi";
 
         const br = document.createElement("br");
         br.className = "clear";
@@ -105,7 +105,7 @@ class BeritamusThumbnail extends HTMLElement {
         this.dl.appendChild(content);
 
         const hashtag = document.createElement("b-hashtag");
-        hashtag.className = "hashtag"
+        hashtag.className = "hashtag";
         hashtag.setAttribute("jsonSrc", JSON.stringify(this.src.hashtags));
         this.dl.appendChild(hashtag);
 
@@ -119,7 +119,7 @@ class BeritamusThumbnail extends HTMLElement {
 
     __buildImage() {
         this.div = document.createElement("div");
-        this.div.className = "articleImage"
+        this.div.className = "articleImage";
         if(this.src.img) {
             this.img = document.createElement("img");
             this.img.src = this.src.img.src;

@@ -139,13 +139,16 @@ exports.deleteCComment = async function(pcc_id, u_id) {
 // 하나의 penobrol 에 hashtag 와 Comment 개수를 넣어주는 함수
 async function getFullPenobrol(penobrol) {
     // hashtag 를 가져오는 작업과 comment 개수를 가져오는 작업을 병렬로 처리
-    const [hashtagResult, comCountResult] = await Promise.all([
+    const [hashtagResult, comCountResult, penobrolLikeCount] = await Promise.all([
         penobrolDao.penobrolHashtagById(penobrol.id),
-        penobrolDao.penobrolComCountById(penobrol.id)
+        penobrolDao.penobrolComCountById(penobrol.id),
+        penobrolDao.penobrolLikeCount(penobrol.id)
+
     ]);
 
     penobrol.hashtags = hashtagResult.map(parser.parseHashtagP);
     penobrol.commentCount = comCountResult[0].count;
+    penobrol.likeCount = penobrolLikeCount[0].plikeCount;
     return penobrol;
 }
 
