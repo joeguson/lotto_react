@@ -1,29 +1,16 @@
 var parser = require('../../db/parser.js');
 var jsForBack = require('../../back/jsForBack.js');
 var penobrolDao = require('../../db/b-dao/penobrolDao');
+const penobrolService = require('./penobrolService.js');
 
 /************FOR PENOBROL************/
 exports.getPenobrol = function (req, res) {
-    async function getOrderedP() {
-        var byDate = (await penobrolDao.penobrolByDate()).map(parser.parseFrontPenobrol);
-        var byScore = (await penobrolDao.penobrolByScore()).map(parser.parseFrontPenobrol);
-        for(const p of byDate){
-            p.hashtags = (await penobrolDao.penobrolHashtagById(p.id)).map(parser.parseHashtagP);
-            p.commentCount = (await penobrolDao.penobrolComCountById(p.id))[0].count;
-            p.likeCount = (await penobrolDao.penobrolLikeCount(p.id))[0].plikeCount
-        }
-        for(const p of byScore){
-            p.hashtags = (await penobrolDao.penobrolHashtagById(p.id)).map(parser.parseHashtagP);
-            p.commentCount = (await penobrolDao.penobrolComCountById(p.id))[0].count;
-            p.likeCount = (await penobrolDao.penobrolLikeCount(p.id))[0].plikeCount
-        }
-        res.render('./jp/p', {
-            dateTopics: byDate,
-            scoreTopics: byScore,
+    penobrolService.getOrderedPenobrol()
+        .then(([dateTopics, scoreTopics]) => res.render('./jp/p', {
+            dateTopics: dateTopics,
+            scoreTopics: scoreTopics,
             id2: req.session.id2
-        });
-    }
-    getOrderedP();
+        }));
 };
 
 exports.getViewPenobrol = function (req, res) {
