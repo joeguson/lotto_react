@@ -2,6 +2,7 @@ var tacInputClick = true;
 function acommentSendAjax(acomment){
     var pathname = location.pathname;
     var tandyaId = pathname.split('/');
+    console.log(tandyaId);
     var answerId = acomment.name;
     var original = {'acommentContent' : acomment.previousSibling.previousSibling.value};
     if(tacInputClick){
@@ -15,7 +16,7 @@ function acommentSendAjax(acomment){
         else{
             original = JSON.stringify(original);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/tandya/add/acomment/'+tandyaId[3]+'/'+answerId);
+            xhr.open('POST', '/tandya/new/acomment/'+tandyaId[3]+'/'+answerId);
             xhr.setRequestHeader('Content-type', "application/json");
             xhr.send(original);
             // 데이터 수신이 완료되면 표시

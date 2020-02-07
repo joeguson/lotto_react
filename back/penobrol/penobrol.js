@@ -1,6 +1,6 @@
 var jsForBack = require('../../back/jsForBack.js');
 var penobrolDao = require('../../db/b-dao/penobrolDao');
-const penobrolService = require('./penobrolService.js');
+const penobrolService = require('../../service/penobrolService.js');
 
 /************FOR PENOBROL************/
 exports.getPenobrol = function (req, res) {

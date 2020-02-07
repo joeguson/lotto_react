@@ -1,5 +1,5 @@
-const parser = require('../../db/parser.js');
-const penobrolDao = require('../../db/b-dao/penobrolDao');
+const parser = require('../db/parser.js');
+const penobrolDao = require('../db/b-dao/penobrolDao');
 
 /* ===== exports ===== */
 

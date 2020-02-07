@@ -57,15 +57,15 @@ exports.s3 = s3;
 exports.sch = schedule;
 exports.poolConfig = poolConfig;
 
-var penobrol = require('./back/penobrol/penobrol');
-var tandya = require('./back/tandya/tandya');
-var aku = require('./back/aku/aku');
-var cari = require('./back/cari/cari');
-var backSystem = require('./back/backsystem')
-var jsForBack = require('./back/jsForBack.js');
+const penobrol = require('./back/penobrol/penobrol');
+const tandya = require('./back/tandya/tandya');
+const aku = require('./back/aku/aku');
+const cari = require('./back/cari/cari');
+const backSystem = require('./back/backsystem')
+const jsForBack = require('./back/jsForBack.js');
 
-var todayTotal = 0;
-var todayCount = 0;
+let todayTotal = 0;
+let todayCount = 0;
 
 app.use(function(req, res, next){
     var tmp = new Date();
@@ -109,35 +109,22 @@ app.post('/aku/register', aku.checkUserId);
 app.get(['/cari','/', '/cari/load'], cari.getCari);
 app.get('/cari/search', cari.getSearch);
 
+ app.use('/tandya', tandya);
+ // app.use('/penobrol', penobrol);
+
 /************************FOR TANDYA************************/
-app.get('/tandya', tandya.getTandya);
 
-/************view************/
-app.get(['/tandya/view/:tandya_no'], tandya.getViewTandya);
 
-/************add************/
-app.get('/tandya/add/article', tandya.getAddTandya);
-app.post('/tandya/add/article', tandya.postAddTandya);
-app.post('/tandya/add/answer/:tandya_no', tandya.postAddAnswer);
-app.post('/tandya/add/acomment/:t_id/:ta_id', tandya.postAddAcomment);
-
-/************like************/
-app.post('/tandya/like/article/:id', tandya.likesTandya);
-app.post('/tandya/like/answer/:id', tandya.likesAnswer);
-
-/************warn************/
-app.post('/tandya/warn/', tandya.warningTandya);
-
-/************edit************/
-app.get(['/tandya/edit/article/:tandya_no'], tandya.getEditTandya);
-app.post(['/tandya/edit/article/:tandya_no'], tandya.postEditTandya);
-app.get(['/tandya/edit/answer/:tandya_no/:tanswer_no'], tandya.getEditTanswer);
-app.post(['/tandya/edit/answer/:tandya_no/:tanswer_no'], tandya.postEditTanswer);
-
-/************delete************/
-app.post('/tandya/delete/article/:id', tandya.postDeleteTandya);
-app.post('/tandya/delete/answer/:id', tandya.postDeleteTanswer);
-app.post('/tandya/delete/acomment/:id', tandya.postDeleteTacomment);
+// /************edit************/
+// app.get(['/tandya/edit/article/:tandya_no'], tandya.getEditTandya);
+// app.post(['/tandya/edit/article/:tandya_no'], tandya.postEditTandya);
+// app.get(['/tandya/edit/answer/:tandya_no/:tanswer_no'], tandya.getEditTanswer);
+// app.post(['/tandya/edit/answer/:tandya_no/:tanswer_no'], tandya.postEditTanswer);
+//
+// /************delete************/
+// app.post('/tandya/delete/article/:id', tandya.postDeleteTandya);
+// app.post('/tandya/delete/answer/:id', tandya.postDeleteTanswer);
+// app.post('/tandya/delete/acomment/:id', tandya.postDeleteTacomment);
 
 
 /************************FOR PENOBROL************************/

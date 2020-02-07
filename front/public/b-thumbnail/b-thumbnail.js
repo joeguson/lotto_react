@@ -89,12 +89,12 @@ class BeritamusThumbnail extends HTMLElement {
         this.dl = document.createElement("dl");
         this.dl.className = "articleDl";
         this.dl.onclick = () => {
-            location.href = `${type}`+'/view/'+`${this.src.id}`;
+            location.href = `${type}`+'/article/'+`${this.src.id}`;
         };
 
         const dt = document.createElement("dt");
         const title = document.createElement("a");
-        title.href = `${type}`+'/view/'+`${this.src.id}`;
+        title.href = `${type}`+'/article/'+`${this.src.id}`;
         title.innerText = this.src.identifier === 'p'? this.src.title : this.src.question;
         dt.appendChild(title);
         this.dl.appendChild(dt);
