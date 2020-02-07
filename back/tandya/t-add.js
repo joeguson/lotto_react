@@ -41,7 +41,7 @@ if(add){
 
 function finalPost(body) {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/tandya/new/article', true);
+    xhr.open('POST', '/tandyaApi/article', true);
     xhr.setRequestHeader('Content-type', "application/json");
     xhr.withCredentials = true;
     xhr.send(JSON.stringify(body));

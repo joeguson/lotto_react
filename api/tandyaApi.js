@@ -1,7 +1,9 @@
+const express = require('express');
+const route = express.Router();
 const jsForBack = require('../back/jsForBack.js');
 const tandyaService = require('../service/tandyaService.js');
 
-exports.postAddTandya = function(req, res) {
+route.post('/new/article', function (req, res) {
     tandyaService.postTandya(
         req.session.id2,
         req.body.question,
@@ -10,9 +12,20 @@ exports.postAddTandya = function(req, res) {
         req.body.thumbnail,
         jsForBack.finalHashtagMaker(req.body.hashtag)
     ).then(id => res.json({"id": id}));
-};
+});
 
-exports.postAddAcomment = function (req, res) {
+route.post('edit/article/:tandya_no', function (req, res) {
+    tandyaService.editTandya(
+        req.params.tandya_no,
+        req.body.question,
+        req.body.content,
+        req.body.public,
+        req.body.thumbnail,
+        jsForBack.finalHashtagMaker(req.body.hashtag)
+    ).then(t_id => res.json({ "id": t_id }));
+});
+
+route.post('/new/acomment/:t_id/:ta_id', function (req, res) {
     tandyaService.postAnswerCom(
         req.params.ta_id,
         req.session.id2,
@@ -23,9 +36,9 @@ exports.postAddAcomment = function (req, res) {
         "acomment_content": com.content,
         "acomment_date": com.date
     }));
-};
+});
 
-exports.likesTandya = function (req, res) {
+route.post('/like/article/:id', function (req, res) {
     const t_id = req.body.t_id;
     tandyaService.likeTandya(
         t_id,
@@ -39,9 +52,9 @@ exports.likesTandya = function (req, res) {
             })
         );
     });
-};
+});
 
-exports.likesAnswer = function (req, res) {
+route.post('/like/answer/:id', function (req, res) {
     const ta_id = req.body.ta_id;
     tandyaService.likeTandyaAnswer(
         ta_id,
@@ -55,15 +68,15 @@ exports.likesAnswer = function (req, res) {
             })
         );
     });
-};
+});
 
-exports.warningTandya = function (req, res) {
+route.post('/warn', function (req, res) {
     tandyaService.warnTandya(
         req.body.warnedItem,
         req.body.warnedId,
         req.session.id2
     ).then(result => res.json({ "result": result }));
-};
+});
 
 exports.getOrderedTandya = function(req, res) {
     tandyaService.getOrderedTandya()
@@ -72,3 +85,5 @@ exports.getOrderedTandya = function(req, res) {
             scoreTopics: scoreTopics
         }));
 };
+
+module.exports = route;

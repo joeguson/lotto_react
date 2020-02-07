@@ -57,7 +57,7 @@ mixin likeButton(type ,likeObject, sessionId)
 
 mixin commentOrAnswer(type)
     if(type == 't')
-        form(action='tandya/add/answer/' + topic.id method='post' class='comansForm' onsubmit='return taChecksubmit();')
+        form(action='tandya/new/answer/' + topic.id method='post' class='comansForm' onsubmit='return taChecksubmit();')
             textarea(name='answer' id="answer" class="pctaInput")
             input(type='submit' value='answer' class="pctaInputButton" id='taInputButton')
     else

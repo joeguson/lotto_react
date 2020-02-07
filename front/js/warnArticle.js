@@ -42,7 +42,7 @@ function warningArticle(warning){
         url = '/penobrol/warn/';
     }
     else{
-        url = '/tandya/warn/';
+        url = '/tandyaApi/warn/';
     }
     if(confirmedValue == true){
         async function warnPenobrol(url, data) {

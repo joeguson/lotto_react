@@ -59,6 +59,7 @@ exports.poolConfig = poolConfig;
 
 const penobrol = require('./back/penobrol/penobrol');
 const tandya = require('./back/tandya/tandya');
+const tandyaApi = require('./api/tandyaApi');
 const aku = require('./back/aku/aku');
 const cari = require('./back/cari/cari');
 const backSystem = require('./back/backsystem')
@@ -110,22 +111,9 @@ app.get(['/cari','/', '/cari/load'], cari.getCari);
 app.get('/cari/search', cari.getSearch);
 
  app.use('/tandya', tandya);
+ app.use('/tandyaApi', tandyaApi);
+
  // app.use('/penobrol', penobrol);
-
-/************************FOR TANDYA************************/
-
-
-// /************edit************/
-// app.get(['/tandya/edit/article/:tandya_no'], tandya.getEditTandya);
-// app.post(['/tandya/edit/article/:tandya_no'], tandya.postEditTandya);
-// app.get(['/tandya/edit/answer/:tandya_no/:tanswer_no'], tandya.getEditTanswer);
-// app.post(['/tandya/edit/answer/:tandya_no/:tanswer_no'], tandya.postEditTanswer);
-//
-// /************delete************/
-// app.post('/tandya/delete/article/:id', tandya.postDeleteTandya);
-// app.post('/tandya/delete/answer/:id', tandya.postDeleteTanswer);
-// app.post('/tandya/delete/acomment/:id', tandya.postDeleteTacomment);
-
 
 /************************FOR PENOBROL************************/
 app.get(['/penobrol'], penobrol.getPenobrol);

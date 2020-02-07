@@ -100,7 +100,7 @@ function tLike(tandya){
         "ta_id" : tandya.value.split('/')[1],
         "clickVal" : tandya.value.split('/')[2]
     }
-    var url = '/tandya/like/article/'+tandya.value.split('/')[0];
+    var url = '/tandyaApi/like/article/'+tandya.value.split('/')[0];
     if(tLikeClick){
         tLikeClick = !tLikeClick;
         likeTandya(url, data);
@@ -129,7 +129,7 @@ function taLike(answer){
         "ta_id" : answer.value.split('/')[1],
         "clickVal" : answer.value.split('/')[2]
     }
-    var url = '/tandya/like/answer/'+answer.value.split('/')[0];
+    var url = '/tandyaApi/like/answer/'+answer.value.split('/')[0];
     if(taLikeClick){
         taLikeClick = !taLikeClick;
         likeTanswer(url, data);

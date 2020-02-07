@@ -50,7 +50,6 @@ function postEditTandya() {
         var done = 0;
         for(var id in parsed.imgs) {
             if(parsed.imgs[id].substring(0, 4) == "data"){
-                console.log('new image');
                 uploadImage(id, parsed.imgs[id], (id, filename) => {
                     content = replace(content, id, filename);
                     req.content = content;
@@ -93,7 +92,7 @@ function postEditTandya() {
             xhr.onload = () => {
                 var id = JSON.parse(xhr.responseText).id;
                 console.log(id);
-                window.location.href = location.origin + "/tandya/view/" + id.toString();
+                window.location.href = location.origin + "/tandya/article/" + id.toString();
             };
         }
     }
@@ -172,11 +171,12 @@ function finalPost(body) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', location.pathname, true);
     xhr.setRequestHeader('Content-type', "application/json");
+
     xhr.withCredentials = true;
     xhr.send(JSON.stringify(body));
     xhr.onload = () => {
         var id = JSON.parse(xhr.responseText).id;
         console.log(id);
-        window.location.href = location.origin + "/tandya/view/" + id.toString();
+        window.location.href = location.origin + "/tandya/article/" + id.toString();
     };
 }
