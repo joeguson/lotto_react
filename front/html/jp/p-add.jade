@@ -3,8 +3,7 @@ extends ../layout.jade
 block css
     link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
     script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(src="../../public/b-editor/b-editor.js")
-    script(src='./penobrol/p-add.js')
+    script(src="./public/b-editor/b-editor.js")
     script(src='../addPandT.js')
 
 block nav
@@ -38,7 +37,7 @@ block main
         p.infoP
             span(id='hashInfo' class='infoSpan') 20/20
         p
-            button(class="submit" onclick='postPenobrolAdd();') share
+            button(class="submit" name='p' onclick='postArticle(this)') share
     script.
         function checksubmit(){
             if(title.value.length < 5){

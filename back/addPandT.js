@@ -1,3 +1,47 @@
+let add = true;
+if(add){
+    add = !add;
+    function postArticle(target) {
+        const type = target.name;
+        const public = document.getElementById('rbP').checked ? 'p' : 'a';
+        var content = document.getElementById('editor').value();
+        const hashtag = document.getElementById('hashtag').value;
+        const thumbnail = document.getElementById('thumbnail').value;
+        const req = {
+            thumbnail: thumbnail,
+            public: public,
+            content: content,
+            hashtag: hashtag
+        };
+
+        if(type == 't') req.question = document.getElementById('question').value;
+        else req.title = document.getElementById('title').value;
+        console.log(req);
+
+        const parsed = parseImgTags(content);
+        content = parsed.content;
+
+        const imgCount = Object.keys(parsed.imgs).length;
+        if(imgCount == 0) finalPost(req);
+        else {
+            var done = 0;
+            for(var id in parsed.imgs) {
+                uploadImage(id, parsed.imgs[id], (id, filename) => {
+                    console.log(type);
+                    content = replace(content, id, filename);
+                    req.content = content;
+                    done++;
+                    if(done == imgCount)
+                        finalPost(req);
+                });
+            }
+        }
+    }
+    setTimeout(function(){
+        add = true;
+    },2000);
+}
+
 function parseImgTags(content) {
     var id = 1;
     var imgIndex = 0;
@@ -26,7 +70,6 @@ function parseImgTags(content) {
         const post = content.substring(posMaps[id].e);
         content = prev + id.toString() + post;
     }
-    console.log(imgMaps);
     return {
         content: content,
         imgs: imgMaps
@@ -64,4 +107,23 @@ function replace(content, id, filename, index = 0) {
         index = endIndex;
     }
     return content.substring(0, s) + filename + content.substring(e);
+}
+
+function finalPost(body) {
+    let type = '';
+    let postUrl = '';
+    if(body.question) type = 't';
+    else type = 'p';
+    if(type ==='p') postUrl = 'api/penobrol';
+    else postUrl = 'api/tandya';
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', postUrl, true);
+    xhr.setRequestHeader('Content-type', "application/json");
+    xhr.withCredentials = true;
+    xhr.send(JSON.stringify(body));
+    xhr.onload = () => {
+        let id = JSON.parse(xhr.responseText).id;
+        if(type === 'p') window.location.href = location.origin + "/penobrol/" + id.toString();
+        else window.location.href = location.origin + "/tandya/" + id.toString();
+    };
 }

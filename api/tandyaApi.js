@@ -1,9 +1,12 @@
-const express = require('express');
-const route = express.Router();
+//url - '/api/tandya'
+const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 const tandyaService = require('../service/tandyaService.js');
 
-route.post('/new/article', function (req, res) {
+//************************Tandya************************//
+
+route.post('/', function (req, res) {
+    console.log(req);
     tandyaService.postTandya(
         req.session.id2,
         req.body.question,
@@ -11,10 +14,10 @@ route.post('/new/article', function (req, res) {
         req.body.public,
         req.body.thumbnail,
         jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(id => res.json({"id": id}));
+    ).then(id => res.send({"id": id}));
 });
 
-route.post('edit/article/:tandya_no', function (req, res) {
+route.put('/:tandya_no', function (req, res) {
     tandyaService.editTandya(
         req.params.tandya_no,
         req.body.question,
@@ -25,22 +28,10 @@ route.post('edit/article/:tandya_no', function (req, res) {
     ).then(t_id => res.json({ "id": t_id }));
 });
 
-route.post('/new/acomment/:t_id/:ta_id', function (req, res) {
-    tandyaService.postAnswerCom(
-        req.params.ta_id,
-        req.session.id2,
-        req.body.acommentContent
-    ).then(com => res.json({
-        "acomment_id": com.id,
-        "acomment_author": com.u_id,
-        "acomment_content": com.content,
-        "acomment_date": com.date
-    }));
-});
-
-route.post('/like/article/:id', function (req, res) {
+//************************Like************************//
+route.post('/like', function (req, res, next) {
     const t_id = req.body.t_id;
-    tandyaService.likeTandya(
+    tandyaService.likeTandya( //유효한 t_id인지 확인필요
         t_id,
         req.session.id2,
         parseInt(req.body.clickVal)
@@ -54,9 +45,9 @@ route.post('/like/article/:id', function (req, res) {
     });
 });
 
-route.post('/like/answer/:id', function (req, res) {
+route.post('/like/answer', function (req, res) {
     const ta_id = req.body.ta_id;
-    tandyaService.likeTandyaAnswer(
+    tandyaService.likeTandyaAnswer(//유효한 ta_id인지 확인필요
         ta_id,
         req.session.id2,
         parseInt(req.body.clickVal)
@@ -70,6 +61,21 @@ route.post('/like/answer/:id', function (req, res) {
     });
 });
 
+route.post('/acomment/:t_id/:ta_id', function (req, res) {
+    tandyaService.postAnswerCom(
+        req.params.ta_id,
+        req.session.id2,
+        req.body.acommentContent
+    ).then(com => res.json({
+        "acomment_id": com.id,
+        "acomment_author": com.u_id,
+        "acomment_content": com.content,
+        "acomment_date": com.date
+    }));
+});
+
+
+//************************Warn************************//
 route.post('/warn', function (req, res) {
     tandyaService.warnTandya(
         req.body.warnedItem,
@@ -78,12 +84,13 @@ route.post('/warn', function (req, res) {
     ).then(result => res.json({ "result": result }));
 });
 
-exports.getOrderedTandya = function(req, res) {
-    tandyaService.getOrderedTandya()
-        .then(([dateTopics, scoreTopics]) => res.json({
-            dateTopics: dateTopics,
-            scoreTopics: scoreTopics
-        }));
-};
+
+// exports.getOrderedTandya = function(req, res) {
+//     tandyaService.getOrderedTandya()
+//         .then(([dateTopics, scoreTopics]) => res.json({
+//             dateTopics: dateTopics,
+//             scoreTopics: scoreTopics
+//         }));
+// };
 
 module.exports = route;

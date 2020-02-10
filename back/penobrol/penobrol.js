@@ -1,18 +1,19 @@
+//url - '/penobrol'
+const route = require('express').Router();
 var jsForBack = require('../../back/jsForBack.js');
-var penobrolDao = require('../../db/b-dao/penobrolDao');
 const penobrolService = require('../../service/penobrolService.js');
 
 /************FOR PENOBROL************/
-exports.getPenobrol = function (req, res) {
+route.get('/', function (req, res) {
     penobrolService.getOrderedPenobrol()
         .then(([dateTopics, scoreTopics]) => res.render('./jp/p', {
             dateTopics: dateTopics,
             scoreTopics: scoreTopics,
             id2: req.session.id2
         }));
-};
+});
 
-exports.getViewPenobrol = function (req, res) {
+route.get('/:penobrol_no', function (req, res, next) {
     const id = req.params.penobrol_no;
     const checkId = /^[0-9]+$/;
     if(checkId.test(id)){
@@ -28,92 +29,28 @@ exports.getViewPenobrol = function (req, res) {
         });
     }
     else{
-        res.redirect('/penobrol/');
+        next();
     }
-};
+});
 
-exports.getAddPenobrol = function (req, res) {
+route.get('/new',function (req, res) {
     if (req.session.u_id) {
         res.render('./jp/p-add');
     } else {
         res.redirect('/penobrol/');
     }
-};
+});
 
-exports.postAddPenobrol = function (req, res) {
-    penobrolService.postPenobrol(
-        req.session.id2,
-        req.body.title,
-        req.body.content,
-        req.body.public,
-        req.body.thumbnail,
-        jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(id => res.json({"id": id}));
-};
-
-exports.postAddComment = function (req, res) {
+route.post('/comment/:penobrol_no', function (req, res) {
     const p_id = req.params.penobrol_no;
     penobrolService.postComment(
         p_id,
         req.session.id2,
         req.body.comment
     ).then(() => res.redirect('/penobrol/view/' + p_id));
-};
+});
 
-exports.postAddCcomment = function (req, res) {
-    penobrolService.postCommentCom(
-        req.params.pc_id,
-        req.session.id2,
-        req.body.ccommentContent
-    ).then(com => res.json({
-        "ccomment_id": com.id,
-        "ccomment_author": com.u_id,
-        "ccomment_content": com.content,
-        "ccomment_date": com.date
-    }));
-};
-
-exports.likesPenobrol = function (req, res) {
-    const p_id = req.body.p_id;
-    penobrolService.likePenobrol(
-        p_id,
-        req.session.id2,
-        parseInt(req.body.clickVal)
-    ).then(val => {
-        penobrolService.penobrolLikeCount(p_id).then(count =>
-            res.json({
-                "p_like": count,
-                "button": val
-            })
-        );
-    });
-};
-
-exports.likesComment = function (req, res) {
-    const pc_id = req.body.pc_id;
-    penobrolService.likePenobrolComment(
-        pc_id,
-        req.session.id2,
-        parseInt(req.body.clickVal)
-    ).then(val => {
-        penobrolService.PenobrolComLikeCount(pc_id).then(count =>
-            res.json({
-                "pc_like": count,
-                "button": val
-            })
-        );
-    });
-};
-
-exports.warningPenobrol = function (req, res) {
-    penobrolService.warnPenobrol(
-        req.body.warnedItem,
-        req.body.warnedId,
-        req.session.id2
-    ).then(result => res.json({ "result": result }));
-};
-
-exports.getEditPenobrol = function (req, res) {
+route.get('/edit/:penobrol_no', function (req, res) {
     const p_id = req.params.penobrol_no;
     const u_id = req.session.id2;
 
@@ -122,20 +59,9 @@ exports.getEditPenobrol = function (req, res) {
             res.render('./jp/p-edit', {u_id: u_id, edit_content: penobrol});
         else res.redirect('/penobrol/view/' + p_id);
     });
-};
+});
 
-exports.postEditPenobrol = function (req, res) {
-    penobrolService.editPenobrol(
-        req.params.penobrol_no,
-        req.body.title,
-        req.body.content,
-        req.body.public,
-        req.body.thumbnail,
-        jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(p_id => res.json({ "id": p_id }));
-};
-
-exports.getEditPcomment = function (req, res) {
+route.get('/edit/comment/:penobrol_no/:pcomment_no',function (req, res) {
     const p_id = req.params.penobrol_no;
     const pc_id = req.params.pcomment_no;
     const u_id = req.session.id2;
@@ -150,19 +76,18 @@ exports.getEditPcomment = function (req, res) {
             });
         });
     });
-};
+});
 
-exports.postEditPcomment = function (req, res) {
+route.put('/comment/:penobrol_no/:pcooment_no',function (req, res) {
     const p_id = req.params.penobrol_no;
-
     penobrolService.editComment(
         req.params.pcomment_no,
         p_id,
         req.body.comment
     ).then(() => res.redirect('/penobrol/'+ p_id));
-};
+});
 
-exports.postDeletePenobrol = function(req, res){
+route.delete('/:id', function(req, res){
     penobrolService.deletePenobrol(
         req.body.deleteId,
         req.session.id2
@@ -170,9 +95,9 @@ exports.postDeletePenobrol = function(req, res){
         if(result) res.json({"result": "deleted"});
         else res.redirect('/penobrol');
     });
-};
+});
 
-exports.postDeletePcomment = function(req, res){
+route.delete('/comment/:id',  function(req, res){
     penobrolService.deleteComment(
         req.body.deleteId,
         req.session.id2
@@ -180,9 +105,9 @@ exports.postDeletePcomment = function(req, res){
         if(result) res.json({"result": "deleted"});
         else res.redirect('/penobrol/view/' + req.body.penobrolId);
     });
-};
+});
 
-exports.postDeletePccomment = function(req, res){
+route.delete('/ccomment/:id', function(req, res){
     penobrolService.deleteCComment(
         req.body.deleteId,
         req.session.id2
@@ -190,17 +115,10 @@ exports.postDeletePccomment = function(req, res){
         if(result) res.json({"result": "deleted"});
         else res.redirect('/penobrol/view/' + req.body.penobrolId);
     });
-    var deleteId = req.body.deleteId;
-    var p_id = req.body.penobrolId;
-    async function deletePenobrolComCom(){
-        var checkAuthor = await penobrolDao.penobrolComComById(deleteId);
-        if(checkAuthor[0].author === req.session.id2){
-            await penobrolDao.deletePenobrolComCom(deleteId);
-            res.json({"result":"deleted"});
-        }
-        else{
-            res.redirect('/penobrol/view/'+ p_id);
-        }
-    }
-    deletePenobrolComCom();
-};
+});
+
+route.all('*', function(req, res){
+    res.redirect('/penobrol');
+});
+
+module.exports = route;

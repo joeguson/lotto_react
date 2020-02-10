@@ -61,7 +61,7 @@ mixin commentOrAnswer(type)
             textarea(name='answer' id="answer" class="pctaInput")
             input(type='submit' value='answer' class="pctaInputButton" id='taInputButton')
     else
-        form(action='penobrol/add/comment/' + topic.id method='post' class='comansForm' onsubmit='return pcChecksubmit();')
+        form(action='penobrol/new/comment/' + topic.id method='post' class='comansForm' onsubmit='return pcChecksubmit();')
             textarea(name='comment' id='pcInput' class="pctaInput")
             input(type='submit' value='comment' class="pctaInputButton" id="pcInputButton")
 

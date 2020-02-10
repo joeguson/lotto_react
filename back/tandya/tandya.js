@@ -1,5 +1,5 @@
-const express = require('express');
-const route = express.Router();
+//url - '/tandya'
+const route = require('express').Router();
 const jsForBack = require('../../back/jsForBack.js');
 const tandyaService = require('../../service/tandyaService.js');
 
@@ -14,7 +14,7 @@ route.get('/', function (req, res) {
         }));
 });
 
-route.get('/article/:tandya_no', function (req, res) {
+route.get('/:tandya_no', function (req, res, next) {
     const id = req.params.tandya_no;
     const checkId = /^[0-9]+$/;
     if (checkId.test(id)) {
@@ -30,11 +30,11 @@ route.get('/article/:tandya_no', function (req, res) {
         });
     }
     else {
-        res.redirect('/tandya/');
+        next();
     }
 });
 
-route.get('/new/article', function (req, res) {
+route.get('/new', function (req, res) {
     if (req.session.id2) {
         res.render('./jt/t-add', {id2: req.session.id2});
     } else {
@@ -42,24 +42,23 @@ route.get('/new/article', function (req, res) {
     }
 });
 
-
-route.post('/new/answer/:tandya_no', function (req, res) {
+route.post('/answer/:tandya_no', function (req, res) {
     const t_id = req.params.tandya_no;
     tandyaService.postAnswer(
         t_id,
         req.session.id2,
         req.body.answer
-    ).then(() => res.redirect('/tandya/article/' + t_id));
+    ).then(() => res.redirect('/tandya/' + t_id));
 });
 
-route.get('/edit/article/:tandya_no', function (req, res) {
+route.get('/edit/:tandya_no', function (req, res) {
     const t_id = req.params.tandya_no;
     const u_id = req.session.id2;
 
     tandyaService.getFullTandyaById(t_id).then(tandya => {
         if(tandya != null && tandya.author === u_id)
             res.render('./jt/t-edit', {u_id: u_id, edit_content: tandya});
-        else res.redirect('/tandya/view/' + t_id);
+        else res.redirect('/tandya/' + t_id);
     });
 });
 
@@ -69,7 +68,7 @@ route.get('/edit/answer/:tandya_no/:tanswer_no', function (req, res) {
     const u_id = req.session.id2;
 
     tandyaService.getAnswerById(ta_id).then(answer => {
-        if (u_id !== answer.author) res.redirect('/tandya/view/' + t_id);
+        if (u_id !== answer.author) res.redirect('/tandya/' + t_id);
         else tandyaService.getFullTandyaById(t_id).then(tandya => {
             res.render('./jt/ta-edit', {
                 u_id: 'y',
@@ -80,9 +79,8 @@ route.get('/edit/answer/:tandya_no/:tanswer_no', function (req, res) {
     });
 });
 
-route.post('/edit/answer/:tandya_no/:tanswer_no', function (req, res) {
+route.put('/answer/:tandya_no/:tanswer_no', function (req, res) {
     const t_id = req.params.tandya_no;
-
     tandyaService.editAnswer(
         req.params.tanswer_no,
         t_id,
@@ -90,7 +88,7 @@ route.post('/edit/answer/:tandya_no/:tanswer_no', function (req, res) {
     ).then(() => res.redirect('/tandya/'+ t_id));
 });
 
-route.delete('/article/:id', function (req, res) {
+route.delete('/:id', function (req, res) {
     tandyaService.deleteTandya(
         req.body.deleteId,
         req.session.id2
@@ -110,7 +108,7 @@ route.delete('/answer/:id', function (req, res) {
     });
 });
 
-route.delete('/tandya/delete/acomment/:id', function (req, res) {
+route.delete('/acomment/:id', function (req, res) {
     tandyaService.deleteAComment(
         req.body.deleteId,
         req.session.id2
@@ -118,6 +116,10 @@ route.delete('/tandya/delete/acomment/:id', function (req, res) {
         if(result) res.json({"result": "deleted"});
         else res.redirect('/tandya/view/' + req.body.tandyaId);
     });
+});
+
+route.all('*', function(req, res){
+    res.redirect('/tandya');
 });
 
 module.exports = route;

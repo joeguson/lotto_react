@@ -3,9 +3,8 @@ extends ../layout.jade
 block css
     link(rel="stylesheet" href="../css/tandya_add.css" type="text/css")
     script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(src="../../public/b-editor/b-editor.js")
-    script(src='./tandya/t-add.js')
-    script(src='../addPandT.js')
+    script(src="./public/b-editor/b-editor.js")
+    script(src='./addPandT.js')
 
 block nav
     include ./tNavUl.jade
@@ -37,7 +36,7 @@ block main
         p.infoP
             span(id='hashInfo' class='infoSpan') 20/20
         p
-            button(class="submit" onclick='postTandyaAdd();') ask
+            button(class="submit" name='t' onclick='postArticle(this)') ask
     script.
         function checksubmit(){
             if(title.value.length < 5){
