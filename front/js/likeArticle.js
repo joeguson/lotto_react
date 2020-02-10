@@ -5,7 +5,7 @@ let pcLikeClick = true;
 let taLikeClick = true;
 
 //////////////////////Ajax//////////////////////
-function makeRequest(url, data) {
+function makeLikeRequest(url, data) {
     return new Promise(function (resolve, reject) {
         var original = JSON.stringify(data);
         var xhr = new XMLHttpRequest();
@@ -39,7 +39,7 @@ function pLike(penobrol) {
         "pc_id" : penobrol.value.split('/')[1],
         "clickVal" : penobrol.value.split('/')[2]
     }
-    var url = 'api/penobrol/like/';
+    var url = 'api/penobrol/like';
     if(pLikeClick){
         pLikeClick = !pLikeClick;
         likePenobrol(url, data);
@@ -49,8 +49,8 @@ function pLike(penobrol) {
     }
     async function likePenobrol(url, data) {
         // await code here
-        var ajaxResult = await makeRequest(url, data);
-        // code below here will only execute when await makeRequest() finished loading
+        var ajaxResult = await makeLikeRequest(url, data);
+        // code below here will only execute when await makeLikeRequest() finished loading
         ajaxResult = JSON.parse(ajaxResult);
         penobrol.value = data.p_id+'/'+data.pc_id+'/'+ajaxResult.button
         plikeNum.innerHTML = ajaxResult.p_like
@@ -79,7 +79,7 @@ function pcLike(comment) {
         },2000);
     }
     async function likePcomment(url, data) {
-        var ajaxResult = await makeRequest(url, data);
+        var ajaxResult = await makeLikeRequest(url, data);
         ajaxResult = JSON.parse(ajaxResult);
         comment.value = data.p_id+'/'+data.pc_id+'/'+ajaxResult.button
         pclikeNum.innerHTML = ajaxResult.pc_like
@@ -100,7 +100,7 @@ function tLike(tandya){
         "ta_id" : tandya.value.split('/')[1],
         "clickVal" : tandya.value.split('/')[2]
     }
-    var url = 'api/tandya/like/';
+    var url = 'api/tandya/like';
     if(tLikeClick){
         tLikeClick = !tLikeClick;
         likeTandya(url, data);
@@ -109,7 +109,7 @@ function tLike(tandya){
         },2000);
     }
     async function likeTandya(url, data) {
-        var ajaxResult = await makeRequest(url, data);
+        var ajaxResult = await makeLikeRequest(url, data);
         ajaxResult = JSON.parse(ajaxResult);
         tandya.value = data.t_id+'/'+data.ta_id+'/'+ajaxResult.button;
         tlikeNum.innerHTML = ajaxResult.t_like;
@@ -138,7 +138,7 @@ function taLike(answer){
         },2000);
     }
     async function likeTanswer(url, data) {
-        var ajaxResult = await makeRequest(url, data);
+        var ajaxResult = await makeLikeRequest(url, data);
         ajaxResult = JSON.parse(ajaxResult);
         answer.value = data.t_id+'/'+data.ta_id+'/'+ajaxResult.button
         talikeNum.innerHTML = ajaxResult.ta_like

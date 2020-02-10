@@ -16,7 +16,6 @@ if(add){
 
         if(type == 't') req.question = document.getElementById('question').value;
         else req.title = document.getElementById('title').value;
-        console.log(req);
 
         const parsed = parseImgTags(content);
         content = parsed.content;

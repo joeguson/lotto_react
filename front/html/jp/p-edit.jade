@@ -4,8 +4,7 @@ block css
     link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
     script(type="text/javascript" src="/js/jsForAllJade.js")
     script(src="../../public/b-editor/b-editor.js")
-    script(src='./penobrol/p-edit.js') 
-    script(src='../addPandT.js')
+    script(src='./js/editPandT.js')
 
 block nav
     include ./pNavUl.jade
@@ -46,8 +45,10 @@ block main
         p
             -var hashtags = edit_content.hashtags.map(e => `#${e.hash}`).join(" ");
             input(id='hashtag' type='text' name='hashtag' class="hashtag" value= "#{hashtags}")
+        p.infoP
+            span(id='hashInfo' class='infoSpan') 20/20
         p
-            button(class="submit" onclick="postEditPenobrol();") share
+            button(class="submit" name='p' onclick="postEditArticle(this)") share
         script.
             function checksubmit(){
                 if(title.value.length < 5){
@@ -61,14 +62,15 @@ block main
                 return true;
             }
             window.addEventListener('load', function(){
-                var count = 200;
-                count -= title.value.length;
-                titleInfo.innerHTML = count + '/200';
-            });
-            window.addEventListener('load', function(){
-                var count = 200;
-                count -= thumbnail.value.length;
-                thumbnailInfo.innerHTML = count + '/200';
+                let count1 = 200;
+                let count2 = 200;
+                let count3 = 20;
+                count1 -= title.value.length;
+                count2 -= thumbnail.value.length;
+                count3 -= (hashtag.value.match(/#/gi) || []).length;
+                titleInfo.innerHTML = count1 + '/200';
+                thumbnailInfo.innerHTML = count2 + '/200';
+                hashInfo.innerHTML = count3 + '/20';
             });
             title.addEventListener('keyup', function(){
                 var count = 200;
@@ -79,4 +81,12 @@ block main
                 var count = 200;
                 count -= thumbnail.value.length;
                 thumbnailInfo.innerHTML = count + '/200';
+            });
+            hashtag.addEventListener('keydown', function () {
+                var count = 20;
+                count -= (hashtag.value.match(/#/gi) || []).length;
+                hashInfo.innerHTML = count + '/20';
+                if (count < 1) { // 아직 구현 못함
+                    hashInfo.innerHTML = 'exceeds the limit';
+                }
             });
