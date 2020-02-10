@@ -63,7 +63,7 @@ route.post('/ccomment/:p_id/:pc_id', function (req, res) {
     penobrolService.postCommentCom(
         req.params.pc_id,
         req.session.id2,
-        req.body.ccommentContent
+        req.body.pcctacContent
     ).then(com => res.json({
         "ccomment_id": com.id,
         "ccomment_author": com.u_id,

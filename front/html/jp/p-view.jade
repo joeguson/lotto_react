@@ -49,7 +49,7 @@ block ulComAndAns
                 .pccOrTac
                     if u_id    
                         textarea(name='ccomment' class="pccTacInput" id='pccInput')
-                        input(type='submit' name=c.id onclick="ccommentSendAjax(this);" value="comment" class="pccTacInputButton")
+                        input(type='submit' name=c.id onclick="pcacSendAjax(this);" value="comment" class="pccTacInputButton")
                 each ccs in c.comments
                     dl(class='dlPccAndTac')
                         - var ccommentStart = '- "'+ccs.content+'"'
@@ -101,4 +101,3 @@ block ulComAndAns
             }
         }
     script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/js/plikes.js")

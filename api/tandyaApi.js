@@ -65,7 +65,7 @@ route.post('/acomment/:t_id/:ta_id', function (req, res) {
     tandyaService.postAnswerCom(
         req.params.ta_id,
         req.session.id2,
-        req.body.acommentContent
+        req.body.pcctacContent
     ).then(com => res.json({
         "acomment_id": com.id,
         "acomment_author": com.u_id,

@@ -29,6 +29,7 @@ mixin articleContent(content)
                 i.width = w;
             };
         }
+
 mixin likeButton(type ,likeObject, sessionId)
     -var likeChecker = function(likeObject, sessionId){
     -    for(var i of likeObject){
@@ -57,11 +58,11 @@ mixin likeButton(type ,likeObject, sessionId)
 
 mixin commentOrAnswer(type)
     if(type == 't')
-        form(action='tandya/new/answer/' + topic.id method='post' class='comansForm' onsubmit='return taChecksubmit();')
-            textarea(name='answer' id="answer" class="pctaInput")
+        form(action='tandya/answer/' + topic.id method='post' class='comansForm' onsubmit='return taChecksubmit();')
+            textarea(name='answer' id="taInput" class="pctaInput")
             input(type='submit' value='answer' class="pctaInputButton" id='taInputButton')
     else
-        form(action='penobrol/new/comment/' + topic.id method='post' class='comansForm' onsubmit='return pcChecksubmit();')
+        form(action='penobrol/comment/' + topic.id method='post' class='comansForm' onsubmit='return pcChecksubmit();')
             textarea(name='comment' id='pcInput' class="pctaInput")
             input(type='submit' value='comment' class="pctaInputButton" id="pcInputButton")
 
@@ -121,7 +122,7 @@ mixin articlePop(type, loginUser, articleAuthor)
                     
 mixin caPop(type, loginUser, caAuthor, caId)
     .caPopButton(onclick="caMenuButton(this)") ≡
-        .caPopDiv(id='caId')
+        .caPopDiv(id=`${caId}`)
             if(type == 'p')
                 button(class="caPopMenu" value='p/pc/'+caId onclick="warningArticle(this);")
                     img(src="./icons/warn.png")
@@ -141,7 +142,7 @@ mixin caPop(type, loginUser, caAuthor, caId)
                         
 mixin pcctacPop(type, loginUser, pcctacAuthor, pcctacId)
     .pcctacPopButton(onclick="pcctacMenuButton(this)") ≡
-        .pcctacPopDiv(id='pcctacId')
+        .pcctacPopDiv(id=`${pcctacId}`)
             if(type == 'p')
                 button(class="pcctacPopMenu" value='p/pcc/'+pcctacId onclick="warningArticle(this);")
                     img(src="./icons/warn.png")

@@ -54,7 +54,7 @@ block ulComAndAns
                 .pccOrTac
                     if u_id
                         textarea(name='acomment' class="pccTacInput" id='tacInput')
-                        input(type='submit' name=a.id onclick="acommentSendAjax(this);" value="comment" class="pccTacInputButton")
+                        input(type='submit' name=a.id onclick="pcacSendAjax(this);" value="comment" class="pccTacInputButton")
                 each acs in a.comments
                     dl(class='dlPccAndTac')
                         - var acommentStart = '- "'+acs.content+'"'
@@ -66,7 +66,7 @@ block ulComAndAns
                         dd.ddPccAndTac #{date_result3}    
     script.
         function taChecksubmit() {
-            if (pcInput.value.length < 5) {
+            if (taInput.value.length < 5) {
                 alert('kontennya harus lebih dari 5 alphabet');
                 return false;
             } else {
@@ -104,7 +104,6 @@ block ulComAndAns
                 }
             }
         }
-    script(type="text/javascript" src="/js/tlikes.js")
     script(type="text/javascript" src="/js/jsForAllJade.js")
 
 //- if id2 === a.author
