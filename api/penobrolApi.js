@@ -50,7 +50,7 @@ route.post('/like/comment', function (req, res) {
         req.session.id2,
         parseInt(req.body.clickVal)
     ).then(val => {
-        penobrolService.PenobrolComLikeCount(pc_id).then(count =>
+        penobrolService.penobrolComLikeCount(pc_id).then(count =>
             res.json({
                 "pc_like": count,
                 "button": val

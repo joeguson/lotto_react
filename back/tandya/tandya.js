@@ -104,7 +104,7 @@ route.delete('/answer/:id', function (req, res) {
         req.session.id2
     ).then(result => {
         if(result) res.json({"result": "deleted"});
-        else res.redirect('/tandya/view/' + req.body.tandyaId);
+        else res.redirect('/tandya/' + req.body.tandyaId);
     });
 });
 
@@ -114,7 +114,7 @@ route.delete('/acomment/:id', function (req, res) {
         req.session.id2
     ).then(result => {
         if(result) res.json({"result": "deleted"});
-        else res.redirect('/tandya/view/' + req.body.tandyaId);
+        else res.redirect('/tandya/' + req.body.tandyaId);
     });
 });
 

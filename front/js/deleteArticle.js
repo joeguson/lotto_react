@@ -11,7 +11,7 @@ function makeRequest(url, data) {
     return new Promise(function (resolve, reject) {
         var original = JSON.stringify(data);
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', url);
+        xhr.open('delete', url);
         xhr.setRequestHeader('Content-type', "application/json");
         xhr.send(original);
         xhr.onload = function () {
@@ -34,8 +34,8 @@ function makeRequest(url, data) {
 }
 //////////////////////Penobrol//////////////////////
 function deletePenobrol() {
-    var p_id = location.pathname.split('/')[3];
-    var url = '/penobrol/delete/article/' + p_id;
+    var p_id = location.pathname.split('/')[2];
+    var url = '/penobrol/' + p_id;
     var original = {
         'deleteId': p_id
     };
@@ -59,9 +59,9 @@ function deletePenobrol() {
 }
 
 function postDeletePcomment(target) {
-    var p_id = location.pathname.split('/')[3];
+    var p_id = location.pathname.split('/')[2];
     var pc_id = target.getAttribute('value');
-    var url = '/penobrol/delete/comment/' + pc_id;
+    var url = '/penobrol/comment/' + pc_id;
     var original = {
         'deleteId': pc_id,
         'penobrolId': p_id
@@ -79,7 +79,7 @@ function postDeletePcomment(target) {
             ajaxResult = JSON.parse(ajaxResult);
             if (ajaxResult.result == "deleted") {
                 alert('deleted');
-                window.location.replace(location.origin + "/penobrol/view/" + p_id);
+                window.location.replace(location.origin + "/penobrol/" + p_id);
             }
         }
 
@@ -87,9 +87,9 @@ function postDeletePcomment(target) {
 }
 
 function postDeletePccomment(target) {
-    var p_id = location.pathname.split('/')[3];
+    var p_id = location.pathname.split('/')[2];
     var pcc_id = target.getAttribute('value');
-    var url = '/penobrol/delete/ccomment/' + pcc_id;
+    var url = '/penobrol/ccomment/' + pcc_id;
     var original = {
         'deleteId': pcc_id,
         'penobrolId': p_id
@@ -107,15 +107,15 @@ function postDeletePccomment(target) {
             ajaxResult = JSON.parse(ajaxResult);
             if (ajaxResult.result == "deleted") {
                 alert('deleted');
-                window.location.replace(location.origin + "/penobrol/view/" + p_id);
+                window.location.replace(location.origin + "/penobrol/" + p_id);
             }
         }
     }
 }
 //////////////////////Tandya//////////////////////
 function deleteTandya() {
-    var t_id = location.pathname.split('/')[3];
-    var url = '/tandya/delete/article/' + t_id;
+    var t_id = location.pathname.split('/')[2];
+    var url = '/tandya/' + t_id;
     var original = {
         'deleteId': t_id
     };
@@ -139,9 +139,9 @@ function deleteTandya() {
 }
 
 function postDeleteTanswer(target) {
-    var t_id = location.pathname.split('/')[3];
+    var t_id = location.pathname.split('/')[2];
     var ta_id = target.getAttribute('value');
-    var url = '/tandya/delete/answer/' + ta_id;
+    var url = '/tandya/answer/' + ta_id;
     var original = {
         'deleteId': ta_id,
         'tandyaId': t_id
@@ -159,7 +159,7 @@ function postDeleteTanswer(target) {
             ajaxResult = JSON.parse(ajaxResult);
             if (ajaxResult.result == "deleted") {
                 alert('deleted');
-                window.location.replace(location.origin + "/tandya/view/" + t_id);
+                window.location.replace(location.origin + "/tandya/" + t_id);
             }
         }
 
@@ -167,9 +167,9 @@ function postDeleteTanswer(target) {
 }
 
 function postDeleteTacomment(target) {
-    var t_id = location.pathname.split('/')[3];
+    var t_id = location.pathname.split('/')[2];
     var tac_id = target.getAttribute('value');
-    var url = '/tandya/delete/acomment/' + tac_id;
+    var url = '/tandya/acomment/' + tac_id;
     var original = {
         'deleteId': tac_id,
         'tandyaId': t_id
@@ -187,7 +187,8 @@ function postDeleteTacomment(target) {
             ajaxResult = JSON.parse(ajaxResult);
             if (ajaxResult.result == "deleted") {
                 alert('deleted');
-                window.location.replace(location.origin + "/tandya/view/" + t_id);
+                console.log(location.origin + "/tandya/" + t_id);
+                window.location.replace(location.origin + "/tandya/" + t_id);
             }
         }
     }

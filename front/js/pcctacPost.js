@@ -17,7 +17,7 @@ function pcacSendAjax(target){
             original = JSON.stringify(original);
             const xhr = new XMLHttpRequest();
             let postUrl = '';
-            if(type === 'p') postUrl = '/api/penobrol/ccomment/'+ptid+'/'+pctaId;
+            if(type === 'penobrol') postUrl = '/api/penobrol/ccomment/'+ptid+'/'+pctaId;
             else postUrl = '/api/tandya/acomment/'+ptid+'/'+pctaId;
             xhr.open('POST', postUrl);
             xhr.setRequestHeader('Content-type', "application/json");
@@ -26,7 +26,7 @@ function pcacSendAjax(target){
             xhr.addEventListener('load', function(){
                 const result = JSON.parse(xhr.responseText);
                 let pcta = '';
-                var dls = document.createElement('dl');
+                let dls = document.createElement('dl');
                 let dts = document.createElement('dt');
                 let dds = document.createElement('dd');
                 let pcctacPopButton = document.createElement('div');
@@ -52,8 +52,9 @@ function pcacSendAjax(target){
                 pcctacPopDiv.append(warnButton);
                 pcctacPopDiv.append(deleteButton);
                 pcctacPopButton.append(pcctacPopDiv);
-                if(type ==='p'){
+                if(type ==='penobrol'){
                     pcta = document.getElementById("pc/" + ptid + '/' + pctaId);
+                    console.log(pcta);
                     pcctacPopDiv.setAttribute('id', result.ccomment_id);
                     warnButton.setAttribute('value', 'p/pcc/'+result.ccomment_id);
                     deleteButton.setAttribute('value', result.ccomment_id);

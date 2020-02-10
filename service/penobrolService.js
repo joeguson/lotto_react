@@ -170,7 +170,7 @@ function insertHashtags(p_id, hashtags) {
 
 async function deleteProcess(id, u_id, selector, deleter) {
     const p = (await selector(id))[0];
-    if(t == null || u_id !== p.author) return false;
+    if(p == null || u_id !== p.author) return false;
     await deleter(id);
     return true;
 }
