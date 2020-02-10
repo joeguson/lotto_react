@@ -98,7 +98,7 @@ const fs = {
 exports.warnPenobrol = async function(warnedItem, warnedId, user) {
     const checking = await fs[warnedItem][0](user, warnedId);
     if(checking.length) return 0;
-    await fs[warnedItem][1](warnedId, user);
+    await fs[warnedItem][1](user, warnedId);
     return 1;
 };
 

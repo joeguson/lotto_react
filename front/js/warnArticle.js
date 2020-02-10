@@ -1,9 +1,8 @@
 //////////////////////Variables//////////////////////
-var pWarnClick = true;
-var tWarnClick = true;
+var warnClick = true;
 
 //////////////////////Ajax//////////////////////
-function makeRequest(url, data) {
+function makeWarnRequest(url, data) {
     return new Promise(function (resolve, reject) {
         var original = JSON.stringify(data);
         var xhr = new XMLHttpRequest();
@@ -30,24 +29,27 @@ function makeRequest(url, data) {
 }
 //////////////////////Any Article//////////////////////
 function warningArticle(warning){
-    console.log(warning.value);
-    var url = '';
-    var warningValue = warning.value.split("/");
-    var confirmWarning = function(){
+    let url = '';
+    const warningValue = warning.value.split("/");
+    let confirmWarning = function(){
         return confirm("You cannot cancel warn. Are you sure to warn this?");
     };
-    var confirmedValue = confirmWarning();
-    var original = {'warnedType' : warningValue[0], "warnedItem" : warningValue[1], "warnedId" : warningValue[2]};
+    let confirmedValue = confirmWarning();
+    let original = {
+        'warnedType' : warningValue[0],
+        "warnedItem" : warningValue[1],
+        "warnedId" : warningValue[2]
+    };
     if(original.warnedType == 'p'){
-        url = '/penobrol/warn/';
+        url = 'api/penobrol/warn';
     }
     else{
-        url = '/tandyaApi/warn/';
+        url = 'api/tandya/warn';
     }
     if(confirmedValue == true){
-        async function warnPenobrol(url, data) {
-            var ajaxResult = await makeRequest(url, data);
-            var ajaxResult = JSON.parse(ajaxResult);
+        async function warn(url, data) {
+            let ajaxResult = await makeWarnRequest(url, data);
+            ajaxResult = JSON.parse(ajaxResult);
             if(ajaxResult.result == 1){
                 alert('terima kasih');
             }
@@ -55,11 +57,11 @@ function warningArticle(warning){
                 alert('sudah di warn');
             }
         }
-        if(pWarnClick){
-            pWarnClick = !pWarnClick;
-            warnPenobrol(url, original);
+        if(warnClick){
+            warnClick = !warnClick;
+            warn(url, original);
             setTimeout(function(){
-                pWarnClick = true;
+                warnClick = true;
             },2000);
         }
     }

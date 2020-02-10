@@ -54,7 +54,6 @@ function pcacSendAjax(target){
                 pcctacPopButton.append(pcctacPopDiv);
                 if(type ==='penobrol'){
                     pcta = document.getElementById("pc/" + ptid + '/' + pctaId);
-                    console.log(pcta);
                     pcctacPopDiv.setAttribute('id', result.ccomment_id);
                     warnButton.setAttribute('value', 'p/pcc/'+result.ccomment_id);
                     deleteButton.setAttribute('value', result.ccomment_id);

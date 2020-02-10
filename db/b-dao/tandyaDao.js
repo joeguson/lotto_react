@@ -297,7 +297,7 @@ exports.insertTandyaAnsWarn = (ta_id, u_id) => doQuery(
     values(?, ?)`,
     [ta_id, u_id]
 );
-exports.insertTandyaAnsComWarn = (ta_id, u_id) => doQuery(
+exports.insertTandyaAnsComWarn = (tac_id, u_id) => doQuery(
     `insert into tac_warning(tac_id, u_id)
     values(?, ?)`,
     [tac_id, u_id]
