@@ -80,10 +80,10 @@ exports.verifyUser = (email) => doQuery(
     email
 );
 ////////////////Insert////////////////
-exports.insertUserInfo = (id, pw, bday, email, sex, verify) => doQuery(
+exports.insertUserInfo = (id, pw, bday, sex, email, verify) => doQuery(
     `INSERT INTO users
-    (u_id, u_pw, u_bday, email, sex, verify)
+    (u_id, u_pw, u_bday, sex, email, verify)
     VALUES
     (?, ?, ?, ?, ?, ?)`,
-    [id, pw, bday, email, sex, verify]
+    [id, pw, bday, sex, email, verify]
 );

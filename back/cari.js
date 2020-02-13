@@ -1,7 +1,7 @@
-var parser = require('../../db/parser.js');
-var jsForBack = require('../jsForBack.js');
-var penobrolDao = require('../../db/b-dao/penobrolDao');
-var tandyaDao = require('../../db/b-dao/tandyaDao');
+var parser = require('../db/parser.js');
+var jsForBack = require('./jsForBack.js');
+var penobrolDao = require('../db/b-dao/penobrolDao');
+var tandyaDao = require('../db/b-dao/tandyaDao');
 
 function shuffle(list) {
     var j, x, i;

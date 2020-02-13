@@ -3,6 +3,14 @@ const penobrolDao = require('../db/b-dao/penobrolDao');
 
 /* ===== exports ===== */
 
+exports.getUserPenobrol = async function(id2) {
+    const results = await penobrolDao.penobrolByAuthor(id2);
+    const parsed = results.map(subject =>
+        parser.parseFrontPenobrol(subject)
+    );
+    return await applyAsyncToAll(parsed, getFullPenobrol);
+};
+
 exports.getOrderedPenobrol = async function() {
     // date, score 기준으로 penobrol 를 받아오는 것을 병렬로 처리
     const results = await Promise.all([
@@ -90,6 +98,14 @@ exports.penobrolComLikeCount = async function(pc_id) {
     return (await penobrolDao.penobrolComLikeCount(pc_id))[0].pcLikeCount;
 };
 
+exports.penobrolLikeCountByAuthor = async function(id2) {
+    return (await penobrolDao.penobrolLikeCountByAuthor(id2))[0].total;
+};
+
+exports.penobrolComLikeCountByAuthor = async function(id2) {
+    return (await penobrolDao.penobrolComLikeCountByAuthor(id2))[0].total;
+};
+
 const fs = {
     p: [penobrolDao.penobrolWarnById, penobrolDao.insertPenobrolWarn],
     pc: [penobrolDao.penobrolComWarnById, penobrolDao.insertPenobrolComWarn],
@@ -145,7 +161,6 @@ async function getFullPenobrol(penobrol) {
         penobrolDao.penobrolLikeCount(penobrol.id)
 
     ]);
-
     penobrol.hashtags = hashtagResult.map(parser.parseHashtagP);
     penobrol.commentCount = comCountResult[0].count;
     penobrol.likeCount = penobrolLikeCount[0].plikeCount;

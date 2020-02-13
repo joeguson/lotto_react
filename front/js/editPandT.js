@@ -7,9 +7,9 @@ window.onload= () => {
 };
 
 function checkImage(imageObject){
-    var originalImageName = Object.values(originalImages.imgs);
-    var finalImageName = Object.values(imageObject);
-    var temp = [];
+    let originalImageName = Object.values(originalImages.imgs);
+    let finalImageName = Object.values(imageObject);
+    let temp = [];
     var returnImageName = [];
     for(var i=0; i<originalImageName.length; i++){
         var p = 0;
@@ -36,7 +36,7 @@ if(edit){
         var content = document.getElementById('editor').value();
         const hashtag = document.getElementById('hashtag').value;
         const thumbnail = document.getElementById('thumbnail').value;
-        var deleteImage;
+        var deleteImg;
         const req = {
             public: public,
             content: content,
@@ -52,8 +52,8 @@ if(edit){
         const imgCount = Object.keys(parsed.imgs).length;
         if(imgCount == 0) finalPost(req);
         else {
-            deleteImage = checkImage(parsed.imgs);
-            var done = 0;
+            deleteImg = checkImage(parsed.imgs);
+            let done = 0;
             for(let id in parsed.imgs) {
                 if(parsed.imgs[id].substring(0, 4) == "data"){
                     uploadImage(id, parsed.imgs[id], (id, filename) => {
@@ -86,19 +86,12 @@ if(edit){
                 }
 
             }
+            if(deleteImage.length > 0){
+                console.log(deleteImg);
+                deleteImage(deleteImg);
+            }
             if(done === imgCount){
                 finalPost(req);
-            }
-            if(deleteImage.length>0){
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', location.pathname, true);
-                xhr.setRequestHeader('Content-type', "application/json");
-                xhr.withCredentials = true;
-                xhr.send(JSON.stringify(body));
-                xhr.onload = () => {
-                    var id = JSON.parse(xhr.responseText).id;
-                    window.location.href = location.origin + "/penobrol/view/" + id.toString();
-                };
             }
         }
 
@@ -154,23 +147,6 @@ function uploadImage(id, data, onUploaded) {
 }
 
 
-// function uploadImage(id, data, onUploaded) {
-//     var content = location.pathname.split("/");
-//     var json = JSON.stringify({
-//         img: data,
-//         content_type: 'p',
-//         content_id: content[2]
-//     });
-//     var xhr = new XMLHttpRequest();
-//     xhr.open('POST', '/image', true);
-//     xhr.setRequestHeader('Content-type', "application/json");
-//     xhr.send(json);
-//     xhr.onload = () => {
-//         var result = JSON.parse(xhr.responseText).filename;
-//         onUploaded(id, result);
-//     };
-// }
-
 function replace(content, id, filename, index = 0) {
     filename = "https://beritamus.s3-ap-southeast-1.amazonaws.com/images/" + filename;
     var s = 0, e = 0;
@@ -188,6 +164,18 @@ function replace(content, id, filename, index = 0) {
         index = endIndex;
     }
     return content.substring(0, s) + filename + content.substring(e);
+}
+
+function deleteImage(imgs) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('delete', '/image', true);
+    xhr.setRequestHeader('Content-type', "application/json");
+    xhr.send(json);
+    xhr.onload = () => {
+        let result = JSON.parse(xhr.responseText);
+        console.log(result);
+        console.log('deleted');
+    };
 }
 
 function finalPost(body) {

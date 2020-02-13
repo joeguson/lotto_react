@@ -26,7 +26,7 @@ userId.addEventListener('keyup', function(){
 
 userId.addEventListener('blur', function(){
     if(userIdCheck.test(userId.value)){
-        sendAjax('/aku/register', userId.value, 'id');
+        sendAjax('api/aku/check', userId.value, 'id');
     }
     else{
         appearCross(userId);
@@ -92,7 +92,7 @@ userSexGirl.addEventListener('click', function(){
 
 userEmail.addEventListener('blur', function(){
     if(emailCheck.test(userEmail.value) === true){
-        sendAjax('/aku/register', userEmail.value, 'mail');
+        sendAjax('api/aku/check', userEmail.value, 'mail');
     }
     else{
         emailInfo.innerHTML = 'maaf, email ini tidak boleh dipakai';
@@ -133,18 +133,16 @@ function checkboxCheck(target){
 }
 
 function sendAjax(url, data, checkType){
-    var sendingData = (checkType == 'id') ? {'type' : checkType, 'data' : data} : {'type' : checkType, 'data' : data}
-    var markTarget = (checkType == 'id') ? userId : userEmail;
+    let sendingData = (checkType == 'id') ? {'type' : checkType, 'data' : data} : {'type' : checkType, 'data' : data}
+    let markTarget = (checkType == 'id') ? userId : userEmail;
     sendingData = JSON.stringify(sendingData);
     var xhr = new XMLHttpRequest();
     xhr.open('post', url);
     xhr.setRequestHeader('Content-type', "application/json");
     xhr.send(sendingData);
     xhr.addEventListener('load', function(){
-        var result = JSON.parse(xhr.responseText);
-        if(result.result !== 'ok') return;
-         // 데이터가 있으면 결과값 표시
-        if(parseInt(result.length) > 0){
+        let result = JSON.parse(xhr.responseText);
+        if(parseInt(result) > 0){
             appearCross(markTarget);
             if(checkType == 'id'){
                 idInfo.innerHTML = 'maaf, id ini sudah dipakai';

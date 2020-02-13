@@ -27,7 +27,7 @@ block submain
 block main
     if user
         .p-info
-            a.changinfo(href= '/aku/changeUserInfoLogin') #{u_id}
+            a.changinfo(href= '/aku/change') #{u_id}
         .p-stat
             -var likeCountChecker = function(num){if(num){return num;}else{return 0;}}
             .likeStat
@@ -81,7 +81,7 @@ block main
             input(type='submit' value="Login" id="login" onclick='noDouble()')
         .daftar
             span(id="hilang")
-                a(href='/aku/findMyIdPw') Forgot
+                a(href='/aku/find') Forgot
             span(id="daftar")
                 a(href='/aku/daftar') Sign Up
 

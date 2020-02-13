@@ -1,7 +1,7 @@
 //url - '/penobrol'
 const route = require('express').Router();
-var jsForBack = require('../../back/jsForBack.js');
-const penobrolService = require('../../service/penobrolService.js');
+var jsForBack = require('./jsForBack.js');
+const penobrolService = require('../service/penobrolService.js');
 
 /************FOR PENOBROL************/
 route.get('/', function (req, res) {

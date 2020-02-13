@@ -20,7 +20,7 @@ block main
         button(id="pw") Password
         input(type="hidden" id="idOrPw" name="idOrPw" value="id")
     article
-        form(action='/aku/findMyIdPw' method='post' onsubmit='return checksubmit();')
+        form(action='/aku/find' method='post' onsubmit='return checksubmit();')
             p(id='userIdP' style="visibility: hidden;")
                 input(type='text' id="u_id" name='u_id' placeholder='Your ID')
             p

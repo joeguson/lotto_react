@@ -3,10 +3,9 @@ const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 const tandyaService = require('../service/tandyaService.js');
 
-//************************Tandya************************//
+/* ===== tandya ===== */
 
 route.post('/', function (req, res) {
-    console.log(req);
     tandyaService.postTandya(
         req.session.id2,
         req.body.question,

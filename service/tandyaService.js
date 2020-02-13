@@ -3,6 +3,15 @@ const tandyaDao = require('../db/b-dao/tandyaDao');
 
 /* ===== exports ===== */
 
+
+exports.getUserTandya = async function(id2) {
+    const results = await tandyaDao.tandyaByAuthor(id2);
+    const parsed = results.map(subject =>
+        parser.parseFrontTandya(subject)
+    );
+    return await applyAsyncToAll(parsed, getFullTandya);
+};
+
 exports.getOrderedTandya = async function() {
     // date, score 기준으로 tandya 를 받아오는 것을 병렬로 처리
     const results = await Promise.all([
@@ -91,6 +100,14 @@ exports.likeTandyaAnswer = async function(ta_id, user, val) {
 
 exports.tandyaAnsLikeCount = async function(ta_id) {
     return (await tandyaDao.tandyaAnsLikeCount(ta_id))[0].taLikeCount;
+};
+
+exports.tandyaLikeCountByAuthor = async function(id2) {
+    return (await tandyaDao.tandyaLikeCountByAuthor(id2))[0].total;
+};
+
+exports.tandyaAnsLikeCountByAuthor = async function(id2) {
+    return (await tandyaDao.tandyaAnsLikeCountByAuthor(id2))[0].total;
 };
 
 const fs = {

@@ -1,9 +1,9 @@
 //url - '/tandya'
 const route = require('express').Router();
-const jsForBack = require('../../back/jsForBack.js');
-const tandyaService = require('../../service/tandyaService.js');
+const jsForBack = require('./jsForBack.js');
+const tandyaService = require('../service/tandyaService.js');
 
-/************FOR TANDYA************/
+/* ===== tandya ===== */
 
 route.get('/', function (req, res) {
     tandyaService.getOrderedTandya()
