@@ -1,4 +1,4 @@
-var conn = require('../b');
+const conn = require('../b');
 
 exports.doQuery = function(pool, sql, arg) {
     return new Promise(function(resolve, reject){

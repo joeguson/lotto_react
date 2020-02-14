@@ -77,9 +77,7 @@ app.use(function(req, res, next){
     next();
 });
 
-
-
-/************************FOR SYSTEM************************/
+/* ===== router ===== */
 app.get('/chonggwalpage', backSystem.getChonggwalpage);
 app.post('/chonggwalpage', backSystem.postChonggwalpage);
 

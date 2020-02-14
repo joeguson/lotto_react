@@ -59,13 +59,11 @@ exports.updateLoginDate = (id) => doQuery(
     WHERE u_id = ?`,
     id
 );
-exports.updateUserInfo = (pw, bday, gender, id) => doQuery(
+exports.updateUserInfo = (pw, id) => doQuery(
     `update users
-    set u_pw = ?,
-    u_bday = ?,
-    sex = ?
+    set u_pw = ?
     where id = ?`,
-    [pw, bday, gender, id]
+    [pw, id]
 );
 exports.updateUserPw = (pw, id) => doQuery(
     `update users

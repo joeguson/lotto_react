@@ -75,6 +75,11 @@ exports.postUser = async function(u_id, u_pw, birthday, u_sex,  u_email, code){
     deliverMail(mailOptions);
 };
 
+exports.getUserBasicInfo = async function(id2){
+    const result = await userDao.userInfoById(id2);
+    return result[0];
+}
+
 exports.findUserInfo = async function(u_id, birthday, u_sex,  u_email){
     let check = await userDao.userBasicInfoByEmail(u_email);
     mailOptions.to = u_email;
@@ -116,6 +121,10 @@ exports.findUserInfo = async function(u_id, birthday, u_sex,  u_email){
     deliverMail(mailOptions);
 };
 
+exports.updateUserInfo = async function(pw, id2){
+    const result = await userDao.updateUserInfo(pw, id2);
+    return result[0];
+}
 
 /* ===== local functions ===== */
 // user의 정보에 총 like 개수를 넣어주는 함수

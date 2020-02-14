@@ -1,23 +1,8 @@
 //url - '/aku'
-let nodemailer = require('nodemailer');
-let key = require('../info/beritamus-admin-2ff0df5d17ca.json');
-let parser = require('../db/parser.js');
 let userDao = require('../db/b-dao/userDao');
-let penobrolDao = require('../db/b-dao/penobrolDao');
-let tandyaDao = require('../db/b-dao/tandyaDao');
-let config =require('../config.json');
 const route = require('express').Router();
 const jsForBack = require('./jsForBack.js');
-const tandyaService = require('../service/tandyaService.js');
-const penobrolService = require('../service/penobrolService.js');
 const akuService = require('../service/akuService.js');
-
-var transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: key.mail_config
-});
 
 route.get('/daftar', function(req, res){
     if(req.query.email){
@@ -111,66 +96,45 @@ route.post('/find', function(req, res){
 });
 
 route.get('/change', function(req, res){
-    if(req.session.id2){
-        res.render('./ja/changeUserInfoLogin');
-    }else{
-        res.redirect('/aku')
-    }
+    if(req.session.id2) res.render('./ja/changeUserInfoLogin');
+    else res.redirect('/aku')
 });
 
 route.post('/change', function(req, res){
     if(req.session.id2){
-        var u_id = req.body.u_id;
-        var u_pw = req.body.u_pw;
-        async function getUserInfo(){
-            var result = await userDao.matchCredential(req.session.id2);
-            req.session.valid = result[0];
-            res.redirect('/aku/changeUserInfo');
-        }
-        getUserInfo();
-    }else{
-        res.redirect('/aku')
+        akuService.userLogin(req.body.u_id, req.body.u_pw)
+            .then(result => {
+                if(result){
+                    req.session.valid = 'valid';
+                    res.redirect('/aku/change/info');
+                }
+                else res.redirect('/aku')
+            }
+        );
     }
+    else res.redirect('/aku')
 });
 
-route.get('/change', function(req, res){
+route.get('/change/info', function(req, res){
     if(req.session.id2 && req.session.valid){
-        async function getUserInfo(){
-            var result = await userDao.matchCredential(req.session.id2);
-            res.render('./ja/changeUserInfo', {user: result[0]});
-        }
-        getUserInfo();
+        let result = akuService.getUserBasicInfo(req.session.id2)
+            .then((result) => {
+                res.render('./ja/changeUserInfo', {
+                    user: result
+                });
+            });
     }
-    else{
-        res.redirect('/aku')
-    }
+    else res.redirect('/aku')
 });
 
-route.post('/change', function(req, res){
+route.post('/change/info', function(req, res){
     if(req.session.id2){
-        var u_pw = req.body.u_pw;
-        var birthday = req.body.birthday;
-        var u_sex = req.body.gender;
-        async function updateUser(){
-            await userDao.updateUserInfo(u_pw, birthday, u_sex, req.session.id2);
-            res.redirect('/aku');
-        }
-        updateUser();
+        akuService.updateUserInfo(
+            req.body.u_pw,
+            req.session.id2
+        ).then(res.redirect('/aku'));
     }
-    else{
-        res.redirect('/aku')
-    }
-});
-
-route.get('/auth', function(req, res){
-    var u_pw = req.body.u_pw;
-    var birthday = req.body.birthday;
-    var u_sex = req.body.gender;
-    async function updateUser(){
-        await userDao.updateUserInfo(u_pw, birthday, u_sex, req.session.id2);
-        res.redirect('/aku');
-    }
-    updateUser();
+    else res.redirect('/aku')
 });
 
 module.exports = route;
