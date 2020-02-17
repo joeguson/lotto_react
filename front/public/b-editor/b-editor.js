@@ -207,22 +207,12 @@
             confirm.innerText = "confirm";
 
             confirm.onclick = () => {
-                console.log(this);
-                console.log("Confirm");
                 const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
-                console.log(youtubeHTML);
-                console.log(this.editor);
-                const t = "<b>hello</b>";
 
-                // const sample = document.createElement("b");
-                // sample.innerText = "hello";
-
-                this.editor.body.focus();
-                // this.editor.body.appendChild(sample);
-                this.editor.execCommand("insertHTML", false, t);
-                this.editor.execCommand("insertHTML", false, youtubeHTML);
                 this.youtubeDialog.close();
                 this.youtubeIdDialog.close();
+                this.editor.body.focus();
+                this.editor.execCommand("insertHTML", false, youtubeHTML);
             };
             div.appendChild(confirm);
         }
