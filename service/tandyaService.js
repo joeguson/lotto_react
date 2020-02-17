@@ -3,6 +3,29 @@ const tandyaDao = require('../db/b-dao/tandyaDao');
 
 /* ===== exports ===== */
 
+exports.searchTandya = async function(string) {
+    const results = await tandyaDao.tandyaSearch(string);
+    const parsed = results.map(subject =>
+        parser.parseFrontTandya(subject)
+    );
+    return await applyAsyncToAll(parsed, getFullTandya);
+};
+
+exports.searchTandyaByHash = async function(array) {
+    let thResults = [];
+    for(var h of array){
+        thResults = ((await tandyaDao.tandyaSearchByHash('%'+h+'%')).reduce((acc, cur) => acc.concat(cur), [])).map(parser.parseFrontTandya);
+    }
+    return await applyAsyncToAll(thResults, getFullTandya);
+};
+
+exports.getRandTandya = async function() {
+    const results = await tandyaDao.tandyaByRand();
+    const parsed = results.map(subject =>
+        parser.parseFrontTandya(subject)
+    );
+    return await applyAsyncToAll(parsed, getFullTandya);
+};
 
 exports.getUserTandya = async function(id2) {
     const results = await tandyaDao.tandyaByAuthor(id2);

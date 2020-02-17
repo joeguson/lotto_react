@@ -82,10 +82,9 @@ app.get('/chonggwalpage', backSystem.getChonggwalpage);
 app.post('/chonggwalpage', backSystem.postChonggwalpage);
 
 /************************FOR CARI************************/
-app.get(['/cari','/', '/cari/load'], cari.getCari);
-app.get('/cari/search', cari.getSearch);
 
 app.use('/api', apiRouter);
+app.use('/cari', cari);
 app.use('/aku', aku);
 app.use('/tandya', tandya);
 app.use('/penobrol', penobrol);

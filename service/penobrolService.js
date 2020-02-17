@@ -3,6 +3,30 @@ const penobrolDao = require('../db/b-dao/penobrolDao');
 
 /* ===== exports ===== */
 
+exports.searchPenobrol = async function(string) {
+    const results = await penobrolDao.penobrolSearch(string);
+    const parsed = results.map(subject =>
+        parser.parseFrontPenobrol(subject)
+    );
+    return await applyAsyncToAll(parsed, getFullPenobrol);
+};
+
+exports.searchPenobrolByHash = async function(array) {
+    let phResults = [];
+    for(let h of array){
+        phResults = ((await penobrolDao.penobrolSearchByHash('%'+h+'%')).reduce((acc, cur) => acc.concat(cur), [])).map(parser.parseFrontPenobrol);
+    }
+    return await applyAsyncToAll(phResults, getFullPenobrol);
+};
+
+exports.getRandPenobrol = async function() {
+    const results = await penobrolDao.penobrolByRand();
+    const parsed = results.map(subject =>
+        parser.parseFrontPenobrol(subject)
+    );
+    return await applyAsyncToAll(parsed, getFullPenobrol);
+};
+
 exports.getUserPenobrol = async function(id2) {
     const results = await penobrolDao.penobrolByAuthor(id2);
     const parsed = results.map(subject =>

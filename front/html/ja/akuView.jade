@@ -1,0 +1,60 @@
+extends ../layout.jade
+    
+block css
+    link(rel='stylesheet', href='/css/aku.css' type="text/css")
+    link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
+    script(type="text/javascript" src="../js/aku.js")
+    script(type="text/javascript" src="/js/jsForAllJade.js")
+    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
+    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
+
+
+block nav
+  ul
+    li(style='border-bottom: 2px solid yellow; opacity: .9')
+        a(href='/aku' style='color: #ffff97;') aku
+    li
+        a(href='/cari') cari
+    li
+        a(href='/penobrol') penobrol
+    li
+        a(href='/tandya') tandya
+    br.clear
+
+block submain
+  //.ad Advertisement
+  
+block main
+    if user
+        .p-info
+            a.changinfo(href= '/aku/change') #{u_id}
+        .p-stat
+        .personalArticle
+            p Penobrol
+                if penobrols.length > 0
+                    ul.thumbnailUl
+                        each p in penobrols
+                            b-thumbnail(jsonSrc="#{JSON.stringify(p)}")
+                else 
+                    .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
+        .personalArticle 
+            p Tandya
+                if tandyas.length > 0
+                    ul.thumbnailUl
+                        for t in tandyas
+                            b-thumbnail(jsonSrc="#{JSON.stringify(t)}")
+                else
+                    .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
+        a.logout(href= '/aku/logout') Logout
+
+    

@@ -52,6 +52,15 @@ exports.userBasicInfoByEmail = (email) => doQuery(
     where email = ?`,
     email
 );
+exports.userSearch = (string) => doQuery(
+    `SELECT u_id
+    FROM users
+    AS result
+    WHERE MATCH(u_id)
+    AGAINST(?)`,
+    [string]
+);
+
 ////////////////Update////////////////
 exports.updateLoginDate = (id) => doQuery(
     `UPDATE users

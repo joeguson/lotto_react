@@ -18,7 +18,21 @@ let mailOptions = {
     from: 'admin@beritamus.com'
 };
 
+exports.searchUser = async function(string) {
+    const results = await userDao.userSearch(string); //follower, tandya, penobrol 의 갯수 표시?
+    return results[0];
+};
+
 exports.getUserArticle = async function(id2) {
+    const userArticle = await Promise.all([
+        penobrolService.getUserPenobrol(id2),
+        tandyaService.getUserTandya(id2),
+        getUserLikes(id2)
+    ]);
+    return userArticle;
+};
+
+exports.getUserArticleByForeigner = async function(id2) {
     const userArticle = await Promise.all([
         penobrolService.getUserPenobrol(id2),
         tandyaService.getUserTandya(id2),

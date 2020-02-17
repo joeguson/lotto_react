@@ -31,7 +31,6 @@ route.post('/daftar', function(req, res){
 
 route.get('/', function(req, res){
     if(req.session.u_id) {
-        let userInfo = [];
         akuService.getUserArticle(req.session.id2)
             .then(([userPenobrol, userTandya, totalLikes]) => res.render('./ja/aku', {
                 user:req.session.id2,
@@ -44,6 +43,18 @@ route.get('/', function(req, res){
     else{
         res.render('./ja/aku');
     }
+});
+
+route.get('/:user_id', function(req, res){
+    const user_id = req.params.user_id;
+    console.log(user_id);
+    akuService.getUserArticleByForeigner(user_id)
+        .then(([userPenobrol, userTandya]) => res.render('./ja/akuView', {
+            user:req.session.id2,
+            u_id:req.session.u_id,
+            penobrols:userPenobrol,
+            tandyas:userTandya,
+        }));
 });
 
 route.post('/login', function(req, res){

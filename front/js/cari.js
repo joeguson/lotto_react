@@ -1,19 +1,6 @@
-//document.getElementsByTagName('section');
-//
-//var listElm = document.querySelector('#infinite-list');
-//// Add 20 items.
-//var nextItem = 1;
 
-//
-//// Detect when scrolled to bottom.
-//listElm.addEventListener('scroll', function() {
-//
-//    }
-//});
-//// Initially load some items.
-//loadMore();
 var loadMore = function() {
-    sendAjax('/cari/load');
+    sendAjax('api/cari');
 };
 
 var header = document.querySelector('#header');
