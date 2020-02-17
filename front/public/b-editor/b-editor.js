@@ -204,22 +204,11 @@
             confirm.innerText = "confirm";
 
             confirm.onclick = () => {
-                this.editor.designMode = "on";
-                // const editor = this.editor = this.iframe.contentWindow.document;
                 const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
-                const testHTML = "<p>hi</p>";
-
-                // const sample = document.createElement("b");
-                // sample.innerText = "hello";
-
-                this.editor.body.focus();
-                // this.editor.body.appendChild(sample);
-                console.log(this.editor);
-                this.editor.execCommand("createLink", false, testHTML);
-                this.editor.execCommand("insertHTML", false, youtubeHTML);
-                console.log(this.editor);
                 this.youtubeDialog.close();
                 this.youtubeIdDialog.close();
+                this.editor.body.focus();
+                this.editor.execCommand("insertHTML", false, youtubeHTML);
             };
             div.appendChild(confirm);
         }
