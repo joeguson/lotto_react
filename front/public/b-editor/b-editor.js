@@ -50,7 +50,6 @@
 
         this.youtubeIdDialog = this.buildYoutubeIdDialog(w, h);
         this.appendChild(this.youtubeIdDialog);
-        console.log(this.youtubeIdDialog);
 
         this.youtubeDialog = this.buildYoutubeDialog(w, h);
         this.appendChild(this.youtubeDialog);
@@ -177,7 +176,6 @@
     buildYoutubeDialog(w, h) {
         const dialog = document.createElement("dialog");
         dialog.style.margin = "auto";
-
         const div = document.createElement("div");
         {
             const iframe = document.createElement("iframe");
@@ -193,7 +191,6 @@
                 const p = document.createElement("button");
                 times.appendChild(p);
                 p.innerText = "+";
-
                 p.onclick = () => {
                     const c = this.__newYoutubeTimeDescriptionCard((card) => {
                         times.removeChild(c);
@@ -207,33 +204,31 @@
             confirm.innerText = "confirm";
 
             confirm.onclick = () => {
-                console.log(this);
-                console.log("Confirm");
+                this.editor.designMode = "on";
+                // const editor = this.editor = this.iframe.contentWindow.document;
                 const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
-                console.log(youtubeHTML);
-                console.log(this.editor);
-                const t = "<b>hello</b>";
+                const testHTML = "<p>hi</p>";
 
                 // const sample = document.createElement("b");
                 // sample.innerText = "hello";
 
                 this.editor.body.focus();
                 // this.editor.body.appendChild(sample);
-                this.editor.execCommand("insertHTML", false, t);
+                console.log(this.editor);
+                this.editor.execCommand("createLink", false, testHTML);
                 this.editor.execCommand("insertHTML", false, youtubeHTML);
+                console.log(this.editor);
                 this.youtubeDialog.close();
                 this.youtubeIdDialog.close();
             };
             div.appendChild(confirm);
         }
         dialog.appendChild(div);
-
         return dialog;
     }
 
     showYoutubeDialog(youtubeId) {
         this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?start=2";
-        console.log(this.youtubeDialog.iframe.src);
         this.youtubeDialog.showModal();
     }
 
@@ -286,7 +281,6 @@
                     editor.body.focus();
                     var img = document.createElement("img");
                     img.src = e.target.result;
-                    //여기서 부터는 함수로 빼고 싶었지만 실패함.... 혹시 아이디어 있음?
                     img.onload = function(){
                         var canvas = document.createElement("canvas");
                         var ctx = canvas.getContext("2d");
@@ -312,6 +306,7 @@
                         ctx.drawImage(img, 0, 0, width, height);
                         var dataurl = canvas.toDataURL("image/png");
                         const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + dataurl +"'/>";
+                        console.log(typeof(imgHTML));
                         editor.execCommand("insertHTML", false, imgHTML);
                     }
                 };
