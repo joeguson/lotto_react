@@ -9,6 +9,7 @@ function doQuery(query, args) {
 
 
 /* ===== select ===== */
+
 exports.countFollower = (id) => doQuery(
   `select count(*)
     AS follower 
@@ -23,6 +24,14 @@ exports.countFollowing = (id) => doQuery(
     from follow 
     where id = ?`,
     id
+);
+
+/* ===== insert ===== */
+exports.insertFollowUser = (source, target) => doQuery(
+    `insert into follow(followed, following) 
+    values(
+    ?, (select id from users where u_id = ?))`,
+    [source, target]
 );
 
 

@@ -8,7 +8,6 @@ block css
     script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
     script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
 
-
 block nav
   ul
     li(style='border-bottom: 2px solid yellow; opacity: .9')
@@ -29,7 +28,7 @@ block main
         .p-info
             a.changinfo(href= '/aku/change') #{u_id}
         .p-stat
-            button(onclick="follow") follow
+            button(value = "#{user}" onclick="follow(this);") follow
         .personalArticle
             p Penobrol
                 if penobrols.length > 0

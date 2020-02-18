@@ -1,5 +1,6 @@
 const parser = require('../db/parser.js');
 const userDao = require('../db/b-dao/userDao');
+const followDao = require('../db/b-dao/followDao');
 const tandyaService = require('./tandyaService');
 const penobrolService = require('./penobrolService');
 const key = require('../info/beritamus-admin-2ff0df5d17ca.json');
@@ -18,8 +19,13 @@ let mailOptions = {
     from: 'admin@beritamus.com'
 };
 
+exports.followUser = async function(source, target) {
+    const results = await followDao.insertFollowUser(source, target);
+    return results[0];
+};
+
 exports.searchUser = async function(string) {
-    const results = await userDao.userSearch(string); //follower, tandya, penobrol 의 갯수 표시?
+    const results = await userDao.userSearch(string);
     return results[0];
 };
 
