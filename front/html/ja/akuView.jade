@@ -29,7 +29,9 @@ block main
         .p-info
             a.changinfo(href= '/aku/change') #{u_id}
         .p-stat
-            button(type="submit" id="followId") FOLLOW
+            button(type="submit" id="followId") #{u_buttonText}
+            - console.log(u_buttonText);
+
         .personalArticle
             p Penobrol
                 if penobrols.length > 0
@@ -68,6 +70,7 @@ block js
         });
 
         function requestFollow() {
+
             const data = {
                 status : isFollowing() ? 0 : 1,
                 target : "#{u_id}"
@@ -79,7 +82,7 @@ block js
             xhr.send(original);
             xhr.onload = function () {
                 if (this.status >= 200 && this.status < 300) {
-                    console.log(xhr.response);
+                    changeText();
                 } else {
                     console.error(this.status);
                 }
@@ -91,4 +94,9 @@ block js
 
         function isFollowing() {
             return followButton.innerText !=="FOLLOW";
+        }
+
+        function changeText() {
+            if(followButton.innerText === "UNFOLLOW") followButton.innerText = "FOLLOW";
+            else followButton.innerText = "UNFOLLOW";
         }

@@ -1,5 +1,6 @@
 //url - '/aku'
 let userDao = require('../db/b-dao/userDao');
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const route = require('express').Router();
 const jsForBack = require('./jsForBack.js');
 const akuService = require('../service/akuService.js');
@@ -45,15 +46,35 @@ route.get('/', function(req, res){
     }
 });
 
-route.get('/:user_id', function(req, res){
+route.get('/:user_id', function(req, res, next){
     const user_id = req.params.user_id;
-    akuService.getUserArticleByForeigner(user_id)
-        .then(([userPenobrol, userTandya]) => res.render('./ja/akuView', {
-            user:req.session.id2,
-            u_id:user_id,
-            penobrols:userPenobrol,
-            tandyas:userTandya,
-        }));
+    let followResult = "";
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", 'http://localhost:3000/api/aku/follow/' + user_id);
+    xhr.send();
+    xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+           followResult = !xhr.responseText.status ? "UNFOLLOW": "FOLLOW";
+        } else {
+            console.error(this.status + "no reply");
+        }
+    };
+    xhr.onerror = function () {
+        console.error("send error");
+    };
+    if(user_id != "logout"){
+        akuService.getUserArticleByForeigner(user_id)
+            .then(([userPenobrol, userTandya]) => res.render('./ja/akuView', {
+                user:req.session.id2,
+                u_buttonText:followResult,
+                u_id:user_id,
+                penobrols:userPenobrol,
+                tandyas:userTandya,
+            }));
+    }
+    else{
+        next();
+    }
 });
 
 route.post('/login', function(req, res){
@@ -84,12 +105,11 @@ route.post('/login', function(req, res){
 });
 
 route.get('/logout', function(req, res){
+    console.log(req.session.u_id+ "1123124");
     delete req.session.u_id;
     delete req.session.id2;
     delete req.session.valid;
-    req.session.save(function(){
-        res.redirect('/aku');
-    });
+    res.redirect('/aku');
 });
 
 route.get('/find', function(req, res){
