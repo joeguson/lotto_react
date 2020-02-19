@@ -8,6 +8,7 @@ block css
     script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
     script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
 
+
 block nav
   ul
     li(style='border-bottom: 2px solid yellow; opacity: .9')
@@ -22,27 +23,27 @@ block nav
 
 block submain
   //.ad Advertisement
-  
+
 block main
     if user
         .p-info
             a.changinfo(href= '/aku/change') #{u_id}
         .p-stat
-            button(value = "#{user}" onclick="follow(this);") follow
+            button(type="submit" id="followId") FOLLOW
         .personalArticle
             p Penobrol
                 if penobrols.length > 0
                     ul.thumbnailUl
                         each p in penobrols
                             b-thumbnail(jsonSrc="#{JSON.stringify(p)}")
-                else 
+                else
                     .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
                         span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
                         span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
                         span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
-        .personalArticle 
+        .personalArticle
             p Tandya
                 if tandyas.length > 0
                     ul.thumbnailUl
@@ -51,10 +52,43 @@ block main
                 else
                     .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
                         span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
                         span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
+                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
                         span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
         a.logout(href= '/aku/logout') Logout
 
-    
+
+block js
+    script.
+        let followButton = document.getElementById("followId");
+        followButton.addEventListener("click",()=> {
+            followButton.innerText = isFollowing() ? "UNFOLLOW" : "FOLLOW";
+            requestFollow();
+        });
+
+        function requestFollow() {
+            const data = {
+                status : isFollowing() ? 0 : 1,
+                target : "#{u_id}"
+            };
+            var original = JSON.stringify(data);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', "/api/aku/follow");
+            xhr.setRequestHeader('Content-type', "application/json");
+            xhr.send(original);
+            xhr.onload = function () {
+                if (this.status >= 200 && this.status < 300) {
+                    console.log(xhr.response);
+                } else {
+                    console.error(this.status);
+                }
+            };
+            xhr.onerror = function () {
+                console.error("error");
+            };
+        }
+
+        function isFollowing() {
+            return followButton.innerText !=="FOLLOW";
+        }
