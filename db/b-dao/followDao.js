@@ -34,7 +34,7 @@ exports.countFollowing = (id) => doQuery(
 /* ===== insert ===== */
 exports.insertFollowUser = (source, target) => doQuery(
     `INSERT INTO follow(following, followed) 
-    VALUES (?, ?)
+    VALUES (?, (SELECT id FROM users WHERE u_id = ?))
     ON DUPLICATE KEY UPDATE followed = ?`,
     [source, target, source]
 );
