@@ -19,9 +19,27 @@ let mailOptions = {
     from: 'admin@beritamus.com'
 };
 
+// follow 요청을 한 후 성공 여부 반환
 exports.followUser = async function(source, target) {
-    const results = await followDao.insertFollowUser(source, target);
-    return results[0];
+    try {
+        await followDao.insertFollowUser(source, target);
+        return true;
+    } catch (e) { // duplicate key
+        return false;
+    }
+};
+
+// unfollow 요청을 한 후 성공 여부 반환
+exports.unfollowUser = async function(source, target) {
+    const result = await followDao.deleteFollowUser(source, target);
+    const count = result.affectedRows;
+    return count > 0;
+};
+
+// 현재 상대를 follow 하고 있는 중인지 여부 반환
+exports.isFollowing = async function(source, target) {
+    const result = await followDao.select(source, target);
+    return result.length > 0;
 };
 
 exports.searchUser = async function(string) {

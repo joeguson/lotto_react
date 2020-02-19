@@ -3,9 +3,9 @@ const conn = require('../b');
 exports.doQuery = function(pool, sql, arg) {
     return new Promise(function(resolve, reject){
         pool.getConnection(function(err, connection) {
-            if(err){console.log(err)}
+            if(err){ reject(err); }
             connection.query(sql, arg, function(err, rows) {
-                if(err){console.log(err);}
+                if(err){ reject(err); }
                 else{
                     resolve(rows);
                 }
