@@ -10,6 +10,11 @@ function doQuery(query, args) {
 
 /* ===== select ===== */
 
+exports.select = (source, target) => doQuery(
+    `SELECT * FROM follow WHERE following=? AND followed=?`,
+    [source, target]
+);
+
 exports.countFollower = (id) => doQuery(
   `select count(*)
     AS follower 
@@ -28,10 +33,10 @@ exports.countFollowing = (id) => doQuery(
 
 /* ===== insert ===== */
 exports.insertFollowUser = (source, target) => doQuery(
-    `insert into follow(followed, following) 
-    values(
-    ?, (select id from users where u_id = ?))`,
-    [source, target]
+    `INSERT INTO follow(following, followed) 
+    VALUES (?, ?)
+    ON DUPLICATE KEY UPDATE followed = ?`,
+    [source, target, source]
 );
 
 
@@ -41,4 +46,9 @@ exports.weeklyInsert = (id) => doQuery(
     FROM follow
     WHERE id = ?`,
     id
+);
+
+exports.deleteFollowUser = (source, target) => doQuery(
+    `DELETE FROM follow WHERE following=? AND followed=?`,
+    [source, target]
 );

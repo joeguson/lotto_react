@@ -47,7 +47,6 @@ route.get('/', function(req, res){
 
 route.get('/:user_id', function(req, res){
     const user_id = req.params.user_id;
-    console.log(user_id);
     akuService.getUserArticleByForeigner(user_id)
         .then(([userPenobrol, userTandya]) => res.render('./ja/akuView', {
             user:req.session.id2,
