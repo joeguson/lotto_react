@@ -16,6 +16,14 @@ exports.tandyaByAuthor = (id) => doQuery(
     ORDER BY date DESC`,
     id
 );
+exports.tandyaByAuthorWithoutAnonim = (id) => doQuery(
+    `SELECT *
+    from tandya
+    WHERE author = (select id from users where u_id = ?)
+    And public = 'p'
+    ORDER BY date DESC`,
+    id
+);
 exports.tandyaByRand = () => doQuery(
     `select t.*, u.u_id
     from tandya as t

@@ -10,8 +10,9 @@ function doQuery(query, args) {
 
 /* ===== select ===== */
 
-exports.select = (source, target) => doQuery(
-    `SELECT * FROM follow WHERE following=? AND followed=?`,
+exports.select = (source, target) => doQuery( //target의 아이디는 현재 문자열 id로 숫자 id를 가져와야함
+    `SELECT * FROM follow WHERE following = ? 
+    AND followed = (SELECT id FROM users WHERE u_id = ?)`,
     [source, target]
 );
 
@@ -49,6 +50,6 @@ exports.weeklyInsert = (id) => doQuery(
 );
 
 exports.deleteFollowUser = (source, target) => doQuery(
-    `DELETE FROM follow WHERE following=? AND followed=?`,
+    `DELETE FROM follow WHERE following=? AND followed=(select id from users where u_id = ?)`,
     [source, target]
 );

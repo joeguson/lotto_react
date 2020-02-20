@@ -16,6 +16,15 @@ exports.penobrolByAuthor = (id) => doQuery(
     ORDER BY date DESC`,
     id
 );
+exports.penobrolByAuthorWithoutAnonim = (id) => doQuery(
+    `SELECT *
+    from penobrol
+    WHERE author = (select id from users where u_id = ?)
+    And public = 'p'
+    ORDER BY date DESC`,
+    id
+);
+
 exports.penobrolByRand = () => doQuery(
     `select p.*, u.u_id
     from penobrol as p

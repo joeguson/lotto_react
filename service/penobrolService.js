@@ -35,6 +35,14 @@ exports.getUserPenobrol = async function(id2) {
     return await applyAsyncToAll(parsed, getFullPenobrol);
 };
 
+exports.getUserPenobrolWithoutAnonim = async function(id2) {
+    const results = await penobrolDao.penobrolByAuthorWithoutAnonim(id2);
+    const parsed = results.map(subject =>
+        parser.parseFrontPenobrol(subject)
+    );
+    return await applyAsyncToAll(parsed, getFullPenobrol);
+};
+
 exports.getOrderedPenobrol = async function() {
     // date, score 기준으로 penobrol 를 받아오는 것을 병렬로 처리
     const results = await Promise.all([

@@ -27,10 +27,14 @@ block submain
 block main
     if user
         .p-info
-            a.changinfo(href= '/aku/change') #{u_id}
+            p #{u_id}
+            //admin1로 로그인 한 상태에서 admin2의 정보를 바꿀수 있으면 안됨. 삭제함
         .p-stat
-            button(type="submit" id="followId") #{u_text}
-
+            - console.log(follow);
+            if(follow)
+                button(type="submit" id="followId") UNFOLLOW
+            else
+                button(type="submit" id="followId") FOLLOW
         .personalArticle
             p Penobrol
                 if penobrols.length > 0
@@ -63,13 +67,12 @@ block main
 block js
     script.
         let followButton = document.getElementById("followId");
-        followButton.addEventListener("click",()=> {
+        followButton.addEventListener("click", ()=> {
             followButton.innerText = isFollowing() ? "UNFOLLOW" : "FOLLOW";
             requestFollow();
         });
 
         function requestFollow() {
-
             const data = {
                 status : isFollowing() ? 0 : 1,
                 target : "#{u_id}"

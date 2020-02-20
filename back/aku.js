@@ -47,37 +47,19 @@ route.get('/', function(req, res){
 });
 
 route.get('/:user_id', function(req, res, next){
-    const user_id = req.params.user_id;
-    let u_buttonText = "";
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", 'http://localhost:3000/api/aku/follow/' + user_id);
-    xhr.send();
-    xhr.onload = function () {
-        if (this.status >= 200 && this.status < 300) {
-            let followResult = JSON.parse(xhr.responseText);
-            u_buttonText = !followResult.status? "UNFOLLOW": "FOLLOW";
-            if(user_id != "logout"){
-                console.log(u_buttonText);
-                akuService.getUserArticleByForeigner(user_id)
-                    .then(([userPenobrol, userTandya]) => res.render('./ja/akuView', {
-                        user:req.session.id2,
-                        u_text:u_buttonText,
-                        u_id:user_id,
-                        penobrols:userPenobrol,
-                        tandyas:userTandya,
-                    }));
-            }
-            else{
-                next();
-            }
-        } else {
-            console.error(this.status + "no reply");
-        }
+    let user_id = req.params.user_id;
+    if(user_id != 'logout'){
+        akuService.getUserArticleByForeigner(user_id, req.session.id2)
+            .then(([userPenobrol, userTandya, followResult]) => res.render('./ja/akuView', {
+                user:req.session.id2,
+                u_id:user_id,
+                penobrols:userPenobrol,
+                tandyas:userTandya,
+                follow: followResult.length > 0 ? true : false
+            }));
+    }
+    else next();
 
-    };
-    xhr.onerror = function () {
-        console.error("send error");
-    };
 });
 
 route.post('/login', function(req, res){
@@ -108,7 +90,6 @@ route.post('/login', function(req, res){
 });
 
 route.get('/logout', function(req, res){
-    console.log(req.session.u_id+ "1123124");
     delete req.session.u_id;
     delete req.session.id2;
     delete req.session.valid;

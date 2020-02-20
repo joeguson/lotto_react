@@ -56,11 +56,11 @@ exports.getUserArticle = async function(id2) {
     return userArticle;
 };
 
-exports.getUserArticleByForeigner = async function(id2) {
+exports.getUserArticleByForeigner = async function(id2, me) {
     const userArticle = await Promise.all([
-        penobrolService.getUserPenobrol(id2),
-        tandyaService.getUserTandya(id2),
-        getUserLikes(id2)
+        penobrolService.getUserPenobrolWithoutAnonim(id2),
+        tandyaService.getUserTandyaWithoutAnonim(id2),
+        await followDao.select(me, id2)
     ]);
     return userArticle;
 };

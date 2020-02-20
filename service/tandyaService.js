@@ -35,6 +35,14 @@ exports.getUserTandya = async function(id2) {
     return await applyAsyncToAll(parsed, getFullTandya);
 };
 
+exports.getUserTandyaWithoutAnonim = async function(id2) {
+    const results = await tandyaDao.tandyaByAuthorWithoutAnonim(id2);
+    const parsed = results.map(subject =>
+        parser.parseFrontTandya(subject)
+    );
+    return await applyAsyncToAll(parsed, getFullTandya);
+};
+
 exports.getOrderedTandya = async function() {
     // date, score 기준으로 tandya 를 받아오는 것을 병렬로 처리
     const results = await Promise.all([
