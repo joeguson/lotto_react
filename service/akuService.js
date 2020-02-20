@@ -37,10 +37,11 @@ exports.unfollowUser = async function(source, target) {
 };
 
 // 현재 상대를 follow 하고 있는 중인지 여부 반환
-exports.isFollowing = async function(source, target) {
-    const result = await followDao.select(source, target);
-    return result.length > 0;
-};
+// 수정 필요
+// exports.isFollowing = async function(source, target) {
+//     const result = await followDao.select(source, target);
+//     return result.length > 0;
+// };
 
 exports.searchUser = async function(string) {
     const results = await userDao.userSearch(string);

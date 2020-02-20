@@ -19,7 +19,7 @@ route.get('/daftar', function(req, res){
     else res.render('./ja/user-add');
 });
 
-route.post('/daftar', function(req, res){
+route.post('/daftar', function(req, res){요
     akuService.postUser(
         req.body.u_id,
         req.body.u_pw,

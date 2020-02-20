@@ -10,9 +10,8 @@ route.post('/check', function (req, res) {
 });
 
 route.get('/follow/:target', function (req, res) {
-    const me = req.body.me;
     const target = req.params.target;
-    akuService.isFollowing(me, target).then(result =>
+    akuService.isFollowing(target).then(result =>
         res.json({
             "status": result
         })
