@@ -59,7 +59,6 @@ route.get('/:user_id', function(req, res, next){
             }));
     }
     else next();
-
 });
 
 route.post('/login', function(req, res){

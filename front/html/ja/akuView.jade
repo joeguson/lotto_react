@@ -30,7 +30,6 @@ block main
             p #{u_id}
             //admin1로 로그인 한 상태에서 admin2의 정보를 바꿀수 있으면 안됨. 삭제함
         .p-stat
-            - console.log(follow);
             if(follow)
                 button(type="submit" id="followId") UNFOLLOW
             else
@@ -67,17 +66,17 @@ block main
 block js
     script.
         var click = true;
-        let followButton = document.getElementById("followId");
-        followButton.addEventListener("click", ()=> {
+        const followButton = document.getElementById("followId");
+        followButton.addEventListener("click", function(){
             if(click){
                 click = !click;
                 requestFollow();
             }
         });
-
         function requestFollow() {
             const data = {
-                status : #{follow} ? 0 : 1,
+                status : followButton.innerText,
+                me : "#{user}",
                 target : "#{u_id}"
             };
             var original = JSON.stringify(data);
@@ -98,5 +97,5 @@ block js
             };
         }
         function changeText() {
-            followButton.innerText = #{follow} ? "FOLLOW": "UNFOLLOW";
+            followButton.innerText = followButton.innerText === "UNFOLLOW" ? "FOLLOW": "UNFOLLOW";
         }

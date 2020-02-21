@@ -19,9 +19,9 @@ route.get('/follow/:target', function (req, res) {
 });
 
 route.post('/follow', function (req, res) {
-    const me = req.session.id2;
+    const me = req.body.me;
     const target = req.body.target;
-    const status = req.body.status;
+    const status = req.body.status === "FOLLOW" ? 1 : 0;
 
     const method = status ? akuService.followUser : akuService.unfollowUser;
 

@@ -50,6 +50,8 @@ exports.weeklyInsert = (id) => doQuery(
 );
 
 exports.deleteFollowUser = (source, target) => doQuery(
-    `DELETE FROM follow WHERE following=? AND followed=(select id from users where u_id = ?)`,
+    `DELETE FROM follow 
+    WHERE following=? 
+    AND followed=(select id from users where u_id = ?)`,
     [source, target]
 );
