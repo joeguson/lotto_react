@@ -204,6 +204,10 @@
             confirm.innerText = "confirm";
 
             confirm.onclick = () => {
+                this.youtubeDialog.iframe.style.width = "100%";
+                console.log(times);
+                console.log(this.youtubeDialog.iframe.document);
+                // this.youtubeDialog.iframe.contentWindow.document.appendChild(times);
                 const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
                 this.youtubeDialog.close();
                 this.youtubeIdDialog.close();
@@ -216,8 +220,9 @@
         return dialog;
     }
 
-    showYoutubeDialog(youtubeId) {
-        this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?start=2";
+    showYoutubeDialog(youtubeUrl) {
+        let youtubeId = (youtubeUrl.split('='))[1];
+        this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?start=1";
         this.youtubeDialog.showModal();
     }
 
