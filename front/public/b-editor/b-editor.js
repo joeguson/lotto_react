@@ -8,7 +8,7 @@
         this.fontPicker = null;
         this.sizePicker = null;
         this.imageInput = null;
-
+        this.youtubeTime = null;
         this.youtubeIdDialog = null;
         this.youtubeDialog = null;
     }
@@ -192,9 +192,10 @@
                 times.appendChild(p);
                 p.innerText = "+";
                 p.onclick = () => {
-                    const c = this.__newYoutubeTimeDescriptionCard((card) => {
-                        times.removeChild(c);
-                    });
+                    const c = document.createElement("b-youtube-time");
+                    // const c = this.__newYoutubeTimeDescriptionCard((card) => {
+                    //     times.removeChild(c);
+                    // });
                     times.insertBefore(c, p);
                 }
             }
@@ -205,9 +206,6 @@
 
             confirm.onclick = () => {
                 this.youtubeDialog.iframe.style.width = "100%";
-                console.log(times);
-                console.log(this.youtubeDialog.iframe.document);
-                // this.youtubeDialog.iframe.contentWindow.document.appendChild(times);
                 const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
                 this.youtubeDialog.close();
                 this.youtubeIdDialog.close();
