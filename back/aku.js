@@ -19,7 +19,7 @@ route.get('/daftar', function(req, res){
     else res.render('./ja/user-add');
 });
 
-route.post('/daftar', function(req, res){요
+route.post('/daftar', function(req, res){
     akuService.postUser(
         req.body.u_id,
         req.body.u_pw,
@@ -48,14 +48,14 @@ route.get('/', function(req, res){
 
 route.get('/:user_id', function(req, res, next){
     let user_id = req.params.user_id;
-    if(user_id != 'logout'){
+    if(user_id !== 'logout'){
         akuService.getUserArticleByForeigner(user_id, req.session.id2)
             .then(([userPenobrol, userTandya, followResult]) => res.render('./ja/akuView', {
                 user:req.session.id2,
                 u_id:user_id,
                 penobrols:userPenobrol,
                 tandyas:userTandya,
-                follow: followResult.length > 0 ? true : false
+                follow: followResult.length > 0
             }));
     }
     else next();

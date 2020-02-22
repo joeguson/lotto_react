@@ -19,17 +19,17 @@ route.get('/follow/:target', function (req, res) {
 });
 
 route.post('/follow', function (req, res) {
-    const me = req.body.me;
+    const me = req.session.id2;
     const target = req.body.target;
-    const status = req.body.status === "FOLLOW" ? 1 : 0;
+    const status = req.body.status;
 
     const method = status ? akuService.followUser : akuService.unfollowUser;
 
-    method(me, target).then((result) =>
+    method(me, target).then(result => {
         res.json({
             "success": result
-        })
-    );
+        });
+    });
 });
 
 module.exports = route;
