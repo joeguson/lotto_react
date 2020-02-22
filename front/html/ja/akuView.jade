@@ -65,18 +65,16 @@ block main
 
 block js
     script.
-        var click = true;
         const followButton = document.getElementById("followId");
+        let followState = "#{follow}" === "true";
+
         followButton.addEventListener("click", function(){
-            if(click){
-                click = !click;
-                requestFollow();
-            }
+            followButton.disabled = true;
+            requestFollow();
         });
         function requestFollow() {
             const data = {
-                status : followButton.innerText,
-                me : "#{user}",
+                status : !followState,
                 target : "#{u_id}"
             };
             var original = JSON.stringify(data);
@@ -85,17 +83,18 @@ block js
             xhr.setRequestHeader('Content-type', "application/json");
             xhr.send(original);
             xhr.onload = function () {
-                click = true;
                 if (this.status >= 200 && this.status < 300) {
                     changeText();
                 } else {
                     console.error(this.status);
                 }
+                followButton.disabled = false;
             };
             xhr.onerror = function () {
                 console.error("error");
             };
-        }
+        };
         function changeText() {
-            followButton.innerText = followButton.innerText === "UNFOLLOW" ? "FOLLOW": "UNFOLLOW";
+            followButton.innerText = followState ? "FOLLOW": "UNFOLLOW";
+            followState = !followState;
         }
