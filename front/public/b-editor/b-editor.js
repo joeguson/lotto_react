@@ -9,7 +9,7 @@
         this.sizePicker = null;
         this.imageInput = null;
         this.youtubeIdDialog = null;
-        this.youtubeDialog = null;
+        // this.youtubeDialog = null;
     }
 
     // returns content as html tags
@@ -50,8 +50,8 @@
         this.youtubeIdDialog = this.buildYoutubeIdDialog(w, h);
         this.appendChild(this.youtubeIdDialog);
 
-        this.youtubeDialog = this.buildYoutubeDialog(w, h);
-        this.appendChild(this.youtubeDialog);
+        // this.youtubeDialog = this.buildYoutubeDialog(w, h);
+        // this.appendChild(this.youtubeDialog);
     }
 
     buildControls(w) {
@@ -172,55 +172,59 @@
         return dialog;
     }
 
-    buildYoutubeDialog(w, h) {
-        const dialog = document.createElement("dialog");
-        dialog.style.margin = "auto";
-        const div = document.createElement("div");
-        {
-            const iframe = document.createElement("iframe");
-            iframe.width = "560";
-            iframe.height = "315";
-            iframe.frameBorder = "0";
-            // iframe.allowFullscreen = true;
-            div.appendChild(iframe);
-            dialog.iframe = iframe;
-
-            const times = document.createElement("div");
-            {
-                const p = document.createElement("button");
-                times.appendChild(p);
-                p.innerText = "+";
-                p.onclick = () => {
-                    const c = this.__newYoutubeTimeDescriptionCard((card) => {
-                        times.removeChild(c);
-                    });
-                    times.insertBefore(c, p);
-                }
-            }
-            div.appendChild(times);
-
-            const confirm = document.createElement("button");
-            confirm.innerText = "confirm";
-
-            confirm.onclick = () => {
-                this.youtubeDialog.iframe.style.width = "100%";
-                const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
-                this.youtubeDialog.close();
-                this.youtubeIdDialog.close();
-                this.editor.body.focus();
-                this.editor.execCommand("insertHTML", false, youtubeHTML);
-            };
-            div.appendChild(confirm);
-        }
-        dialog.appendChild(div);
-        return dialog;
-    }
-
     showYoutubeDialog(youtubeUrl) {
-        let youtubeId = (youtubeUrl.split('='))[1];
-        this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?start=1";
-        this.youtubeDialog.showModal();
+        let urlAddress = {"address" : youtubeUrl};
+        const dia = document.createElement("b-youtube-dialog");
+        dia.setAttribute("jsonSrc", JSON.stringify(urlAddress));
+        console.log(dia);
+        // this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?start=1";
+        // this.youtubeDialog.showModal();
     }
+    //
+    // buildYoutubeDialog(w, h) {
+    //     const dialog = document.createElement("dialog");
+    //     dialog.style.margin = "auto";
+    //     const div = document.createElement("div");
+    //     {
+    //         const iframe = document.createElement("iframe");
+    //         iframe.width = "560";
+    //         iframe.height = "315";
+    //         iframe.frameBorder = "0";
+    //         // iframe.allowFullscreen = true;
+    //         div.appendChild(iframe);
+    //         dialog.iframe = iframe;
+    //
+    //         const times = document.createElement("div");
+    //         {
+    //             const p = document.createElement("button");
+    //             times.appendChild(p);
+    //             p.innerText = "+";
+    //             p.onclick = () => {
+    //                 const c = this.__newYoutubeTimeDescriptionCard((card) => {
+    //                     times.removeChild(c);
+    //                 });
+    //                 times.insertBefore(c, p);
+    //             }
+    //         }
+    //         div.appendChild(times);
+    //
+    //         const confirm = document.createElement("button");
+    //         confirm.innerText = "confirm";
+    //
+    //         confirm.onclick = () => {
+    //             this.youtubeDialog.iframe.style.width = "100%";
+    //             const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
+    //             this.youtubeDialog.close();
+    //             this.youtubeIdDialog.close();
+    //             this.editor.body.focus();
+    //             this.editor.execCommand("insertHTML", false, youtubeHTML);
+    //         };
+    //         div.appendChild(confirm);
+    //     }
+    //     dialog.appendChild(div);
+    //     return dialog;
+    // }
+    //
 
     addControlButton(parent, title, innerHTML) {
         const btn = document.createElement("button");
@@ -334,20 +338,20 @@
         this.youtubeIdDialog.showModal();
     }
 
-    __newYoutubeTimeDescriptionCard(minusCallback) {
-        const c = document.createElement("div");
-        c.style.display = "flex";
-        const d = document.createElement("b-youtube-time");
-        d.style.width = "95%";
-        c.appendChild(d);
-        const b = document.createElement("button");
-        b.style.width = "5%";
-        b.innerText = "-";
-        b.onclick = () => { minusCallback(c);};
-        c.appendChild(b);
-
-        return c;
-    }
+    // __newYoutubeTimeDescriptionCard(minusCallback) {
+    //     const c = document.createElement("div");
+    //     c.style.display = "flex";
+    //     const d = document.createElement("b-youtube-time");
+    //     d.style.width = "95%";
+    //     c.appendChild(d);
+    //     const b = document.createElement("button");
+    //     b.style.width = "5%";
+    //     b.innerText = "-";
+    //     b.onclick = () => { minusCallback(c);};
+    //     c.appendChild(b);
+    //
+    //     return c;
+    // }
 }
 
 customElements.define('b-editor', BeritamusEditor);
