@@ -19,7 +19,7 @@ route.get('/daftar', function(req, res){
     else res.render('./ja/user-add');
 });
 
-route.post('/daftar', function(req, res){요
+route.post('/daftar', function(req, res){
     akuService.postUser(
         req.body.u_id,
         req.body.u_pw,
@@ -61,6 +61,13 @@ route.get('/:user_id', function(req, res, next){
     else next();
 });
 
+route.get('/logout', function(req, res){
+    delete req.session.u_id;
+    delete req.session.id2;
+    delete req.session.valid;
+    res.redirect('/aku');
+});
+
 route.post('/login', function(req, res){
     //login이 이뤄질때
     const u_id = req.body.u_id;
@@ -86,13 +93,6 @@ route.post('/login', function(req, res){
             }
         }
     });
-});
-
-route.get('/logout', function(req, res){
-    delete req.session.u_id;
-    delete req.session.id2;
-    delete req.session.valid;
-    res.redirect('/aku');
 });
 
 route.get('/find', function(req, res){

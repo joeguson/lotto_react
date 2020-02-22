@@ -8,7 +8,6 @@
         this.fontPicker = null;
         this.sizePicker = null;
         this.imageInput = null;
-        this.youtubeTime = null;
         this.youtubeIdDialog = null;
         this.youtubeDialog = null;
     }
@@ -339,8 +338,10 @@
         const c = document.createElement("div");
         c.style.display = "flex";
         const d = document.createElement("b-youtube-time");
+        d.style.width = "95%";
         c.appendChild(d);
         const b = document.createElement("button");
+        b.style.width = "5%";
         b.innerText = "-";
         b.onclick = () => { minusCallback(c);};
         c.appendChild(b);
