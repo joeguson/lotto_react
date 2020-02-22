@@ -14,28 +14,16 @@ class BeritamusYoutubeTime extends HTMLElement {
         {
             const p = document.createElement("button");
             section.appendChild(p);
-            p.innerText = "+";
-            p.onclick = () => {
-                const c = this.__getSection(() => {
-                    section.removeChild(c);
-                });
-                section.insertBefore(c, p);
-            }
         }
         this.appendChild(section);
     }
 
-    __getSection(minusCallback) {
+    __getSection() {
         const div = document.createElement("div");
         div.style.display = "flex";
         div.appendChild(this.__getMinute());
         div.appendChild(this.__getSecond());
         div.appendChild(this.__getDescription());
-
-        const b = document.createElement("button");
-        b.innerText = "-";
-        b.onclick = () => { minusCallback(div); };
-        div.appendChild(b);
 
         return div;
     }

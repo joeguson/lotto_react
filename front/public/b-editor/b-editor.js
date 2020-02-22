@@ -192,10 +192,9 @@
                 times.appendChild(p);
                 p.innerText = "+";
                 p.onclick = () => {
-                    const c = document.createElement("b-youtube-time");
-                    // const c = this.__newYoutubeTimeDescriptionCard((card) => {
-                    //     times.removeChild(c);
-                    // });
+                    const c = this.__newYoutubeTimeDescriptionCard((card) => {
+                        times.removeChild(c);
+                    });
                     times.insertBefore(c, p);
                 }
             }
@@ -339,22 +338,11 @@
     __newYoutubeTimeDescriptionCard(minusCallback) {
         const c = document.createElement("div");
         c.style.display = "flex";
-
-        const m = document.createElement("input");
-        m.style.width = "10%";
-        c.appendChild(m);
-
-        const s = document.createElement("input");
-        s.style.width = "10%";
-        c.appendChild(s);
-
-        const d = document.createElement("input");
-        m.style.width = "50%";
+        const d = document.createElement("b-youtube-time");
         c.appendChild(d);
-
         const b = document.createElement("button");
         b.innerText = "-";
-        b.onclick = () => { minusCallback(c); };
+        b.onclick = () => { minusCallback(c);};
         c.appendChild(b);
 
         return c;
