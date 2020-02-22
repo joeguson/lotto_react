@@ -1,11 +1,15 @@
 extends ../layout.jade
 
-block css
-    link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
+block js
     script(type="text/javascript" src="/js/jsForAllJade.js")
     script(src="./public/b-youtube/b-youtube-time.js")
+    script(src="./public/b-youtube/b-youtube-dialog.js")
     script(src="./public/b-editor/b-editor.js")
     script(src='./js/addPandT.js')
+
+block css
+    link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
+
 
 block nav
     include ./pNavUl.jade
