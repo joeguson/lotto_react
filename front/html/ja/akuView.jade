@@ -63,10 +63,9 @@ block main
                         span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
                         span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
                         span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
-        a.logout(href= '/aku/logout') Logout
 
 
-block js
+block jscript
     script.
         const followButton = document.getElementById("followId");
         let followState = "#{follow}" === "true";

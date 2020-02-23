@@ -74,7 +74,7 @@ block main
                         span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
                         span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
                         span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
-        a.logout(href= '/aku/logout' id="logoutButton") Logout
+        a.logout(href= '/aku/logout') Logout
     else
         form(action='aku/login' method='post')
             input(type='text' name='u_id' placeholder='  ID' id="input_id" required)
@@ -88,24 +88,3 @@ block main
             span(id="daftar")
                 a(href='/aku/daftar') Sign Up
 
-block js
-    script.
-        const logout = document.getElementById("logoutButton");
-        logout.addEventListener("click", function(){
-            requestLogout();
-        });
-        function requestLogout() {
-            var xhr = new XMLHttpRequest();
-            xhr.open('DELETE', "aku/logout");
-            xhr.send();
-            xhr.onload = function () {
-                if (this.status >= 200 && this.status < 300) {
-                    window.location.replace(location.origin);
-                } else {
-                    console.log(this.status);
-                }
-            };
-            xhr.onerror = function () {
-                console.error("error");
-            };
-        }
