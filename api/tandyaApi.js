@@ -28,7 +28,7 @@ route.put('/:tandya_no', function (req, res) {
 });
 
 //************************Like************************//
-route.post('/like', function (req, res, next) {
+route.post('/like', function (req, res) {
     const t_id = req.body.t_id;
     tandyaService.likeTandya( //유효한 t_id인지 확인필요
         t_id,

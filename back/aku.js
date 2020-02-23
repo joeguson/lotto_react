@@ -46,19 +46,16 @@ route.get('/', function(req, res){
     }
 });
 
-route.get('/:user_id', function(req, res, next){
+route.get('/:user_id', function(req, res){
     let user_id = req.params.user_id;
-    if(user_id !== 'logout'){
-        akuService.getUserArticleByForeigner(user_id, req.session.id2)
-            .then(([userPenobrol, userTandya, followResult]) => res.render('./ja/akuView', {
-                user:req.session.id2,
-                u_id:user_id,
-                penobrols:userPenobrol,
-                tandyas:userTandya,
-                follow: followResult.length > 0
-            }));
-    }
-    else next();
+    akuService.getUserArticleByForeigner(user_id, req.session.id2)
+        .then(([userPenobrol, userTandya, followResult]) => res.render('./ja/akuView', {
+            user:req.session.id2,
+            u_id:user_id,
+            penobrols:userPenobrol,
+            tandyas:userTandya,
+            follow: followResult.length > 0 ? true : false
+        }));
 });
 
 route.post('/login', function(req, res){
@@ -88,11 +85,13 @@ route.post('/login', function(req, res){
     });
 });
 
-route.get('/logout', function(req, res){
+route.delete('/logout', function(req, res){
     delete req.session.u_id;
     delete req.session.id2;
     delete req.session.valid;
-    res.redirect('/aku');
+    res.json({
+        "success": "1"
+    })
 });
 
 route.get('/find', function(req, res){
