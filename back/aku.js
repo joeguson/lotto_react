@@ -46,9 +46,8 @@ route.get('/', function(req, res){
     }
 });
 
-route.get('/:user_id', function(req, res, next){
+route.get('/user/:user_id', function(req, res, next){
     let user_id = req.params.user_id;
-    if(user_id !== 'logout'){
         akuService.getUserArticleByForeigner(user_id, req.session.id2)
             .then(([userPenobrol, userTandya, followResult]) => res.render('./ja/akuView', {
                 user:req.session.id2,
@@ -57,9 +56,15 @@ route.get('/:user_id', function(req, res, next){
                 tandyas:userTandya,
                 follow: followResult.length > 0
             }));
-    }
-    else next();
 });
+
+route.get('/logout', function(req, res){
+    delete req.session.u_id;
+    delete req.session.id2;
+    delete req.session.valid;
+    res.redirect("/aku");
+});
+
 
 route.post('/login', function(req, res){
     //login이 이뤄질때

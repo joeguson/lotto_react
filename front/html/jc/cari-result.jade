@@ -27,7 +27,7 @@ block main
     ul.thumbnailUl(id='uls')
         if(user)
             for itemm in user
-                a(href="/aku/#{itemm}") #{itemm}
+                a(href="/aku/user/#{itemm}") #{itemm}
         if(penobrol)
             for item in penobrol
                 b-thumbnail(jsonSrc="#{JSON.stringify(item)}")
