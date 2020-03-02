@@ -19,6 +19,7 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
             }
             {
                 const times = document.createElement("div");
+                times.id = 'timeTags';
                 const p = document.createElement("button");
                 times.appendChild(p);
                 p.innerText = "+";
@@ -36,15 +37,8 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
         this.buttonAreaBuilder = () => {
             const confirm = document.createElement("button");
             confirm.innerText = "confirm";
+            confirm.id = 'videoConfirm';
 
-            confirm.onclick = () => {
-                this.youtubeDialog.iframe.style.width = "100%";
-                const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
-                this.youtubeDialog.close();
-                this.youtubeIdDialog.close();
-                this.editor.body.focus();
-                this.editor.execCommand("insertHTML", false, youtubeHTML);
-            };
             return confirm;
         };
         super.connectedCallback();

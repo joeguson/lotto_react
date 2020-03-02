@@ -13,7 +13,7 @@ function __rotateImage(target) {
         target.style.marginTop = '0px';
         target.style.marginBottom = '0px';
     }
-    var angle = parseInt(target.className.substr(-3, 3))/90;
+    let angle = parseInt(target.className.substr(-3, 3))/90;
     if(angle<3){
         angle++;
     }
@@ -23,8 +23,23 @@ function __rotateImage(target) {
     target.className = ("rotate"+__pad(angle*90, 3));
 }
 
+function changeStartTime(target) {
+    let targetIframe = document.getElementById(target.value);
+    console.log(target.innerHTML);
+    let src = targetIframe.src;
+    let startStringIndex = src.indexOf('rel=');
+    src = src.slice(0, startStringIndex);
+    console.log(src);
+    let startingTime = '?rel=0&autoplay=1&start='+target.innerHTML;
+    src += startingTime;
+    targetIframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; allowfullscreen');
+    console.log(src);
+    targetIframe.src = src;
+    console.log(targetIframe);
+}
+
 function __rotateInfo(target){
-    var infoDiv = document.createElement('div');
+    let infoDiv = document.createElement('div');
     infoDiv.innerHTML='click to rotate';
     infoDiv.style.backgroundColor='black';
     infoDiv.style.color='white';

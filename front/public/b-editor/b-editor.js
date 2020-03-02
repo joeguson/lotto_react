@@ -261,14 +261,70 @@
 
     __onYoutubeClick() {
         this.youtubeIdDialog.showModal();
-        const videoButton = document.getElementById('videoButton');
         const videoInput = document.getElementById('videoInput');
+        const videoButton = document.getElementById('videoButton');
+        const videoConfirm = document.getElementById('videoConfirm');
+        let youtubeId = '';
         videoButton.addEventListener('click', () => {
-            let youtubeId = (videoInput.value).split('=')[1];
-            this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?start=1";
+            //videoInput needs to be upgraded.
+            youtubeId = (videoInput.value).split('=')[1];
+            this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?";
+            this.youtubeDialog.iframe.id = youtubeId;
             this.youtubeDialog.showModal();
         });
+        videoConfirm.addEventListener('click', () => {
+            const timeTags = document.getElementById('timeTags');
+            const timeObject = makeTimeJumper(timeTags);
+            const timeTable = makeTimeTable(timeObject, youtubeId);
+            this.youtubeDialog.iframe.style.width = "100%";
+            const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
+            this.youtubeIdDialog.dialog.close();
+            this.youtubeDialog.dialog.close();
+            this.editor.body.focus();
+            this.editor.execCommand("insertHTML", false, youtubeHTML);
+            this.editor.execCommand("insertHTML", false, timeTable);
+        });
     }
+
 }
+function makeTimeJumper(timeTag){
+    let result = [];
+    let youtubeTimeList = timeTag.getElementsByTagName('b-youtube-time');
+    //getElementsByTagName returns htmlCollection which is not an array. Map function does not work for below
+    for(let i = 0; i<youtubeTimeList.length; i++){
+        let timeObj = {};
+        timeObj.h = youtubeTimeList[i].children[0].value;
+        timeObj.m = youtubeTimeList[i].children[1].value;
+        timeObj.s = youtubeTimeList[i].children[2].value;
+        timeObj.d = youtubeTimeList[i].children[3].value;
+        result.push(timeObj);
+    }
+    return result;
+}
+
+  function makeTimeTable(timeObj, youtubeId){
+    const table = document.createElement('table');
+    for(let i = 0; i<timeObj.length; i++){
+        let tempRow = document.createElement('tr');
+        let temp1 = document.createElement('td');
+        let temp2 = document.createElement('td');
+
+        let buttonTag = document.createElement('button');
+        let spanTag = document.createElement('span');
+
+        buttonTag.innerHTML = timeObj[i].h + timeObj[i].m + timeObj[i].s;
+        buttonTag.setAttribute('value', youtubeId)
+        buttonTag.setAttribute('onclick', 'changeStartTime(this);');
+
+        spanTag.innerHTML = timeObj[i].d;
+        temp1.appendChild(buttonTag);
+        temp2.appendChild(spanTag);
+
+        tempRow.append(temp1);
+        tempRow.append(temp2);
+        table.appendChild(tempRow);
+    }
+    return table.outerHTML;
+  }
 
 customElements.define('b-editor', BeritamusEditor);
