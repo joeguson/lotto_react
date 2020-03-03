@@ -313,7 +313,7 @@ function makeTimeJumper(timeTag){
         let spanTag = document.createElement('span');
 
         buttonTag.innerHTML = timeObj[i].h + timeObj[i].m + timeObj[i].s;
-        buttonTag.setAttribute('value', youtubeId)
+        buttonTag.setAttribute('value', youtubeId);
         buttonTag.setAttribute('onclick', 'changeStartTime(this);');
 
         spanTag.innerHTML = timeObj[i].d;

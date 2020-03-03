@@ -18,6 +18,10 @@ mixin articleContent(content)
         cssLink.type = "text/css"; 
         page.head.appendChild(cssLink);
 
+        var scriptLink = document.createElement("script")
+        scriptLink.src = "./public/b-editor/__b-editor.js";
+        page.head.appendChild(scriptLink);
+
         page.body.innerHTML = content;
         const imgTags = page.getElementsByTagName("img");
         for(var t of imgTags) {

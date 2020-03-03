@@ -25,17 +25,13 @@ function __rotateImage(target) {
 
 function changeStartTime(target) {
     let targetIframe = document.getElementById(target.value);
-    console.log(target.innerHTML);
     let src = targetIframe.src;
     let startStringIndex = src.indexOf('rel=');
     src = src.slice(0, startStringIndex);
-    console.log(src);
     let startingTime = '?rel=0&autoplay=1&start='+target.innerHTML;
     src += startingTime;
     targetIframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; allowfullscreen');
-    console.log(src);
     targetIframe.src = src;
-    console.log(targetIframe);
 }
 
 function __rotateInfo(target){
