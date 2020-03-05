@@ -1,0 +1,104 @@
+extends ../view_layout
+include ../view_mixIn
+
+block css
+    link(rel="stylesheet" href="../css/penobrol_view.css" type="text/css")
+
+block nav
+    include ../nav_mixIn
+    +navi('p')
+
+block submain
+    //.ad Advertisement
+
+block article
+    dl.aTtileDl
+        dt.aTtileDt #{topic.title}
+            if u_id
+                +articlePop(topic.identifier, id2, topic.author)
+        +hashtag(topic.hashtags)
+        +basicPInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
+        .articleContent
+            +articleContent(topic.content)
+            .articleLike
+                .ptlike(id="plike")= topic.likes.length
+                if u_id
+                    +likeButton(topic.identifier,topic.likes, id2)
+
+block commentOrAnswer
+    if u_id
+        +commentOrAnswer(topic.identifier)
+
+block ulComAndAns
+    if topic.comments.length > 0
+        each c in topic.comments
+            li.liComAndAns(id='pc/' + topic.id + '/' + c.id)
+                dl.dlComAndAns
+                    - var commentStart = '@'+ topic.u_id
+                    - var date_result2 = 'by '+c.u_id+' / '+c.date+' / like : '
+                    .comAnsStart #{commentStart}
+                        if u_id
+                            +caPop(topic.identifier, id2, c.author, c.id)
+                    dt.dtComAndAns
+                        pre(class="pcomment-dt") "#{c.content}"
+                    dd.ddComAndAns #{date_result2}
+                        span.comAnsLike(id="pCommentlikes" + c.id)= c.likes.length
+                        if u_id
+                            span.comAnsButton
+                                +likeButton2('pc',c.likes, id2, c.id)
+                                span.dummy
+                .pccOrTac
+                    if u_id    
+                        textarea(name='ccomment' class="pccTacInput" id='pccInput')
+                        input(type='submit' name=c.id onclick="pcacSendAjax(this);" value="comment" class="pccTacInputButton")
+                each ccs in c.comments
+                    dl(class='dlPccAndTac')
+                        - var ccommentStart = '- "'+ccs.content+'"'
+                        - var date_result3 = 'by ' + ccs.u_id + ' / '+ ccs.date
+                        dt.dtPccAndTac
+                            if u_id
+                                +pcctacPop(topic.identifier, id2, ccs.author, ccs.id)
+                            pre(class="pccomment-dt") #{ccommentStart}
+                        dd.ddPccAndTac #{date_result3}
+    script.
+        function pcChecksubmit() {
+            if (pcInput.value.length < 5) {
+                alert('kontennya harus lebih dari 5 alphabet');
+                return false;
+            } else {
+                return true;
+            }
+        }
+        function aMenuButton() {
+            document.getElementById("aPopDiv").classList.toggle("show");
+        }
+        function caMenuButton(target) {
+            target.childNodes[1].classList.toggle("show");
+        }
+        function pcctacMenuButton(target) {
+            target.childNodes[1].classList.toggle("show");
+        }
+        window.onclick = function(event) {
+            if (!event.target.matches('.aPopButton')) {
+                var dropdowns = document.getElementsByClassName("aPopDiv");
+                fold_dropDown(dropdowns);
+            }
+            if (!event.target.matches('.caPopButton')) {
+                var dropdowns = document.getElementsByClassName("caPopDiv");
+                fold_dropDown(dropdowns);
+            }
+            if (!event.target.matches('.pcctacPopButton')) {
+                var dropdowns = document.getElementsByClassName("pcctacPopDiv");
+                fold_dropDown(dropdowns);
+            }
+            function fold_dropDown(dropdown){
+                var i;
+                for (i = 0; i < dropdown.length; i++) {
+                    var openDropdown = dropdown[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    script(type="text/javascript" src="/js/jsForAllJade.js")

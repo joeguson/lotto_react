@@ -1,0 +1,38 @@
+extends ../layout
+
+block js
+    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
+    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
+
+block css
+    link(rel='stylesheet', href='/css/cari.css' type="text/css")
+    link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
+    link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
+
+    
+block nav
+    include ../nav_mixIn
+    +navi('c')
+
+block submain
+    //.ad Advertising
+    .search
+        form(action='/cari/search' method='get')
+            input(type='text' name='search' value=`${search_string}`)
+            button(type='submit' class="submit" value="search")
+                img(src="icons/cari3.png" class="cariImage")
+
+block main
+    ul.thumbnailUl(id='uls')
+        if(user)
+            for itemm in user
+                a(href="/aku/user/"+`${itemm}`) #{itemm}
+        if(penobrol)
+            for item in penobrol
+                b-thumbnail(jsonSrc=`${JSON.stringify(item)}`)
+        if(tandya)
+            for items in tandya
+                b-thumbnail(jsonSrc=`${JSON.stringify(items)}`)
+        if(hashtag)
+            for itemss in hashtag
+                b-thumbnail(jsonSrc=`${JSON.stringify(itemss)}`)

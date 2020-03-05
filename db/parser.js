@@ -22,35 +22,46 @@ function parseArticle(packet) {
     };
 }
 
+function parseFrontArticle(packet) {
+    return {
+        // common
+        id: packet.id,
+        date: utils.dateMaker(packet.date), // reformat date
+        thumbnail: packet.thumbnail,
+        u_id: packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id,
+        hashtags: packet.hashtags,
+        likes: packet.likes
+    };
+}
+
 exports.parseFrontPenobrol = function (packet) {
-    const penobrol = {};
-    penobrol.id = packet.id;
-    penobrol.date = utils.dateMaker(packet.date);
+    const penobrol = parseFrontArticle(packet);
     penobrol.title = packet.title;
-    penobrol.thumbnail = packet.thumbnail;
     penobrol.commentCount = packet.comments;
     penobrol.view = packet.p_view;
     penobrol.identifier = 'p';
-    penobrol.hashtags = packet.hashtags;
-    penobrol.u_id =  packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id;
-    //penobrol.img will contain an object. This object will contain img src, rotate info
     penobrol.img = utils.getImage(packet.content);
     return penobrol;
 };
 
 exports.parseFrontTandya = function (packet) {
-    const tandya = {};
-    tandya.id = packet.id
-    tandya.date = utils.dateMaker(packet.date);
+    const tandya = parseFrontArticle(packet);
     tandya.question = packet.question;
-    tandya.thumbnail = packet.thumbnail;
     tandya.answerCount = packet.answers;
     tandya.view = packet.t_view;
     tandya.identifier = 't';
-    tandya.hashtags = packet.hashtags;
-    tandya.u_id =  packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id
     tandya.img = utils.getImage(packet.content);
     return tandya;
+};
+
+exports.parseFrontYoutublog = function (packet) {
+    const youtublog = parseFrontArticle(packet);
+    youtublog.title = packet.title;
+    youtublog.commentCount = packet.comments;
+    youtublog.view = packet.y_view;
+    youtublog.identifier = 'y';
+    youtublog.img = utils.getImage(packet.content);
+    return youtublog;
 };
 
 exports.parsePenobrol = function (packet) {
@@ -71,6 +82,15 @@ exports.parseTandya = function (packet) {
     return tandya;
 };
 
+exports.parseYoutublog = function (packet) {
+    const youtublog = parseArticle(packet);
+    youtublog.title = packet.title;
+    youtublog.comments = packet.comments;
+    youtublog.view = packet.y_view;
+    youtublog.identifier = 'y';
+    return youtublog;
+};
+
 exports.parseHashtagP = function (packet) {
     return {
         id: packet.id,
@@ -83,6 +103,14 @@ exports.parseHashtagT = function (packet) {
     return {
         id: packet.id,
         t_id: packet.t_id,
+        hash: packet.hash
+    };
+};
+
+exports.parseHashtagY = function (packet) {
+    return {
+        id: packet.id,
+        y_id: packet.y_id,
         hash: packet.hash
     };
 };
@@ -149,6 +177,13 @@ exports.parsePLike = function (packet) {
 exports.parseTLike = function (packet) {
     return {
         t_id: packet.t_id,
+        u_id: packet.u_id
+    };
+};
+
+exports.parseYLike = function (packet) {
+    return {
+        y_id: packet.y_id,
         u_id: packet.u_id
     };
 };

@@ -1,0 +1,32 @@
+extends ../layout
+
+block css
+    link(rel='stylesheet', href='../css/user-add.css' type="text/css")
+
+block nav
+    include ../nav_mixIn
+    +navi('a')
+
+block submain
+  //.ad Advertising
+  
+block main
+    .buttonDiv
+        button(id='id') Id
+        button(id="pw") Password
+        input(type="hidden" id="idOrPw" name="idOrPw" value="id")
+    article
+        form(action='/aku/find' method='post' onsubmit='return checksubmit();')
+            p(id='userIdP' style="visibility: hidden;")
+                input(type='text' id="u_id" name='u_id' placeholder='Your ID')
+            p
+                input(type='date' name='birthday' value='2019-08-31' id='inputDate' required)
+            p
+                input(type='button' name='boy' id = 'boy' value='Male' class="sex" required)
+                input(type='button' name='girl' id = 'girl' value='Female' class="sex" required)
+                input(type="hidden" id="gender" name="gender" value="none")
+            p
+                input(type='text' name='email' id='email' placeholder='emailAdress@yourEmail.com' required)
+            p
+                input(type='submit' value='Verify Me' id='submit')
+    script(type="text/javascript" src="../../js/forgot.js")
