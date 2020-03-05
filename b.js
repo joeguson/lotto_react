@@ -34,8 +34,8 @@ app.locals.pretty = true;
 app.use(express.static('front'));
 app.use(express.static('back'));
 app.use(express.static('images'));
-app.use("/jade", express.static('/'));
-app.set('view engine', 'jade');
+app.use("/pug", express.static('/'));
+app.set('view engine', 'pug');
 app.set('views', './front/html');
 app.set('case sensitive routing', false);
 app.use(cookieParser());
@@ -47,6 +47,7 @@ exports.poolConfig = poolConfig;
 
 const penobrol = require('./back/penobrol');
 const tandya = require('./back/tandya');
+const youtublog = require('./back/youtublog');
 const aku = require('./back/aku');
 const apiRouter = require('./api/api');
 const cari = require('./back/cari');
@@ -86,6 +87,7 @@ app.use('/cari', cari);
 app.use('/aku', aku);
 app.use('/tandya', tandya);
 app.use('/penobrol', penobrol);
+app.use('/youtublog', youtublog);
 
 function saveImage(path, filename, data, callback) {
     const params = {

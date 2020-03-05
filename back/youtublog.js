@@ -4,6 +4,7 @@ var jsForBack = require('./jsForBack.js');
 const youtublogService = require('../service/youtublogService.js');
 
 /************FOR YOUTUBLOG************/
+
 route.get('/', function (req, res) {
     youtublogService.getOrderedYoutublog()
         .then(([dateTopics, scoreTopics]) => res.render('./jy/y', {

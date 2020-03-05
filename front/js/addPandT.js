@@ -13,7 +13,7 @@ if(add){
             content: content,
             hashtag: hashtag
         };
-
+        //tandya일 경우 question을, penobrol일 경우 title을 가져옴
         if(type == 't') req.question = document.getElementById('question').value;
         else req.title = document.getElementById('title').value;
 

@@ -47,7 +47,7 @@ route.post('/comment/:penobrol_no', function (req, res) {
         p_id,
         req.session.id2,
         req.body.comment
-    ).then(() => res.redirect('/penobrol/view/' + p_id));
+    ).then(() => res.redirect('/penobrol/' + p_id));
 });
 
 route.get('/edit/:penobrol_no', function (req, res) {
@@ -57,7 +57,7 @@ route.get('/edit/:penobrol_no', function (req, res) {
     penobrolService.getFullPenobrolById(p_id).then(penobrol => {
         if(penobrol != null && penobrol.author === u_id)
             res.render('./jp/p-edit', {u_id: u_id, edit_content: penobrol});
-        else res.redirect('/penobrol/view/' + p_id);
+        else res.redirect('/penobrol/' + p_id);
     });
 });
 
@@ -103,7 +103,7 @@ route.delete('/comment/:id',  function(req, res){
         req.session.id2
     ).then(result => {
         if(result) res.json({"result": "deleted"});
-        else res.redirect('/penobrol/view/' + req.body.penobrolId);
+        else res.redirect('/penobrol/' + req.body.penobrolId);
     });
 });
 
@@ -113,7 +113,7 @@ route.delete('/ccomment/:id', function(req, res){
         req.session.id2
     ).then(result => {
         if(result) res.json({"result": "deleted"});
-        else res.redirect('/penobrol/view/' + req.body.penobrolId);
+        else res.redirect('/penobrol/' + req.body.penobrolId);
     });
 });
 

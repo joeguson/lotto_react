@@ -1,0 +1,96 @@
+extends ../layout
+
+block js
+    script(type="text/javascript" src="/js/jsForAllJade.js")
+    script(src="../../public/b-editor/b-editor.js")
+    script(src='./js/editPandT.js')
+
+block css
+    link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
+
+
+block nav
+    include ../nav_mixIn
+    +navi('p')
+
+block submain
+  //.ad Advertisement
+  
+block main
+    article
+        p 
+            input(type='text' name='title' placeholder='title' class="title" id="title" value=edit_content.title)
+        p.infoP
+            span(id='titleInfo' class='infoSpan') 
+        p
+            if edit_content.public == 'p'
+                label
+                    input(id='rbP' type='radio' value='p' name="public" checked)
+                    span  public
+                label
+                    input(id='rbA' type='radio' value='a' name="public")
+                    span  anonymous
+            else
+                label
+                    input(id='rbP' type='radio' value='p' name="public" checked)
+                    span  public
+                label
+                    input(id='rbA' type='radio' value='a' name="public")
+                    span  anonymous
+        p
+            input(type='text' name='thumbnail' placeholder='thumbnail' maxlength="200" class="thumbnail" id="thumbnail" value=edit_content.thumbnail)  
+        p.infoP
+            span(id='thumbnailInfo' class='infoSpan') 
+        p
+            b-editor(id='editor' width="90%" height="600px" name="content")
+        script.
+            var edit_iframe = document.getElementById("iframe");
+            edit_iframe.contentWindow.document.body.innerHTML = "#{edit_content.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+        p
+            -var hashtags = edit_content.hashtags.map(e => `#${e.hash}`).join(" ");
+            input(id='hashtag' type='text' name='hashtag' class="hashtag" value= "#{hashtags}")
+        p.infoP
+            span(id='hashInfo' class='infoSpan') 20/20
+        p
+            button(class="submit" name='p' onclick="postEditArticle(this)") share
+        script.
+            function checksubmit(){
+                if(title.value.length < 5){
+                    alert('judulnya harus lebih dari 5 alphabet');
+                    return false;
+                }
+                if(content.value.length < 5){
+                    alert('kontennya harus lebih dari 5 alphabet');
+                    return false;
+                }
+                return true;
+            }
+            window.addEventListener('load', function(){
+                let count1 = 200;
+                let count2 = 200;
+                let count3 = 20;
+                count1 -= title.value.length;
+                count2 -= thumbnail.value.length;
+                count3 -= (hashtag.value.match(/#/gi) || []).length;
+                titleInfo.innerHTML = count1 + '/200';
+                thumbnailInfo.innerHTML = count2 + '/200';
+                hashInfo.innerHTML = count3 + '/20';
+            });
+            title.addEventListener('keyup', function(){
+                var count = 200;
+                count -= title.value.length;
+                titleInfo.innerHTML = count + '/200';
+            });
+            thumbnail.addEventListener('keyup', function(){
+                var count = 200;
+                count -= thumbnail.value.length;
+                thumbnailInfo.innerHTML = count + '/200';
+            });
+            hashtag.addEventListener('keydown', function () {
+                var count = 20;
+                count -= (hashtag.value.match(/#/gi) || []).length;
+                hashInfo.innerHTML = count + '/20';
+                if (count < 1) { // 아직 구현 못함
+                    hashInfo.innerHTML = 'exceeds the limit';
+                }
+            });

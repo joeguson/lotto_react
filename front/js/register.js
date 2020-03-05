@@ -1,11 +1,12 @@
-var idAuth = 0;
-var pwAuth = 0;
-var mailAuth = 0;
+let idAuth = 0;
+let pwAuth = 0;
+let mailAuth = 0;
 
-var sex = '';
-var userIdCheck = RegExp(/^[A-Za-z0-9_.\-]{4,30}$/);
-var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
-var checkboxValue;
+let sex = '';
+const userIdCheck = RegExp(/^[A-Za-z0-9_.\-]{4,30}$/);
+const emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+const passwordCheck = RegExp(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{7,}$/);
+let checkboxValue;
 
 const userId = document.getElementById('u_id');
 const userPw = document.getElementById('u_pw');
@@ -46,7 +47,7 @@ userPw2.addEventListener('keyup', function(){
 })
 
 userPw.addEventListener('blur', function(){
-    if(userPw.value.length > 7){
+    if(passwordCheck.test(userPw.value)){
         pwInfo.innerHTML = '';
         appearCheck(userPw);
         pwAuth = 1;
@@ -59,7 +60,7 @@ userPw.addEventListener('blur', function(){
 });
 
 userPw2.addEventListener('blur', function(){
-    if(userPw.value == userPw2.value && userPw.value.length > 7){
+    if(userPw.value == userPw2.value && passwordCheck.test(userPw.value)){
         pwInfo.innerHTML = '';
         appearCheck(userPw2);
         pwAuth = 2;

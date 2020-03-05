@@ -1,40 +1,25 @@
-class BeritamusYoutubeDialog extends HTMLElement {
+class BeritamusYoutubeDialog extends BeritamusDialog {
     constructor() {
         super();
-        this.youtubeDialog = null;
-        this.src = null;
+        this.content = null;
+        this.control = null;
+        this.iframe = null;
     }
 
     connectedCallback() {
-        const width = this.getAttribute("width");
-        const height = this.getAttribute("height");
-        this.__build(width, height);
-        this.src = JSON.parse(this.getAttribute("jsonSrc"));
-    }
-
-    __build(w, h){
-        console.log(this.src);
-        this.youtubeDialog = this.buildYoutubeDialog(w, h);
-        this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + this.src.address + "?start=1";
-        this.youtubeDialog.showModal();
-        this.appendChild(this.youtubeDialog);
-    }
-
-    buildYoutubeDialog(w, h) {
-        const dialog = document.createElement("dialog");
-        dialog.style.margin = "auto";
-        const div = document.createElement("div");
-        {
-            const iframe = document.createElement("iframe");
-            iframe.width = "560";
-            iframe.height = "315";
-            iframe.frameBorder = "0";
-            // iframe.allowFullscreen = true;
-            div.appendChild(iframe);
-            dialog.iframe = iframe;
-
-            const times = document.createElement("div");
+        this.contentAreaBuilder = () => {
+            const div = document.createElement("div");
             {
+                this.iframe = document.createElement("iframe");
+                this.iframe.width = "560";
+                this.iframe.height = "315";
+                this.iframe.frameBorder = "0";
+                // iframe.allowFullscreen = true;
+                div.appendChild(this.iframe);
+            }
+            {
+                const times = document.createElement("div");
+                times.id = 'timeTags';
                 const p = document.createElement("button");
                 times.appendChild(p);
                 p.innerText = "+";
@@ -43,25 +28,20 @@ class BeritamusYoutubeDialog extends HTMLElement {
                         times.removeChild(c);
                     });
                     times.insertBefore(c, p);
-                }
+                };
+                div.appendChild(times);
             }
-            div.appendChild(times);
+            return div;
+        };
 
+        this.buttonAreaBuilder = () => {
             const confirm = document.createElement("button");
             confirm.innerText = "confirm";
+            confirm.id = 'videoConfirm';
 
-            confirm.onclick = () => {
-                this.youtubeDialog.iframe.style.width = "100%";
-                const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
-                this.youtubeDialog.close();
-                this.youtubeIdDialog.close();
-                this.editor.body.focus();
-                this.editor.execCommand("insertHTML", false, youtubeHTML);
-            };
-            div.appendChild(confirm);
-        }
-        dialog.appendChild(div);
-        return dialog;
+            return confirm;
+        };
+        super.connectedCallback();
     }
 
     __newYoutubeTimeDescriptionCard(minusCallback) {

@@ -9,7 +9,7 @@
         this.sizePicker = null;
         this.imageInput = null;
         this.youtubeIdDialog = null;
-        // this.youtubeDialog = null;
+        this.youtubeDialog = null;
     }
 
     // returns content as html tags
@@ -47,11 +47,11 @@
         this.appendChild(controls);
         this.appendChild(ta);
 
-        this.youtubeIdDialog = this.buildYoutubeIdDialog(w, h);
+        this.youtubeIdDialog = document.createElement("b-youtube-id-dialog");
         this.appendChild(this.youtubeIdDialog);
 
-        // this.youtubeDialog = this.buildYoutubeDialog(w, h);
-        // this.appendChild(this.youtubeDialog);
+        this.youtubeDialog = document.createElement("b-youtube-dialog");
+        this.appendChild(this.youtubeDialog);
     }
 
     buildControls(w) {
@@ -151,81 +151,6 @@
         return ta;
     }
 
-    buildYoutubeIdDialog(w, h) {
-        const dialog = document.createElement("dialog");
-        dialog.style.margin = "auto";
-
-        const div = document.createElement("div");
-        {
-            const idInput = document.createElement("input");
-            idInput.style.display = "block";
-            div.appendChild(idInput);
-
-            const button = document.createElement("button");
-            idInput.style.display = "block";
-            button.innerText = "button";
-            button.onclick = () => this.showYoutubeDialog(idInput.value);
-            div.appendChild(button);
-        }
-        dialog.appendChild(div);
-
-        return dialog;
-    }
-
-    showYoutubeDialog(youtubeUrl) {
-        let urlAddress = {"address" : youtubeUrl};
-        const dia = document.createElement("b-youtube-dialog");
-        dia.setAttribute("jsonSrc", JSON.stringify(urlAddress));
-        console.log(dia);
-        // this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?start=1";
-        // this.youtubeDialog.showModal();
-    }
-    //
-    // buildYoutubeDialog(w, h) {
-    //     const dialog = document.createElement("dialog");
-    //     dialog.style.margin = "auto";
-    //     const div = document.createElement("div");
-    //     {
-    //         const iframe = document.createElement("iframe");
-    //         iframe.width = "560";
-    //         iframe.height = "315";
-    //         iframe.frameBorder = "0";
-    //         // iframe.allowFullscreen = true;
-    //         div.appendChild(iframe);
-    //         dialog.iframe = iframe;
-    //
-    //         const times = document.createElement("div");
-    //         {
-    //             const p = document.createElement("button");
-    //             times.appendChild(p);
-    //             p.innerText = "+";
-    //             p.onclick = () => {
-    //                 const c = this.__newYoutubeTimeDescriptionCard((card) => {
-    //                     times.removeChild(c);
-    //                 });
-    //                 times.insertBefore(c, p);
-    //             }
-    //         }
-    //         div.appendChild(times);
-    //
-    //         const confirm = document.createElement("button");
-    //         confirm.innerText = "confirm";
-    //
-    //         confirm.onclick = () => {
-    //             this.youtubeDialog.iframe.style.width = "100%";
-    //             const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
-    //             this.youtubeDialog.close();
-    //             this.youtubeIdDialog.close();
-    //             this.editor.body.focus();
-    //             this.editor.execCommand("insertHTML", false, youtubeHTML);
-    //         };
-    //         div.appendChild(confirm);
-    //     }
-    //     dialog.appendChild(div);
-    //     return dialog;
-    // }
-    //
-
     addControlButton(parent, title, innerHTML) {
         const btn = document.createElement("button");
         btn.title = title;
@@ -296,7 +221,7 @@
                         }
                         canvas.width = width;
                         canvas.height = height;
-                        var ctx = canvas.getContext("2d");
+                        ctx = canvas.getContext("2d");
                         ctx.drawImage(img, 0, 0, width, height);
                         var dataurl = canvas.toDataURL("image/png");
                         const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + dataurl +"'/>";
@@ -336,22 +261,70 @@
 
     __onYoutubeClick() {
         this.youtubeIdDialog.showModal();
+        const videoInput = document.getElementById('videoInput');
+        const videoButton = document.getElementById('videoButton');
+        const videoConfirm = document.getElementById('videoConfirm');
+        let youtubeId = '';
+        videoButton.addEventListener('click', () => {
+            //videoInput needs to be upgraded.
+            youtubeId = (videoInput.value).split('=')[1];
+            this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?";
+            this.youtubeDialog.iframe.id = youtubeId;
+            this.youtubeDialog.showModal();
+        });
+        videoConfirm.addEventListener('click', () => {
+            const timeTags = document.getElementById('timeTags');
+            const timeObject = makeTimeJumper(timeTags);
+            const timeTable = makeTimeTable(timeObject, youtubeId);
+            this.youtubeDialog.iframe.style.width = "100%";
+            const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
+            this.youtubeIdDialog.dialog.close();
+            this.youtubeDialog.dialog.close();
+            this.editor.body.focus();
+            this.editor.execCommand("insertHTML", false, youtubeHTML);
+            this.editor.execCommand("insertHTML", false, timeTable);
+        });
     }
 
-    // __newYoutubeTimeDescriptionCard(minusCallback) {
-    //     const c = document.createElement("div");
-    //     c.style.display = "flex";
-    //     const d = document.createElement("b-youtube-time");
-    //     d.style.width = "95%";
-    //     c.appendChild(d);
-    //     const b = document.createElement("button");
-    //     b.style.width = "5%";
-    //     b.innerText = "-";
-    //     b.onclick = () => { minusCallback(c);};
-    //     c.appendChild(b);
-    //
-    //     return c;
-    // }
 }
+function makeTimeJumper(timeTag){
+    let result = [];
+    let youtubeTimeList = timeTag.getElementsByTagName('b-youtube-time');
+    //getElementsByTagName returns htmlCollection which is not an array. Map function does not work for below
+    for(let i = 0; i<youtubeTimeList.length; i++){
+        let timeObj = {};
+        timeObj.h = youtubeTimeList[i].children[0].value;
+        timeObj.m = youtubeTimeList[i].children[1].value;
+        timeObj.s = youtubeTimeList[i].children[2].value;
+        timeObj.d = youtubeTimeList[i].children[3].value;
+        result.push(timeObj);
+    }
+    return result;
+}
+
+  function makeTimeTable(timeObj, youtubeId){
+    const table = document.createElement('table');
+    for(let i = 0; i<timeObj.length; i++){
+        let tempRow = document.createElement('tr');
+        let temp1 = document.createElement('td');
+        let temp2 = document.createElement('td');
+
+        let buttonTag = document.createElement('button');
+        let spanTag = document.createElement('span');
+
+        buttonTag.innerHTML = timeObj[i].h + timeObj[i].m + timeObj[i].s;
+        buttonTag.setAttribute('value', youtubeId);
+        buttonTag.setAttribute('onclick', 'changeStartTime(this);');
+
+        spanTag.innerHTML = timeObj[i].d;
+        temp1.appendChild(buttonTag);
+        temp2.appendChild(spanTag);
+
+        tempRow.append(temp1);
+        tempRow.append(temp2);
+        table.appendChild(tempRow);
+    }
+    return table.outerHTML;
+  }
 
 customElements.define('b-editor', BeritamusEditor);

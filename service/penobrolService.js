@@ -1,4 +1,9 @@
 const parser = require('../db/parser.js');
+const pccDao = require('../db/b-dao/penDao/pccDao');
+const pcDao = require('../db/b-dao/penDao/pccDao');
+const pclikeDao = require('../db/b-dao/penDao/pccDao');
+const phashDao = require('../db/b-dao/penDao/pccDao');
+const pwarnDao = require('../db/b-dao/penDao/pccDao');
 const penobrolDao = require('../db/b-dao/penobrolDao');
 
 /* ===== exports ===== */

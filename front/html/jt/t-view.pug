@@ -1,0 +1,111 @@
+extends ../view_layout
+include ../view_mixIn
+
+block css
+    link(rel="stylesheet" href="../css/tandya_view.css" type="text/css")
+    
+block nav
+    include ../nav_mixIn
+    +navi('t')
+
+block submain
+    //.ad Advertisement
+
+block article
+    dl.aTtileDl
+        dt.aTtileDt
+            span Q : 
+            span #{topic.question}
+            if u_id
+                +articlePop(topic.identifier, id2, topic.author)
+        +hashtag(topic.hashtags)
+        .articleContent
+            +articleContent(topic.content)
+            .articleLike
+                .ptlike(id="tlike")= topic.likes.length
+                if u_id
+                    +likeButton(topic.identifier,topic.likes, id2)
+            .articleDetail
+                +basicTInfo(topic.u_id, topic.date, topic.view, topic.answers.length)
+//- if id2 == topic.author           
+//-     a(href='/tedit/' + topic.id class='edit') Edit
+
+block commentOrAnswer
+    if u_id
+        +commentOrAnswer(topic.identifier)
+
+block ulComAndAns
+    if topic.answers.length > 0
+        each a in topic.answers
+            li.liComAndAns(id='ta/' + topic.id + '/' + a.id)
+                dl.dlComAndAns
+                    - var answerStart = '@'+ topic.u_id
+                    - var date_result2 = 'by '+ a.u_id + ' / '+a.date+' / like : '
+                    .comAnsStart #{answerStart}
+                        if u_id
+                            +caPop(topic.identifier, id2, a.author, a.id)
+                    dt.dtComAndAns
+                        pre(class="tanswer-dt") "#{a.answer}"
+                    dd.ddComAndAns #{date_result2}
+                        span.comAnsLike(id="tAnswerlikes" + a.id)= a.likes.length
+                        if u_id
+                            span.comAnsButton
+                                +likeButton2('ta', a.likes, id2, a.id)
+                                span.dummy
+                .pccOrTac
+                    if u_id
+                        textarea(name='acomment' class="pccTacInput" id='tacInput')
+                        input(type='submit' name=a.id onclick="pcacSendAjax(this);" value="comment" class="pccTacInputButton")
+                each acs in a.comments
+                    dl(class='dlPccAndTac')
+                        - var acommentStart = '- "'+acs.content+'"'
+                        - var date_result3 = 'by : ' + acs.u_id + ' / '+acs.date
+                        dt.dtPccAndTac
+                            pre(class="tacomment-dt") #{acommentStart}
+                            if u_id
+                                +pcctacPop(topic.identifier, id2, acs.author, acs.id)
+                        dd.ddPccAndTac #{date_result3}    
+    script.
+        function taChecksubmit() {
+            if (taInput.value.length < 5) {
+                alert('kontennya harus lebih dari 5 alphabet');
+                return false;
+            } else {
+                return true;
+            }
+        }
+        function aMenuButton() {
+            document.getElementById("aPopDiv").classList.toggle("show");
+        }
+        function caMenuButton(target) {
+            target.childNodes[1].classList.toggle("show");
+        }
+        function pcctacMenuButton(target) {
+            target.childNodes[1].classList.toggle("show");
+        }
+        window.onclick = function(event) {
+            if (!event.target.matches('.aPopButton')) {
+                var dropdowns = document.getElementsByClassName("aPopDiv");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+            if (!event.target.matches('.caPopButton')) {
+                var dropdowns = document.getElementsByClassName("caPopDiv");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    script(type="text/javascript" src="/js/jsForAllJade.js")
+
+//- if id2 === a.author
+//-     a(href='/taedit/' + topic.id + '/' + a.id) Edit
