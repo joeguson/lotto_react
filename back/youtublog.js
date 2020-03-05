@@ -1,501 +1,124 @@
-var conn = require('./b');
+//url - '/youtublog'
+const route = require('express').Router();
+var jsForBack = require('./jsForBack.js');
+const youtublogService = require('../service/youtublogService.js');
 
-/************FOR TANDYA************/
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
+/************FOR YOUTUBLOG************/
+route.get('/', function (req, res) {
+    youtublogService.getOrderedYoutublog()
+        .then(([dateTopics, scoreTopics]) => res.render('./jy/y', {
+            dateTopics: dateTopics,
+            scoreTopics: scoreTopics,
+            id2: req.session.id2
+        }));
+});
 
-var htsqlMaker = function(dateOrder, scoreOrder){
-    var dlength = dateOrder.length;
-    var slength = scoreOrder.length;
-    var dtemp = [];
-    var stemp = [];
-    for(var i =0; i<dlength;i++){
-        dtemp.push(dateOrder[i].id);
-    }
-    for(var j =0; j<slength;j++){
-        stemp.push(scoreOrder[j].id);
-    }
-    dtemp = dtemp.concat(stemp);
-    var temp = 'select * from hashtag where ';
-    for(var k = 0; k<dtemp.length; k++){
-        temp = temp + 't_id = '+dtemp[k] + ' OR ';
-    }
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    temp = temp.slice(0,-1);
-    return temp;
-};
-
-exports.getYoutublog = function(req, res){
-    res.render('u');
-//    var sql = 'select * from tandya order by date desc limit 3';
-//    var sql2 = 'SELECT * FROM tandya ORDER BY score DESC limit 3';
-//    var sql3 = '';
-//    conn.conn.query(sql, function(err, dateOrder, fields){
-//        if(err){console.log(err);}
-//        else{
-//            conn.conn.query(sql2, function(err, scoreOrder, fields){
-//                if(err){console.log(err);}
-//                else{
-//                    sql3 = htsqlMaker(dateOrder, scoreOrder);
-//                    conn.conn.query(sql3, function(err, hashtag, fields){
-//                        if(err){console.log(err);}
-//                        else{
-//                            if(req.session.u_id){
-//                                res.render('t', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag, u_id:req.session.u_id}); 
-//                            }
-//                            else{
-//                                res.render('t', {dateTopics:dateOrder, scoreTopics:scoreOrder, hashtags:hashtag});
-//                            }
-//                        }
-//                    });
-//                }
-//            });
-//        }
-//    });
-};
-
-exports.getViewTandya =  function(req, res){
-    var id = req.params.tandya_no;
-    var checkId = /^[0-9]+$/;
+route.get('/:youtublog_no', function (req, res, next) {
+    const id = req.params.youtublog_no;
+    const checkId = /^[0-9]+$/;
     if(checkId.test(id)){
-        var sql1 = 'SELECT MAX(id) AS max from tandya';
-        var sql3 = 'UPDATE tandya SET t_view = t_view + 1 WHERE id = ?';
-        var sql7 = 'UPDATE tandya SET score = (answer *.3 + t_like*.7)/t_view * 100 where id = ?';
-        var sql = 'SELECT * FROM tandya WHERE id = ?';
-        var sql2 = 'SELECT * FROM t_ans WHERE t_id = ? order by score desc';
-        var sql6 = 'SELECT * FROM hashtag where t_id = ?';
-        var sql4 = 'Select * from t_like where u_id = ? AND t_id = ?';
-        var sql5 = 'SELECT * FROM ta_com where t_id = ?';
-        var sql8 = 'SELECT * FROM ta_like where u_id = ? AND t_id = ?';
-        conn.conn.query(sql1, function(err, maxValue, fields){
-            if(maxValue[0].max < id){
-                res.redirect('/tandya'); //change to redirect and make a file
-            }
-            else{
-                conn.conn.query(sql3, [id], function(err, views, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql7, id, function(err, score, fields){
-                            if(err){console.log(err);}
-                        });
-                    }
-                });
-                conn.conn.query(sql, id, function(err, content, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql2, id, function(err, answers, fields){
-                            if(err){console.log(err);}
-                            else{
-                                conn.conn.query(sql6, id, function(err, hashtag, fields){
-                                        if(err){console.log(err);}
-                                        else{
-                                            conn.conn.query(sql5, id, function(err, acomments, fields){
-                                                if(err){console.log(err);}
-                                                else{
-                                                    delete hashtag[0].id;
-                                                    delete hashtag[0].u_id;
-                                                    delete hashtag[0].p_id;
-                                                    delete hashtag[0].t_id;
-                                                    if(req.session.u_id){
-                                                        conn.conn.query(sql4, [req.session.u_id, id], function(err, likeStatus, fields){
-                                                            if(err){console.log(err);}
-                                                            else{
-                                                                conn.conn.query(sql8, [req.session.u_id, id], function(err, alikeStatus, fields){
-                                                                    if(err){console.log(err);}
-                                                                    else{
-                                                                        var statusCheck = '';
-                                                                        if(isEmpty(likeStatus)){
-                                                                            statusCheck = 'no';
-                                                                        }
-                                                                        else{
-                                                                            statusCheck = 'yes';
-                                                                        }
-                                                                        res.render('t-view', {topic:content[0], statusCheck:statusCheck, answers:answers, u_id:req.session.u_id, hashtag:hashtag[0], acomments:acomments, alikeStatus:alikeStatus});
-                                                                    }
-                                                                });
-                                                            }
-                                                        });
-                                                    }
-                                                    else{
-                                                        res.render('t-view', {topic:content[0], answers:answers, hashtag:hashtag[0], acomments:acomments});
-                                                    }
-                                                }
-                                                    
-                                            });
-
-                                        }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
+        youtublogService.getFullYoutublogById(id).then(result => {
+            if (!result) res.redirect('/youtublog/'); // 결과가 없으면 홈으로 이동
+            else youtublogService.updateYoutublogView(result.id).then(() => // 받아왔으면 조회수 증가 후 페이지 표시
+                res.render('./jy/y-view', {
+                    topic: result,
+                    u_id: req.session.u_id,
+                    id2: req.session.id2,
+                })
+            );
         });
     }
     else{
-        res.redirect('/tandya');
+        next();
     }
-};
+});
 
-exports.getAddTandya = function(req, res){
-  if(req.session.u_id){
-        res.render('t-add', {u_id:'y'});
+route.get('/new',function (req, res) {
+    if (req.session.u_id) {
+        res.render('./jy/y-add');
+    } else {
+        res.redirect('/youtublog/');
     }
-    else{
-        res.send('/tandya/belumadakonten'); //change to redirect and make a file
-    }
-};
-exports.postAddTandya = function(req, res){
-    var author = req.session.u_id;
-    var content = req.body.content;
-    var question = req.body.question;
-    var rawhashtags = req.body.hashtag;
-    var hashtagCount = 0;
-    var public = req.body.public;
-    while(rawhashtags.indexOf(' ')>=0){
-        rawhashtags = rawhashtags.replace(' ', "");
-    }
-    var hashtags = rawhashtags.split('#');
-    hashtags.splice(0,1);
-    hashtagCount = hashtags.length;
-    var perfecthashtag = function (array){
-        if(array.length > 7){
-            while(array.length > 7){
-                array.splice(7, 1);
-            }
-        }
-        else if(array.length < 7){
-            while(array.length < 7){
-                array.push(' ');
-            }  
-        }
-        return array;
-    };
-    var finalhashtag = perfecthashtag(hashtags);
-    var sql = 'INSERT INTO tandya (author, question, content, hashtagcount, public) VALUES (?, ?, ?, ?, ?)';
-    var sql4 = 'INSERT INTO hashtag (t_id, u_id, ht1, ht2, ht3, ht4, ht5, ht6, ht7) VALUES (?, ?, ?);';
-    var sql2='UPDATE users set u_tan= u_tan + 1 WHERE u_id = ?';
+});
 
-    //update connection
-    conn.conn.query(sql2, [author], function(err, update, fields){
-        if(err){console.log(err);}
-      });
-    //insert connection
-    conn.conn.query(sql, [author, question, content, hashtagCount, public], function(err, result, fields){
-        if(err){console.log(err);}
-        else{
-            conn.conn.query(sql4, [result.insertId, author, finalhashtag], function(err, hashtag, fields){
-                if(err){console.log(err);}
-                else{ res.redirect('/tandya/'+result.insertId);
-                }
+route.post('/comment/:youtublog_no', function (req, res) {
+    const y_id = req.params.youtublog_no;
+    youtublogService.postComment(
+        y_id,
+        req.session.id2,
+        req.body.comment
+    ).then(() => res.redirect('/youtublog/' + y_id));
+});
+
+route.get('/edit/:youtublog_no', function (req, res) {
+    const y_id = req.params.youtublog_no;
+    const u_id = req.session.id2;
+
+    youtublogService.getFullYoutublogById(y_id).then(youtublog => {
+        if(youtublog != null && youtublog.author === u_id)
+            res.render('./jy/y-edit', {u_id: u_id, edit_content: youtublog});
+        else res.redirect('/youtublog/' + y_id);
+    });
+});
+
+route.get('/edit/comment/:youtublog_no/:ycomment_no',function (req, res) {
+    const y_id = req.params.youtublog_no;
+    const yc_id = req.params.ycomment_no;
+    const u_id = req.session.id2;
+
+    youtublogService.getCommentById(yc_id).then(comment => {
+        if (u_id !== comment.author) res.redirect('/comment/view/' + y_id);
+        else youtublogService.getFullYoutublogById(y_id).then(youtublog => {
+            res.render('./jy/yc-edit', {
+                u_id: 'y',
+                topic: youtublog,
+                edit_content: comment
             });
-        }
+        });
     });
-};
+});
 
-exports.postAddAnswer = function(req, res){
-    var author = req.session.u_id;
-    var answer = req.body.answer;
-    var t_id = req.params.tandya_no;
-    var sql = 'INSERT INTO t_ans (author, answer, t_id) VALUES (?, ?, ?)';
-    var sql2 = 'UPDATE tandya SET answer = answer + 1 WHERE id = (?)';
-    var sql3 = 'UPDATE tandya SET score = (answer *.3 + t_like*.7)/t_view * 100 where id = ?';
-    conn.conn.query(sql, [author, answer, t_id], function(err, result, fields){
-        if(err){console.log(err);}
-        else{
-            conn.conn.query(sql2, [t_id], function(err, result2, fields){
-                if(err){
-                    console.log(err);
-                }
-                else{
-                    conn.conn.query(sql3, t_id, function(err, score, fields){
-                        if(err){console.log(err);}    
-                    });
-                }
-            });
-            res.redirect('/tandya/'+t_id);
-        }
+route.put('/comment/:youtublog_no/:ycooment_no',function (req, res) {
+    const y_id = req.params.youtublog_no;
+    youtublogService.editComment(
+        req.params.ycomment_no,
+        y_id,
+        req.body.comment
+    ).then(() => res.redirect('/youtublog/'+ y_id));
+});
+
+route.delete('/:id', function(req, res){
+    youtublogService.deleteYoutublog(
+        req.body.deleteId,
+        req.session.id2
+    ).then(result => {
+        if(result) res.json({"result": "deleted"});
+        else res.redirect('/youtublog');
     });
-};
+});
 
-exports.postAddAcomment = function(req, res){
-    var author = req.session.u_id;
-    var content = req.body.acommentContent;
-    var t_id = req.params.tandya_no;
-    var ta_id = req.params.answer_no;
-    //when connection is more than two, divide
-    var sql = 'INSERT INTO ta_com (author, content, ta_id, t_id) VALUES (?, ?, ?, ?)';
-    var sql2 = 'UPDATE t_ans SET com = com + 1 WHERE id = ?';
-    var sql3 = 'UPDATE t_ans SET score = com*.3 + ta_like*.7 where id = ?';
-    var sql4 = 'SELECT * FROM ta_com where id = ?';
-    conn.conn.query(sql, [author, content, ta_id, t_id], function(err, result, fields){
-        if(err){console.log(err);}
-        else{
-            conn.conn.query(sql2, [ta_id], function(err, result2, fields){
-                if(err){console.log(err)}
-                else{
-                    conn.conn.query(sql3, ta_id, function(err, result3, fields){
-                        if(err){console.log(err)}
-                        else{
-                            conn.conn.query(sql4, result.insertId, function(err, ajaxResult, fields){
-                                res.json({"acomment_id" : ajaxResult[0].id, "acomment_author" : ajaxResult[0].author, "acomment_content" : ajaxResult[0].content, "acomment_date" : ajaxResult[0].date});
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });  
-};
-
-
-exports.likesTandya = function(req, res){
-    var clickValue = req.body.clickedValue;
-    var t_id = req.params.id;
-    var sql = 'SELECT * FROM t_like WHERE u_id = ? AND t_id = ?';
-    var sql2 = 'UPDATE tandya set t_like = t_like - 1 where id = ?';
-    var sql3 = 'DELETE FROM t_like WHERE u_id = ? AND t_id = ?';
-    var sql4 = 'UPDATE tandya set t_like = t_like + 1 where id = ?';
-    var sql5 = 'INSERT INTO t_like (t_id, u_id) VALUES (?, ?)';
-    var sql6 = 'select t_like from tandya where id = ?';
-    var sql7 = 'UPDATE tandya SET score = (answer *.3 + t_like*.7)/t_view * 100 where id = ?';
-    conn.conn.query(sql, [req.session.u_id, t_id], function(err, statusCheck, fields){
-        if(clickValue == 'Batal Suka'){
-            conn.conn.query(sql2, t_id, function(err, update, fields){
-                conn.conn.query(sql3, [req.session.u_id, t_id], function(err, deleting, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql6, t_id, function(err, ajaxresult, fields){
-                            res.json({"t_like" : ajaxresult[0].t_like, "button" : "Suka"});
-                        });
-                    }
-                });    
-            });
-        }
-        else{
-            conn.conn.query(sql4, t_id, function(err, update, fields){
-                conn.conn.query(sql5, [t_id, req.session.u_id], function(err, inserting, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql6, t_id, function(err, ajaxresult, fields){
-                            res.json({"t_like" : ajaxresult[0].t_like, "button" : "Batal Suka"});
-                        });
-                    }
-                });    
-            });
-        }
+route.delete('/comment/:id',  function(req, res){
+    youtublogService.deleteComment(
+        req.body.deleteId,
+        req.session.id2
+    ).then(result => {
+        if(result) res.json({"result": "deleted"});
+        else res.redirect('/youtublog/' + req.body.youtublogId);
     });
-    conn.conn.query(sql7, t_id, function(err, score, fields){
-        if(err){console.log(err);}
-    });
-};
-exports.likesAnswer = function(req, res){
-    var clickValue = req.body.clickedValue;
-    var t_id = req.body.t_id;
-    var ta_id = req.body.ta_id;
-    var sql = 'SELECT * FROM ta_like WHERE u_id = ? AND ta_id = ?';
-    var sql2 = 'UPDATE t_ans set ta_like = ta_like - 1 where id = ?';
-    var sql3 = 'DELETE FROM ta_like WHERE u_id = ? AND ta_id = ? AND t_id';
-    var sql4 = 'UPDATE t_ans set ta_like = ta_like + 1 where id = ?';
-    var sql5 = 'INSERT INTO ta_like (ta_id, u_id, t_id) VALUES (?, ?, ?)';
-    var sql6 = 'select ta_like from t_ans where id = ?';
-    var sql7 = 'UPDATE tandya SET score = com*.3 + ta_like*.7 where id = ?';
-    conn.conn.query(sql, [req.session.u_id, ta_id], function(err, statusCheck, fields){
-        if(clickValue == 'Batal Suka'){
-            conn.conn.query(sql2, ta_id, function(err, update, fields){
-                conn.conn.query(sql3, [req.session.u_id, ta_id, t_id], function(err, deleting, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql6, ta_id, function(err, ajaxresult, fields){
-                            res.json({"ta_like" : ajaxresult[0].ta_like, "button" : "Suka"});
-                        });
-                    }
-                });    
-            });
-        }
-        else{
-            conn.conn.query(sql4, ta_id, function(err, update, fields){
-                conn.conn.query(sql5, [ta_id, req.session.u_id, t_id], function(err, inserting, fields){
-                    if(err){console.log(err);}
-                    else{
-                        conn.conn.query(sql6, ta_id, function(err, ajaxresult, fields){
-                            res.json({"ta_like" : ajaxresult[0].ta_like, "button" : "Batal Suka"});
-                        });
-                    }
-                });    
-            });
-        }
-    });
-    conn.conn.query(sql7, t_id, function(err, score, fields){
-        if(err){console.log(err);}
-    });
-};
+});
 
-exports.warningTandya = function(req, res){
-    var t_id = parseInt(req.body.warnedT);
-    var ta_id = parseInt(req.body.warnedA);
-    var tac_id = parseInt(req.body.warnedC);
-    var sql = '';
-    var checking_sql = 'select u_id, t_id, ta_id, tac_id from warning where u_id = ? AND t_id = ? AND ta_id = ? AND tac_id = ?';
-    conn.conn.query(checking_sql, [req.session.u_id, t_id, ta_id, tac_id], function(err, checking, fields){
-        if(err){console.log(err);}
-        else{
-            if(checking.length){
-                res.json({"result":"alreadywarned"});
-            }
-            else{
-                switch(req.body.warnedItem){
-                    case "tan":
-                        sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES (?, ?, 0, 0)';
-                        break;
-                    case "ans":
-                        sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES(?, ?, ?, 0)';
-                        break;
-                    case "tac":
-                        sql = 'INSERT INTO warning (u_id, t_id, ta_id, tac_id) VALUES(?, ?, ?, ?)';
-                }
-                conn.conn.query(sql, [req.session.u_id, t_id, ta_id, tac_id], function(err, warned, fields){
-                    if(err){console.log(err);}
-                    else{
-                        res.json({"result":"warned"});
-                    }
-                });
-                
-            }
-        }
+route.delete('/ccomment/:id', function(req, res){
+    youtublogService.deleteCComment(
+        req.body.deleteId,
+        req.session.id2
+    ).then(result => {
+        if(result) res.json({"result": "deleted"});
+        else res.redirect('/youtublog/' + req.body.youtublogId);
     });
-};
+});
 
-exports.getEditTandya = function(req, res){
-    var t_id = req.params.tandya_no;
-    var sql = 'select * from tandya where id = ?';
-    var sql2 = 'select * from hashtag where t_id = ? AND u_id = ?';
-    conn.conn.query(sql, t_id, function(err, edit, fields){
-        if(err){console.log(err);}
-        else{
-            conn.conn.query(sql2, [t_id, req.session.u_id], function(err, hashtags, fields){
-                if(err){console.log(err);}
-                else{
-                    if(req.session.u_id == edit[0].author){
-                        if(hashtags.length>=1){
-                            res.render('t-edit', {u_id:'y', edit_content:edit[0], hashtags:hashtags[0]});
-                        }
-                        else{
-                            res.render('t-edit', {u_id:'y', edit_content:edit[0]});
-                        }
-                    }
-                    else{
-                        res.send('hi');
-                    }
-                }
-            });
-        }
-    });
-};
+route.all('*', function(req, res){
+    res.redirect('/youtublog');
+});
 
-exports.postEditTandya = function(req, res){
-    var question = req.body.question;
-    var content = req.body.content;
-    var rawhashtags = req.body.hashtag;
-    var public = req.body.public;
-    var hashtagCount = 0;
-    var t_id = req.params.tandya_no;
-    while(rawhashtags.indexOf(' ')>=0){
-        rawhashtags = rawhashtags.replace(' ', "");
-    }
-    var hashtags = rawhashtags.split('#');
-    hashtags.splice(0,1);
-    hashtagCount = hashtags.length;
-    var perfecthashtag = function (array){
-        if(array.length > 7){
-            while(array.length > 7){
-                array.splice(7, 1);
-            }
-        }
-        else if(array.length < 7){
-            while(array.length < 7){
-                array.push(' ');
-            }  
-        }
-        return array;
-    };
-    var finalhastag = perfecthashtag(hashtags);
-    //for inserts
-    var sql = 'UPDATE tandya SET question = ?, content = ?, hashtagcount = ?, public = ? where id = ?';
-    var sql4 = 'UPDATE hashtag SET ht1 = ?,  ht2 = ?, ht3 = ?, ht4 = ?, ht5 = ?, ht6 = ?, ht7 = ? where t_id = ? AND u_id = ?';
-    //for updates
-    var sql2 = 'UPDATE tandya set changed_date = now() WHERE id = ?';
-    
-    //update connection
-    conn.conn.query(sql2, [t_id], function(err, update, fields){
-        if(err){console.log(err);}
-      });
-    //insert connection
-    conn.conn.query(sql, [question, content, hashtagCount, public, t_id], function(err, result, fields){
-        if(err){console.log(err);}
-        else{
-            conn.conn.query(sql4, [finalhastag[0], finalhastag[1], finalhastag[2], finalhastag[3], finalhastag[4], finalhastag[5], finalhastag[6], t_id, req.session.u_id], function(err, hashtag, fields){
-                if(err){console.log(err);}
-                else{
-                    res.redirect('/tandya/'+t_id);
-                }
-            }); 
-        }
-    });
-};
-
-exports.getEditTanswer = function(req, res){
-    var ta_id = req.params.tanswer_no;
-    var t_id = req.params.tandya_no;
-    var sql = 'select * from t_ans where id = ?';
-    var sql2 = 'select * from tandya where id = ?';
-    var sql3 = 'select * from hashtag where t_id = ?';
-    conn.conn.query(sql, ta_id, function(err, tanswer, fields){
-        if(err){console.log(err);}
-        else{
-            conn.conn.query(sql2, t_id, function(err, tandya, fields){
-                if(err){console.log(err);}
-                else{
-                    conn.conn.query(sql3, t_id, function(err, hashtag, fields){
-                        delete hashtag[0].id;
-                        delete hashtag[0].u_id;
-                        delete hashtag[0].p_id;
-                        delete hashtag[0].t_id;
-                        if(err){console.log(err);}
-                        else{
-                            if(req.session.u_id == tanswer[0].author){
-                                res.render('ta-edit', {u_id:'y', topic:tandya[0], edit_content:tanswer[0], hashtag:hashtag[0]});  
-                            }
-                            else{
-                                res.send('hi');
-                            } 
-                        }
-                        
-                    });
-                }
-            });
-        }
-    });
-};
-
-exports.postEditTanswer = function(req, res){
-    var content = req.body.answer;
-    var t_id = req.params.tandya_no;
-    var ta_id = req.params.tanswer_no;
-    var sql = 'UPDATE t_ans SET answer = ?, changed_date = now() where id = ? AND t_id = ?';
-    conn.conn.query(sql, [content, ta_id, t_id], function(err, updated, fields){
-        if(err){console.log(err);}
-        else{
-            res.redirect('/tandya/'+t_id);
-        }
-    });
-};
-
-
+module.exports = route;
