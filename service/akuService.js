@@ -1,14 +1,13 @@
-const parser = require('../db/parser.js');
 const userDao = require('../db/b-dao/userDao/userDao');
 const followDao = require('../db/b-dao/userDao/followDao');
 const tandyaService = require('./tandyaService');
 const penobrolService = require('./penobrolService');
 const key = require('../info/beritamus-admin-2ff0df5d17ca.json');
-const nodemailer = require('nodemailer');
+const nodeMailer = require('nodeMailer');
 let config = require('../config.json');
 const jsForBack = require('../back/jsForBack.js');
 
-const transporter = nodemailer.createTransport({
+const transporter = nodeMailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,
@@ -117,7 +116,7 @@ exports.postUser = async function(u_id, u_pw, birthday, u_sex,  u_email, code){
 exports.getUserBasicInfo = async function(id2){
     const result = await userDao.userInfoById(id2);
     return result[0];
-}
+};
 
 exports.findUserInfo = async function(u_id, birthday, u_sex,  u_email){
     let check = await userDao.userBasicInfoByEmail(u_email);
@@ -163,7 +162,7 @@ exports.findUserInfo = async function(u_id, birthday, u_sex,  u_email){
 exports.updateUserInfo = async function(pw, id2){
     const result = await userDao.updateUserInfo(pw, id2);
     return result[0];
-}
+};
 
 /* ===== local functions ===== */
 // user의 정보에 총 like 개수를 넣어주는 함수
@@ -181,7 +180,7 @@ async function getUserLikes(id2) {
         "answer" : tanswerLikes
     };
     return totalLikes;
-};
+}
 
 function deliverMail(options){
     transporter.sendMail(options, (error, info) => {

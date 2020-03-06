@@ -1,5 +1,12 @@
 const parser = require('../db/parser.js');
 const tandyaDao = require('../db/b-dao/tanDao/tandyaDao');
+const tacDao = require('../db/b-dao/tanDao/tacDao');
+const taDao = require('../db/b-dao/tanDao/taDao');
+const talikeDao = require('../db/b-dao/tanDao/talikeDao');
+const thashDao = require('../db/b-dao/tanDao/thashDao');
+const twarnDao = require('../db/b-dao/tanDao/twarnDao');
+const tlikeDao = require('../db/b-dao/tanDao/tlikeDao');
+
 
 /* ===== exports ===== */
 
@@ -14,7 +21,7 @@ exports.searchTandya = async function(string) {
 exports.searchTandyaByHash = async function(array) {
     let thResults = [];
     for(var h of array){
-        thResults = ((await tandyaDao.tandyaSearchByHash('%'+h+'%')).reduce((acc, cur) => acc.concat(cur), [])).map(parser.parseFrontTandya);
+        thResults = ((await thashDao.tandyaSearchByHash('%'+h+'%')).reduce((acc, cur) => acc.concat(cur), [])).map(parser.parseFrontTandya);
     }
     return await applyAsyncToAll(thResults, getFullTandya);
 };
@@ -66,9 +73,9 @@ exports.getFullTandyaById = async function(id) {
     const tandya = parser.parseTandya(tandyaResult);
 
     const [answersResult, likesResult, hashtagsResult] = await Promise.all([
-        tandyaDao.tandyaAnsByScore(id),
-        tandyaDao.tandyaLikeById(id),
-        tandyaDao.tandyaHashtagById(id)
+        taDao.tandyaAnsByScore(id),
+        tlikeDao.tandyaLikeById(id),
+        thashDao.tandyaHashtagById(id)
     ]);
 
     tandya.answers = answersResult.map(parser.parseAnswer);
@@ -95,56 +102,56 @@ exports.postTandya = async function(author, question, content, publicCode, thumb
 };
 
 exports.postAnswer = async function(t_id, author, answer) {
-    const ans = await tandyaDao.insertTandyaAns(author, answer, t_id);
+    const ans = await taDao.insertTandyaAns(author, answer, t_id);
     await tandyaDao.updateTandyaScore(t_id);
     return ans.insertId;
 };
 
 exports.postAnswerCom = async function(ta_id, author, content) {
     // 결과에 상관 없는 처리이므로 굳이 기다리지 않아도 됨
-    tandyaDao.updateTandyaAnsScore(ta_id);
+    taDao.updateTandyaAnsScore(ta_id);
 
     const postCom = await tandyaDao.insertTandyaAnsCom(author, content, ta_id);
     // 삽입 시간을 db 기준으로 하지 않고 서버 시간을 기준으로 하면 모든 정보를 알고 있기 때문에 추가 쿼리를 할 필요 없음
     // 즉, 아래의 await tandyaAnsComById(postCom.insertId) 은 db 시간을 기준으로 하기 때문에 생기는
     // 완전히 불필요한 문장
-    return (await tandyaDao.tandyaAnsComById(postCom.insertId))[0];
+    return (await tacDao.tandyaAnsComById(postCom.insertId))[0];
 };
 
 exports.likeTandya = async function(t_id, user, val) {
-    if(val) await tandyaDao.deleteTandyaLike(t_id, user);
-    else await tandyaDao.insertTandyaLike(t_id, user);
+    if(val) await tlikeDao.deleteTandyaLike(t_id, user);
+    else await tlikeDao.insertTandyaLike(t_id, user);
     await tandyaDao.updateTandyaScore(t_id);
     return Number(!val);
 };
 
 exports.tandyaLikeCount = async function(t_id) {
-    return (await tandyaDao.tandyaLikeCount(t_id))[0].tlikeCount;
+    return (await tlikeDao.tandyaLikeCount(t_id))[0].tlikeCount;
 };
 
 exports.likeTandyaAnswer = async function(ta_id, user, val) {
-    if(val) await tandyaDao.deleteTandyaAnsLike(ta_id, user);
-    else await tandyaDao.insertTandyaAnsLike(ta_id, user);
-    await tandyaDao.updateTandyaAnsScore(ta_id);
+    if(val) await talikeDao.deleteTandyaAnsLike(ta_id, user);
+    else await talikeDao.insertTandyaAnsLike(ta_id, user);
+    await taDao.updateTandyaAnsScore(ta_id);
     return Number(!val);
 };
 
 exports.tandyaAnsLikeCount = async function(ta_id) {
-    return (await tandyaDao.tandyaAnsLikeCount(ta_id))[0].taLikeCount;
+    return (await talikeDao.tandyaAnsLikeCount(ta_id))[0].taLikeCount;
 };
 
 exports.tandyaLikeCountByAuthor = async function(id2) {
-    return (await tandyaDao.tandyaLikeCountByAuthor(id2))[0].total;
+    return (await tlikeDao.tandyaLikeCountByAuthor(id2))[0].total;
 };
 
 exports.tandyaAnsLikeCountByAuthor = async function(id2) {
-    return (await tandyaDao.tandyaAnsLikeCountByAuthor(id2))[0].total;
+    return (await talikeDao.tandyaAnsLikeCountByAuthor(id2))[0].total;
 };
 
 const fs = {
-    t: [tandyaDao.tandyaWarnById, tandyaDao.insertTandyaWarn],
-    ta: [tandyaDao.tandyaAnsWarnById, tandyaDao.insertTandyaAnsWarn],
-    tac: [tandyaDao.tandyaAnsComWarnById, tandyaDao.insertTandyaAnsComWarn]
+    t: [twarnDao.tandyaWarnById, twarnDao.insertTandyaWarn],
+    ta: [twarnDao.tandyaAnsWarnById, twarnDao.insertTandyaAnsWarn],
+    tac: [twarnDao.tandyaAnsComWarnById, twarnDao.insertTandyaAnsComWarn]
 };
 exports.warnTandya = async function(warnedItem, warnedId, user) {
     const checking = await fs[warnedItem][0](user, warnedId);
@@ -156,20 +163,20 @@ exports.warnTandya = async function(warnedItem, warnedId, user) {
 exports.editTandya = async function(t_id, question, content, publicCode, thumbnail, hashtags) {
     tandyaDao.updateTandyaDate(t_id);
     tandyaDao.updateTandya(question, content, publicCode, thumbnail, t_id);
-    await tandyaDao.deleteTandyaHash(t_id);
+    await thashDao.deleteTandyaHash(t_id);
     if(hashtags != null && hashtags.length > 0)
         await insertHashtags(t_id, hashtags);
     return t_id;
 };
 
 exports.getAnswerById = async function(ta_id) {
-    const answerResult = (await tandyaDao.tandyaAnsById(ta_id))[0];
+    const answerResult = (await taDao.tandyaAnsById(ta_id))[0];
     if(answerResult == null) return null;
     return parser.parseAnswer(answerResult);
 };
 
 exports.editAnswer = async function(ta_id, content, t_id) {
-    await tandyaDao.updateTandyaAns(content, ta_id, t_id);
+    await taDao.updateTandyaAns(content, ta_id, t_id);
     return ta_id;
 };
 
@@ -178,11 +185,11 @@ exports.deleteTandya = async function(t_id, u_id) {
 };
 
 exports.deleteAnswer = async function(ta_id, u_id) {
-    return await deleteProcess(ta_id, u_id, tandyaDao.tandyaAnsById, tandyaDao.deleteTandyaAns);
+    return await deleteProcess(ta_id, u_id, taDao.tandyaAnsById, taDao.deleteTandyaAns);
 };
 
 exports.deleteAComment = async function(tac_id, u_id) {
-    return await deleteProcess(tac_id, u_id, tandyaDao.tandyaAnsComById, tandyaDao.deleteTandyaAnsCom);
+    return await deleteProcess(tac_id, u_id, tacDao.tandyaAnsComById, tacDao.deleteTandyaAnsCom);
 };
 
 /* ===== local functions ===== */
@@ -191,9 +198,9 @@ exports.deleteAComment = async function(tac_id, u_id) {
 async function getFullTandya(tandya) {
     // hashtag 를 가져오는 작업과 answer 개수를 가져오는 작업을 병렬로 처리
     const [hashtagResult, ansCountResult, tandyaLikeCount] = await Promise.all([
-        tandyaDao.tandyaHashtagById(tandya.id),
-        tandyaDao.tandyaAnsCountById(tandya.id),
-        tandyaDao.tandyaLikeCount(tandya.id)
+        thashDao.tandyaHashtagById(tandya.id),
+        taDao.tandyaAnsCountById(tandya.id),
+        tlikeDao.tandyaLikeCount(tandya.id)
     ]);
 
     tandya.hashtags = hashtagResult.map(parser.parseHashtagT);
@@ -204,8 +211,8 @@ async function getFullTandya(tandya) {
 
 async function getFullAnswer(answer) {
     const [commentsResult, likesResult] = await Promise.all([
-        tandyaDao.tandyaAnsComByTaId(answer.id),
-        tandyaDao.tandyaAnsLikeById(answer.id)
+        tacDao.tandyaAnsComByTaId(answer.id),
+        talikeDao.tandyaAnsLikeById(answer.id)
     ]);
 
     answer.comments = commentsResult.map(parser.parseAComment);
@@ -214,7 +221,7 @@ async function getFullAnswer(answer) {
 }
 
 function insertHashtags(t_id, hashtags) {
-    const insertHashtag = (hashtag) => tandyaDao.insertTandyaHash(t_id, hashtag);
+    const insertHashtag = (hashtag) => thashDao.insertTandyaHash(t_id, hashtag);
     return applyAsyncToAll(hashtags, insertHashtag);
 }
 
