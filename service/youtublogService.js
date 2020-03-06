@@ -1,10 +1,11 @@
 const parser = require('../db/parser.js');
-const pccDao = require('../db/b-dao/penDao/pccDao');
-const pcDao = require('../db/b-dao/penDao/pccDao');
-const pclikeDao = require('../db/b-dao/penDao/pccDao');
-const phashDao = require('../db/b-dao/penDao/pccDao');
-const pwarnDao = require('../db/b-dao/penDao/pccDao');
+const yccDao = require('../db/b-dao/youDao/yccDao');
+const ycDao = require('../db/b-dao/youDao/ycDao');
+const yclikeDao = require('../db/b-dao/youDao/yclikeDao');
+const yhashDao = require('../db/b-dao/youDao/yhashDao');
+const ywarnDao = require('../db/b-dao/youDao/ywarnDao');
 const youtublogDao = require('../db/b-dao/youDao/youtublogDao');
+const ylikeDao = require('../db/b-dao/youDao/ylikeDao');
 
 /* ===== exports ===== */
 
@@ -19,7 +20,7 @@ exports.searchYoutublog = async function(string) {
 exports.searchYoutublogByHash = async function(array) {
     let yhResults = [];
     for(let h of array){
-        yhResults = ((await youtublogDao.youtublogSearchByHash('%'+h+'%')).reduce((acc, cur) => acc.concat(cur), [])).map(parser.parseFrontYoutublog);
+        yhResults = ((await yhashDao.youtublogSearchByHash('%'+h+'%')).reduce((acc, cur) => acc.concat(cur), [])).map(parser.parseFrontYoutublog);
     }
     return await applyAsyncToAll(yhResults, getFullYoutublog);
 };
@@ -71,9 +72,9 @@ exports.getFullYoutublogById = async function(id) {
     const youtublog = parser.parseYoutublog(youtublogResult);
 
     const [commentsResult, likesResult, hashtagsResult] = await Promise.all([
-        youtublogDao.youtublogComByScore(id),
-        youtublogDao.youtublogLikeById(id),
-        youtublogDao.youtublogHashtagById(id)
+        ycDao.youtublogComByScore(id),
+        ylikeDao.youtublogLikeById(id),
+        yhashDao.youtublogHashtagById(id)
     ]);
 
     youtublog.comments = commentsResult.map(parser.parseComment);
@@ -100,53 +101,53 @@ exports.postYoutublog = async function(author, title, content, publicCode, thumb
 };
 
 exports.postComment = async function(y_id, author, comment) {
-    const com = await youtublogDao.insertYoutublogCom(author, comment, y_id);
+    const com = await ycDao.insertYoutublogCom(author, comment, y_id);
     await youtublogDao.updateYoutublogScore(y_id);
     return com.insertId;
 };
 
 exports.postCommentCom = async function(yc_id, author, content) {
     // 결과에 상관 없는 처리이므로 굳이 기다리지 않아도 됨
-    youtublogDao.updateYoutublogComScore(yc_id);
+    ycDao.updateYoutublogComScore(yc_id);
 
-    const postCom = await youtublogDao.insertYoutublogComCom(author, content, yc_id);
-    return (await youtublogDao.youtublogComComById(postCom.insertId))[0];
+    const postCom = await yccDao.insertYoutublogComCom(author, content, yc_id);
+    return (await yccDao.youtublogComComById(postCom.insertId))[0];
 };
 
 exports.likeYoutublog = async function(y_id, user, val) {
-    if(val) await youtublogDao.deleteYoutublogLike(y_id, user);
-    else await youtublogDao.insertYoutublogLike(y_id, user);
+    if(val) await ylikeDao.deleteYoutublogLike(y_id, user);
+    else await ylikeDao.insertYoutublogLike(y_id, user);
     await youtublogDao.updateYoutublogScore(y_id);
     return Number(!val);
 };
 
 exports.youtublogLikeCount = async function(y_id) {
-    return (await youtublogDao.youtublogLikeCount(y_id))[0].ylikeCount;
+    return (await ylikeDao.youtublogLikeCount(y_id))[0].ylikeCount;
 };
 
 exports.likeYoutublogComment = async function(yc_id, user, val) {
-    if(val) await youtublogDao.deleteYoutublogComLike(yc_id, user);
-    else await youtublogDao.insertYoutublogComLike(yc_id, user);
-    await youtublogDao.updateYoutublogComScore(yc_id);
+    if(val) await yclikeDao.deleteYoutublogComLike(yc_id, user);
+    else await yclikeDao.insertYoutublogComLike(yc_id, user);
+    await ycDao.updateYoutublogComScore(yc_id);
     return Number(!val);
 };
 
 exports.youtublogComLikeCount = async function(yc_id) {
-    return (await youtublogDao.youtublogComLikeCount(yc_id))[0].ycLikeCount;
+    return (await yclikeDao.youtublogComLikeCount(yc_id))[0].ycLikeCount;
 };
 
 exports.youtublogLikeCountByAuthor = async function(id2) {
-    return (await youtublogDao.youtublogLikeCountByAuthor(id2))[0].total;
+    return (await ylikeDao.youtublogLikeCountByAuthor(id2))[0].total;
 };
 
 exports.youtublogComLikeCountByAuthor = async function(id2) {
-    return (await youtublogDao.youtublogComLikeCountByAuthor(id2))[0].total;
+    return (await yclikeDao.youtublogComLikeCountByAuthor(id2))[0].total;
 };
 
 const fs = {
-    y: [youtublogDao.youtublogWarnById, youtublogDao.insertYoutublogWarn],
-    yc: [youtublogDao.youtublogComWarnById, youtublogDao.insertYoutublogComWarn],
-    ycc: [youtublogDao.youtublogComComWarnById, youtublogDao.insertYoutublogComComWarn]
+    y: [ywarnDao.youtublogWarnById, ywarnDao.insertYoutublogWarn],
+    yc: [ywarnDao.youtublogComWarnById, ywarnDao.insertYoutublogComWarn],
+    ycc: [ywarnDao.youtublogComComWarnById, ywarnDao.insertYoutublogComComWarn]
 };
 exports.warnYoutublog = async function(warnedItem, warnedId, user) {
     const checking = await fs[warnedItem][0](user, warnedId);
@@ -158,20 +159,20 @@ exports.warnYoutublog = async function(warnedItem, warnedId, user) {
 exports.editYoutublog = async function(y_id, title, content, publicCode, thumbnail, hashtags) {
     youtublogDao.updateYoutublogDate(y_id);
     youtublogDao.updateYoutublog(title, content, publicCode, thumbnail, y_id);
-    await youtublogDao.deleteYoutublogHash(y_id);
+    await yhashDao.deleteYoutublogHash(y_id);
     if(hashtags != null && hashtags.length > 0)
         await insertHashtags(y_id, hashtags);
     return y_id;
 };
 
 exports.getCommentById = async function(yc_id) {
-    const commentResult = (await youtublogDao.youtublogComById(yc_id))[0];
+    const commentResult = (await ycDao.youtublogComById(yc_id))[0];
     if(commentResult == null) return null;
     return parser.parseComment(commentResult);
 };
 
 exports.editComment = async function(yc_id, content, y_id) {
-    await youtublogDao.updateYoutublogCom(content, yc_id, y_id);
+    await ycDao.updateYoutublogCom(content, yc_id, y_id);
     return yc_id;
 };
 
@@ -180,11 +181,11 @@ exports.deleteYoutublog = async function(y_id, u_id) {
 };
 
 exports.deleteComment = async function(yc_id, u_id) {
-    return await deleteProcess(yc_id, u_id, youtublogDao.youtublogComById, youtublogDao.deleteYoutublogCom);
+    return await deleteProcess(yc_id, u_id, ycDao.youtublogComById, ycDao.deleteYoutublogCom);
 };
 
 exports.deleteCComment = async function(ycc_id, u_id) {
-    return await deleteProcess(ycc_id, u_id, youtublogDao.youtublogComComById, youtublogDao.deleteYoutublogComCom);
+    return await deleteProcess(ycc_id, u_id, yccDao.youtublogComComById, yccDao.deleteYoutublogComCom);
 };
 
 /* ===== local functions ===== */
@@ -193,9 +194,9 @@ exports.deleteCComment = async function(ycc_id, u_id) {
 async function getFullYoutublog(youtublog) {
     // hashtag 를 가져오는 작업과 comment 개수를 가져오는 작업을 병렬로 처리
     const [hashtagResult, comCountResult, youtublogLikeCount] = await Promise.all([
-        youtublogDao.youtublogHashtagById(youtublog.id),
-        youtublogDao.youtublogComCountById(youtublog.id),
-        youtublogDao.youtublogLikeCount(youtublog.id)
+        yhashDao.youtublogHashtagById(youtublog.id),
+        ycDao.youtublogComCountById(youtublog.id),
+        ylikeDao.youtublogLikeCount(youtublog.id)
 
     ]);
     youtublog.hashtags = hashtagResult.map(parser.parseHashtagY);
@@ -206,8 +207,8 @@ async function getFullYoutublog(youtublog) {
 
 async function getFullComments(comment) {
     const [commentsResult, likesResult] = await Promise.all([
-        youtublogDao.youtublogComComByYcId(comment.id),
-        youtublogDao.youtublogComLikeById(comment.id)
+        yccDao.youtublogComComByYcId(comment.id),
+        yclikeDao.youtublogComLikeById(comment.id)
     ]);
 
     comment.comments = commentsResult.map(parser.parseCComment);
@@ -216,7 +217,7 @@ async function getFullComments(comment) {
 }
 
 function insertHashtags(y_id, hashtags) {
-    const insertHashtag = (hashtag) => youtublogDao.insertYoutublogHash(y_id, hashtag);
+    const insertHashtag = (hashtag) => yhashDao.insertYoutublogHash(y_id, hashtag);
     return applyAsyncToAll(hashtags, insertHashtag);
 }
 
