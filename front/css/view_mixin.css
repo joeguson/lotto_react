@@ -60,12 +60,12 @@
   width: 100%;
   min-height: 300px;
 }
-.ptlikeButton {
+.articleLikeButton {
   width: 10%;
   background: none;
   border: none;
 }
-.ptlikeImage {
+.articleLikeImage {
   width: 100%;
   background: none;
   border: none;

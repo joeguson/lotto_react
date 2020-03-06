@@ -1,5 +1,5 @@
 //url - '/aku'
-let userDao = require('../db/b-dao/userDao');
+let userDao = require('../db/b-dao/userDao/userDao');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const route = require('express').Router();
 const jsForBack = require('./jsForBack.js');
@@ -75,7 +75,6 @@ route.post('/login', function(req, res){
     // let ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
     let ipAddress = '112.157.39.243';
     let geo = geoip.lookup(ipAddress);
-    console.log(geo);
     let countryCode = 0;
     if(geo.country === 'KR') countryCode = 82;
     else if(geo.country === 'ID') countryCode = 62;

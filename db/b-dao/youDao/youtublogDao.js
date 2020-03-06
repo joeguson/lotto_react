@@ -1,7 +1,7 @@
 const mysql = require('mysql');
-const b = require('../../b.js');
+const b = require('../../../b.js');
 const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../dbconnection');
+const dbcon = require('../../dbconnection');
 
 //arg가 없을때에는?
 function doQuery(query, args) {
@@ -103,7 +103,7 @@ exports.deleteYoutublog = (id) => doQuery(
     id
 );
 
-////////////////////////////////youtublog Answer////////////////////////////////
+////////////////////////////////youtublog Comment////////////////////////////////
 ////////////////Select////////////////
 exports.youtublogComByScore = (id) => doQuery(
     `SELECT y.*, u.u_id
@@ -122,7 +122,7 @@ exports.youtublogComById = (id) => doQuery(
 exports.youtublogComCountById = (id) => doQuery(
     `select count(y_id)
     as count
-    from y_ans
+    from y_com
     where y_id = ?`,
     id
 );
@@ -145,7 +145,7 @@ exports.updateYoutublogComScore = (yc_id) => doQuery(
 );
 ////////////////Insert////////////////
 exports.insertYoutublogCom = (author, comment, y_id) => doQuery(
-    `INSERT INTO t_ans (author, content, y_id)
+    `INSERT INTO y_com (author, content, y_id)
     VALUES (?, ?, ?)`,
     [author, comment, y_id]
 );

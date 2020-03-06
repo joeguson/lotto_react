@@ -4,7 +4,7 @@ const pcDao = require('../db/b-dao/penDao/pccDao');
 const pclikeDao = require('../db/b-dao/penDao/pccDao');
 const phashDao = require('../db/b-dao/penDao/pccDao');
 const pwarnDao = require('../db/b-dao/penDao/pccDao');
-const youtublogDao = require('../db/b-dao/youtublogDao');
+const youtublogDao = require('../db/b-dao/youDao/youtublogDao');
 
 /* ===== exports ===== */
 

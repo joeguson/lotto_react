@@ -1,7 +1,7 @@
 const mysql = require('mysql');
-const b = require('../../b.js');
+const b = require('../../../b.js');
 const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../dbconnection');
+const dbcon = require('../../dbconnection');
 
 function doQuery(query, args) {
   return dbcon.doQuery(pool, query, args);

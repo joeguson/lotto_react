@@ -12,7 +12,7 @@ route.post('/', function (req, res) {
         req.body.content,
         req.body.public,
         req.body.thumbnail,
-        jsForBack.finalHashycgMaker(req.body.hashycg)
+        jsForBack.finalHashtagMaker(req.body.hashtag)
     ).then(id => res.send({"id": id}));
 });
 
@@ -23,7 +23,7 @@ route.put('/:youtublog_no', function (req, res) {
         req.body.content,
         req.body.public,
         req.body.thumbnail,
-        jsForBack.finalHashycgMaker(req.body.hashycg)
+        jsForBack.finalHashtagMaker(req.body.hashtag)
     ).then(y_id => res.json({ "id": y_id }));
 });
 

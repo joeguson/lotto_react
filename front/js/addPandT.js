@@ -8,12 +8,13 @@ if(add){
         const hashtag = document.getElementById('hashtag').value;
         const thumbnail = document.getElementById('thumbnail').value;
         const req = {
+            type: type,
             thumbnail: thumbnail,
             public: public,
             content: content,
             hashtag: hashtag
         };
-        //tandya일 경우 question을, penobrol일 경우 title을 가져옴
+        //tandya일 경우 question을, penobrol과 youtublog일 경우 title을 가져옴
         if(type == 't') req.question = document.getElementById('question').value;
         else req.title = document.getElementById('title').value;
 
@@ -26,7 +27,7 @@ if(add){
             var done = 0;
             for(var id in parsed.imgs) {
                 uploadImage(id, parsed.imgs[id], (id, filename) => {
-                    console.log(type);
+                    console.log(req);
                     content = replace(content, id, filename);
                     req.content = content;
                     done++;
@@ -109,12 +110,10 @@ function replace(content, id, filename, index = 0) {
 }
 
 function finalPost(body) {
-    let type = '';
     let postUrl = '';
-    if(body.question) type = 't';
-    else type = 'p';
-    if(type ==='p') postUrl = 'api/penobrol';
-    else postUrl = 'api/tandya';
+    if(body.type ==='p') postUrl = 'api/penobrol';
+    else if(body.type === 't') postUrl = 'api/tandya';
+    else postUrl = 'api/youtublog';
     let xhr = new XMLHttpRequest();
     xhr.open('POST', postUrl, true);
     xhr.setRequestHeader('Content-type', "application/json");
@@ -122,7 +121,8 @@ function finalPost(body) {
     xhr.send(JSON.stringify(body));
     xhr.onload = () => {
         let id = JSON.parse(xhr.responseText).id;
-        if(type === 'p') window.location.href = location.origin + "/penobrol/" + id.toString();
-        else window.location.href = location.origin + "/tandya/" + id.toString();
+        if(body.type === 'p') window.location.href = location.origin + "/penobrol/" + id.toString();
+        else if(body.type === 't') window.location.href = location.origin + "/tandya/" + id.toString();
+        else window.location.href = location.origin + "/youtublog/" + id.toString();
     };
 }

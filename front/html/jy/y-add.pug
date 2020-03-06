@@ -16,7 +16,7 @@ block css
 
 block nav
     include ../nav_mixIn
-    +navi('p')
+    +navi('y')
 
 block submain
   //.ad Advertisement
@@ -42,7 +42,7 @@ block main
         p.infoP
             span(id='hashInfo' class='infoSpan') 20/20
         p
-            button(class="submit" name='p' onclick='postArticle(this)') share
+            button(class="submit" name='y' onclick='postArticle(this)') share
     script.
         function checksubmit(){
             if(title.value.length < 5){

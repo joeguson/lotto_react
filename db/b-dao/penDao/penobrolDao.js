@@ -1,7 +1,7 @@
 const mysql = require('mysql');
-const b = require('../../b');
+const b = require('../../../b');
 const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../dbconnection');
+const dbcon = require('../../dbconnection');
 
 //query가 없을때에는?
 function doQuery(query, args) {

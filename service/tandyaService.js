@@ -1,5 +1,5 @@
 const parser = require('../db/parser.js');
-const tandyaDao = require('../db/b-dao/tandyaDao');
+const tandyaDao = require('../db/b-dao/tanDao/tandyaDao');
 
 /* ===== exports ===== */
 
