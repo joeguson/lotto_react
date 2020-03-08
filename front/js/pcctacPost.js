@@ -18,7 +18,8 @@ function pcacSendAjax(target){
             const xhr = new XMLHttpRequest();
             let postUrl = '';
             if(type === 'penobrol') postUrl = '/api/penobrol/ccomment/'+ptid+'/'+pctaId;
-            else postUrl = '/api/tandya/acomment/'+ptid+'/'+pctaId;
+            else if(type ==='tandya') postUrl = '/api/tandya/acomment/'+ptid+'/'+pctaId;
+            else postUrl = 'api/youtublog/ccomment/'+ptid+'/'+pctaId;
             xhr.open('POST', postUrl);
             xhr.setRequestHeader('Content-type', "application/json");
             xhr.send(original);

@@ -1,33 +1,12 @@
 extends ../view_layout
 include ../view_mixIn
 
-block css
-    link(rel="stylesheet" href="../css/penobrol_view.css" type="text/css")
-
-block nav
-    include ../nav_mixIn
-    +navi('p')
-
 block submain
     //.ad Advertisement
 
-block article
-    dl.aTtileDl
-        dt.aTtileDt #{topic.title}
-            if u_id
-                +articlePop(topic.identifier, id2, topic.author)
-        +hashtag(topic.hashtags)
-        +basicPInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
-        .articleContent
-            +articleContent(topic.content)
-            .articleLike
-                .ptlike(id="plike")= topic.likes.length
-                if u_id
-                    +likeButton(topic.identifier,topic.likes, id2)
-
-block commentOrAnswer
-    if u_id
-        +commentOrAnswer(topic.identifier)
+block articleInfo
+    dt.aTtileDt #{topic.title}
+    +basicPInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
 
 block ulComAndAns
     if topic.comments.length > 0

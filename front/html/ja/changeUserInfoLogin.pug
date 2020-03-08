@@ -10,11 +10,6 @@ block css
     link(rel='stylesheet', href='/css/aku.css' type="text/css")
     link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
 
-    
-block nav
-    include ../nav_mixIn
-    +navi('a')
-
 block main
     form(action='/aku/change' method='post')
         input(type='text' name='u_id' placeholder='  ID' id="input_id" required)

@@ -1,48 +1,38 @@
-doctype html
-html(lang="id")
-    head
-        title beritamus
-        // what appears on the tab
-        base(href="/")
-        link(rel='stylesheet' href="/css/common.css" type="text/css")
-        // links css common files
-        // links css file
-        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
-        link(href="https://fonts.googleapis.com/css?family=Fruktur&display=swap" rel="stylesheet")
-        meta(charset='UTF-8')
-        meta(name='viewport', content='width=device-width, initial-scale=1')
-        meta(name='apple-mobile-web-app-capable', content='yes')
-        link(rel="stylesheet" href="../css/view_layout.css" type="text/css")
-        link(rel='stylesheet', href='/css/view_mixIn.css' type="text/css")
-        block js
-        script(type="text/javascript" src="/js/jsForAllJade.js")
-        script(type="text/javascript" src="/js/likeArticle.js")
-        script(type="text/javascript" src="/js/warnArticle.js")
-        script(type="text/javascript" src="/js/deleteArticle.js")
-        script(type="text/javascript" src="/js/pcctacPost.js")
-        block css
-        // iphone에서 어플식으로 저장가능
-        // Lorem ipsum
-    body
-        .container
-            header
-                a(href='/cari') Beritamus  
-                span /b'ritɛmus/
-            nav
-                block nav
-            section.sub-main
-                block submain
-            section.main
-                .article
-                    block article
-                if(u_id)
-                    .commentOrAnswer
-                        block commentOrAnswer
-                .comAns
-                    ul(class='ulComAndAns')
-                        block ulComAndAns
-            section.footer
-                block footer
-                    p contact : admin@beritamus.com
-                    p www.beritamus.com
-            
+extends ./layout
+include ./view_mixIn
+
+block js
+    script(type="text/javascript" src="/js/jsForAllJade.js")
+    script(type="text/javascript" src="/js/likeArticle.js")
+    script(type="text/javascript" src="/js/warnArticle.js")
+    script(type="text/javascript" src="/js/deleteArticle.js")
+    script(type="text/javascript" src="/js/pcctacPost.js")
+
+block css
+    link(rel="stylesheet" href="../css/view_layout.css" type="text/css")
+    link(rel='stylesheet', href='/css/view_mixIn.css' type="text/css")
+
+block submain
+
+block main
+    .article
+        .articleInfo
+            dl.aTtileDl
+                block articleInfo
+                if u_id
+                    +articlePop(topic.identifier, id2, topic.author)
+                +hashtag(topic.hashtags)
+        .articleContent
+            +articleContent(topic.content)
+        .articleLike
+            .articleLikeNum(id="articleLikeNum")= topic.likes.length
+            if u_id
+                +likeButton(topic.identifier,topic.likes, id2)
+    if(u_id)
+        .commentOrAnswer
+            +commentOrAnswer(topic.identifier)
+    .comAns
+        ul.ulComAndAns
+            block ulComAndAns
+
+

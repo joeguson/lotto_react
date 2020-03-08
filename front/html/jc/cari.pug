@@ -1,23 +1,12 @@
-extends ../layout
+extends ../front_layout
 
-block js
+block frontJs
     script(type="text/javascript" src="/js/cari.js")
-    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
-    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
 
-block css
+block frontCss
     link(rel='stylesheet', href='/css/cari.css' type="text/css")
-    link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
-    link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
-
-    
-
-block nav
-    include ../nav_mixIn
-    +navi('c')
 
 block submain
-    //.ad Advertising
     .search
         form(action='/cari/search' method='get')
             input(type='text' name='search' placeholder='Cari Penobrol / Tandya')
@@ -33,5 +22,3 @@ block main
         if count == 0 && !u_id
             .cariLogin
                 a(href='/aku') Login Dulu
-
-block footer            

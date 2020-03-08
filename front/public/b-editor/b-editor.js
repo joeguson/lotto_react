@@ -10,6 +10,7 @@
         this.imageInput = null;
         this.youtubeIdDialog = null;
         this.youtubeDialog = null;
+        this.youtublog = null;
     }
 
     // returns content as html tags
@@ -27,21 +28,13 @@
     connectedCallback() {
         const width = this.getAttribute("width");
         const height = this.getAttribute("height");
+        //to determine whether this editor is for youtublog or not
+        this.youtublog = this.getAttribute("youtublog");
         this.build(width, height);
         this.start();
     }
 
     build(w, h) {
-        this.innerHTML = `
-<style>
-    button {
-        background-color: transparent;
-    }
-    .b-editor-hover-transition:hover{
-        background-color: #2043aa;
-        transition: all 0.3s linear 0s;
-    }
-</style>`;
         const ta = this.buildEditor(w, h);
         const controls = this.buildControls(w);
         this.appendChild(controls);
@@ -127,7 +120,7 @@
         this.addControlButton(controls, "Undo", "←");
         this.addControlButton(controls, "Redo", "→");
 
-        this.addControlButton(controls, "Youtube", "Y");
+        if(this.youtublog === '1') this.addControlButton(controls, "Youtube", "Y");
 
         return controls;
     }
@@ -155,9 +148,7 @@
         const btn = document.createElement("button");
         btn.title = title;
         btn.innerHTML = innerHTML;
-
         btn.className = "b-editor-hover-transition";
-
         btn.style.color = "white";
         btn.style.border = "none";
         btn.style.outline = "none";
@@ -185,8 +176,7 @@
             "newOL" + Math.round(Math.random() * 1000));
         this.controlButtons["Bulleted list"].onclick = this.cmd("InsertUnorderedList", false,
             "newUL" + Math.round(Math.random() * 1000));
-
-        this.controlButtons["Youtube"].onclick = () => { this.__onYoutubeClick(); };
+        if(this.youtublog === '1') this.controlButtons["Youtube"].onclick = () => { this.__onYoutubeClick(); };
 
         this.colorPicker.onchange = (e) => this.cmd("ForeColor", false, e.target.value)();
         this.fontPicker.onchange = (e) => this.cmd("FontName", false, e.target.value)();
@@ -225,7 +215,6 @@
                         ctx.drawImage(img, 0, 0, width, height);
                         var dataurl = canvas.toDataURL("image/png");
                         const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + dataurl +"'/>";
-                        console.log(typeof(imgHTML));
                         editor.execCommand("insertHTML", false, imgHTML);
                     }
                 };
@@ -234,8 +223,11 @@
             }
         };
 
-        this.controlButtons["Create link"].onclick = () =>
+        this.controlButtons["Create link"].onclick = () =>{
+            //modal로 다시 표현해서 meta tag 정보 가져오기
             this.cmd("CreateLink", false, prompt("Enter a URL", "www."))();
+        }
+
         this.controlButtons["Remove link"].onclick = this.cmd("UnLink");
         this.controlButtons["Insert image"].onclick = () => this.imageInput.click();
         this.controlButtons["Undo"].onclick = this.cmd("undo");
@@ -287,44 +279,5 @@
     }
 
 }
-function makeTimeJumper(timeTag){
-    let result = [];
-    let youtubeTimeList = timeTag.getElementsByTagName('b-youtube-time');
-    //getElementsByTagName returns htmlCollection which is not an array. Map function does not work for below
-    for(let i = 0; i<youtubeTimeList.length; i++){
-        let timeObj = {};
-        timeObj.h = youtubeTimeList[i].children[0].value;
-        timeObj.m = youtubeTimeList[i].children[1].value;
-        timeObj.s = youtubeTimeList[i].children[2].value;
-        timeObj.d = youtubeTimeList[i].children[3].value;
-        result.push(timeObj);
-    }
-    return result;
-}
-
-  function makeTimeTable(timeObj, youtubeId){
-    const table = document.createElement('table');
-    for(let i = 0; i<timeObj.length; i++){
-        let tempRow = document.createElement('tr');
-        let temp1 = document.createElement('td');
-        let temp2 = document.createElement('td');
-
-        let buttonTag = document.createElement('button');
-        let spanTag = document.createElement('span');
-
-        buttonTag.innerHTML = timeObj[i].h + timeObj[i].m + timeObj[i].s;
-        buttonTag.setAttribute('value', youtubeId);
-        buttonTag.setAttribute('onclick', 'changeStartTime(this);');
-
-        spanTag.innerHTML = timeObj[i].d;
-        temp1.appendChild(buttonTag);
-        temp2.appendChild(spanTag);
-
-        tempRow.append(temp1);
-        tempRow.append(temp2);
-        table.appendChild(tempRow);
-    }
-    return table.outerHTML;
-  }
 
 customElements.define('b-editor', BeritamusEditor);

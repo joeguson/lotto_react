@@ -1,8 +1,10 @@
 //////////////////////Variables//////////////////////
 let pLikeClick = true;
 let tLikeClick = true;
+let yLikeClick = true;
 let pcLikeClick = true;
 let taLikeClick = true;
+let ycLikeClick = true;
 
 //////////////////////Ajax//////////////////////
 function makeLikeRequest(url, data) {
@@ -33,7 +35,7 @@ function makeLikeRequest(url, data) {
 
 //////////////////////Penobrol//////////////////////
 function pLike(penobrol) {
-    var plikeNum = document.getElementById('plike');
+    var articleLikeNum = document.getElementById('articleLikeNum');
     var data={
         "p_id" : penobrol.value.split('/')[0],
         "pc_id" : penobrol.value.split('/')[1],
@@ -52,8 +54,8 @@ function pLike(penobrol) {
         var ajaxResult = await makeLikeRequest(url, data);
         // code below here will only execute when await makeLikeRequest() finished loading
         ajaxResult = JSON.parse(ajaxResult);
-        penobrol.value = data.p_id+'/'+data.pc_id+'/'+ajaxResult.button
-        plikeNum.innerHTML = ajaxResult.p_like
+        penobrol.value = data.p_id+'/'+data.pc_id+'/'+ajaxResult.button;
+        articleLikeNum.innerHTML = ajaxResult.p_like;
         if(ajaxResult.button == 1){
             penobrol.childNodes[0].src = "./icons/nocap.png";
         }
@@ -81,8 +83,8 @@ function pcLike(comment) {
     async function likePcomment(url, data) {
         var ajaxResult = await makeLikeRequest(url, data);
         ajaxResult = JSON.parse(ajaxResult);
-        comment.value = data.p_id+'/'+data.pc_id+'/'+ajaxResult.button
-        pclikeNum.innerHTML = ajaxResult.pc_like
+        comment.value = data.p_id+'/'+data.pc_id+'/'+ajaxResult.button;
+        pclikeNum.innerHTML = ajaxResult.pc_like;
         if(ajaxResult.button == 1){
             comment.childNodes[0].src = "./icons/nocap.png";
         }
@@ -94,7 +96,7 @@ function pcLike(comment) {
 
 //////////////////////Tandya//////////////////////
 function tLike(tandya){
-    var tlikeNum = document.getElementById('tlike');
+    var articleLikeNum = document.getElementById('articleLikeNum');
     var data={
         "t_id" : tandya.value.split('/')[0],
         "ta_id" : tandya.value.split('/')[1],
@@ -112,7 +114,7 @@ function tLike(tandya){
         var ajaxResult = await makeLikeRequest(url, data);
         ajaxResult = JSON.parse(ajaxResult);
         tandya.value = data.t_id+'/'+data.ta_id+'/'+ajaxResult.button;
-        tlikeNum.innerHTML = ajaxResult.t_like;
+        articleLikeNum.innerHTML = ajaxResult.t_like;
         if(ajaxResult.button == 1){
             tandya.childNodes[0].src = "./icons/nocap.png";
         }
@@ -140,13 +142,74 @@ function taLike(answer){
     async function likeTanswer(url, data) {
         var ajaxResult = await makeLikeRequest(url, data);
         ajaxResult = JSON.parse(ajaxResult);
-        answer.value = data.t_id+'/'+data.ta_id+'/'+ajaxResult.button
-        talikeNum.innerHTML = ajaxResult.ta_like
+        answer.value = data.t_id+'/'+data.ta_id+'/'+ajaxResult.button;
+        talikeNum.innerHTML = ajaxResult.ta_like;
         if(ajaxResult.button == 1){
             answer.childNodes[0].src = "./icons/nocap.png";
         }
         else{
             answer.childNodes[0].src = "./icons/cap.png";
+        }
+    }
+}
+
+//////////////////////Youtublog//////////////////////
+function yLike(youtublog) {
+    let articleLikeNum = document.getElementById('articleLikeNum');
+    var data={
+        "y_id" : youtublog.value.split('/')[0],
+        "yc_id" : youtublog.value.split('/')[1],
+        "clickVal" : youtublog.value.split('/')[2]
+    }
+    var url = 'api/youtublog/like';
+    if(yLikeClick){
+        yLikeClick = !yLikeClick;
+        likeYoutublog(url, data);
+        setTimeout(function(){
+            yLikeClick = true;
+        },2000);
+    }
+    async function likeYoutublog(url, data) {
+        // await code here
+        var ajaxResult = await makeLikeRequest(url, data);
+        // code below here will only execute when await makeLikeRequest() finished loading
+        ajaxResult = JSON.parse(ajaxResult);
+        youtublog.value = data.y_id+'/'+data.yc_id+'/'+ajaxResult.button;
+        articleLikeNum.innerHTML = ajaxResult.y_like;
+        if(ajaxResult.button == 1){
+            youtublog.childNodes[0].src = "./icons/nocap.png";
+        }
+        else{
+            youtublog.childNodes[0].src = "./icons/cap.png";
+        }
+    }
+}
+
+function ycLike(comment) {
+    var yclikeNum = document.getElementById('yCommentlikes'+comment.value.split('/')[1]);
+    var data={
+        "y_id" : comment.value.split('/')[0],
+        "yc_id" : comment.value.split('/')[1],
+        "clickVal" : comment.value.split('/')[2]
+    }
+    var url = 'api/youtublog/like/comment/';
+    if(ycLikeClick){
+        ycLikeClick = !ycLikeClick;
+        likeYcomment(url, data);
+        setTimeout(function(){
+            ycLikeClick = true;
+        },2000);
+    }
+    async function likeYcomment(url, data) {
+        var ajaxResult = await makeLikeRequest(url, data);
+        ajaxResult = JSON.parse(ajaxResult);
+        comment.value = data.y_id+'/'+data.yc_id+'/'+ajaxResult.button;
+        yclikeNum.innerHTML = ajaxResult.yc_like;
+        if(ajaxResult.button == 1){
+            comment.childNodes[0].src = "./icons/nocap.png";
+        }
+        else{
+            comment.childNodes[0].src = "./icons/cap.png";
         }
     }
 }

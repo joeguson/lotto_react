@@ -104,6 +104,13 @@ textarea {
   margin-bottom: 10px;
   border: 1px solid #0f4c81;
 }
+button {
+  background-color: transparent;
+}
+.b-editor-hover-transition:hover {
+  background-color: #2043aa;
+  transition: all 0.3s linear 0s;
+}
 .content {
   height: 500px;
   width: 90%;

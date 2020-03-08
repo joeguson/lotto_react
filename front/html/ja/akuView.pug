@@ -1,60 +1,56 @@
-extends ../layout
+extends ../user_layout
 
-block js
-    script(type="text/javascript" src="../js/aku.js")
-    script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
-    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
+block personalInfo
+    p #{u_id}
+    //admin1로 로그인 한 상태에서 admin2의 정보를 바꿀수 있으면 안됨. 삭제함
 
-block css
-    link(rel='stylesheet', href='/css/aku.css' type="text/css")
-    link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
+block personalStat
+    if(follow)
+        button(type="submit" id="followId") UNFOLLOW
+    else
+        button(type="submit" id="followId") FOLLOW
 
+block userPenobrol
+    p Penobrol
+        if penobrols.length > 0
+            ul.thumbnailUl
+                each p in penobrols
+                    b-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
+        else
+            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
 
+block userTandya
+    p Tandya
+        if tandyas.length > 0
+            ul.thumbnailUl
+                each t in tandyas
+                    b-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
+        else
+            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
 
-block nav
-    include ../nav_mixIn
-    +navi('a')
-
-block submain
-  //.ad Advertisement
-
-block main
-    if user
-        .p-info
-            p #{u_id}
-            //admin1로 로그인 한 상태에서 admin2의 정보를 바꿀수 있으면 안됨. 삭제함
-        .p-stat
-            if(follow)
-                button(type="submit" id="followId") UNFOLLOW
-            else
-                button(type="submit" id="followId") FOLLOW
-        .personalArticle
-            p Penobrol
-                if penobrols.length > 0
-                    ul.thumbnailUl
-                        each p in penobrols
-                            b-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
-                else
-                    .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
-        .personalArticle
-            p Tandya
-                if tandyas.length > 0
-                    ul.thumbnailUl
-                        each t in tandyas
-                            b-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
-                else
-                    .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
+block userYoutublog
+    p Youtublog
+        if youtublogs.length > 0
+            ul.thumbnailUl
+                each y in youtublogs
+                    b-thumbnail(jsonSrc=`${JSON.stringify(y)}`)
+        else
+            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
 
 
 block jscript

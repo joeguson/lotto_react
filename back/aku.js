@@ -1,12 +1,12 @@
 //url - '/aku'
 let userDao = require('../db/b-dao/userDao/userDao');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const ajax = require("xmlhttprequest").XMLHttpRequest;
 const route = require('express').Router();
 const jsForBack = require('./jsForBack.js');
 const akuService = require('../service/akuService.js');
 const geoip = require('geoip-lite');
 
-route.get('/daftar', function(req, res){
+route.get('/register', function(req, res){
     if(req.query.email){
         let email = req.query.email;
         let code = req.query.code;
@@ -17,10 +17,10 @@ route.get('/daftar', function(req, res){
                 else res.render('./ja/aku', {"message": "wrong approach"});
             });
     }
-    else res.render('./ja/user-add');
+    else res.render('./ja/register');
 });
 
-route.post('/daftar', function(req, res){
+route.post('/register', function(req, res){
     akuService.postUser(
         req.body.u_id,
         req.body.u_pw,
@@ -34,27 +34,29 @@ route.post('/daftar', function(req, res){
 route.get('/', function(req, res){
     if(req.session.u_id) {
         akuService.getUserArticle(req.session.id2)
-            .then(([userPenobrol, userTandya, totalLikes]) => res.render('./ja/aku', {
+            .then(([userPenobrol, userTandya, userYoutublog, totalLikes]) => res.render('./ja/aku', {
                 user:req.session.id2,
                 u_id:req.session.u_id,
                 penobrols:userPenobrol,
                 tandyas:userTandya,
+                youtublog:userYoutublog,
                 totalLikes:totalLikes
             }));
     }
     else{
-        res.render('./ja/aku');
+        res.render('./ja/login');
     }
 });
 
 route.get('/user/:user_id', function(req, res, next){
     let user_id = req.params.user_id;
         akuService.getUserArticleByForeigner(user_id, req.session.id2)
-            .then(([userPenobrol, userTandya, followResult]) => res.render('./ja/akuView', {
+            .then(([userPenobrol, userTandya, userYoutublog, followResult]) => res.render('./ja/akuView', {
                 user:req.session.id2,
                 u_id:user_id,
                 penobrols:userPenobrol,
                 tandyas:userTandya,
+                youtublogs:userYoutublog,
                 follow: followResult.length > 0
             }));
 });

@@ -1,48 +1,23 @@
-extends ../layout
-include ../add_mixIn
+extends ../add_layout
 
-block js
-    script(type="text/javascript" src="/js/jsForAllJade.js")
+block addJs
     script(src="./public/b-youtube/b-dialog.js")
     script(src="./public/b-youtube/b-youtube-time.js")
     script(src="./public/b-youtube/b-youtube-idDialog.js")
     script(src="./public/b-youtube/b-youtube-dialog.js")
-    script(src="./public/b-editor/b-editor.js")
-    script(src='./js/addPandT.js')
 
-block css
-    link(rel="stylesheet" href="../css/penobrol_add.css" type="text/css")
+block newArticleInfo
+    p
+        input(type='text' name='title' placeholder='title' maxlength="200" class="title" id="title" required)
+    p.infoP
+        span(id='titleInfo' class='infoSpan') 200/200
 
+block newArticleContent
+    b-editor(id='editor' width="90%" height="600px" name="content" youtublog='1')
 
-block nav
-    include ../nav_mixIn
-    +navi('y')
+block newArticleSubmit
+    button(class="submit" name='y' onclick='postArticle(this)') share
 
-block submain
-  //.ad Advertisement
-  
-block main
-    article
-        +input('text', 'title', 'title', '200', 'title', 'title')
-        p.infoP
-            span(id='titleInfo' class='infoSpan') 200/200
-        p
-            label
-                input(id='rbP' type='radio' value='p' name="public" checked)
-                span  public
-            label   
-                input(id='rbA' type='radio' value='a' name="public")
-                span  anonymous
-        +input('text', 'thumbnail', 'thumbnail', '200', 'thumbnail', 'thumbnail')
-        p.infoP
-            span(id='thumbnailInfo' class='infoSpan') 200/200
-        p
-            b-editor(id='editor' width="90%" height="600px" name="content")
-        +input('text', 'hashtag', '#put #hashtags #like #this', '200', 'thumbnail', 'hashtag')
-        p.infoP
-            span(id='hashInfo' class='infoSpan') 20/20
-        p
-            button(class="submit" name='y' onclick='postArticle(this)') share
     script.
         function checksubmit(){
             if(title.value.length < 5){
@@ -61,21 +36,5 @@ block main
             titleInfo.innerHTML = count + '/200';
             if(count < 1){
                 titleInfo.innerHTML = 'exceeds the limit';
-            }
-        });
-        thumbnail.addEventListener('keyup', function(){
-            var count = 200;
-            count -= thumbnail.value.length;
-            thumbnailInfo.innerHTML = count + '/200';
-            if(count < 1){
-                thumbnailInfo.innerHTML = 'exceeds the limit';
-            }
-        });
-        hashtag.addEventListener('keydown', function(){
-            var count = 20;
-            count -= (hashtag.value.match(/#/gi) || []).length;
-            hashInfo.innerHTML = count + '/20';
-            if(count < 1){ // 아직 구현 못함
-                hashInfo.innerHTML = 'exceeds the limit';
             }
         });

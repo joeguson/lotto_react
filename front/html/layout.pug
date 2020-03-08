@@ -1,29 +1,31 @@
 doctype html
 html
     head
-        title beritamus
+        title Beritamus
         // what appears on the tab
         base(href="/")
-        link(rel='stylesheet' href="/css/common.css" type="text/css")
-        // links css common files
-        // links css file
-        block js
         link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
         link(href="https://fonts.googleapis.com/css?family=Fruktur&display=swap" rel="stylesheet")
         meta(charset='UTF-8')
         meta(name='viewport', content='width=device-width, initial-scale=1')
         meta(name='apple-mobile-web-app-capable', content='yes')
+        link(rel='stylesheet' href="/css/layout.css" type="text/css")
+        // links css common files
+        // links css file
+        block js
         block css
-
-        // iphone에서 어플식으로 저장가능
-        // Lorem ipsum
     body
         .container
             header
                 a(href='/cari') Beritamus  
                 span /b'ritɛmus/
             nav
-                block nav
+                ul
+                    li(id='akuLiTag'): a(href='/aku' id='akuATag') aku
+                    li(id='penobrolLiTag'): a(href='/penobrol' id='penobrolATag') penobrol
+                    li(id='tandyaLiTag'): a(href='/tandya' id='tandyaATag') tandya
+                    li(id='youtublogLiTag'): a(href='/youtublog' id='youtublogATag') youtublog
+                br.clear
             section.sub-main
                 block submain
             section.main
@@ -34,3 +36,27 @@ html
                     p www.beritamus.com
 
     block jscript
+    script.
+        window.onload = function(){
+            let currentTag = (location.pathname).split('/')[1];
+            let currentLiTag;
+            let currentATag;
+            if (currentTag === 'aku') {
+                currentLiTag = document.getElementById('akuLiTag');
+                currentATag = document.getElementById('akuATag');
+            } else if (currentTag === 'penobrol') {
+                currentLiTag = document.getElementById('penobrolLiTag');
+                currentATag = document.getElementById('penobrolATag');
+            } else if (currentTag === 'tandya') {
+                currentLiTag = document.getElementById('tandyaLiTag');
+                currentATag = document.getElementById('tandyaATag');
+            } else if (currentTag === 'youtublog') {
+                currentLiTag = document.getElementById('youtublogLiTag');
+                currentATag = document.getElementById('youtublogATag');
+            } else {
+                currentLiTag = '';
+            }
+            currentLiTag.style.borderBottom = '3px solid #ffff97';
+            currentLiTag.style.opacity = '.9';
+            currentATag.style.color = '#ffff97';
+        }

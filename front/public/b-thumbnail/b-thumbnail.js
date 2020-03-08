@@ -85,7 +85,11 @@ class BeritamusThumbnail extends HTMLElement {
         this.appendChild(li);
     }
     __buildArticle() {
-        const type = this.src.identifier === 'p'? 'penobrol' : 'tandya';
+        let type = '';
+        if(this.src.identifier === 'p') type = 'penobrol';
+        else if(this.src.identifier === 't') type = 'tandya';
+        else type = 'youtublog';
+
         this.dl = document.createElement("dl");
         this.dl.className = "articleDl";
         this.dl.onclick = () => {
@@ -95,7 +99,7 @@ class BeritamusThumbnail extends HTMLElement {
         const dt = document.createElement("dt");
         const title = document.createElement("a");
         title.href = `${type}`+'/'+`${this.src.id}`;
-        title.innerText = this.src.identifier === 'p'? this.src.title : this.src.question;
+        title.innerText = this.src.identifier === 't'? this.src.question : this.src.title;
         dt.appendChild(title);
         this.dl.appendChild(dt);
 
@@ -110,7 +114,7 @@ class BeritamusThumbnail extends HTMLElement {
         this.dl.appendChild(hashtag);
 
         const date = document.createElement("dd");
-        date.innerText = this.src.identifier === 'p'? this.src.commentCount +' comments': this.src.answerCount + ' answers';
+        date.innerText = this.src.identifier === 't'? this.src.answerCount + ' answers': this.src.commentCount +' comments';
         date.innerText = date.innerText +  ' / ' + this.src.date + ' / ' + this.src.view + ' views / ' +this.src.likeCount + ' likes';
         this.dl.appendChild(date);
 

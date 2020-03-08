@@ -73,17 +73,6 @@
   padding: 5px;
   margin-bottom: 10px;
 }
-.ulComAndAns {
-  padding: 5px;
-  list-style: none;
-}
-.aTtileDl {
-  width: 100%;
-}
-.aTtileDt {
-  font-weight: bold;
-  font-size: 20px;
-}
 .articleContent {
   width: 100%;
   padding: 0px;
@@ -95,6 +84,17 @@
   text-align: center;
   font-size: 24px;
   color: #c91818;
+}
+.ulComAndAns {
+  padding: 5px;
+  list-style: none;
+}
+.aTtileDl {
+  width: 100%;
+}
+.aTtileDt {
+  font-weight: bold;
+  font-size: 20px;
 }
 .liComAndAns {
   width: 100%;

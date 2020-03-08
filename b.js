@@ -1,11 +1,8 @@
 const express = require('express');
 const app = express();
-const router = express.Router();
 const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
-const mysql = require('mysql');
 const path = require('path');
 const favicon = require('serve-favicon');
 const config =require('./config.json');
@@ -25,7 +22,6 @@ app.use(session({
     store: new MySQLStore(config.db_config)
 }));
 
-var conn = mysql.createConnection(config.db_config);
 app.use(express.json({ limit : "50mb" }));
 app.use(express.urlencoded({ limit:"50mb", extended: false }));
 
@@ -45,13 +41,13 @@ const poolConfig = config.db_config;
 exports.s3 = s3;
 exports.poolConfig = poolConfig;
 
+const apiRouter = require('./api/api');
+const aku = require('./back/aku');
+const cari = require('./back/cari');
 const penobrol = require('./back/penobrol');
 const tandya = require('./back/tandya');
 const youtublog = require('./back/youtublog');
-const aku = require('./back/aku');
-const apiRouter = require('./api/api');
-const cari = require('./back/cari');
-const backSystem = require('./back/backsystem');
+const samusil = require('./back/samusil');
 const jsForBack = require('./back/jsForBack.js');
 
 let todayTotal = 0;
@@ -77,17 +73,13 @@ app.use(function(req, res, next){
 });
 
 /* ===== router ===== */
-app.get('/chonggwalpage', backSystem.getChonggwalpage);
-app.post('/chonggwalpage', backSystem.postChonggwalpage);
-
-/************************FOR CARI************************/
-
 app.use('/api', apiRouter);
 app.use('/cari', cari);
 app.use('/aku', aku);
 app.use('/tandya', tandya);
 app.use('/penobrol', penobrol);
 app.use('/youtublog', youtublog);
+app.use('/samusil', samusil);
 
 function saveImage(path, filename, data, callback) {
     const params = {

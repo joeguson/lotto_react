@@ -2,6 +2,7 @@ const userDao = require('../db/b-dao/userDao/userDao');
 const followDao = require('../db/b-dao/userDao/followDao');
 const tandyaService = require('./tandyaService');
 const penobrolService = require('./penobrolService');
+const youtublogService = require('./youtublogService');
 const key = require('../info/beritamus-admin-2ff0df5d17ca.json');
 const nodeMailer = require('nodeMailer');
 let config = require('../config.json');
@@ -51,6 +52,7 @@ exports.getUserArticle = async function(id2) {
     const userArticle = await Promise.all([
         penobrolService.getUserPenobrol(id2),
         tandyaService.getUserTandya(id2),
+        youtublogService.getUserYoutublog(id2),
         getUserLikes(id2)
     ]);
     return userArticle;
@@ -60,6 +62,7 @@ exports.getUserArticleByForeigner = async function(id2, me) {
     const userArticle = await Promise.all([
         penobrolService.getUserPenobrolWithoutAnonim(id2),
         tandyaService.getUserTandyaWithoutAnonim(id2),
+        youtublogService.getUserYoutublogWithoutAnonim(id2),
         await followDao.select(me, id2)
     ]);
     return userArticle;
@@ -108,7 +111,7 @@ exports.postUser = async function(u_id, u_pw, birthday, u_sex,  u_email, code){
         <p>Welcome To Beritamus!</p>
         <p>Selamat Datang!</p>
         <p>Please button below</p>
-        <a href="http://${config.url}/aku/daftar/?email=${u_email}&code=${code}">Enter Beritamus!</a>
+        <a href="http://${config.url}/aku/register/?email=${u_email}&code=${code}">Enter Beritamus!</a>
     `;
     deliverMail(mailOptions);
 };

@@ -1,22 +1,6 @@
-extends ../layout
-
-block js
-    script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
-    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
-
-block css
-    link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
-    link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
-
-
-block nav
-    include ../nav_mixIn
-    +navi('p')
-
-block submain
-    //.ad Advertisement
+extends ../front_layout
 
 block main
-    include ../mixIn
     +frontPage('penobrol')
+
+

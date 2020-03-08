@@ -1,38 +1,14 @@
 extends ../view_layout
 include ../view_mixIn
 
-block css
-    link(rel="stylesheet" href="../css/tandya_view.css" type="text/css")
-    
-block nav
-    include ../nav_mixIn
-    +navi('t')
-
 block submain
     //.ad Advertisement
 
-block article
-    dl.aTtileDl
-        dt.aTtileDt
-            span Q : 
-            span #{topic.question}
-            if u_id
-                +articlePop(topic.identifier, id2, topic.author)
-        +hashtag(topic.hashtags)
-        .articleContent
-            +articleContent(topic.content)
-            .articleLike
-                .ptlike(id="tlike")= topic.likes.length
-                if u_id
-                    +likeButton(topic.identifier,topic.likes, id2)
-            .articleDetail
-                +basicTInfo(topic.u_id, topic.date, topic.view, topic.answers.length)
-//- if id2 == topic.author           
-//-     a(href='/tedit/' + topic.id class='edit') Edit
-
-block commentOrAnswer
-    if u_id
-        +commentOrAnswer(topic.identifier)
+block articleInfo
+    dt.aTtileDt
+        span Q :
+        span #{topic.question}
+    +basicPInfo(topic.u_id, topic.date, topic.view, topic.answers.length)
 
 block ulComAndAns
     if topic.answers.length > 0
@@ -106,6 +82,3 @@ block ulComAndAns
             }
         }
     script(type="text/javascript" src="/js/jsForAllJade.js")
-
-//- if id2 === a.author
-//-     a(href='/taedit/' + topic.id + '/' + a.id) Edit

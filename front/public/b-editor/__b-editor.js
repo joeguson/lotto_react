@@ -28,7 +28,7 @@ function changeStartTime(target) {
     let src = targetIframe.src;
     let startStringIndex = src.indexOf('rel=');
     src = src.slice(0, startStringIndex);
-    let startingTime = '?rel=0&autoplay=1&start='+target.innerHTML;
+    let startingTime = '?&autoplay=1&rel=0&start='+target.innerHTML;
     src += startingTime;
     targetIframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; allowfullscreen');
     targetIframe.src = src;

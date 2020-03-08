@@ -1,82 +1,66 @@
-extends ../layout
+extends ../user_layout
 
-block js
-    script(type="text/javascript" src="../js/aku.js")
-    script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
-    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
+block personalInfo
+    a.changinfo(href= '/aku/change') #{u_id}
 
-block css
-    link(rel='stylesheet', href='/css/aku.css' type="text/css")
-    link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
+block personalStat
+    .likeStat
+        span.likeSpan
+            p.likeHeading Penobrol
+            p.likeCount= totalLikes.penobrol
+        span.likeSpan
+            p.likeHeading Tandya
+            p.likeCount= totalLikes.tandya
+    .likeStat
+        span.likeSpan
+            p.likeHeading Comment
+            p.likeCount= totalLikes.comment
+        span.likeSpan
+            p.likeHeading Answer
+            p.likeCount= totalLikes.answer
 
+block userPenobrol
+    p Penobrol
+        if penobrols.length > 0
+            ul.thumbnailUl
+                each p in penobrols
+                    b-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
+        else
+            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
 
+block userTandya
+    p Tandya
+        if tandyas.length > 0
+            ul.thumbnailUl
+                each t in tandyas
+                    b-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
+        else
+            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
 
-block nav
-    include ../nav_mixIn
-    +navi('a')
+block userYoutublog
+    p Youtublog
+        if youtublog.length > 0
+            ul.thumbnailUl
+                each t in youtublog
+                    b-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
+        else
+            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
+                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
+                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
 
-block submain
-  //.ad Advertisement
-  
-block main
-    if user
-        .p-info
-            a.changinfo(href= '/aku/change') #{u_id}
-        .p-stat
-            -var likeCountChecker = function(num){if(num){return num;}else{return 0;}}
-            .likeStat
-                span.likeSpan
-                    p.likeHeading Penobrol
-                    p.likeCount= totalLikes.penobrol
-                span.likeSpan
-                    p.likeHeading Tandya
-                    p.likeCount= totalLikes.tandya
-            .likeStat
-                span.likeSpan 
-                    p.likeHeading Comment
-                    p.likeCount= totalLikes.comment
-                span.likeSpan 
-                    p.likeHeading Answer
-                    p.likeCount= totalLikes.answer
-        .personalArticle
-            p Penobrol
-                if penobrols.length > 0
-                    ul.thumbnailUl
-                        each p in penobrols
-                            b-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
-                else 
-                    .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
-                
-        .personalArticle 
-            p Tandya
-                if tandyas.length > 0
-                    ul.thumbnailUl
-                        each t in tandyas
-                            b-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
-                else
-                    .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                        span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0 
-                        span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
-        a.logout(href= '/aku/logout') Logout
-    else
-        form(action='aku/login' method='post')
-            input(type='text' name='u_id' placeholder='  ID' id="input_id" required)
-            input(type='password' name='u_pw' placeholder='  Password' id="input_pw" required)
-            if message
-                p.message= message
-            input(type='submit' value="Login" id="login" onclick='noDouble()')
-        .daftar
-            span(id="hilang")
-                a(href='/aku/find') Forgot
-            span(id="daftar")
-                a(href='/aku/daftar') Sign Up
+block logout
+    a.logout(href= '/aku/logout') Logout
 

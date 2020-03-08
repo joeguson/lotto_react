@@ -111,7 +111,7 @@ exports.postAnswerCom = async function(ta_id, author, content) {
     // 결과에 상관 없는 처리이므로 굳이 기다리지 않아도 됨
     taDao.updateTandyaAnsScore(ta_id);
 
-    const postCom = await tandyaDao.insertTandyaAnsCom(author, content, ta_id);
+    const postCom = await tacDao.insertTandyaAnsCom(author, content, ta_id);
     // 삽입 시간을 db 기준으로 하지 않고 서버 시간을 기준으로 하면 모든 정보를 알고 있기 때문에 추가 쿼리를 할 필요 없음
     // 즉, 아래의 await tandyaAnsComById(postCom.insertId) 은 db 시간을 기준으로 하기 때문에 생기는
     // 완전히 불필요한 문장

@@ -1,38 +1,17 @@
 extends ../view_layout
 include ../view_mixIn
 
-block css
-    link(rel="stylesheet" href="../css/penobrol_view.css" type="text/css")
-
-block nav
-    include ../nav_mixIn
-    +navi('y')
-
 block submain
     //.ad Advertisement
 
-block article
-    dl.aTtileDl
-        dt.aTtileDt #{topic.title}
-            if u_id
-                +articlePop(topic.identifier, id2, topic.author)
-        +hashtag(topic.hashtags)
-        +basicPInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
-        .articleContent
-            +articleContent(topic.content)
-            .articleLike
-                .ptlike(id="plike")= topic.likes.length
-                if u_id
-                    +likeButton(topic.identifier,topic.likes, id2)
-
-block commentOrAnswer
-    if u_id
-        +commentOrAnswer(topic.identifier)
+block articleInfo
+    dt.aTtileDt #{topic.title}
+    +basicPInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
 
 block ulComAndAns
     if topic.comments.length > 0
         each c in topic.comments
-            li.liComAndAns(id='pc/' + topic.id + '/' + c.id)
+            li.liComAndAns(id='yc/' + topic.id + '/' + c.id)
                 dl.dlComAndAns
                     - var commentStart = '@'+ topic.u_id
                     - var date_result2 = 'by '+c.u_id+' / '+c.date+' / like : '
@@ -40,12 +19,12 @@ block ulComAndAns
                         if u_id
                             +caPop(topic.identifier, id2, c.author, c.id)
                     dt.dtComAndAns
-                        pre(class="pcomment-dt") "#{c.content}"
+                        pre(class="ycomment-dt") "#{c.content}"
                     dd.ddComAndAns #{date_result2}
-                        span.comAnsLike(id="pCommentlikes" + c.id)= c.likes.length
+                        span.comAnsLike(id="yCommentlikes" + c.id)= c.likes.length
                         if u_id
                             span.comAnsButton
-                                +likeButton2('pc',c.likes, id2, c.id)
+                                +likeButton2('yc',c.likes, id2, c.id)
                                 span.dummy
                 .pccOrTac
                     if u_id    
@@ -61,7 +40,7 @@ block ulComAndAns
                             pre(class="pccomment-dt") #{ccommentStart}
                         dd.ddPccAndTac #{date_result3}
     script.
-        function pcChecksubmit() {
+        function ycChecksubmit() {
             if (pcInput.value.length < 5) {
                 alert('kontennya harus lebih dari 5 alphabet');
                 return false;
