@@ -81,7 +81,7 @@ function uploadImage(id, data, onUploaded) {
        img: data
     });
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/image', true);
+    xhr.open('POST', '/api/image', true);
     xhr.setRequestHeader('Content-type', "application/json");
     xhr.send(json);
     xhr.onload = () => {

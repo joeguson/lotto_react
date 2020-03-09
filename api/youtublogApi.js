@@ -29,7 +29,7 @@ route.put('/:youtublog_no', function (req, res) {
 
 //************************Like************************//
 route.post('/like', function (req, res) {
-    const y_id = req.body.y_id;
+    const y_id = req.body.articleId;
     youtublogService.likeYoutublog( //유효한 y_id인지 확인필요
             y_id,
         req.session.id2,
@@ -37,7 +37,7 @@ route.post('/like', function (req, res) {
     ).then(val => {
         youtublogService.youtublogLikeCount(y_id).then(count =>
             res.json({
-                "y_like": count,
+                "result": count,
                 "button": val
             })
         );
@@ -45,7 +45,7 @@ route.post('/like', function (req, res) {
 });
 
 route.post('/like/comment', function (req, res) {
-    const yc_id = req.body.yc_id;
+    const yc_id = req.body.comAnsId;
     youtublogService.likeYoutublogComment(//유효한 yc_id인지 확인필요
         yc_id,
         req.session.id2,
@@ -53,7 +53,7 @@ route.post('/like/comment', function (req, res) {
     ).then(val => {
         youtublogService.youtublogComLikeCount(yc_id).then(count =>
             res.json({
-                "yc_like": count,
+                "result": count,
                 "button": val
             })
         );

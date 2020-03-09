@@ -28,7 +28,7 @@ route.put('/:penobrol_no', function (req, res) {
 });
 
 route.post('/like', function (req, res) {
-    const p_id = req.body.p_id;
+    const p_id = req.body.articleId;
     penobrolService.likePenobrol(
         p_id,
         req.session.id2,
@@ -36,7 +36,7 @@ route.post('/like', function (req, res) {
     ).then(val => {
         penobrolService.penobrolLikeCount(p_id).then(count =>
             res.json({
-                "p_like": count,
+                "result": count,
                 "button": val
             })
         );
@@ -44,7 +44,7 @@ route.post('/like', function (req, res) {
 });
 
 route.post('/like/comment', function (req, res) {
-    const pc_id = req.body.pc_id;
+    const pc_id = req.body.comAnsId;
     penobrolService.likePenobrolComment(
         pc_id,
         req.session.id2,
@@ -52,7 +52,7 @@ route.post('/like/comment', function (req, res) {
     ).then(val => {
         penobrolService.penobrolComLikeCount(pc_id).then(count =>
             res.json({
-                "pc_like": count,
+                "result": count,
                 "button": val
             })
         );

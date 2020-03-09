@@ -1,32 +1,6 @@
 //////////////////////Variables//////////////////////
-var warnClick = true;
+let warnClick = true;
 
-//////////////////////Ajax//////////////////////
-function makeWarnRequest(url, data) {
-    return new Promise(function (resolve, reject) {
-        var original = JSON.stringify(data);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', url);
-        xhr.setRequestHeader('Content-type', "application/json");
-        xhr.send(original);
-        xhr.onload = function () {
-            if (this.status >= 200 && this.status < 300) {
-                resolve(xhr.response);
-            } else {
-                reject({
-                    status: this.status,
-                    statusText: xhr.statusText
-                });
-            }
-        };
-        xhr.onerror = function () {
-            reject({
-                status: this.status,
-                statusText: xhr.statusText
-            });
-        };
-    });
-}
 //////////////////////Any Article//////////////////////
 function warningArticle(warning){
     let url = '';
@@ -40,15 +14,12 @@ function warningArticle(warning){
         "warnedItem" : warningValue[1],
         "warnedId" : warningValue[2]
     };
-    if(original.warnedType == 'p'){
-        url = 'api/penobrol/warn';
-    }
-    else{
-        url = 'api/tandya/warn';
-    }
+    if(original.warnedType === 'p') url = 'api/penobrol/warn';
+    else if(original.warnedType === 't') url = 'api/tandya/warn';
+    else url = 'api/youtublog/warn';
     if(confirmedValue == true){
         async function warn(url, data) {
-            let ajaxResult = await makeWarnRequest(url, data);
+            let ajaxResult = await makeRequest('post', url, data);
             ajaxResult = JSON.parse(ajaxResult);
             if(ajaxResult.result == 1){
                 alert('terima kasih');

@@ -1,195 +1,190 @@
 //////////////////////Variables//////////////////////
-var deleteP = true;
-var deletePc = true;
-var deletePcc = true;
-var deleteT = true;
-var deleteTa = true;
-var deleteTac = true;
+let deleteP = true;
+let deletePc = true;
+let deletePcc = true;
+let deleteT = true;
+let deleteTa = true;
+let deleteTac = true;
+let deleteY = true;
+let deleteYc = true;
+let deleteYcc = true;
 
-//////////////////////Ajax//////////////////////
-function makeRequest(url, data) {
-    return new Promise(function (resolve, reject) {
-        var original = JSON.stringify(data);
-        var xhr = new XMLHttpRequest();
-        xhr.open('delete', url);
-        xhr.setRequestHeader('Content-type', "application/json");
-        xhr.send(original);
-        xhr.onload = function () {
-            if (this.status >= 200 && this.status < 300) {
-                resolve(xhr.response);
-            } else {
-                reject({
-                    status: this.status,
-                    statusText: xhr.statusText
-                });
-            }
-        };
-        xhr.onerror = function () {
-            reject({
-                status: this.status,
-                statusText: xhr.statusText
-            });
-        };
-    });
-}
 //////////////////////Penobrol//////////////////////
 function deletePenobrol() {
-    var p_id = location.pathname.split('/')[2];
-    var url = '/penobrol/' + p_id;
-    var original = {
+    let p_id = location.pathname.split('/')[2];
+    let url = '/penobrol/' + p_id;
+    let original = {
         'deleteId': p_id
     };
     if (confirm("Are you sure to delete this content?")) {
         if(deleteP){
             deleteP = !deleteP;
-            deletePen(url, original);
+            deleteResult('p', url, original, p_id);
             setTimeout(function(){
                 deleteP = true;
             },2000);
-        }
-        async function deletePen(url, data) {
-            var ajaxResult = await makeRequest(url, data);
-            ajaxResult = JSON.parse(ajaxResult);
-            if (ajaxResult.result == "deleted") {
-                alert('deleted');
-                window.location.replace(location.origin + "/penobrol/");
-            }
         }
     }
 }
 
 function postDeletePcomment(target) {
-    var p_id = location.pathname.split('/')[2];
-    var pc_id = target.getAttribute('value');
-    var url = '/penobrol/comment/' + pc_id;
-    var original = {
+    let p_id = location.pathname.split('/')[2];
+    let pc_id = target.getAttribute('value');
+    let url = '/penobrol/comment/' + pc_id;
+    let original = {
         'deleteId': pc_id,
         'penobrolId': p_id
     };
     if (confirm("Are you sure to delete this content?")) {
         if(deletePc){
             deletePc = !deletePc;
-            deletePcom(url, original);
+            deleteResult('pc', url, original, p_id);
             setTimeout(function(){
                 deletePc = true;
             },2000);
         }
-        async function deletePcom(url, data) {
-            var ajaxResult = await makeRequest(url, data);
-            ajaxResult = JSON.parse(ajaxResult);
-            if (ajaxResult.result == "deleted") {
-                alert('deleted');
-                window.location.replace(location.origin + "/penobrol/" + p_id);
-            }
-        }
-
     }
 }
 
 function postDeletePccomment(target) {
-    var p_id = location.pathname.split('/')[2];
-    var pcc_id = target.getAttribute('value');
-    var url = '/penobrol/ccomment/' + pcc_id;
-    var original = {
+    let p_id = location.pathname.split('/')[2];
+    let pcc_id = target.getAttribute('value');
+    let url = '/penobrol/ccomment/' + pcc_id;
+    let original = {
         'deleteId': pcc_id,
         'penobrolId': p_id
     };
     if (confirm("Are you sure to delete this content?")) {
         if(deletePcc){
             deletePcc = !deletePcc;
-            deletePccom(url, original);
+            deleteResult('pcc', url, original, p_id);
             setTimeout(function(){
                 deletePcc = true;
             },2000);
-        }
-        async function deletePccom(url, data) {
-            var ajaxResult = await makeRequest(url, data);
-            ajaxResult = JSON.parse(ajaxResult);
-            if (ajaxResult.result == "deleted") {
-                alert('deleted');
-                window.location.replace(location.origin + "/penobrol/" + p_id);
-            }
         }
     }
 }
 //////////////////////Tandya//////////////////////
 function deleteTandya() {
-    var t_id = location.pathname.split('/')[2];
-    var url = '/tandya/' + t_id;
-    var original = {
+    let t_id = location.pathname.split('/')[2];
+    let url = '/tandya/' + t_id;
+    let original = {
         'deleteId': t_id
     };
     if (confirm("Are you sure to delete this content?")) {
         if(deleteT){
             deleteT = !deleteT;
-            deleteTan(url, original);
+            deleteResult('t', url, original, t_id);
             setTimeout(function(){
                 deleteT = true;
             },2000);
-        }
-        async function deleteTan(url, data) {
-            var ajaxResult = await makeRequest(url, data);
-            ajaxResult = JSON.parse(ajaxResult);
-            if (ajaxResult.result == "deleted") {
-                alert('deleted');
-                window.location.replace(location.origin + "/tandya");
-            }
         }
     }
 }
 
 function postDeleteTanswer(target) {
-    var t_id = location.pathname.split('/')[2];
-    var ta_id = target.getAttribute('value');
-    var url = '/tandya/answer/' + ta_id;
-    var original = {
+    let t_id = location.pathname.split('/')[2];
+    let ta_id = target.getAttribute('value');
+    let url = '/tandya/answer/' + ta_id;
+    let original = {
         'deleteId': ta_id,
         'tandyaId': t_id
     };
     if (confirm("Are you sure to delete this content?")) {
         if(deleteTa){
             deleteTa = !deleteTa;
-            deleteTans(url, original);
+            deleteResult('ta', url, original, t_id);
             setTimeout(function(){
                 deleteTa = true;
             },2000);
         }
-        async function deleteTans(url, data) {
-            var ajaxResult = await makeRequest(url, data);
-            ajaxResult = JSON.parse(ajaxResult);
-            if (ajaxResult.result == "deleted") {
-                alert('deleted');
-                window.location.replace(location.origin + "/tandya/" + t_id);
-            }
-        }
-
     }
 }
 
 function postDeleteTacomment(target) {
-    var t_id = location.pathname.split('/')[2];
-    var tac_id = target.getAttribute('value');
-    var url = '/tandya/acomment/' + tac_id;
-    var original = {
+    let t_id = location.pathname.split('/')[2];
+    let tac_id = target.getAttribute('value');
+    let url = '/tandya/acomment/' + tac_id;
+    let original = {
         'deleteId': tac_id,
         'tandyaId': t_id
     };
     if (confirm("Are you sure to delete this content?")) {
         if(deleteTac){
             deleteTac = !deleteTac;
-            deleteTacom(url, original);
+            deleteResult('tac', url, original, t_id);
             setTimeout(function(){
                 deleteTac = true;
             },2000);
         }
-        async function deleteTacom(url, data) {
-            var ajaxResult = await makeRequest(url, data);
-            ajaxResult = JSON.parse(ajaxResult);
-            if (ajaxResult.result == "deleted") {
-                alert('deleted');
-                console.log(location.origin + "/tandya/" + t_id);
-                window.location.replace(location.origin + "/tandya/" + t_id);
-            }
+    }
+}
+//////////////////////Youtublog//////////////////////
+function deleteYoutublog() {
+    let y_id = location.pathname.split('/')[2];
+    let url = '/youtublog/' + y_id;
+    let original = {
+        'deleteId': y_id
+    };
+    if (confirm("Are you sure to delete this content?")) {
+        if(deleteY){
+            deleteY = !deleteY;
+            deleteResult('y', url, original, y_id);
+            setTimeout(function(){
+                deleteY = true;
+            },2000);
         }
+    }
+}
+
+function postDeleteYcomment(target) {
+    let y_id = location.pathname.split('/')[2];
+    let yc_id = target.getAttribute('value');
+    let url = '/youtublog/comment/' + yc_id;
+    let original = {
+        'deleteId': yc_id,
+        'youtublogId': y_id
+    };
+    if (confirm("Are you sure to delete this content?")) {
+        if(deleteYc){
+            deleteYc = !deleteYc;
+            deleteResult('yc', url, original, y_id);
+            setTimeout(function(){
+                deleteYc = true;
+            },2000);
+        }
+    }
+}
+
+function postDeleteYccomment(target) {
+    let y_id = location.pathname.split('/')[2];
+    let ycc_id = target.getAttribute('value');
+    let url = '/youtublog/ccomment/' + ycc_id;
+    let original = {
+        'deleteId': ycc_id,
+        'youtublogId': y_id
+    };
+    if (confirm("Are you sure to delete this content?")) {
+        if(deleteYcc){
+            deleteYcc = !deleteYcc;
+            deleteResult('ycc', url, original, y_id);
+            setTimeout(function(){
+                deleteYcc = true;
+            },2000);
+        }
+    }
+}
+
+async function deleteResult(type, url, data, refreshId) {
+    let ajaxResult = await makeRequest('delete', url, data);
+    ajaxResult = JSON.parse(ajaxResult);
+    if (ajaxResult.result == "deleted") {
+        alert('deleted');
+        if(type === 'p') window.location.replace(location.origin + "/penobrol");
+        else if(type === 't') window.location.replace(location.origin + "/tandya");
+        else if(type === 'y') window.location.replace(location.origin + "/youtublog");
+        else if(type ==='pc' || type === 'pcc') window.location.replace(location.origin + "/penobrol/" + refreshId);
+        else if(type ==='ta' || type === 'tac') window.location.replace(location.origin + "/tandya/" + refreshId);
+        else window.location.replace(location.origin + "/youtublog/" + refreshId);
     }
 }

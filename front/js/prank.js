@@ -1,30 +1,3 @@
-//console.log('you are m');
-//
-//document.querySelector('.plikes').addEventListener('click', function(){
-//  var v = parseInt(document.getElementById('plikes').innerHTML);
-//  var pathname = location.pathname;
-//  var id = pathname.split('/');
-//  var original = v + 1;
-//  sendAjax('/plikes/'+id[2], original);
-//});
-//function sendAjax(url, data){
-//  var original2 = {'p_likes' : data};
-//  original2 = JSON.stringify(original2);
-//  var xhr = new XMLHttpRequest();
-//  xhr.open('POST', url);
-//  xhr.setRequestHeader('Content-type', "application/json");
-//  xhr.send(original2);
-//  // 데이터 수신이 완료되면 표시
-//  xhr.addEventListener('load', function(){
-//     console.log(xhr.responseText);
-//     var result = JSON.parse(xhr.responseText);
-//     if(result.result !== 'ok') return;
-//     // 데이터가 있으면 결과값 표시
-//     console.log(result);
-//     document.getElementById("plikes").innerHTML = result.p_likes;
-//  });
-//}
-
 function textScroll(scroll_el_id) {
     this.objElement = document.getElementById(scroll_el_id);
     this.objElement.style.position = 'relative';
