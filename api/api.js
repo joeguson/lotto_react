@@ -1,6 +1,8 @@
 //url - '/api'
 const imageThumbnail = require('image-thumbnail');
 const jsForBack = require('../back/jsForBack.js');
+const ajax = require("xmlhttprequest").XMLHttpRequest;
+const ogs = require('open-graph-scraper');
 const api = require('express').Router();
 const akuRouter = require('./akuApi');
 const cariRouter = require('./cariApi');
@@ -63,6 +65,14 @@ api.post('/image', (req, res) => {
                 })
             }
         });
+    });
+});
+
+api.post('/opengraph', (req, res) => {
+    let urlSource = req.body.urlSource;
+    let options = {'url': urlSource, 'encoding': 'utf8'};
+    ogs(options, function (error, results) {
+        res.json({'ogs': results});
     });
 });
 

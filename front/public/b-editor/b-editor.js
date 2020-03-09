@@ -8,6 +8,7 @@
         this.fontPicker = null;
         this.sizePicker = null;
         this.imageInput = null;
+        this.linkDialog = null;
         this.youtubeIdDialog = null;
         this.youtubeDialog = null;
         this.youtublog = null;
@@ -39,6 +40,9 @@
         const controls = this.buildControls(w);
         this.appendChild(controls);
         this.appendChild(ta);
+
+        this.linkDialog = document.createElement("b-link-dialog");
+        this.appendChild(this.linkDialog);
 
         this.youtubeIdDialog = document.createElement("b-youtube-id-dialog");
         this.appendChild(this.youtubeIdDialog);
@@ -181,7 +185,7 @@
         this.colorPicker.onchange = (e) => this.cmd("ForeColor", false, e.target.value)();
         this.fontPicker.onchange = (e) => this.cmd("FontName", false, e.target.value)();
         this.sizePicker.onchange = (e) => this.cmd("FontSize", false, e.target.value)();
-        this.imageInput.onchange = () => {
+        this.imageInput.onchange = (e) => {
             const i = this.imageInput;
             const rot = this.rotateImage;
             if (i.files && i.files[0]) {
@@ -191,13 +195,13 @@
                     var img = document.createElement("img");
                     img.src = e.target.result;
                     img.onload = function(){
-                        var canvas = document.createElement("canvas");
-                        var ctx = canvas.getContext("2d");
+                        let canvas = document.createElement("canvas");
+                        let ctx = canvas.getContext("2d");
                         ctx.drawImage(img, 0, 0);
-                        var MAX_WIDTH = 800;
-                        var MAX_HEIGHT = 800;
-                        var width = img.width;
-                        var height = img.height;
+                        let MAX_WIDTH = editor.body.offsetWidth;
+                        let MAX_HEIGHT = editor.body.offsetWidth;
+                        let width = img.width;
+                        let height = img.height;
                         if (width > height) {
                             if (width > MAX_WIDTH) {
                                 height *= MAX_WIDTH / width;
@@ -211,10 +215,10 @@
                         }
                         canvas.width = width;
                         canvas.height = height;
-                        ctx = canvas.getContext("2d");
+                        console.log(canvas);
                         ctx.drawImage(img, 0, 0, width, height);
-                        var dataurl = canvas.toDataURL("image/png");
-                        const imgHTML = "<img width='90%' style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + dataurl +"'/>";
+                        let dataurl = canvas.toDataURL("image/png");
+                        const imgHTML = "<img style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + dataurl +"'/>";
                         editor.execCommand("insertHTML", false, imgHTML);
                     }
                 };
@@ -224,9 +228,10 @@
         };
 
         this.controlButtons["Create link"].onclick = () =>{
-            //modal로 다시 표현해서 meta tag 정보 가져오기
-            this.cmd("CreateLink", false, prompt("Enter a URL", "www."))();
-        }
+            this.__onLinkClick();
+            // //modal로 다시 표현해서 meta tag 정보 가져오기
+            // this.cmd("CreateLink", false, prompt("Enter a URL", "www."))();
+        };
 
         this.controlButtons["Remove link"].onclick = this.cmd("UnLink");
         this.controlButtons["Insert image"].onclick = () => this.imageInput.click();
@@ -249,6 +254,24 @@
         return function () {
             editor.execCommand(id, showUi, value);
         }
+    }
+    __onLinkClick(){
+        this.linkDialog.showModal();
+        const linkInput = document.getElementById('linkInput');
+        const linkButton = document.getElementById('linkButton');
+        linkButton.addEventListener('click', () => {
+            let data = {"urlSource" : linkInput.value}
+            let url = '/api/opengraph';
+            console.log(data);
+            getUrlOpengraph(url, data);
+            async function getUrlOpengraph(url, data){
+                let ajaxResult = await makeRequest('post', url, data);
+                ajaxResult = JSON.parse(ajaxResult);
+                console.log(ajaxResult.ogs.data.ogUrl);
+                console.log(ajaxResult.ogs.data.ogDescription);
+                console.log(ajaxResult.ogs.data.ogImage);
+            }
+        });
     }
 
     __onYoutubeClick() {
