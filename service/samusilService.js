@@ -14,8 +14,12 @@ const samusilDao = require('../db/b-dao/samusilDao');
 exports.getSamusilInfo = async function() {
     const results = await Promise.all([
         //samusilDao 사용
-        samusilDao.countUsers()
+        samusilDao.countUsers(),
+        samusilDao.countPenobrol(),
+        samusilDao.countTandya(),
+        samusilDao.countYoutublog(),
+        samusilDao.countComments(),
+        samusilDao.countAnswers()
     ]);
-    console.log(results);
     return results;
 };
