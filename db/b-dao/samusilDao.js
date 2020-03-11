@@ -20,6 +20,10 @@ exports.countTandya = () => doQuery(
   `select count(*)
   AS tandya from tandya`
 );
+exports.countYoutublog = () => doQuery(
+    `select count(*)
+  AS youtublog from youtublog`
+);
 exports.countComments = () => doQuery(
   `select count(*)
   AS pcom from p_com`

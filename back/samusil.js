@@ -6,15 +6,14 @@ const samusilService = require('../service/samusilService.js');
 var todayCount = 1;
 
 route.get('/', function (req, res) {
-    // penobrolService.getOrderedPenobrol()
-    //     .then(([dateTopics, scoreTopics]) => res.render('./jp/p', {
-    //         dateTopics: dateTopics,
-    //         scoreTopics: scoreTopics,
-    //         id2: req.session.id2
-    //     }));
     samusilService.getSamusilInfo()
-        .then(([example]) => res.render('./samusil/samusil', {
-            example: example
+        .then(([users, penobrol, tandya, youtublog, comment, answer]) => res.render('./samusil/samusil', {
+            users: users[0].users,
+            penobrol : penobrol[0].penobrol,
+            tandya : tandya[0].tandya,
+            youtublog : youtublog[0].youtublog,
+            comment : comment[0].pcom,
+            answer : answer[0].tans
         }));
 });
 
