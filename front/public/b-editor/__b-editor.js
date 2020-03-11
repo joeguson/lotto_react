@@ -23,12 +23,14 @@ function __rotateImage(target) {
     target.className = ("rotate"+__pad(angle*90, 3));
 }
 
-function changeStartTime(target) {
-    let targetIframe = document.getElementById(target.value);
+function changeStartTime(youtubeId, time) {
+    console.log(youtubeId);
+    console.log(time);
+    let targetIframe = document.getElementById(youtubeId);
     let src = targetIframe.src;
     let startStringIndex = src.indexOf('rel=');
     src = src.slice(0, startStringIndex);
-    let startingTime = '?&autoplay=1&rel=0&start='+target.innerHTML;
+    let startingTime = '?&autoplay=1&rel=0&start='+time;
     src += startingTime;
     targetIframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; allowfullscreen');
     targetIframe.src = src;

@@ -4,6 +4,7 @@ class BeritamusIdDialog extends BeritamusDialog {
         this.idInput = null;
         this.controlButton = null;
         this.youtubeDialog = document.createElement("b-youtube-dialog");
+        this.onConfirmCallback = null;
     }
 
     connectedCallback() {
@@ -14,15 +15,15 @@ class BeritamusIdDialog extends BeritamusDialog {
             this.idInput = input;
             return input;
         };
-
-        this.buttonAreaBuilder = () => {
-            const button = document.createElement("button");
-            button.innerText = 'button';
-            button.id = 'videoButton';
-            button.style.display = "block";
-            return button;
-        };
         super.connectedCallback();
+    }
+
+    onConfirm() {
+        if(this.onConfirmCallback){
+            this.onConfirmCallback((this.idInput.value).split('=')[1]);
+        }
+        this.idInput.value = '';
+        super.onConfirm();
     }
 }
 

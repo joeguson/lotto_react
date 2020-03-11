@@ -49,6 +49,7 @@
 
         this.youtubeDialog = document.createElement("b-youtube-dialog");
         this.appendChild(this.youtubeDialog);
+
     }
 
     buildControls(w) {
@@ -185,47 +186,7 @@
         this.colorPicker.onchange = (e) => this.cmd("ForeColor", false, e.target.value)();
         this.fontPicker.onchange = (e) => this.cmd("FontName", false, e.target.value)();
         this.sizePicker.onchange = (e) => this.cmd("FontSize", false, e.target.value)();
-        this.imageInput.onchange = (e) => {
-            const i = this.imageInput;
-            const rot = this.rotateImage;
-            if (i.files && i.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    editor.body.focus();
-                    var img = document.createElement("img");
-                    img.src = e.target.result;
-                    img.onload = function(){
-                        let canvas = document.createElement("canvas");
-                        let ctx = canvas.getContext("2d");
-                        ctx.drawImage(img, 0, 0);
-                        let MAX_WIDTH = editor.body.offsetWidth;
-                        let MAX_HEIGHT = editor.body.offsetWidth;
-                        let width = img.width;
-                        let height = img.height;
-                        if (width > height) {
-                            if (width > MAX_WIDTH) {
-                                height *= MAX_WIDTH / width;
-                                width = MAX_WIDTH;
-                            }
-                        } else {
-                            if (height > MAX_HEIGHT) {
-                                width *= MAX_HEIGHT / height;
-                                height = MAX_HEIGHT;
-                            }
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-                        console.log(canvas);
-                        ctx.drawImage(img, 0, 0, width, height);
-                        let dataurl = canvas.toDataURL("image/png");
-                        const imgHTML = "<img style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + dataurl +"'/>";
-                        editor.execCommand("insertHTML", false, imgHTML);
-                    }
-                };
-                reader.readAsDataURL(i.files[0]);
-                i.value = "";
-            }
-        };
+        this.imageInput.onchange = (e) => { this.__onImgClick(); };
 
         this.controlButtons["Create link"].onclick = () =>{
             this.__onLinkClick();
@@ -247,6 +208,43 @@
         css.rel = "stylesheet";
         css.href = "../../public/b-editor/__b-editor.css";
         editor.head.append(css);
+
+        this.youtubeIdDialog.onConfirmCallback = (youtubeId) => {
+            this.youtubeDialog.showModal(youtubeId);
+        };
+
+        this.youtubeDialog.onConfirmCallback = (data) => {
+            const table = document.createElement('table');
+            const youtubeIframe = document.createElement('iframe');
+            youtubeIframe.src = "https://www.youtube.com/embed/" + data.youtubeId + "?";
+            youtubeIframe.id = data.youtubeId;
+
+            data.times.forEach(e => {
+                let row = document.createElement('tr');
+                let time = document.createElement('td');
+                let desc = document.createElement('td');
+
+                let buttonTag = document.createElement('button');
+                let spanTag = document.createElement('span');
+
+                buttonTag.innerHTML = e.hour + e.minute + e.second;
+                console.log(data.youtubeId);
+                console.log(data.times);
+                buttonTag.setAttribute('onclick', `changeStartTime("${data.youtubeId}", "${e.hour + e.minute + e.second}");`);
+                spanTag.innerHTML = e.desc;
+
+                time.appendChild(buttonTag);
+                desc.appendChild(spanTag);
+                row.appendChild(time);
+                row.appendChild(desc);
+                table.appendChild(row);
+            });
+            const youtubeHTML = youtubeIframe.outerHTML;
+            const timeTable = table.outerHTML;
+            this.editor.body.focus();
+            this.editor.execCommand("insertHTML", false, youtubeHTML);
+            this.editor.execCommand("insertHTML", false, timeTable);
+        };
     }
 
     cmd(id, showUi, value) {
@@ -255,6 +253,48 @@
             editor.execCommand(id, showUi, value);
         }
     }
+
+    __onImgClick(){
+        const i = this.imageInput;
+        const rot = this.rotateImage;
+        if (i.files && i.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.editor.body.focus();
+                var img = document.createElement("img");
+                img.src = e.target.result.toString();
+                img.onload = () => {
+                    let canvas = document.createElement("canvas");
+                    let ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    let MAX_WIDTH = this.editor.body.offsetWidth;
+                    let MAX_HEIGHT = this.editor.body.offsetWidth;
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    let dataurl = canvas.toDataURL("image/png");
+                    const imgHTML = "<img style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + dataurl +"'/>";
+                    this.editor.execCommand("insertHTML", false, imgHTML);
+                }
+            };
+            reader.readAsDataURL(i.files[0]);
+            i.value = "";
+        }
+    }
+
     __onLinkClick(){
         this.linkDialog.showModal();
         const linkInput = document.getElementById('linkInput');
@@ -276,29 +316,6 @@
 
     __onYoutubeClick() {
         this.youtubeIdDialog.showModal();
-        const videoInput = document.getElementById('videoInput');
-        const videoButton = document.getElementById('videoButton');
-        const videoConfirm = document.getElementById('videoConfirm');
-        let youtubeId = '';
-        videoButton.addEventListener('click', () => {
-            //videoInput needs to be upgraded.
-            youtubeId = (videoInput.value).split('=')[1];
-            this.youtubeDialog.iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?";
-            this.youtubeDialog.iframe.id = youtubeId;
-            this.youtubeDialog.showModal();
-        });
-        videoConfirm.addEventListener('click', () => {
-            const timeTags = document.getElementById('timeTags');
-            const timeObject = makeTimeJumper(timeTags);
-            const timeTable = makeTimeTable(timeObject, youtubeId);
-            this.youtubeDialog.iframe.style.width = "100%";
-            const youtubeHTML = this.youtubeDialog.iframe.outerHTML;
-            this.youtubeIdDialog.dialog.close();
-            this.youtubeDialog.dialog.close();
-            this.editor.body.focus();
-            this.editor.execCommand("insertHTML", false, youtubeHTML);
-            this.editor.execCommand("insertHTML", false, timeTable);
-        });
     }
 
 }
