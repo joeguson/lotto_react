@@ -10,6 +10,9 @@ const penobrolRouter = require('./penobrolApi');
 const tandyaRouter = require('./tandyaApi');
 const youtublogRouter = require('./youtublogApi');
 const samusil = require('./samusilApi');
+const config =require('../config.json');
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3(config.aws_config);
 
 api.use('/aku', akuRouter);
 api.use('/cari', cariRouter);

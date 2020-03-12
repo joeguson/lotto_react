@@ -17,7 +17,7 @@ block newArticleContent
     b-editor(id='editor' width="90%" height="600px" name="content" youtublog='0')
 
 block newArticleSubmit
-    button(class="submit" name='p' onclick='postArticle(this)') share
+    button(class="submit" id='submit' name='p' onclick='postArticle(this)') share
 
     script.
         function checksubmit(){

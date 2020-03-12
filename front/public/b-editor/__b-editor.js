@@ -24,8 +24,6 @@ function __rotateImage(target) {
 }
 
 function changeStartTime(youtubeId, time) {
-    console.log(youtubeId);
-    console.log(time);
     let targetIframe = document.getElementById(youtubeId);
     let src = targetIframe.src;
     let startStringIndex = src.indexOf('rel=');

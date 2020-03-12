@@ -3,25 +3,25 @@ class BeritamusLinkDialog extends BeritamusDialog {
         super();
         this.idInput = null;
         this.controlButton = null;
+        this.onConfirmCallback = null;
     }
 
     connectedCallback() {
         this.contentAreaBuilder = () => {
             const input = document.createElement("input");
             input.style.display = "block";
-            input.id = "linkInput";
+            input.id = "videoInput";
             this.idInput = input;
             return input;
         };
-
-        this.buttonAreaBuilder = () => {
-            const button = document.createElement("button");
-            button.innerText = 'create link';
-            button.id = 'linkButton';
-            button.style.display = "block";
-            return button;
-        };
         super.connectedCallback();
+    }
+    onConfirm() {
+        if(this.onConfirmCallback){
+            this.onConfirmCallback(this.idInput.value);
+        }
+        this.idInput.value = '';
+        super.onConfirm();
     }
 }
 

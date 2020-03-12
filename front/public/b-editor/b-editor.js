@@ -209,6 +209,33 @@
         css.href = "../../public/b-editor/__b-editor.css";
         editor.head.append(css);
 
+        this.linkDialog.onConfirmCallback = (linkAddress) => {
+            let data = {"urlSource" : linkAddress}
+            let url = '/api/opengraph';
+            let ajaxResult = '';
+            getUrlOpengraph(url, data);
+            async function getUrlOpengraph(url, data){
+                ajaxResult = await makeRequest('post', url, data);
+                ajaxResult = JSON.parse(ajaxResult);
+                const linkDiv = document.createElement('div');
+                const linkImg = document.createElement('img');
+                const linkDesc = document.createElement('div');
+
+                linkDesc.style.width = '90%';
+                linkDesc.innerText = ajaxResult.ogs.data.ogDescription;
+                linkImg.style.width = '90%';
+                linkImg.src = ajaxResult.ogs.data.ogImage.url;
+
+                linkDiv.appendChild(linkImg);
+                linkDiv.appendChild(linkDesc);
+
+                const linkHTML = linkDiv.outerHTML;
+                editor.body.focus();
+                editor.execCommand("insertHTML", false, linkHTML);
+                console.log(ajaxResult.ogs.data.ogUrl);
+            }
+        };
+
         this.youtubeIdDialog.onConfirmCallback = (youtubeId) => {
             this.youtubeDialog.showModal(youtubeId);
         };
@@ -218,6 +245,8 @@
             const youtubeIframe = document.createElement('iframe');
             youtubeIframe.src = "https://www.youtube.com/embed/" + data.youtubeId + "?";
             youtubeIframe.id = data.youtubeId;
+            youtubeIframe.style.width = "80%";
+            youtubeIframe.style.height = "300px";
 
             data.times.forEach(e => {
                 let row = document.createElement('tr');
@@ -228,8 +257,6 @@
                 let spanTag = document.createElement('span');
 
                 buttonTag.innerHTML = e.hour + e.minute + e.second;
-                console.log(data.youtubeId);
-                console.log(data.times);
                 buttonTag.setAttribute('onclick', `changeStartTime("${data.youtubeId}", "${e.hour + e.minute + e.second}");`);
                 spanTag.innerHTML = e.desc;
 
@@ -297,21 +324,6 @@
 
     __onLinkClick(){
         this.linkDialog.showModal();
-        const linkInput = document.getElementById('linkInput');
-        const linkButton = document.getElementById('linkButton');
-        linkButton.addEventListener('click', () => {
-            let data = {"urlSource" : linkInput.value}
-            let url = '/api/opengraph';
-            console.log(data);
-            getUrlOpengraph(url, data);
-            async function getUrlOpengraph(url, data){
-                let ajaxResult = await makeRequest('post', url, data);
-                ajaxResult = JSON.parse(ajaxResult);
-                console.log(ajaxResult.ogs.data.ogUrl);
-                console.log(ajaxResult.ogs.data.ogDescription);
-                console.log(ajaxResult.ogs.data.ogImage);
-            }
-        });
     }
 
     __onYoutubeClick() {

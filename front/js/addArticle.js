@@ -1,46 +1,43 @@
-let add = true;
-if(add){
-    add = !add;
-    function postArticle(target) {
-        const type = target.name;
-        const public = document.getElementById('rbP').checked ? 'p' : 'a';
-        var content = document.getElementById('editor').value();
-        const hashtag = document.getElementById('hashtag').value;
-        const thumbnail = document.getElementById('thumbnail').value;
-        const req = {
-            type: type,
-            thumbnail: thumbnail,
-            public: public,
-            content: content,
-            hashtag: hashtag
-        };
-        //tandya일 경우 question을, penobrol과 youtublog일 경우 title을 가져옴
-        if(type == 't') req.question = document.getElementById('question').value;
-        else req.title = document.getElementById('title').value;
 
-        const parsed = parseImgTags(content);
-        content = parsed.content;
 
-        const imgCount = Object.keys(parsed.imgs).length;
-        if(imgCount == 0) finalPost(req);
-        else {
-            var done = 0;
-            for(var id in parsed.imgs) {
-                uploadImage(id, parsed.imgs[id], (id, filename) => {
-                    console.log(req);
-                    content = replace(content, id, filename);
-                    req.content = content;
-                    done++;
-                    if(done == imgCount)
-                        finalPost(req);
-                });
-            }
+function postArticle(target) {
+    const type = target.name;
+    const public = document.getElementById('rbP').checked ? 'p' : 'a';
+    let content = document.getElementById('editor').value();
+    const hashtag = document.getElementById('hashtag').value;
+    const thumbnail = document.getElementById('thumbnail').value;
+    const req = {
+        type: type,
+        thumbnail: thumbnail,
+        public: public,
+        content: content,
+        hashtag: hashtag
+    };
+    //tandya일 경우 question을, penobrol과 youtublog일 경우 title을 가져옴
+    if(type == 't') req.question = document.getElementById('question').value;
+    else req.title = document.getElementById('title').value;
+
+    const parsed = parseImgTags(content);
+    content = parsed.content;
+
+    const imgCount = Object.keys(parsed.imgs).length;
+    if(imgCount == 0) finalPost(req);
+    else {
+        var done = 0;
+        for(var id in parsed.imgs) {
+            uploadImage(id, parsed.imgs[id], (id, filename) => {
+                content = replace(content, id, filename);
+                req.content = content;
+                done++;
+                if(done == imgCount)
+                    finalPost(req);
+            });
         }
     }
-    setTimeout(function(){
-        add = true;
-    },2000);
 }
+setTimeout(function(){
+    add = true;
+},2000);
 
 function parseImgTags(content) {
     var id = 1;
@@ -77,15 +74,15 @@ function parseImgTags(content) {
 }
 
 function uploadImage(id, data, onUploaded) {
-    var json = JSON.stringify({
+    let json = JSON.stringify({
        img: data
     });
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open('POST', '/api/image', true);
     xhr.setRequestHeader('Content-type', "application/json");
     xhr.send(json);
     xhr.onload = () => {
-        var result = JSON.parse(xhr.responseText).filename;
+        let result = JSON.parse(xhr.responseText).filename;
         onUploaded(id, result);
     };
 }
