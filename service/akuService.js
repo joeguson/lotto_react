@@ -36,12 +36,10 @@ exports.unfollowUser = async function(source, target) {
     return count > 0;
 };
 
-// 현재 상대를 follow 하고 있는 중인지 여부 반환
-// 수정 필요
-// exports.isFollowing = async function(source, target) {
-//     const result = await followDao.select(source, target);
-//     return result.length > 0;
-// };
+exports.isFollowing = async function(source, target) {
+    const result = await followDao.select(source, target);
+    return result.length > 0;
+};
 
 exports.searchUser = async function(string) {
     const results = await userDao.userSearch(string);
@@ -49,23 +47,21 @@ exports.searchUser = async function(string) {
 };
 
 exports.getUserArticle = async function(id2) {
-    const userArticle = await Promise.all([
+    return await Promise.all([
         penobrolService.getUserPenobrol(id2),
         tandyaService.getUserTandya(id2),
         youtublogService.getUserYoutublog(id2),
         getUserLikes(id2)
     ]);
-    return userArticle;
 };
 
 exports.getUserArticleByForeigner = async function(id2, me) {
-    const userArticle = await Promise.all([
+    return await Promise.all([
         penobrolService.getUserPenobrolWithoutAnonim(id2),
         tandyaService.getUserTandyaWithoutAnonim(id2),
         youtublogService.getUserYoutublogWithoutAnonim(id2),
         await followDao.select(me, id2)
     ]);
-    return userArticle;
 };
 
 exports.userLogin = async function(u_id, u_pw) {
@@ -91,16 +87,13 @@ exports.verifyUserEmail = async function(email, code) {
     else return -1;
 };
 
-exports.checkUserCount = async function(type, data) {
+exports.checkUserDataExists = async function(type, data) {
     let count;
-    let result = 0;
 
     if(type === 'id') count = await userDao.userCountById(data);
     else count = await userDao.userCountByEmail(data);
 
-    if(parseInt(count[0].total) > 0) result = 1;
-    else result = 0;
-    return result;
+    return parseInt(count[0].total) > 0;
 };
 
 exports.postUser = async function(u_id, u_pw, birthday, u_sex,  u_email, code){
@@ -176,17 +169,16 @@ async function getUserLikes(id2) {
         penobrolService.penobrolComLikeCountByAuthor(id2),
         tandyaService.tandyaAnsLikeCountByAuthor(id2)
     ]);
-    const totalLikes = {
-        "penobrol" : penobrolLikes,
-        "tandya" : tandyaLikes,
-        "comment" : pcommentLikes,
-        "answer" : tanswerLikes
+    return {
+        "penobrol": penobrolLikes,
+        "tandya": tandyaLikes,
+        "comment": pcommentLikes,
+        "answer": tanswerLikes
     };
-    return totalLikes;
 }
 
 function deliverMail(options){
-    transporter.sendMail(options, (error, info) => {
+    transporter.sendMail(options, (error) => {
         if (error) {
             console.log(error);
         }
