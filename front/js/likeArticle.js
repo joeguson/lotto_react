@@ -11,13 +11,10 @@ function pLike(penobrol) {
     let articleLikeNum = document.getElementById('articleLikeNum');
     let data = getData(penobrol);
     let url = 'api/penobrol/like';
-    if(pLikeClick){
-        pLikeClick = !pLikeClick;
-        likeResult(articleLikeNum, penobrol, url, data);
-        setTimeout(function(){
-            pLikeClick = true;
-        },2000);
-    }
+    likeResult(articleLikeNum, penobrol, url, data);
+    if(data.clickVal) penobrol.childNodes[0].src = "./icons/nocap.png";
+    else penobrol.childNodes[0].src = "./icons/cap.png";
+    penobrol.value = data.articleId+'/'+data.comAnsId+'/'+(data.clickVal ? 0 : 1);
 }
 
 function pcLike(comment) {
@@ -99,8 +96,6 @@ function getData(target){
 async function likeResult(likeNum, target, url, data){
     let ajaxResult = await makeRequest('post', url, data);
     ajaxResult = JSON.parse(ajaxResult);
-    target.value = data.articleId+'/'+data.comAnsId+'/'+ajaxResult.button;
+    if(ajaxResult.button != null) target.value = data.articleId+'/'+data.comAnsId+'/'+ajaxResult.button;
     likeNum.innerHTML = ajaxResult.result;
-    if(ajaxResult.button == 1) target.childNodes[0].src = "./icons/nocap.png";
-    else target.childNodes[0].src = "./icons/cap.png";
 }

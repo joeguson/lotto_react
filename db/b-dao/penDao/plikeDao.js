@@ -42,7 +42,7 @@ exports.insertPenobrolLike = (p_id, u_id) => doQuery(
     `INSERT INTO p_like (p_id, u_id)
     VALUES (?, ?)`,
     [p_id, u_id]
-)
+);
 
 /* ===== delete ===== */
 exports.deletePenobrolLike = (id, u_id) => doQuery(

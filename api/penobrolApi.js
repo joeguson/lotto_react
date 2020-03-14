@@ -24,7 +24,7 @@ route.put('/:penobrol_no', function (req, res) {
         req.body.public,
         req.body.thumbnail,
         jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(p_id => res.json({ "id": p_id }));
+    ).then(p_id => res.json({"id": p_id}));
 });
 
 route.post('/like', function (req, res) {
@@ -50,11 +50,15 @@ route.post('/like/comment', function (req, res) {
         req.session.id2,
         parseInt(req.body.clickVal)
     ).then(val => {
-        penobrolService.penobrolComLikeCount(pc_id).then(count =>
-            res.json({
-                "result": count,
-                "button": val
-            })
+        penobrolService.penobrolComLikeCount(pc_id).then(count => {
+                // if (val == null) penobrolService.;
+                // else {
+                    res.json({
+                        "result": count,
+                        "button": val
+                    });
+                // }
+            }
         );
     });
 });
@@ -77,7 +81,7 @@ route.post('/warn', function (req, res) {
         req.body.warnedItem,
         req.body.warnedId,
         req.session.id2
-    ).then(result => res.json({ "result": result }));
+    ).then(result => res.json({"result": result}));
 });
 
 module.exports = route;

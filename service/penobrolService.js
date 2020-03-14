@@ -78,7 +78,7 @@ exports.getFullPenobrolById = async function(id) {
     ]);
 
     penobrol.comments = commentsResult.map(parser.parseComment);
-    penobrol.likes = likesResult.map(parser.parseTLike);
+    penobrol.likes = likesResult.map(parser.parsePLike);
     penobrol.hashtags = hashtagsResult.map(parser.parseHashtagT);
 
     penobrol.comments = await applyAsyncToAll(penobrol.comments, getFullComments);
@@ -115,10 +115,15 @@ exports.postCommentCom = async function(pc_id, author, content) {
 };
 
 exports.likePenobrol = async function(p_id, user, val) {
-    if(val) await plikeDao.deletePenobrolLike(p_id, user);
-    else await plikeDao.insertPenobrolLike(p_id, user);
-    await penobrolDao.updatePenobrolScore(p_id);
-    return Number(!val);
+    try {
+        if (val) await plikeDao.deletePenobrolLike(p_id, user);
+        else await plikeDao.insertPenobrolLike(p_id, user);
+        await penobrolDao.updatePenobrolScore(p_id);
+        return Number(!val);
+    }
+    catch(e){
+        return null;
+    }
 };
 
 exports.penobrolLikeCount = async function(p_id) {

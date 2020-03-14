@@ -6,14 +6,12 @@ exports.doQuery = function(pool, sql, arg) {
             if(err){ reject(err); }
             connection.query(sql, arg, function(err, rows) {
                 if(err){ reject(err); }
-                else{
-                    resolve(rows);
-                }
+                else resolve(rows);
                 connection.release();
             });
         })
     });
-}
+};
 
 
 exports.oneArg = function(query){
@@ -27,7 +25,7 @@ exports.oneArg = function(query){
             }
         });
     });
-}
+};
 
 exports.twoArg = function(query, id){
     return new Promise(function(resolve, reject){
@@ -40,7 +38,7 @@ exports.twoArg = function(query, id){
             }
         });
     });
-}
+};
 
 exports.threeArg = function(query, id, arg1){
     return new Promise(function(resolve, reject){
@@ -53,7 +51,7 @@ exports.threeArg = function(query, id, arg1){
             }
         });
     });
-}
+};
 
 exports.fourArg = function(query, id, arg1, arg2){
     return new Promise(function(resolve, reject){
@@ -66,7 +64,7 @@ exports.fourArg = function(query, id, arg1, arg2){
             }
         });
     });
-}
+};
 // var conn = require('../b');
 // var pool = require('../b');
 //
