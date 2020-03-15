@@ -1,4 +1,4 @@
-//url - '/api/youtublog'
+ //url - '/api/youtublog'
 const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 const youtublogService = require('../service/youtublogService.js');

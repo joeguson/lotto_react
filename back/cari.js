@@ -24,8 +24,9 @@ route.get('/search', function (req, res) {
 
 route.get('/', function (req, res) {
     cariService.getRandArticle()
-        .then(([randPenobrol, randTandya]) => {
+        .then(([randPenobrol, randTandya, randYoutublog]) => {
             let result = randPenobrol.concat(randTandya);
+            result = result.concat(randYoutublog);
             jsForBack.shuffle(result);
             res.render('./jc/cari', {
                 list: result,

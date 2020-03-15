@@ -1,13 +1,15 @@
 const akuService = require('./akuService');
 const tandyaService = require('./tandyaService');
 const penobrolService = require('./penobrolService');
+const youtublogService = require('./youtublogService');
 let config = require('../config.json');
 const jsForBack = require('../back/jsForBack.js');
 
 exports.getRandArticle = async function() {
     const randArticle = await Promise.all([
         penobrolService.getRandPenobrol(),
-        tandyaService.getRandTandya()
+        tandyaService.getRandTandya(),
+        youtublogService.getRandYoutublog()
     ]);
     return randArticle;
 };

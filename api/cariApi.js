@@ -7,10 +7,11 @@ const cariService = require('../service/cariService.js');
 
 route.get('/', function(req, res){
     cariService.getRandArticle()
-        .then(([randPenobrol, randTandya]) => {
+        .then(([randPenobrol, randTandya, randYoutublog]) => {
             let result = randPenobrol.concat(randTandya);
+            result = result.concat(randYoutublog);
             jsForBack.shuffle(result);
-            let responseData = {'result': 'ok', 'data': result};
+            let responseData = result;
             res.json(responseData);
         });
 });

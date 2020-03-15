@@ -44,7 +44,7 @@ exports.youtublogByDate = () => doQuery(
     from youtublog as y
     join users as u on y.author = u.id
     order by date
-    desc limit 3`
+    desc limit 4`
 );
 exports.youtublogByScore = () => doQuery(
     `select y.*, u.u_id

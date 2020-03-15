@@ -29,7 +29,7 @@ exports.tandyaByRand = () => doQuery(
     from tandya as t
     join users as u on t.author = u.id
     order by rand()
-    limit 3`
+    limit 4`
 );
 exports.tandyaSearch = (string) => doQuery(
     `SELECT *

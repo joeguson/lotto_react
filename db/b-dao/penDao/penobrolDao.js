@@ -30,7 +30,7 @@ exports.penobrolByRand = () => doQuery(
     from penobrol as p
     join users as u on p.author = u.id
     order by rand()
-    limit 3`
+    limit 4`
 );
 exports.penobrolSearch = (string) => doQuery(
     `SELECT *
