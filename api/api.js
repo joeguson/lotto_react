@@ -5,9 +5,6 @@ const ogs = require('open-graph-scraper');
 const api = require('express').Router();
 const akuRouter = require('./akuApi');
 const cariRouter = require('./cariApi');
-const penobrolRouter = require('./penobrolApi');
-const tandyaRouter = require('./tandyaApi');
-const youtublogRouter = require('./youtublogApi');
 const samusil = require('./samusilApi');
 const article = require('./articleApi');
 const config =require('../config.json');
@@ -16,9 +13,6 @@ const s3 = new AWS.S3(config.aws_config);
 
 api.use('/aku', akuRouter);
 api.use('/cari', cariRouter);
-api.use('/penobrol', penobrolRouter);
-api.use('/tandya', tandyaRouter);
-api.use('/youtublog', youtublogRouter);
 api.use('/samusil', samusil);
 api.use('/article', article);
 
