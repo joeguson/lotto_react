@@ -10,7 +10,7 @@ let ycLikeClick = true;
 function pLike(penobrol) {
     let articleLikeNum = document.getElementById('articleLikeNum');
     let data = getData(penobrol);
-    let url = 'api/penobrol/like';
+    let url = 'api/article/penobrol/like';
     likeResult(articleLikeNum, penobrol, url, data);
     if(data.clickVal) penobrol.childNodes[0].src = "./icons/nocap.png";
     else penobrol.childNodes[0].src = "./icons/cap.png";
@@ -34,7 +34,7 @@ function pcLike(comment) {
 function tLike(tandya){
     let articleLikeNum = document.getElementById('articleLikeNum');
     let data = getData(tandya);
-    let url = 'api/tandya/like';
+    let url = 'api/article/tandya/like';
     if(tLikeClick){
         tLikeClick = !tLikeClick;
         likeResult(articleLikeNum, tandya, url, data);
@@ -61,7 +61,7 @@ function taLike(answer){
 function yLike(youtublog) {
     let articleLikeNum = document.getElementById('articleLikeNum');
     let data = getData(youtublog);
-    let url = 'api/youtublog/like';
+    let url = 'api/article/youtublog/like';
     if(yLikeClick){
         yLikeClick = !yLikeClick;
         likeResult(articleLikeNum, youtublog, url, data);
@@ -85,12 +85,11 @@ function ycLike(comment) {
 }
 
 function getData(target){
-    let temp = {
-        "articleId" : target.value.split('/')[0],
-        "comAnsId" : target.value.split('/')[1],
-        "clickVal" : target.value.split('/')[2]
-    }
-    return temp;
+    return {
+        "articleId": target.value.split('/')[0],
+        "comAnsId": target.value.split('/')[1],
+        "clickVal": target.value.split('/')[2]
+    };
 }
 
 async function likeResult(likeNum, target, url, data){

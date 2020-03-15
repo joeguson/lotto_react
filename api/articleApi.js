@@ -70,4 +70,42 @@ route.put('/:type/:id', (req, res) => {
     );
 });
 
+/* ===== POST /{type}/like ===== */
+// article type 에 따른 like 요청 함수
+const articleLikeFunctions = {
+    penobrol: penobrolService.likePenobrol,
+    tandya: tandyaService.likeTandya,
+    youtublog: youtublogService.likeYoutublog
+};
+// like 의 개수를 받아오는 함수
+const articleLikeCountFunctions = {
+    penobrol: penobrolService.penobrolLikeCount,
+    tandya: tandyaService.tandyaLikeCount,
+    youtublog: youtublogService.youtublogLikeCount
+};
+// article 에 like/취소 를 요청하는 api
+route.post('/:type/like', (req, res) => {
+    const type = req.params['type'];
+    const likeFunction = articleLikeFunctions[type];
+    const likeCountFunction = articleLikeCountFunctions[type];
+
+    const id = req.body.articleId;
+    const clickVal = parseInt(req.body.clickVal);
+
+    if (likeFunction == null)
+        res.status(400).send('Wrong article type');
+    likeFunction(
+        id,
+        req.session.id2,
+        clickVal
+    ).then(val =>
+        likeCountFunction(id).then(count =>
+            res.json({
+                'result': count,
+                'button': val
+            })
+        ).catch(() => res.status(500).send('Cannot load article state'))
+    ).catch(() => res.status(409).send('Already in like state'));
+});
+
 module.exports = route;

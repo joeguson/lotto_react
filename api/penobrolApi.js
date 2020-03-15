@@ -4,22 +4,6 @@ const penobrolService = require('../service/penobrolService.js');
 
 /************************Penobrol************************/
 
-route.post('/like', function (req, res) {
-    const p_id = req.body.articleId;
-    penobrolService.likePenobrol(
-        p_id,
-        req.session.id2,
-        parseInt(req.body.clickVal)
-    ).then(val => {
-        penobrolService.penobrolLikeCount(p_id).then(count =>
-            res.json({
-                "result": count,
-                "button": val
-            })
-        );
-    });
-});
-
 route.post('/like/comment', function (req, res) {
     const pc_id = req.body.comAnsId;
     penobrolService.likePenobrolComment(
