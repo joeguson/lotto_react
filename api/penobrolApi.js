@@ -5,17 +5,6 @@ const penobrolService = require('../service/penobrolService.js');
 
 /************************Penobrol************************/
 
-route.post('/', function (req, res) {
-    penobrolService.postPenobrol(
-        req.session.id2,
-        req.body.title,
-        req.body.content,
-        req.body.public,
-        req.body.thumbnail,
-        jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(id => res.json({"id": id}));
-});
-
 route.put('/:penobrol_no', function (req, res) {
     penobrolService.editPenobrol(
         req.params.penobrol_no,

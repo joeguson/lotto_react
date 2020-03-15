@@ -1,27 +1,31 @@
-
+function __getIsPublic() {
+    const element = document.getElementById("rbP");
+    if (element == null) return 'p';
+    return element.checked ? 'p' : 'a';
+}
 
 function postArticle(target) {
     const type = target.name;
-    const public = document.getElementById('rbP').checked ? 'p' : 'a';
+    const isPublic = __getIsPublic();
     let content = document.getElementById('editor').value();
     const hashtag = document.getElementById('hashtag').value;
     const thumbnail = document.getElementById('thumbnail').value;
     const req = {
         type: type,
         thumbnail: thumbnail,
-        public: public,
+        public: isPublic,
         content: content,
         hashtag: hashtag
     };
     //tandya일 경우 question을, penobrol과 youtublog일 경우 title을 가져옴
-    if(type == 't') req.question = document.getElementById('question').value;
+    if(type === 't') req.question = document.getElementById('question').value;
     else req.title = document.getElementById('title').value;
 
     const parsed = parseImgTags(content);
     content = parsed.content;
 
     const imgCount = Object.keys(parsed.imgs).length;
-    if(imgCount == 0) finalPost(req);
+    if(imgCount === 0) finalPost(req);
     else {
         var done = 0;
         for(var id in parsed.imgs) {
@@ -29,7 +33,7 @@ function postArticle(target) {
                 content = replace(content, id, filename);
                 req.content = content;
                 done++;
-                if(done == imgCount)
+                if(done === imgCount)
                     finalPost(req);
             });
         }
@@ -49,7 +53,7 @@ function parseImgTags(content) {
     while(true) {
         // <img
         imgIndex = content.indexOf('<img', imgIndex);
-        if(imgIndex == -1) break;
+        if(imgIndex === -1) break;
         // src="
         const srcIndex = content.indexOf('src=\"', imgIndex);
         // data
@@ -94,9 +98,9 @@ function replace(content, id, filename, index = 0) {
         const imgIndex = content.indexOf('<img', index);
         const srcIndex = content.indexOf('src="', imgIndex);
         const endIndex = content.indexOf('"', srcIndex+5);
-        if(imgIndex == -1 || srcIndex == -1 || endIndex == -1) break;
+        if(imgIndex === -1 || srcIndex === -1 || endIndex === -1) break;
         const curId = parseInt(content.substring(srcIndex + 5, endIndex));
-        if(curId == id) {
+        if(curId === id) {
             s = srcIndex + 5;
             e = endIndex;
             break;
@@ -107,10 +111,14 @@ function replace(content, id, filename, index = 0) {
 }
 
 function finalPost(body) {
-    let postUrl = '';
-    if(body.type ==='p') postUrl = 'api/penobrol';
-    else if(body.type === 't') postUrl = 'api/tandya';
-    else postUrl = 'api/youtublog';
+    let postUrl = 'api/article/';
+    switch (body.type) {
+        case 'p': postUrl += 'penobrol/';   break;
+        case 't': postUrl += 'tandya/';     break;
+        case 'y': postUrl += 'youtublog/';  break;
+        default: return;
+    }
+
     let xhr = new XMLHttpRequest();
     xhr.open('POST', postUrl, true);
     xhr.setRequestHeader('Content-type', "application/json");

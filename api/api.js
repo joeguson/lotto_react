@@ -1,7 +1,6 @@
 //url - '/api'
 const imageThumbnail = require('image-thumbnail');
 const jsForBack = require('../back/jsForBack.js');
-const ajax = require("xmlhttprequest").XMLHttpRequest;
 const ogs = require('open-graph-scraper');
 const api = require('express').Router();
 const akuRouter = require('./akuApi');
@@ -10,6 +9,7 @@ const penobrolRouter = require('./penobrolApi');
 const tandyaRouter = require('./tandyaApi');
 const youtublogRouter = require('./youtublogApi');
 const samusil = require('./samusilApi');
+const article = require('./articleApi');
 const config =require('../config.json');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3(config.aws_config);
@@ -20,9 +20,10 @@ api.use('/penobrol', penobrolRouter);
 api.use('/tandya', tandyaRouter);
 api.use('/youtublog', youtublogRouter);
 api.use('/samusil', samusil);
+api.use('/article', article);
 
 api.delete('/image', (req, res) => {
-    let img = req.body.img;
+    // let img = req.body.img;
     deleteImage("images", filename, (err) => {
         if(err) {
             console.log("err: ", err);

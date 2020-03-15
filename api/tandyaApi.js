@@ -5,17 +5,6 @@ const tandyaService = require('../service/tandyaService.js');
 
 /* ===== tandya ===== */
 
-route.post('/', function (req, res) {
-    tandyaService.postTandya(
-        req.session.id2,
-        req.body.question,
-        req.body.content,
-        req.body.public,
-        req.body.thumbnail,
-        jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(id => res.send({"id": id}));
-});
-
 route.put('/:tandya_no', function (req, res) {
     tandyaService.editTandya(
         req.params.tandya_no,
