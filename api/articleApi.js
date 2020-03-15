@@ -114,6 +114,36 @@ route.post('/:type/reply/like',
     )
 );
 
+/* ===== POST /{type}/re-reply ===== */
+// article type 에 따른 re-reply post 요청 함수
+const re_replyPostFunctions = {
+    penobrol: penobrolService.postCommentCom,
+    tandya: tandyaService.postAnswerCom,
+    youtublog: youtublogService.postCommentCom
+};
+// reply 에 like/취소 를 요청하는 api
+route.post('/:type/re-reply', (req, res) => {
+    const type = req.params['type'];
+    const postFunction = re_replyPostFunctions[type];
+
+    console.log(req.session);
+
+    if (postFunction == null)
+        res.status(400).send('Wrong article type');
+    else postFunction(
+        req.body.id,
+        req.session.id2,
+        req.body.content
+    ).then(re =>
+        res.json({
+            'id': re.id,
+            'author': req.session.u_id
+        })
+    ).catch(() =>
+        res.status(500).send('Could not post re-reply')
+    );
+});
+
 // article, reply 에 like 요청을 보내기 위한 공용 함수
 function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions, idString) {
     return (req, res) => {

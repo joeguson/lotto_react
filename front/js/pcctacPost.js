@@ -4,7 +4,14 @@ function pcacSendAjax(target){
     const type = pathname.split('/')[1];
     const ptid = pathname.split('/')[2];
     const pctaId = target.name;
-    let original = {'pcctacContent' : target.previousSibling.previousSibling.value};
+
+    const id = pctaId;
+    const content = target.previousSibling.previousSibling["value"];
+
+    let original = {
+        id: id,
+        content: content
+    };
     if(pcctacInputClick){
         pcctacInputClick = !pcctacInputClick;
         if(target.previousSibling.previousSibling.value.length < 5){
@@ -14,69 +21,73 @@ function pcacSendAjax(target){
             },1500);
         }
         else{
-            original = JSON.stringify(original);
-            const xhr = new XMLHttpRequest();
-            let postUrl = '';
-            if(type === 'penobrol') postUrl = '/api/penobrol/ccomment/'+ptid+'/'+pctaId;
-            else if(type ==='tandya') postUrl = '/api/tandya/acomment/'+ptid+'/'+pctaId;
-            else postUrl = 'api/youtublog/ccomment/'+ptid+'/'+pctaId;
-            xhr.open('POST', postUrl);
-            xhr.setRequestHeader('Content-type', "application/json");
-            xhr.send(original);
-            // 데이터 수신이 완료되면 표시
-            xhr.addEventListener('load', function(){
-                const result = JSON.parse(xhr.responseText);
-                let pcta = '';
-                let dls = document.createElement('dl');
-                let dts = document.createElement('dt');
-                let dds = document.createElement('dd');
-                let pcctacPopButton = document.createElement('div');
-                let pcctacPopDiv = document.createElement('div');
-                let warnButton = document.createElement('button');
-                let deleteButton = document.createElement('button');
-                let warnImg = document.createElement('img');
-                let deleteImg = document.createElement('img');
-                dls.setAttribute('class', 'dlPccAndTac');
-                dts.setAttribute('class', 'dtPccAndTac');
-                dds.setAttribute('class', 'ddPccAndTac');
-                pcctacPopButton.setAttribute('class', 'pcctacPopButton');
-                pcctacPopButton.setAttribute('onclick', 'pcctacMenuButton(this)');
-                pcctacPopButton.innerHTML = '≡';
-                pcctacPopDiv.setAttribute('class', 'pcctacPopDiv');
-                warnButton.setAttribute('class', 'pcctacPopMenu');
-                deleteButton.setAttribute('class', 'pcctacPopMenu');
-                warnButton.setAttribute('onclick', 'warningArticle(this);');
-                warnImg.setAttribute('src', './icons/warn.png');
-                deleteImg.setAttribute('src', './icons/trash.png');
-                warnButton.append(warnImg);
-                deleteButton.append(deleteImg);
-                pcctacPopDiv.append(warnButton);
-                pcctacPopDiv.append(deleteButton);
-                pcctacPopButton.append(pcctacPopDiv);
-                if(type ==='penobrol'){
-                    pcta = document.getElementById("pc/" + ptid + '/' + pctaId);
-                    pcctacPopDiv.setAttribute('id', result.ccomment_id);
-                    warnButton.setAttribute('value', 'p/pcc/'+result.ccomment_id);
-                    deleteButton.setAttribute('value', result.ccomment_id);
-                    deleteButton.setAttribute('onclick', 'postDeletePccomment(this)');
-                    dts.innerHTML = '- "' +result.ccomment_content+'"';
-                    dds.innerHTML = 'by '+result.ccomment_author+' / '+ datemaker(result.ccomment_date);
-                }
-                else{
-                    pcta = document.getElementById("ta/" + ptid + '/' + pctaId);
-                    pcctacPopDiv.setAttribute('id', result.acomment_id);
-                    warnButton.setAttribute('value', 't/tac/'+result.acomment_id);
-                    deleteButton.setAttribute('value', result.acomment_id);
-                    deleteButton.setAttribute('onclick', 'postDeleteTacomment(this)');
-                    dts.innerHTML = '- "' +result.acomment_content+'"';
-                    dds.innerHTML = 'by '+result.acomment_author+' / '+ datemaker(result.acomment_date);
-                }
-                target.previousSibling.previousSibling.value = '';
-                dts.append(pcctacPopButton);
-                dls.append(dts);
-                dls.append(dds);
-                pcta.append(dls);
-            });
+            let postUrl = '/api/article/';
+            switch (type) {
+                case 'penobrol':  postUrl += 'penobrol/'; break;
+                case 'tandya':    postUrl += 'tandya/'; break;
+                case 'youtublog': postUrl += 'youtublog/'; break;
+                default: return;
+            }
+            postUrl += 're-reply/';
+
+            makeRequest('POST', postUrl, original)
+                .then(res => {
+                    const result = JSON.parse(res.toString());
+
+                    console.log(result);
+
+                    let pcta;
+                    let dls = document.createElement('dl');
+                    let dts = document.createElement('dt');
+                    let dds = document.createElement('dd');
+                    let pcctacPopButton = document.createElement('div');
+                    let pcctacPopDiv = document.createElement('div');
+                    let warnButton = document.createElement('button');
+                    let deleteButton = document.createElement('button');
+                    let warnImg = document.createElement('img');
+                    let deleteImg = document.createElement('img');
+                    dls.setAttribute('class', 'dlPccAndTac');
+                    dts.setAttribute('class', 'dtPccAndTac');
+                    dds.setAttribute('class', 'ddPccAndTac');
+                    pcctacPopButton.setAttribute('class', 'pcctacPopButton');
+                    pcctacPopButton.setAttribute('onclick', 'pcctacMenuButton(this)');
+                    pcctacPopButton.innerHTML = '≡';
+                    pcctacPopDiv.setAttribute('class', 'pcctacPopDiv');
+                    warnButton.setAttribute('class', 'pcctacPopMenu');
+                    deleteButton.setAttribute('class', 'pcctacPopMenu');
+                    warnButton.setAttribute('onclick', 'warningArticle(this);');
+                    warnImg.setAttribute('src', './icons/warn.png');
+                    deleteImg.setAttribute('src', './icons/trash.png');
+                    warnButton.append(warnImg);
+                    deleteButton.append(deleteImg);
+                    pcctacPopDiv.append(warnButton);
+                    pcctacPopDiv.append(deleteButton);
+                    pcctacPopButton.append(pcctacPopDiv);
+                    if(type ==='penobrol'){
+                        pcta = document.getElementById("pc/" + ptid + '/' + pctaId);
+                        pcctacPopDiv.setAttribute('id', id);
+                        warnButton.setAttribute('value', 'p/pcc/'+id);
+                        deleteButton.setAttribute('value', id);
+                        deleteButton.setAttribute('onclick', 'postDeletePccomment(this)');
+                        dts.innerHTML = '- "' + content + '"';
+                        dds.innerHTML = 'by ' + result.author + ' / just now';
+                    }
+                    else{
+                        pcta = document.getElementById("ta/" + ptid + '/' + pctaId);
+                        pcctacPopDiv.setAttribute('id', id);
+                        warnButton.setAttribute('value', 't/tac/'+id);
+                        deleteButton.setAttribute('value', id);
+                        deleteButton.setAttribute('onclick', 'postDeleteTacomment(this)');
+                        dts.innerHTML = '- "' +content+'"';
+                        dds.innerHTML = 'by '+result.author + ' / just now';
+                    }
+                    target.previousSibling.previousSibling.value = '';
+                    dts.append(pcctacPopButton);
+                    dls.append(dts);
+                    dls.append(dds);
+                    pcta.append(dls);
+                });
+
             setTimeout(function(){
                 pcctacInputClick = true;
             },2500);
@@ -89,8 +100,6 @@ function pcacSendAjax(target){
 var datemaker = function(date) {
     var tempdate = new Date(date);
     var nowdate = new Date();
-    var year = tempdate.getFullYear();
-    var year = tempdate.getFullYear();
     var month = tempdate.getMonth();
     var day = tempdate.getDate();
     var diff = nowdate - tempdate;

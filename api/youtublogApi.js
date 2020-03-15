@@ -4,18 +4,18 @@ const youtublogService = require('../service/youtublogService.js');
 
 /* ===== Youtublog ===== */
 
-route.post('/ccomment/:y_id/:yc_id', function (req, res) {
-    youtublogService.postCommentCom(
-        req.params.yc_id,
-        req.session.id2,
-        req.body.pcctacContent
-    ).then(com => res.json({
-        "ycomment_id": com.id,
-        "ycomment_author": com.u_id,
-        "ycomment_content": com.content,
-        "ycomment_date": com.date
-    }));
-});
+// route.post('/ccomment/:y_id/:yc_id', function (req, res) {
+//     youtublogService.postCommentCom(
+//         req.params.yc_id,
+//         req.session.id2,
+//         req.body.pcctacContent
+//     ).then(com => res.json({
+//         "ycomment_id": com.id,
+//         "ycomment_author": com.u_id,
+//         "ycomment_content": com.content,
+//         "ycomment_date": com.date
+//     }));
+// });
 
 
 //************************Warn************************//
