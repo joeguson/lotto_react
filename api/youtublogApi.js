@@ -4,22 +4,6 @@ const youtublogService = require('../service/youtublogService.js');
 
 /* ===== Youtublog ===== */
 
-route.post('/like/comment', function (req, res) {
-    const yc_id = req.body.comAnsId;
-    youtublogService.likeYoutublogComment(//유효한 yc_id인지 확인필요
-        yc_id,
-        req.session.id2,
-        parseInt(req.body.clickVal)
-    ).then(val => {
-        youtublogService.youtublogComLikeCount(yc_id).then(count =>
-            res.json({
-                "result": count,
-                "button": val
-            })
-        );
-    });
-});
-
 route.post('/ccomment/:y_id/:yc_id', function (req, res) {
     youtublogService.postCommentCom(
         req.params.yc_id,

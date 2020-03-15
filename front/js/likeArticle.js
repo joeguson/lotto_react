@@ -20,7 +20,7 @@ function pLike(penobrol) {
 function pcLike(comment) {
     let pclikeNum = document.getElementById('pCommentlikes'+comment.value.split('/')[1]);
     let data = getData(comment);
-    let url = 'api/penobrol/like/comment/';
+    let url = 'api/article/penobrol/reply/like';
     if(pcLikeClick){
         pcLikeClick = !pcLikeClick;
         likeResult(pclikeNum, comment, url, data);
@@ -47,7 +47,7 @@ function tLike(tandya){
 function taLike(answer){
     let talikeNum = document.getElementById('tAnswerlikes'+answer.value.split('/')[1]);
     let data = getData(answer);
-    let url = 'api/tandya/like/answer/';
+    let url = 'api/article/tandya/reply/like';
     if(taLikeClick){
         taLikeClick = !taLikeClick;
         likeResult(talikeNum, answer, url, data);
@@ -74,7 +74,7 @@ function yLike(youtublog) {
 function ycLike(comment) {
     let yclikeNum = document.getElementById('yCommentlikes'+comment.value.split('/')[1]);
     let data = getData(comment);
-    let url = 'api/youtublog/like/comment/';
+    let url = 'api/article/youtublog/reply/like';
     if(ycLikeClick){
         ycLikeClick = !ycLikeClick;
         likeResult(yclikeNum, comment, url, data);

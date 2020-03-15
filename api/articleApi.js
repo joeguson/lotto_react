@@ -84,28 +84,61 @@ const articleLikeCountFunctions = {
     youtublog: youtublogService.youtublogLikeCount
 };
 // article 에 like/취소 를 요청하는 api
-route.post('/:type/like', (req, res) => {
-    const type = req.params['type'];
-    const likeFunction = articleLikeFunctions[type];
-    const likeCountFunction = articleLikeCountFunctions[type];
+route.post('/:type/like',
+    __getLikeRequestHandlerFunction(
+        articleLikeFunctions,
+        articleLikeCountFunctions,
+        "articleId"
+    )
+);
 
-    const id = req.body.articleId;
-    const clickVal = parseInt(req.body.clickVal);  // TODO refactor to boolean cancel
+/* ===== POST /{type}/reply/like ===== */
+// article type 에 따른 reply like 요청 함수
+const replyLikeFunctions = {
+    penobrol: penobrolService.likePenobrolComment,
+    tandya: tandyaService.likeTandyaAnswer,
+    youtublog: youtublogService.likeYoutublogComment
+};
+// reply 의 like 의 개수를 받아오는 함수
+const replyLikeCountFunctions = {
+    penobrol: penobrolService.penobrolComLikeCount,
+    tandya: tandyaService.tandyaAnsLikeCount,
+    youtublog: youtublogService.youtublogComLikeCount
+};
+// reply 에 like/취소 를 요청하는 api
+route.post('/:type/reply/like',
+    __getLikeRequestHandlerFunction(
+        replyLikeFunctions,
+        replyLikeCountFunctions,
+        "comAnsId"
+    )
+);
 
-    if (likeFunction == null)
-        res.status(400).send('Wrong article type');
-    else likeFunction(
-        id,
-        req.session.id2,
-        clickVal
-    ).then(val =>
-        likeCountFunction(id).then(count =>
-            res.json({
-                'result': count,
-                'button': val  // TODO refactor to boolean state
-            })
-        ).catch(() => res.status(500).send('Cannot load article state'))
-    ).catch(() => res.status(409).send('Already in like state'));
-});
+// article, reply 에 like 요청을 보내기 위한 공용 함수
+function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions, idString) {
+    return (req, res) => {
+        const type = req.params['type'];
+        const likeFunction = likeFunctions[type];
+        const likeCountFunction = likeCountFunctions[type];
+
+        const id = req.body[idString];  // TODO unify idString to id
+        const clickVal = parseInt(req.body.clickVal);  // TODO refactor to boolean cancel
+
+        if (likeFunction == null)
+            res.status(400).send('Wrong article type');
+        else likeFunction(
+            id,
+            req.session.id2,
+            clickVal
+        ).then(val =>
+            likeCountFunction(id).then(count =>
+                res.json({
+                    'result': count,
+                    'button': val
+                })
+            ).catch(() => res.status(500).send('Cannot load state'))
+        ).catch(() => res.status(409).send('Already in like state'));
+    }
+}
 
 module.exports = route;

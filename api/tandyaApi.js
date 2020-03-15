@@ -4,22 +4,6 @@ const tandyaService = require('../service/tandyaService.js');
 
 /* ===== tandya ===== */
 
-route.post('/like/answer', function (req, res) {
-    const ta_id = req.body.comAnsId;
-    tandyaService.likeTandyaAnswer(//유효한 ta_id인지 확인필요
-        ta_id,
-        req.session.id2,
-        parseInt(req.body.clickVal)
-    ).then(val => {
-        tandyaService.tandyaAnsLikeCount(ta_id).then(count =>
-            res.json({
-                "result": count,
-                "button": val
-            })
-        );
-    });
-});
-
 route.post('/acomment/:t_id/:ta_id', function (req, res) {
     tandyaService.postAnswerCom(
         req.params.ta_id,
