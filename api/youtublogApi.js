@@ -1,20 +1,8 @@
 //url - '/api/youtublog'
 const route = require('express').Router();
-const jsForBack = require('../back/jsForBack.js');
 const youtublogService = require('../service/youtublogService.js');
 
 /* ===== Youtublog ===== */
-
-route.put('/:youtublog_no', function (req, res) {
-    youtublogService.editYoutublog(
-        req.params.youtublog_no,
-        req.body.title,
-        req.body.content,
-        req.body.public,
-        req.body.thumbnail,
-        jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(y_id => res.json({ "id": y_id }));
-});
 
 //************************Like************************//
 route.post('/like', function (req, res) {

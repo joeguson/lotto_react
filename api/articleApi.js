@@ -41,4 +41,33 @@ route.post('/:type', (req, res) => {
     );
 });
 
+/* ==== PUT /{type}/{id} ===== */
+// article type 에 따른 edit 함수
+const articleEditFunctions = {
+    penobrol: penobrolService.editPenobrol,
+    tandya: tandyaService.editTandya,
+    youtublog: youtublogService.editYoutublog
+};
+// article 을 수정하는 api
+route.put('/:type/:id', (req, res) => {
+    const type = req.params['type'];
+    const editFunction = articleEditFunctions[type];
+    const column = req.body[articleMainColumns[type]];
+
+    if (editFunction == null)
+        res.status(400).send('Wrong article type');
+    else editFunction(
+        req.params['id'],
+        column,
+        req.body.content,
+        req.body.public,
+        req.body.thumbnail,
+        jsForBack.finalHashtagMaker(req.body.hashtag)
+    ).then(id =>
+        res.json({'id': id})
+    ).catch(() =>
+        res.status(500).send('Could not edit article')
+    );
+});
+
 module.exports = route;

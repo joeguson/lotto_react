@@ -1,20 +1,8 @@
 //url - '/api/tandya'
 const route = require('express').Router();
-const jsForBack = require('../back/jsForBack.js');
 const tandyaService = require('../service/tandyaService.js');
 
 /* ===== tandya ===== */
-
-route.put('/:tandya_no', function (req, res) {
-    tandyaService.editTandya(
-        req.params.tandya_no,
-        req.body.question,
-        req.body.content,
-        req.body.public,
-        req.body.thumbnail,
-        jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(t_id => res.json({ "id": t_id }));
-});
 
 //************************Like************************//
 route.post('/like', function (req, res) {
@@ -69,7 +57,7 @@ route.post('/warn', function (req, res) {
         req.body.warnedItem,
         req.body.warnedId,
         req.session.id2
-    ).then(result => res.json({ "result": result }));
+    ).then(result => res.json({"result": result}));
 });
 
 

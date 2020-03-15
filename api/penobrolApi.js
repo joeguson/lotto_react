@@ -1,20 +1,8 @@
 //url - '/api/penobrol'
 const route = require('express').Router();
-const jsForBack = require('../back/jsForBack.js');
 const penobrolService = require('../service/penobrolService.js');
 
 /************************Penobrol************************/
-
-route.put('/:penobrol_no', function (req, res) {
-    penobrolService.editPenobrol(
-        req.params.penobrol_no,
-        req.body.title,
-        req.body.content,
-        req.body.public,
-        req.body.thumbnail,
-        jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(p_id => res.json({"id": p_id}));
-});
 
 route.post('/like', function (req, res) {
     const p_id = req.body.articleId;
@@ -42,10 +30,10 @@ route.post('/like/comment', function (req, res) {
         penobrolService.penobrolComLikeCount(pc_id).then(count => {
                 // if (val == null) penobrolService.;
                 // else {
-                    res.json({
-                        "result": count,
-                        "button": val
-                    });
+                res.json({
+                    "result": count,
+                    "button": val
+                });
                 // }
             }
         );

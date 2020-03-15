@@ -14,7 +14,7 @@ function checkImage(imageObject){
     for(var i=0; i<originalImageName.length; i++){
         var p = 0;
         for(var j=0; j<finalImageName.length;j++){
-            if(originalImageName[i] == finalImageName[j]){
+            if(originalImageName[i] === finalImageName[j]){
                 p++;
             }
         }
@@ -32,44 +32,44 @@ if(edit){
     edit = !edit;
     function postEditArticle(target) {
         const type = target.name;
-        const public = document.getElementById('rbP').checked ? 'p' : 'a';
+        const isPublic = document.getElementById('rbP').checked ? 'p' : 'a';
         var content = document.getElementById('editor').value();
         const hashtag = document.getElementById('hashtag').value;
         const thumbnail = document.getElementById('thumbnail').value;
         var deleteImg;
         const req = {
-            public: public,
+            public: isPublic,
             content: content,
             hashtag: hashtag,
             thumbnail: thumbnail
         };
-        if(type == 't') req.question = document.getElementById('question').value;
+        if(type === 't') req.question = document.getElementById('question').value;
         else req.title = document.getElementById('title').value;
 
         const parsed = parseImgTags(content);
         content = parsed.content;
 
         const imgCount = Object.keys(parsed.imgs).length;
-        if(imgCount == 0) finalPost(req);
+        if(imgCount === 0) finalPost(req);
         else {
             deleteImg = checkImage(parsed.imgs);
             let done = 0;
             for(let id in parsed.imgs) {
-                if(parsed.imgs[id].substring(0, 4) == "data"){
+                if(parsed.imgs[id].substring(0, 4) === "data"){
                     uploadImage(id, parsed.imgs[id], (id, filename) => {
                         content = replace(content, id, filename);
                         req.content = content;
                         done++;
-                        if(done == imgCount){
+                        if(done === imgCount){
                             finalPost(req);
                         }
                     });
                 }
-                else if(parsed.imgs[id].substring(0, 4) == "http"){
+                else if(parsed.imgs[id].substring(0, 4) === "http"){
                     var fileURL = parsed.imgs[id].split('/');
                     var filename = '';
                     for(var f=0; f<fileURL.length;f++){
-                        if(fileURL[f] == 'images'){
+                        if(fileURL[f] === 'images'){
                             filename = fileURL[++f];
                             break;
                         }
@@ -109,7 +109,7 @@ function parseImgTags(content) {
     while(true) {
         // <img
         imgIndex = content.indexOf('<img', imgIndex);
-        if(imgIndex == -1) break;
+        if(imgIndex === -1) break;
         // src="
         const srcIndex = content.indexOf('src=\"', imgIndex);
         // data
@@ -154,9 +154,9 @@ function replace(content, id, filename, index = 0) {
         const imgIndex = content.indexOf('<img', index);
         const srcIndex = content.indexOf('src="', imgIndex);
         const endIndex = content.indexOf('"', srcIndex+5);
-        if(imgIndex == -1 || srcIndex == -1 || endIndex == -1) break;
+        if(imgIndex === -1 || srcIndex === -1 || endIndex === -1) break;
         const curId = parseInt(content.substring(srcIndex + 5, endIndex));
-        if(curId == id) {
+        if(curId === id) {
             s = srcIndex + 5;
             e = endIndex;
             break;
@@ -166,7 +166,7 @@ function replace(content, id, filename, index = 0) {
     return content.substring(0, s) + filename + content.substring(e);
 }
 
-function deleteImage(imgs) {
+function deleteImage() {
     var xhr = new XMLHttpRequest();
     xhr.open('delete', '/image', true);
     xhr.setRequestHeader('Content-type', "application/json");
@@ -179,13 +179,16 @@ function deleteImage(imgs) {
 }
 
 function finalPost(body) {
-    let type = '';
-    let postUrl = '';
+    let type;
+    let postUrl;
     let articleId = location.pathname.split('/')[3];
+
     if(body.question) type = 't';
     else type = 'p';
-    if(type ==='p') postUrl = 'api/penobrol/' + articleId;
-    else postUrl = 'api/tandya/' + articleId;
+
+    if(type ==='p') postUrl = 'api/article/penobrol/' + articleId;
+    else postUrl = 'api/article/tandya/' + articleId;
+
     var xhr = new XMLHttpRequest();
     xhr.open('PUT', postUrl, true);
     xhr.setRequestHeader('Content-type', "application/json");
