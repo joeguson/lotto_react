@@ -5,17 +5,6 @@ const youtublogService = require('../service/youtublogService.js');
 
 /* ===== Youtublog ===== */
 
-route.post('/', function (req, res) {
-    youtublogService.postYoutublog(
-        req.session.id2,
-        req.body.title,
-        req.body.content,
-        req.body.public,
-        req.body.thumbnail,
-        jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(id => res.send({"id": id}));
-});
-
 route.put('/:youtublog_no', function (req, res) {
     youtublogService.editYoutublog(
         req.params.youtublog_no,
