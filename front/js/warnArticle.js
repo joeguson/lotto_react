@@ -3,7 +3,6 @@ let warnClick = true;
 
 //////////////////////Any Article//////////////////////
 function warningArticle(warning){
-    let url = '';
     const warningValue = warning.value.split("/");
     let confirmWarning = function(){
         return confirm("You cannot cancel warn. Are you sure to warn this?");
@@ -14,23 +13,27 @@ function warningArticle(warning){
         "warnedItem" : warningValue[1],
         "warnedId" : warningValue[2]
     };
-    if(original.warnedType === 'p') url = 'api/penobrol/warn';
-    else if(original.warnedType === 't') url = 'api/tandya/warn';
-    else url = 'api/youtublog/warn';
-    if(confirmedValue == true){
-        async function warn(url, data) {
-            let ajaxResult = await makeRequest('post', url, data);
-            ajaxResult = JSON.parse(ajaxResult);
-            if(ajaxResult.result == 1){
-                alert('terima kasih');
-            }
-            else{
-                alert('sudah di warn');
-            }
-        }
+
+    let url = 'api/article/';
+    switch (original.warnedType) {
+        case 'p': url += 'penobrol/'; break;
+        case 't': url += 'tandya/'; break;
+        case 'y': url += 'youtublog/'; break;
+        default: return;
+    }
+    url += 'warn';
+
+    if(confirmedValue){
         if(warnClick){
             warnClick = !warnClick;
-            warn(url, original);
+
+            makeRequest('POST', url, original)
+                .then(res => {
+                    const result = JSON.parse(res.toString());
+                    if (result.result) alert('terima kasih');
+                    else alert('sudah di warn');
+                });
+
             setTimeout(function(){
                 warnClick = true;
             },2000);

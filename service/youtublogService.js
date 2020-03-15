@@ -152,7 +152,7 @@ const fs = {
 exports.warnYoutublog = async function(warnedItem, warnedId, user) {
     const checking = await fs[warnedItem][0](user, warnedId);
     if(checking.length) return 0;
-    await fs[warnedItem][1](user, warnedId);
+    await fs[warnedItem][1](warnedId, user);
     return 1;
 };
 

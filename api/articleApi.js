@@ -126,8 +126,6 @@ route.post('/:type/re-reply', (req, res) => {
     const type = req.params['type'];
     const postFunction = re_replyPostFunctions[type];
 
-    console.log(req.session);
-
     if (postFunction == null)
         res.status(400).send('Wrong article type');
     else postFunction(
@@ -141,6 +139,35 @@ route.post('/:type/re-reply', (req, res) => {
         })
     ).catch(() =>
         res.status(500).send('Could not post re-reply')
+    );
+});
+
+/* ===== POST /{type}/warn ===== */
+// article type 에 따른 warn 요청 함수
+const warnPostFunctions = {
+    penobrol: penobrolService.warnPenobrol,
+    tandya: tandyaService.warnTandya,
+    youtublog: youtublogService.warnYoutublog
+};
+// reply 에 like/취소 를 요청하는 api
+route.post('/:type/warn', (req, res) => {
+    const type = req.params['type'];
+    const warnPostFunction = warnPostFunctions[type];
+
+    if (warnPostFunction == null)
+        res.status(400).send('Wrong article type');
+    else warnPostFunction(
+        req.body.warnedItem,
+        req.body.warnedId,
+        req.session.id2
+    ).then(re =>
+        res.json({
+            'result': re
+        })
+    ).catch((e) => {
+        console.error(e);
+            res.status(500).send('Could not warn article')
+        }
     );
 });
 
