@@ -20,63 +20,91 @@ class BeritamusThumbnail extends HTMLElement {
                 const div = this.div;
                 let diff = 0;
 
-                //set frame size
-                div.style.height = this.dl.offsetHeight + 'px';
-
-                //get frame's width, height and ratio
-                let frameWidth = div.offsetWidth;
-                let frameHeight = div.offsetHeight;
-                let frameRatio = frameWidth / frameHeight;
-
-                //get img's width, height and ratio
-                //img ratio can be altered due to rotation
                 let imgWidth = img.offsetWidth;
                 let imgHeight = img.offsetHeight;
-                let imgRatio;
 
-                if(src.img.rotate === 'rotate090' || src.img.rotate ==='rotate270'){
-                    imgRatio = imgHeight / imgWidth;
-                    if(frameRatio > imgRatio){
-                        img.style.width = frameHeight  + 'px'; //양옆 세로에 맞춤
-                        if(img.style.marginTop === '0px' || img.style.marginTop === ''){
-                            diff = Math.abs(frameHeight - img.height)/2;
-                            img.style.marginTop = diff+"px";
-                            img.style.marginBottom = diff+"px";
-                        }
+                let frameWidth = div.offsetWidth;
+                img.className = this.src.img.rotate;
+
+                if(imgWidth >= imgHeight){
+                    //가로로 긴 사진이라면
+                    if(src.img.rotate === 'rotate090' || src.img.rotate ==='rotate270'){
+                        //세로로 긴 사진이 됨
+                        img.style.height = frameWidth + 'px';
                     }
                     else{
-                        img.style.height = frameWidth + 'px'; //위아래 가로에 맞춤.
-                        img.style.marginTop = ((frameHeight/2)-15)*(-0.5)+"px";
+                        img.style.width = frameWidth + 'px';
                     }
                 }
                 else{
-                    imgRatio = imgWidth / imgHeight;
-                    if(frameRatio > imgRatio){
-                        img.style.height = frameHeight  + 'px'; //위아래 세로에 맞춤
-                        if(img.style.marginTop === '0px' || img.style.marginTop === ''){
-                            diff = Math.abs(this.dl.offsetHeight - img.height)/2;
-                            img.style.marginTop = diff+"px";
-                            img.style.marginBottom = diff+"px";
-                        }
+                    //세로로 긴 사진이라면
+                    if(src.img.rotate === 'rotate090' || src.img.rotate ==='rotate270'){
+                        //가로로 긴 사진이 됨
+                        img.style.height = frameWidth + 'px';
                     }
                     else{
-                        img.style.width = frameWidth + 'px'; //양옆 가로에 맞춤
-                        if(img.style.marginLeft === '0px' || img.style.marginLeft === ''){
-                            diff = Math.abs(div.offsetWidth - img.width)/2;
-                            img.style.marginLeft = diff+"px";
-                            img.style.marginRight = diff+"px";
-                        }
+                        img.style.width = frameWidth + 'px';
                     }
                 }
-                img.className = this.src.img.rotate;
+
+                // if(imgWidth >= imgHeight){
+                //     //가로로 긴 사진이라면
+                //     if(src.img.rotate === 'rotate090' || src.img.rotate ==='rotate270'){
+                //         // 세로로 긴 사진이 됨
+                //         img.style.height = '100%'; //양옆 세로에 맞춤
+                //         if(img.style.marginTop === '0px' || img.style.marginTop === ''){
+                //             diff = Math.abs(frameHeight - img.height)/2;
+                //             img.style.marginTop = diff+"px";
+                //             img.style.marginBottom = diff+"px";
+                //         }
+                //         img.style.height = frameWidth + 'px'; //위아래 가로에 맞춤.
+                //         img.style.marginTop = ((frameHeight/2)-15)*(-0.5)+"px";
+                //     }
+                //     else{
+                //         //원래의 상태
+                //         img.style.width = '100%'; //양옆 세로에 맞춤
+                //     }
+                // }
+                // else{
+                //     //세로로 긴 사진이라면
+                //     if(src.img.rotate === 'rotate090' || src.img.rotate ==='rotate270'){
+                //         //가로로 긴 사진이 됨
+                //         img.style.width = frameHeight  + 'px'; //양옆 세로에 맞춤
+                //         if(img.style.marginTop === '0px' || img.style.marginTop === ''){
+                //             diff = Math.abs(frameHeight - img.height)/2;
+                //             img.style.marginTop = diff+"px";
+                //             img.style.marginBottom = diff+"px";
+                //         }
+                //         img.style.height = frameWidth + 'px'; //위아래 가로에 맞춤.
+                //         img.style.marginTop = ((frameHeight/2)-15)*(-0.5)+"px";
+                //     }
+                //     else{
+                //         //원래의 상태
+                //     }
+                // }
+                // else{
+                //     imgRatio = imgWidth / imgHeight;
+                //     img.style.height = frameHeight  + 'px'; //위아래 세로에 맞춤
+                //     if(img.style.marginTop === '0px' || img.style.marginTop === ''){
+                //         diff = Math.abs(this.dl.offsetHeight - img.height)/2;
+                //         img.style.marginTop = diff+"px";
+                //         img.style.marginBottom = diff+"px";
+                //     }
+                //     img.style.width = frameWidth + 'px'; //양옆 가로에 맞춤
+                //     if(img.style.marginLeft === '0px' || img.style.marginLeft === ''){
+                //         diff = Math.abs(div.offsetWidth - img.width)/2;
+                //         img.style.marginLeft = diff+"px";
+                //         img.style.marginRight = diff+"px";
+                //     }
+                // }
             }
         }
 
     }
     __build() {
         const li = document.createElement("li");
-        li.appendChild(this.__buildArticle());
         li.appendChild(this.__buildImage());
+        li.appendChild(this.__buildArticle());
         li.className = "thumbnailLi";
 
         const br = document.createElement("br");

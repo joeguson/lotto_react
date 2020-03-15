@@ -219,20 +219,26 @@
                 ajaxResult = JSON.parse(ajaxResult);
                 const linkDiv = document.createElement('div');
                 const linkImg = document.createElement('img');
+                const linkTitle = document.createElement('div');
                 const linkDesc = document.createElement('div');
+
+                linkImg.style.width = '90%';
+                linkImg.src = ajaxResult.ogs.data.ogImage.url;
+                linkImg.onclick = () => {console.log('hi');};
+
+                linkTitle.style.width = '90%';
+                linkTitle.innerText = ajaxResult.ogs.data.ogTitle;
 
                 linkDesc.style.width = '90%';
                 linkDesc.innerText = ajaxResult.ogs.data.ogDescription;
-                linkImg.style.width = '90%';
-                linkImg.src = ajaxResult.ogs.data.ogImage.url;
 
                 linkDiv.appendChild(linkImg);
+                linkDiv.appendChild(linkTitle);
                 linkDiv.appendChild(linkDesc);
 
                 const linkHTML = linkDiv.outerHTML;
                 editor.body.focus();
                 editor.execCommand("insertHTML", false, linkHTML);
-                console.log(ajaxResult.ogs.data.ogUrl);
             }
         };
 
