@@ -90,11 +90,11 @@ route.post('/:type/like', (req, res) => {
     const likeCountFunction = articleLikeCountFunctions[type];
 
     const id = req.body.articleId;
-    const clickVal = parseInt(req.body.clickVal);
+    const clickVal = parseInt(req.body.clickVal);  // TODO refactor to boolean cancel
 
     if (likeFunction == null)
         res.status(400).send('Wrong article type');
-    likeFunction(
+    else likeFunction(
         id,
         req.session.id2,
         clickVal
@@ -102,7 +102,7 @@ route.post('/:type/like', (req, res) => {
         likeCountFunction(id).then(count =>
             res.json({
                 'result': count,
-                'button': val
+                'button': val  // TODO refactor to boolean state
             })
         ).catch(() => res.status(500).send('Cannot load article state'))
     ).catch(() => res.status(409).send('Already in like state'));
