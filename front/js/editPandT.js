@@ -1,10 +1,11 @@
 let edit = true;
 let originalImages;
 let changedImages;
-window.onload= () => {
-    var content = document.getElementById('editor').value();
+window.addEventListener('load', () => {
+    const content = document.getElementById('editor').value();
     originalImages = parseImgTags(content);
-};
+    console.log(content, originalImages);
+});
 
 function checkImage(imageObject){
     let originalImageName = Object.values(originalImages.imgs);
