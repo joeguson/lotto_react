@@ -3,7 +3,6 @@ const yccDao = require('../db/b-dao/youDao/yccDao');
 const ycDao = require('../db/b-dao/youDao/ycDao');
 const yclikeDao = require('../db/b-dao/youDao/yclikeDao');
 const yhashDao = require('../db/b-dao/youDao/yhashDao');
-const ywarnDao = require('../db/b-dao/youDao/ywarnDao');
 const youtublogDao = require('../db/b-dao/youDao/youtublogDao');
 const ylikeDao = require('../db/b-dao/youDao/ylikeDao');
 
@@ -142,18 +141,6 @@ exports.youtublogLikeCountByAuthor = async function(id2) {
 
 exports.youtublogComLikeCountByAuthor = async function(id2) {
     return (await yclikeDao.youtublogComLikeCountByAuthor(id2))[0].total;
-};
-
-const fs = {
-    y: [ywarnDao.youtublogWarnById, ywarnDao.insertYoutublogWarn],
-    yc: [ywarnDao.youtublogComWarnById, ywarnDao.insertYoutublogComWarn],
-    ycc: [ywarnDao.youtublogComComWarnById, ywarnDao.insertYoutublogComComWarn]
-};
-exports.warnYoutublog = async function(warnedItem, warnedId, user) {
-    const checking = await fs[warnedItem][0](user, warnedId);
-    if(checking.length) return 0;
-    await fs[warnedItem][1](warnedId, user);
-    return 1;
 };
 
 exports.editYoutublog = async function(y_id, title, content, publicCode, thumbnail, hashtags) {

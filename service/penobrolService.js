@@ -3,7 +3,6 @@ const pccDao = require('../db/b-dao/penDao/pccDao');
 const pcDao = require('../db/b-dao/penDao/pcDao');
 const pclikeDao = require('../db/b-dao/penDao/pclikeDao');
 const phashDao = require('../db/b-dao/penDao/phashDao');
-const pwarnDao = require('../db/b-dao/penDao/pwarnDao');
 const penobrolDao = require('../db/b-dao/penDao/penobrolDao');
 const plikeDao = require('../db/b-dao/penDao/plikeDao');
 
@@ -147,18 +146,6 @@ exports.penobrolLikeCountByAuthor = async function(id2) {
 
 exports.penobrolComLikeCountByAuthor = async function(id2) {
     return (await pclikeDao.penobrolComLikeCountByAuthor(id2))[0].total;
-};
-
-const fs = {
-    p: [pwarnDao.penobrolWarnById, pwarnDao.insertPenobrolWarn],
-    pc: [pwarnDao.penobrolComWarnById, pwarnDao.insertPenobrolComWarn],
-    pcc: [pwarnDao.penobrolComComWarnById, pwarnDao.insertPenobrolComComWarn]
-};
-exports.warnPenobrol = async function(warnedItem, warnedId, user) {
-    const checking = await fs[warnedItem][0](user, warnedId);
-    if(checking.length) return 0;
-    await fs[warnedItem][1](user, warnedId);
-    return 1;
 };
 
 exports.editPenobrol = async function(p_id, title, content, publicCode, thumbnail, hashtags) {
