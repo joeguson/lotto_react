@@ -114,23 +114,17 @@ function deleteImage() {
 }
 
 function finalPost(body) {
-    let type;
-    let postUrl;
     let articleId = location.pathname.split('/')[3];
 
-    if(body.question) type = 't';
-    else type = 'p';
+    let type;
+    if(body.question) type = 'tandya';
+    else type = 'penobrol';
 
-    if(type ==='p') postUrl = 'api/article/penobrol/' + articleId;
-    else postUrl = 'api/article/tandya/' + articleId;
+    const postUrl = `api/article/${type}/${articleId}`;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('PUT', postUrl, true);
-    xhr.setRequestHeader('Content-type', "application/json");
-    xhr.withCredentials = true;
-    xhr.send(JSON.stringify(body));
-    xhr.onload = () => {
-        let id = JSON.parse(xhr.responseText).id;
-        window.location.href = location.origin + "/penobrol/view/" + id.toString();
-    };
+    makeRequest('PUT', postUrl, body)
+        .then(res => {
+            const id = JSON.parse(res.toString()).id;
+            window.location.href = `/${type}/${id}`;
+        });
 }
