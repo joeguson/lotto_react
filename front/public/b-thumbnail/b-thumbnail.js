@@ -18,7 +18,6 @@ class BeritamusThumbnail extends HTMLElement {
                 const src = this.src;
                 const img = this.img;
                 const div = this.div;
-                let diff = 0;
 
                 let imgWidth = img.offsetWidth;
                 let imgHeight = img.offsetHeight;
@@ -46,57 +45,6 @@ class BeritamusThumbnail extends HTMLElement {
                         img.style.width = frameWidth + 'px';
                     }
                 }
-
-                // if(imgWidth >= imgHeight){
-                //     //가로로 긴 사진이라면
-                //     if(src.img.rotate === 'rotate090' || src.img.rotate ==='rotate270'){
-                //         // 세로로 긴 사진이 됨
-                //         img.style.height = '100%'; //양옆 세로에 맞춤
-                //         if(img.style.marginTop === '0px' || img.style.marginTop === ''){
-                //             diff = Math.abs(frameHeight - img.height)/2;
-                //             img.style.marginTop = diff+"px";
-                //             img.style.marginBottom = diff+"px";
-                //         }
-                //         img.style.height = frameWidth + 'px'; //위아래 가로에 맞춤.
-                //         img.style.marginTop = ((frameHeight/2)-15)*(-0.5)+"px";
-                //     }
-                //     else{
-                //         //원래의 상태
-                //         img.style.width = '100%'; //양옆 세로에 맞춤
-                //     }
-                // }
-                // else{
-                //     //세로로 긴 사진이라면
-                //     if(src.img.rotate === 'rotate090' || src.img.rotate ==='rotate270'){
-                //         //가로로 긴 사진이 됨
-                //         img.style.width = frameHeight  + 'px'; //양옆 세로에 맞춤
-                //         if(img.style.marginTop === '0px' || img.style.marginTop === ''){
-                //             diff = Math.abs(frameHeight - img.height)/2;
-                //             img.style.marginTop = diff+"px";
-                //             img.style.marginBottom = diff+"px";
-                //         }
-                //         img.style.height = frameWidth + 'px'; //위아래 가로에 맞춤.
-                //         img.style.marginTop = ((frameHeight/2)-15)*(-0.5)+"px";
-                //     }
-                //     else{
-                //         //원래의 상태
-                //     }
-                // }
-                // else{
-                //     imgRatio = imgWidth / imgHeight;
-                //     img.style.height = frameHeight  + 'px'; //위아래 세로에 맞춤
-                //     if(img.style.marginTop === '0px' || img.style.marginTop === ''){
-                //         diff = Math.abs(this.dl.offsetHeight - img.height)/2;
-                //         img.style.marginTop = diff+"px";
-                //         img.style.marginBottom = diff+"px";
-                //     }
-                //     img.style.width = frameWidth + 'px'; //양옆 가로에 맞춤
-                //     if(img.style.marginLeft === '0px' || img.style.marginLeft === ''){
-                //         diff = Math.abs(div.offsetWidth - img.width)/2;
-                //         img.style.marginLeft = diff+"px";
-                //         img.style.marginRight = diff+"px";
-                //     }
-                // }
             }
         }
 

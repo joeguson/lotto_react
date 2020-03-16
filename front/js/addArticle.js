@@ -4,6 +4,8 @@ function __getIsPublic() {
     return element.checked ? 'p' : 'a';
 }
 
+// article을 추가하는 버튼으로써, p-add, t-add, y-add 에서 사용
+// noinspection JSUnusedGlobalSymbols
 function postArticle(target) {
     const type = target.name;
     const isPublic = __getIsPublic();
