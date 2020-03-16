@@ -39,24 +39,20 @@ html
     script.
         window.onload = function(){
             let currentTag = (location.pathname).split('/')[1];
-            let currentLiTag;
-            let currentATag;
-            if (currentTag === 'aku') {
-                currentLiTag = document.getElementById('akuLiTag');
-                currentATag = document.getElementById('akuATag');
-            } else if (currentTag === 'penobrol') {
-                currentLiTag = document.getElementById('penobrolLiTag');
-                currentATag = document.getElementById('penobrolATag');
-            } else if (currentTag === 'tandya') {
-                currentLiTag = document.getElementById('tandyaLiTag');
-                currentATag = document.getElementById('tandyaATag');
-            } else if (currentTag === 'youtublog') {
-                currentLiTag = document.getElementById('youtublogLiTag');
-                currentATag = document.getElementById('youtublogATag');
-            } else {
-                currentLiTag = '';
+
+            switch (currentTag) {
+                case 'aku':
+                case 'penobrol':
+                case 'tandya':
+                case 'youtublog':
+                    const currentLiTag = document.getElementById(currentTag + 'LiTag');
+                    const currentATag = document.getElementById(currentTag + 'ATag');
+                    currentLiTag.style.borderBottom = '3px solid #ffff97';
+                    currentLiTag.style.opacity = '.9';
+                    currentATag.style.color = '#ffff97';
+                    break;
+                case 'cari':
+                default:
+                    break;
             }
-            currentLiTag.style.borderBottom = '3px solid #ffff97';
-            currentLiTag.style.opacity = '.9';
-            currentATag.style.color = '#ffff97';
-        }
+        });
