@@ -5,7 +5,7 @@ const taDao = require('../db/b-dao/tanDao/taDao');
 const talikeDao = require('../db/b-dao/tanDao/talikeDao');
 const thashDao = require('../db/b-dao/tanDao/thashDao');
 const tlikeDao = require('../db/b-dao/tanDao/tlikeDao');
-
+const warningDao = require('../db/b-dao/warningDao');
 
 /* ===== exports ===== */
 
@@ -179,6 +179,17 @@ exports.deleteAComment = async function(tac_id, u_id) {
     return await deleteProcess(tac_id, u_id, tacDao.tandyaAnsComById, tacDao.deleteTandyaAnsCom);
 };
 
+exports.warnTandya = async function(u_id, warned_id) {
+    return await warningDao.insertTandyaWarning(u_id, warned_id);
+};
+
+exports.warnTandyaAns = async function(u_id, warned_id) {
+    return await warningDao.insertTandyaAnsWarning(u_id, warned_id);
+};
+
+exports.warnTandyaAnsCom = async function(u_id, warned_id) {
+    return await warningDao.insertTandyaAnsComWarning(u_id, warned_id);
+};
 /* ===== local functions ===== */
 
 // 하나의 tandya 에 hashtag 와 answer 개수를 넣어주는 함수
