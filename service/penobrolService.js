@@ -79,7 +79,7 @@ exports.getFullPenobrolById = async function(id) {
 
     penobrol.comments = commentsResult.map(parser.parseComment);
     penobrol.likes = likesResult.map(parser.parsePLike);
-    penobrol.hashtags = hashtagsResult.map(parser.parseHashtagT);
+    penobrol.hashtags = hashtagsResult.map(parser.parseHashtagP);
 
     penobrol.comments = await applyAsyncToAll(penobrol.comments, getFullComments);
     return penobrol;

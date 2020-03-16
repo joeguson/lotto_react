@@ -1,6 +1,5 @@
 //url - '/penobrol'
 const route = require('express').Router();
-var jsForBack = require('./jsForBack.js');
 const penobrolService = require('../service/penobrolService.js');
 
 /************FOR PENOBROL************/
@@ -51,11 +50,11 @@ route.post('/comment/:penobrol_no', function (req, res) {
 });
 
 route.get('/edit/:penobrol_no', function (req, res) {
-    const p_id = req.params.penobrol_no;
+    const p_id = req.params['penobrol_no'];
     const u_id = req.session.id2;
 
     penobrolService.getFullPenobrolById(p_id).then(penobrol => {
-        if(penobrol != null && penobrol.author === u_id)
+        if(penobrol && penobrol.author === u_id)
             res.render('./jp/p-edit', {u_id: u_id, edit_content: penobrol});
         else res.redirect('/penobrol/' + p_id);
     });
