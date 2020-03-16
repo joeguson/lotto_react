@@ -99,7 +99,7 @@ function replace(content, id, filename, index = 0) {
         const srcIndex = content.indexOf('src="', imgIndex);
         const endIndex = content.indexOf('"', srcIndex+5);
         if(imgIndex === -1 || srcIndex === -1 || endIndex === -1) break;
-        const curId = parseInt(content.substring(srcIndex + 5, endIndex));
+        const curId = content.substring(srcIndex + 5, endIndex);
         if(curId === id) {
             s = srcIndex + 5;
             e = endIndex;
