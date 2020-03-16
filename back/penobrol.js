@@ -55,7 +55,11 @@ route.get('/edit/:penobrol_no', function (req, res) {
 
     penobrolService.getFullPenobrolById(p_id).then(penobrol => {
         if(penobrol && penobrol.author === u_id)
-            res.render('./jp/p-edit', {u_id: u_id, edit_content: penobrol});
+            res.render('./article_edit', {
+                u_id: u_id,
+                type: 'penobrol',
+                article: penobrol
+            });
         else res.redirect('/penobrol/' + p_id);
     });
 });

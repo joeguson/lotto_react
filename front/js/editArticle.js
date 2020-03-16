@@ -30,10 +30,9 @@ function checkImage(imageObject){
 
 if(edit){
     edit = !edit;
-    function postEditArticle(target) {
-        const type = target.name;
+    function postEditArticle(type) {
         const isPublic = document.getElementById('rbP').checked ? 'p' : 'a';
-        var content = document.getElementById('editor').value();
+        let content = document.getElementById('editor').value();
         const hashtag = document.getElementById('hashtag').value;
         const thumbnail = document.getElementById('thumbnail').value;
         var deleteImg;
@@ -43,14 +42,24 @@ if(edit){
             hashtag: hashtag,
             thumbnail: thumbnail
         };
-        if(type === 't') req.question = document.getElementById('question').value;
-        else req.title = document.getElementById('title').value;
+
+        switch (type) {
+            case 'penobrol':
+            case 'youtublog':
+                req.title = document.getElementById('mainColumn').value;
+                break;
+            case 'tandya':
+                req.question = document.getElementById('mainColumn').value;
+                break;
+            default:
+                return;
+        }
 
         const parsed = parseImgTags(content);
         content = parsed.content;
 
         const imgCount = Object.keys(parsed.imgs).length;
-        if(imgCount === 0) finalPost(req);
+        if(imgCount === 0) finalPost(type, req);
         else {
             deleteImg = checkImage(parsed.imgs);
             let done = 0;
@@ -61,7 +70,7 @@ if(edit){
                         req.content = content;
                         done++;
                         if(done === imgCount){
-                            finalPost(req);
+                            finalPost(type, req);
                         }
                     });
                 }
@@ -91,7 +100,7 @@ if(edit){
                 deleteImage(deleteImg);
             }
             if(done === imgCount){
-                finalPost(req);
+                finalPost(type, req);
             }
         }
 
@@ -113,12 +122,8 @@ function deleteImage() {
     };
 }
 
-function finalPost(body) {
+function finalPost(type, body) {
     let articleId = location.pathname.split('/')[3];
-
-    let type;
-    if(body.question) type = 'tandya';
-    else type = 'penobrol';
 
     const postUrl = `api/article/${type}/${articleId}`;
 
