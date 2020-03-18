@@ -1,14 +1,144 @@
 extends ../layout
 
+block css
+    link(rel="stylesheet" href="../css/sb-admin-2.css" type="text/css")
+    link(rel="stylesheet" href="/fontawesome-free/css/all.min.css" type="text/css")
+
 block js
-    link(href='css/sb-admin-2.min.css' rel='stylesheet')
-    script(type="text/javascript" src="/js/jsForAllJade.js")
+
     script(type="text/javascript" src="/js/samusil.js")
+    //Bootstrap core JavaScript
+    script(type="text/javascript" src="/jquery/jquery.min.js")
+    script(type="text/javascript" src="/bootstrap/js/bootstrap.bundle.min.js")
+    //Core plugin JavaScript
+    script(type="text/javascript" src="/jquery-easing/jquery.easing.min.js")
+    //Page level plugins
+    script(type="text/javascript" src="/chart.js/Chart.min.js")
 
 block main
-    div(id="users") count users : #{users}
+    .row
+        .col-xl-3.col-md-6.mb-4
+            .card.border-left-primary.shadow.h-100.py-2
+                .card-body
+                    .row.no-gutters.align-items-center
+                        .col.mr-2
+                            .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 USER
+                            div(id="users").h5.mb-0.font-weight-bold.text-gray-800 #{users}
+                        .col-auto
+                            i.fas.fa-calendar.fa-2x.text-gray-300
+
+        .col-xl-3.col-md-6.mb-4
+            .card.border-left-primary.shadow.h-100.py-2
+                .card-body
+                    .row.no-gutters.align-items-center
+                        .col.mr-2
+                            .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 COMMENT
+                            div(id="comment").h5.mb-0.font-weight-bold.text-gray-800 #{comment}
+                        .col-auto
+                            i.fas.fa-calendar.fa-2x.text-gray-300
+
+        .col-xl-3.col-md-6.mb-4
+            .card.border-left-primary.shadow.h-100.py-2
+                .card-body
+                    .row.no-gutters.align-items-center
+                        .col.mr-2
+                            .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 ANSWER
+                            div(id="answer").h5.mb-0.font-weight-bold.text-gray-800 #{answer}
+                        .col-auto
+                            i.fas.fa-calendar.fa-2x.text-gray-300
+
     div(id="penobrol") count penobrol : #{penobrol}
     div(id="tandya") count tandya : #{tandya}
     div(id="youtublog") count youtublog : #{youtublog}
-    div(id="comment") count comment : #{comment}
-    div(id="answer") count answer : #{answer}
+
+    .card-body
+        .chart-pie.pt-4.pb-2
+            canvas(id="myPieChart")
+        .mt-4.text-center.small
+            span.mr-2
+                i.fas.fa-circle.text-primary
+                |  Penobrol
+            span.mr-2
+                i.fas.fa-circle.text-success
+                |  Tandya
+            span.mr-2
+                i.fas.fa-circle.text-info
+                |  Youtublog
+
+    script.
+        // Set new default font family and font color to mimic Bootstrap's default styling
+        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#858796';
+
+        // Pie Chart Example
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["Penobrol", "Tandya", "Youtublog"],
+                datasets: [{
+                    data: [#{penobrol}, #{tandya}, #{youtublog}],
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+
+        setInterval(AjaxFiveSec, 1000);
+        let countsec = 5;
+        function AjaxFiveSec() {
+            if (countsec === 0) {
+                countsec = 5;
+                makeRequest('get', '/api/samusil', null).then(function (res) {
+                    res = JSON.parse(res);
+                    document.getElementById("users").innerText = (res.users);
+                    document.getElementById("comment").innerText = (res.comment);
+                    document.getElementById("answer").innerText = (res.answer);
+                    document.getElementById("penobrol").innerText = ("count penobrol : " + res.penobrol);
+                    document.getElementById("tandya").innerText = ("count tandya : " + res.tandya);
+                    document.getElementById("youtublog").innerText = ("count youtublog : " + res.youtublog);
+                    myPieChart.data.datasets[0].data[0] = res.penobrol;
+                    myPieChart.data.datasets[0].data[1] = res.tandya;
+                    myPieChart.data.datasets[0].data[2] = res.youtublog;
+                    myPieChart.update();
+
+
+                });
+            }
+            countsec -= 1;
+        }
+
+    //.card.shadow.mb-4
+        //.card-header.py-3
+        //h6.m-0.font-weight-bold.text-primary
+        //.card-body
+        //h4.small.font-weight-bold
+        //    | Server Migration
+        //    span.float-right 20%
+        //.progress.mb-4
+        //    .progress-bar.bg-danger(role='progressbar' style='width: 20%' aria-valuenow='20' aria-valuemin='0' aria-valuemax='100')
+        //h4.small.font-weight-bold
+        //    | Sales Tracking
+        //    span.float-right 40%
+        //.progress.mb-4
+        //    .progress-bar.bg-warning(role='progressbar' style='width: 40%' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100')
+        //
+
