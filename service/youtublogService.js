@@ -187,6 +187,19 @@ exports.warnYoutublogCom = async function (u_id, warned_id) {
 exports.warnYoutublogComCom = async function (u_id, warned_id) {
     return await warningDao.insertYoutublogComComWarning(u_id, warned_id);
 };
+
+exports.didWarnYoutublog = async function(u_id, warned_id) {
+    return (await warningDao.countYoutublogWarning(u_id, warned_id)) > 0;
+};
+
+exports.didWarnYoutublogCom = async function(u_id, warned_id) {
+    return (await warningDao.countYoutublogComWarning(u_id, warned_id)) > 0;
+};
+
+exports.didWarnYoutublogComCom = async function(u_id, warned_id) {
+    return (await warningDao.countYoutublogComComWarning(u_id, warned_id)) > 0;
+};
+
 /* ===== local functions ===== */
 
 // 하나의 youtublog 에 hashtag 와 Comment 개수를 넣어주는 함수

@@ -18,7 +18,7 @@ mixin articleContent(content)
         var iframe = document.getElementById("content");
         iframe.width = "100%";
         var page = iframe.contentWindow.document;
-        var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+        var content = "#{topic.content}".replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '\"');
 
         window.addEventListener('DOMContentLoaded', function () {
             iframe.addEventListener('load', autoHeight());
@@ -30,10 +30,10 @@ mixin articleContent(content)
             iframe.height = sub.body.scrollHeight
         }
 
-        var cssLink = document.createElement("link") 
+        var cssLink = document.createElement("link")
         cssLink.href = "./public/b-editor/__b-editor.css";
-        cssLink.rel = "stylesheet"; 
-        cssLink.type = "text/css"; 
+        cssLink.rel = "stylesheet";
+        cssLink.type = "text/css";
         page.head.appendChild(cssLink);
 
         var scriptLink = document.createElement("script")
@@ -42,19 +42,21 @@ mixin articleContent(content)
 
         page.body.innerHTML = content;
         const imgTags = page.getElementsByTagName("img");
-        for(var t of imgTags) {
-            t.onload = () => {
+        for (var t of imgTags) {
+            t.onload = () =>
+            {
                 var i = document.getElementById('content');
                 var w = i.contentWindow.document.body.scrollWidth;
                 var h = i.contentWindow.document.body.scrollHeight;
                 i.height = h;
                 i.width = w;
-            };
+            }
+            ;
         }
 
 mixin likeButton(type ,likeObject, sessionId)
-    -var likeChecker = function(likeObject, sessionId){
-    -    for(var i of likeObject){
+    -var likeChecker = function (likeObject, sessionId) {
+    -    for (var i of likeObject) {
     -        if(i.u_id == sessionId){
     -            return true;
     -        }
@@ -69,7 +71,7 @@ mixin likeButton(type ,likeObject, sessionId)
         else
             button(class="articleLikeButton" type="submit" value=topic.id + '/0/0' onclick="pLike(this);")
                 img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
-    else if(type ==='t')
+    else if(type === 't')
         if(result)
             button(class="articleLikeButton" type="submit" value=topic.id + '/0/1' onclick="tLike(this);")
                 img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
@@ -99,8 +101,8 @@ mixin commentOrAnswer(type)
             input(type='submit' value='comment' class="pctaInputButton" id="ycInputButton")
 
 mixin likeButton2(type, likeObject, sessionId, id)
-    -var likeChecker = function(likeObject, sessionId){
-    -    for(var i of likeObject){
+    -var likeChecker = function (likeObject, sessionId) {
+    -    for (var i of likeObject) {
     -        if(i.u_id == sessionId){
     -            return true;
     -        }
@@ -110,17 +112,17 @@ mixin likeButton2(type, likeObject, sessionId, id)
     -var result = likeChecker(likeObject, sessionId);
     if(type == 'pc')
         if(result)
-            button(class="pctalikeButton" type="submit" value=topic.id +'/'+id+'/1' onclick="pcLike(this);")
+            button(class="pctalikeButton" type="submit" value=topic.id + '/' + id + '/1' onclick="pcLike(this);")
                 img(src="icons/nocap.png" class="pctalikeImage" id="likeImage")
         else
-            button(class="pctalikeButton" type="submit" value=topic.id +'/'+id+'/0' onclick="pcLike(this);")
+            button(class="pctalikeButton" type="submit" value=topic.id + '/' + id + '/0' onclick="pcLike(this);")
                 img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
     else if(type === 'ta')
         if(result)
-            button(class="pctalikeButton" type="submit" value=topic.id + '/'+id+'/1' onclick="taLike(this);")
+            button(class="pctalikeButton" type="submit" value=topic.id + '/' + id + '/1' onclick="taLike(this);")
                 img(src="icons/nocap.png" class="pctalikeImage" id="likeImage")
         else
-            button(class="pctalikeButton" type="submit" value=topic.id + '/'+id+'/0' onclick="taLike(this);")
+            button(class="pctalikeButton" type="submit" value=topic.id + '/' + id + '/0' onclick="taLike(this);")
                 img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
     else
         if(result)
@@ -134,54 +136,80 @@ mixin articlePop(type, loginUser, articleAuthor)
     .aPopButton(onclick="aMenuButton()") ≡
         .aPopDiv(id='aPopDiv')
             if(type === 'p')
+                button(class="aPopMenu" onclick="warnPenobrol(" + topic.id + ")")
+                    img(src="./icons/warn.png")
                 if(loginUser === articleAuthor)
-                    a(href='/penobrol/edit/'+topic.id class="aPopMenu")
+                    a(href='/penobrol/edit/' + topic.id class="aPopMenu")
                         img(src="./icons/edit.png")
                     button(class="aPopMenu" onclick ="deletePenobrol()")
                         img(src="./icons/trash.png")
             else if(type === 't')
+                button(class="aPopMenu" onclick="warnTandya(" + topic.id + ")")
+                    img(src="./icons/warn.png")
                 if(loginUser === articleAuthor)
-                    a(href='/tandya/edit/'+topic.id class="aPopMenu")
+                    a(href='/tandya/edit/' + topic.id class="aPopMenu")
                         img(src="./icons/edit.png")
                     button(class="aPopMenu" onclick="deleteTandya()")
                         img(src="./icons/trash.png")
             else if(type === 'y')
+                button(class="aPopMenu" onclick="warnYoutublog(" + topic.id + ")")
+                    img(src="./icons/warn.png")
                 if(loginUser === articleAuthor)
                     a(href='/youtublog/edit/' + topic.id class="aPopMenu")
                         img(src="./icons/edit.png")
                     button(class="aPopMenu" onclick="deleteYoutublog()")
                         img(src="./icons/trash.png")
-                    
+
 mixin caPop(type, loginUser, caAuthor, caId)
     .caPopButton(onclick="caMenuButton(this)") ≡
         .caPopDiv(id=`${caId}`)
             if(type === 'p')
+                button(class="aPopMenu" onclick="warnPenobrolCom(" + caId + ")")
+                    img(src="./icons/warn.png")
                 if(loginUser === caAuthor)
-                    a(class="caPopMenu" href='/penobrol/edit/comment/'+caId)
+                    a(class="caPopMenu" href='/penobrol/edit/comment/' + caId)
                         img(src="./icons/edit.png")
                     button(class="caPopMenu" value=caId onclick="postDeletePcomment(this);")
                         img(src="./icons/trash.png")
-            else
-                button(class="caPopMenu" value='t/ta/'+caId onclick="warningArticle(this);")
+            else if(type === 't')
+                button(class="caPopMenu" onclick="warnTandyaAns(" + caId + ")")
                     img(src="./icons/warn.png")
                 if(loginUser === caAuthor)
-                    a(class="caPopMenu" href='/tandya/edit/answer/'+caId)
+                    a(class="caPopMenu" href='/tandya/edit/answer/' + caId)
                         img(src="./icons/edit.png")
                     button(class="caPopMenu" value=caId onclick="postDeleteTanswer(this);")
                         img(src="./icons/trash.png")
-                        
+            else if(type === 'y')
+                button(class="aPopMenu" onclick="warnYoutublogCom(" + caId + ")")
+                    img(src="./icons/warn.png")
+                if(loginUser === caAuthor)
+                    a(class="caPopMenu" href='/penobrol/edit/comment/' + caId)
+                        img(src="./icons/edit.png")
+                    button(class="caPopMenu" value=caId onclick="postDeleteYcomment(this);")
+                        img(src="./icons/trash.png")
+
+
 mixin pcctacPop(type, loginUser, pcctacAuthor, pcctacId)
     .pcctacPopButton(onclick="pcctacMenuButton(this)") ≡
         .pcctacPopDiv(id=`${pcctacId}`)
             if(type === 'p')
+                button(class="aPopMenu" onclick="warnPenobrolComCom(" + pcctacId + ")")
+                    img(src="./icons/warn.png")
                 if(loginUser === pcctacAuthor)
                     button(class="pcctacPopMenu" value=pcctacId onclick ='postDeletePccomment(this)')
                         img(src="./icons/trash.png")
-            else
-                button(class="pcctacPopMenu" value='t/tac/'+pcctacId onclick="warningArticle(this);")
+            else if(type === 't')
+                button(class="aPopMenu" onclick="warnTandyaAnsCom(" + pcctacId + ")")
                     img(src="./icons/warn.png")
                 if(loginUser == pcctacAuthor)
                     button(class="pcctacPopMenu" value=pcctacId onclick ='postDeleteTacomment(this)')
                         img(src="./icons/trash.png")
+            else if(type === 't')
+                button(class="aPopMenu" onclick="warnYoutublogComCom(" + pcctacId + ")")
+                    img(src="./icons/warn.png")
+                if(loginUser == pcctacAuthor)
+                    button(class="pcctacPopMenu" value=pcctacId onclick ='postDeleteYccomment(this)')
+                        img(src="./icons/trash.png")
+
     
     

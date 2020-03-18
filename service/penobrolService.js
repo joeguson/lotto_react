@@ -192,6 +192,18 @@ exports.warnPenobrolComCom = async function (u_id, warned_id) {
     return await warningDao.insertPenobrolComComWarning(u_id, warned_id);
 };
 
+exports.didWarnPenobrol = async function(u_id, warned_id) {
+    return (await warningDao.countPenobrolWarning(u_id, warned_id)) > 0;
+};
+
+exports.didWarnPenobrolCom = async function(u_id, warned_id) {
+    return (await warningDao.countPenobrolComWarning(u_id, warned_id)) > 0;
+};
+
+exports.didWarnPenobrolComCom = async function(u_id, warned_id) {
+    return (await warningDao.countPenobrolComComWarning(u_id, warned_id)) > 0;
+};
+
 /* ===== local functions ===== */
 
 // 하나의 penobrol 에 hashtag 와 Comment 개수를 넣어주는 함수

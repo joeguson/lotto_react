@@ -70,6 +70,7 @@ route.put('/:type/:id', (req, res) => {
     );
 });
 
+
 /* ===== POST /{type}/like ===== */
 // article type 에 따른 like 요청 함수
 const articleLikeFunctions = {
@@ -168,5 +169,116 @@ function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions, idSt
         ).catch(() => res.status(409).send('Already in like state'));
     }
 }
+
+/* ===== POST /{type}/warn ===== */
+// article type 에 따른 warn 요청 함수
+const articleWarnFunctions = {
+    penobrol: penobrolService.warnPenobrol,
+    tandya: tandyaService.warnTandya,
+    youtublog: youtublogService.warnYoutublog
+};
+
+const articleDidWarnFunctions = {
+    penobrol: penobrolService.didWarnPenobrol,
+    tandya: tandyaService.didWarnTandya,
+    youtublog: youtublogService.didWarnYoutublog
+};
+
+route.post('/:type/warn', (req, res) => {
+    const type = req.params['type']; // req.params.type
+    const articleWarnFunction = articleWarnFunctions[type];
+    const articleDidWarnFunction = articleDidWarnFunctions[type];
+
+    if (articleDidWarnFunction == null)
+        res.status(400).send("Wrong article type");
+    else articleDidWarnFunction(req.session.id2, req.body['warned_id'])
+        .then(didWarnArticle => {
+            if (!didWarnArticle) {
+                articleWarnFunction(req.session.id2, req.body['warned_id'])
+                    .then(result => {
+                        res.json({
+                            'result': result
+                        })
+                    }).catch(() => res.status(499).send('Cannot load state'));
+            } else {
+                res.status(409).send('Already Warn');
+            }
+        }).catch(() => res.status(501).send('Cannot load state'));
+});
+
+/* ===== POST /{type}/reply/warn ===== */
+// reply type 에 따른 warn 요청 함수
+const replyWarnFunctions = {
+    penobrol: penobrolService.warnPenobrolCom,
+    tandya: tandyaService.warnTandyaAns,
+    youtublog: youtublogService.warnYoutublogCom
+};
+
+const replyDidWarnFunctions = {
+    penobrol: penobrolService.didWarnPenobrolCom,
+    tandya: tandyaService.didWarnTandyaAns,
+    youtublog: youtublogService.didWarnYoutublogCom
+};
+
+
+route.post('/:type/reply/warn', (req, res) => {
+    const type = req.params['type']; // req.params.type
+    const replyWarnFunction = replyWarnFunctions[type];
+    const replyDidWarnFunction = replyDidWarnFunctions[type];
+
+    if (replyDidWarnFunction == null)
+        res.status(400).send("Wrong article type");
+    else replyDidWarnFunction(req.session.id2, req.body['warned_id'])
+        .then(didWarnreply => {
+            if (!didWarnreply) {
+                replyWarnFunction(req.session.id2, req.body['warned_id'])
+                    .then(result => {
+                        res.json({
+                            'result': result
+                        })
+                    }).catch(() => res.status(499).send('Cannot load state'));
+            } else {
+                res.status(409).send('Already Warn');
+            }
+        }).catch(() => res.status(501).send('Cannot load state'));
+});
+
+/* ===== POST /{type}/re-reply/warn ===== */
+// re-reply type 에 따른 warn 요청 함수
+const reReplyWarnFunctions = {
+    penobrol: penobrolService.warnPenobrolComCom,
+    tandya: tandyaService.warnTandyaAnsCom,
+    youtublog: youtublogService.warnYoutublogComCom
+};
+
+const reReplyDidWarnFunctions = {
+    penobrol: penobrolService.didWarnPenobrolComCom,
+    tandya: tandyaService.didWarnTandyaAnsCom,
+    youtublog: youtublogService.didWarnYoutublogComCom
+};
+
+
+route.post('/:type/re-reply/warn', (req, res) => {
+    const type = req.params['type']; // req.params.type
+    const reReplyWarnFunction = reReplyWarnFunctions[type];
+    const reReplyDidWarnFunction = reReplyDidWarnFunctions[type];
+
+    if (reReplyDidWarnFunction == null)
+        res.status(400).send("Wrong article type");
+    else reReplyDidWarnFunction(req.session.id2, req.body['warned_id'])
+        .then(didWarnReReply => {
+            if (!didWarnReReply) {
+                reReplyWarnFunction(req.session.id2, req.body['warned_id'])
+                    .then(result => {
+                        res.json({
+                            'result': result
+                        })
+                    }).catch(() => res.status(499).send('Cannot load state'));
+            } else {
+                res.status(409).send('Already Warn');
+            }
+        }).catch(() => res.status(501).send('Cannot load state'));
+});
+
 
 module.exports = route;

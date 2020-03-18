@@ -190,6 +190,18 @@ exports.warnTandyaAns = async function(u_id, warned_id) {
 exports.warnTandyaAnsCom = async function(u_id, warned_id) {
     return await warningDao.insertTandyaAnsComWarning(u_id, warned_id);
 };
+
+exports.didWarnTandya = async function(u_id, warned_id) {
+    return (await warningDao.countTandyaWarning(u_id, warned_id)) > 0;
+};
+
+exports.didWarnTandyaAns = async function(u_id, warned_id) {
+    return (await warningDao.countTandyaAnsWarning(u_id, warned_id)) > 0;
+};
+
+exports.didWarnTandyaAnsCom = async function(u_id, warned_id) {
+    return (await warningDao.countTandyaAnsComWarning(u_id, warned_id)) > 0;
+};
 /* ===== local functions ===== */
 
 // 하나의 tandya 에 hashtag 와 answer 개수를 넣어주는 함수
