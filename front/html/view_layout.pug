@@ -25,16 +25,57 @@ block main
         .articleContent
             +articleContent(topic.content)
         .articleLike
-            .articleLikeNum(id="articleLikeNum")= topic.likes.length
+            .articleLikeNum(id="articleLikeNum")= topic.likeCount
             if u_id
-                +likeButton(topic.identifier,topic.likes, id2)
+                +likeButton(topic.likeStatus)
     if(u_id)
         .commentOrAnswer
             +commentOrAnswer(topic.identifier)
     .comAns
-        ul.ulComAndAns
+        ul.ulComAndAns(id='replyUl')
             block ulComAndAns
 
 block jscript
+    script.
+        /* ===== articleLike ===== */
+        let __article = {
+            __like: #{topic.likeStatus},  // update value with __updateLikeState()
+            __likeCount: #{topic.likeCount}
+        };
+        window.addEventListener('load', function(){
+            var type = window.location.href.split('/')[3];
+            makeRequest('GET', 'api/article/' + type + '/reply/'+#{topic.id})
+                .then(function (e) {
+                    let ele = JSON.parse(e);
+                    ele.result.forEach(element => createReplyLi(element));
+                });
 
+        });
+
+        document.getElementById("articleLikeButton").onclick = function () {
+            //버튼을 누르자마자 현재 __like를 기준으로 우선 그림과 숫자를 바꿔줌
+            var articleLikeNum = document.getElementById('articleLikeNum');
+            var imgTag = this.childNodes[0];
+            if(__article.__like){
+                articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML)-1;
+                imgTag.src = location.origin +'/icons/cap.png';
+            }
+            else{
+                articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML)+1;
+                imgTag.src = location.origin +'/icons/nocap.png';
+            }
+
+            //이후에 ajax 요청을 보냄
+            var type = window.location.href.split('/')[3];
+            var data = {
+                "id": #{topic.id},
+                "cancel": __article.__like
+            };
+            __article.__like = !__article.__like;
+            makeRequest('POST', 'api/article/' + type + '/like', data)
+                .then(function (e) {
+                    e = JSON.parse(e);
+                    console.log(e);
+                });
+        }
 

@@ -9,36 +9,7 @@ block articleInfo
     +basicPInfo(topic.u_id, topic.date, topic.view, topic.comments.length)
 
 block ulComAndAns
-    if topic.comments.length > 0
-        each c in topic.comments
-            li.liComAndAns(id='pc/' + topic.id + '/' + c.id)
-                dl.dlComAndAns
-                    - var commentStart = '@'+ topic.u_id
-                    - var date_result2 = 'by '+c.u_id+' / '+c.date+' / like : '
-                    .comAnsStart #{commentStart}
-                        if u_id
-                            +caPop(topic.identifier, id2, c.author, c.id)
-                    dt.dtComAndAns
-                        pre(class="pcomment-dt") "#{c.content}"
-                    dd.ddComAndAns #{date_result2}
-                        span.comAnsLike(id="pCommentlikes" + c.id)= c.likes.length
-                        if u_id
-                            span.comAnsButton
-                                +likeButton2('pc',c.likes, id2, c.id)
-                                span.dummy
-                .pccOrTac
-                    if u_id    
-                        textarea(name='ccomment' class="pccTacInput" id='pccInput')
-                        input(type='submit' name=c.id onclick="pcacSendAjax(this);" value="comment" class="pccTacInputButton")
-                each ccs in c.comments
-                    dl(class='dlPccAndTac')
-                        - var ccommentStart = '- "'+ccs.content+'"'
-                        - var date_result3 = 'by ' + ccs.u_id + ' / '+ ccs.date
-                        dt.dtPccAndTac
-                            if u_id
-                                +pcctacPop(topic.identifier, id2, ccs.author, ccs.id)
-                            pre(class="pccomment-dt") #{ccommentStart}
-                        dd.ddPccAndTac #{date_result3}
+
     script.
         function pcChecksubmit() {
             if (pcInput.value.length < 5) {

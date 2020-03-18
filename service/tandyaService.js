@@ -65,21 +65,22 @@ exports.getOrderedTandya = async function() {
 };
 
 // tandya id 로 tandya 관련된 모든 정보를 읽어오는 함수
-exports.getFullTandyaById = async function(id) {
+exports.getFullTandyaById = async function(id, userId) {
     const tandyaResult = (await tandyaDao.tandyaById(id))[0];
 
     if(tandyaResult == null) return null;
 
     const tandya = parser.parseTandya(tandyaResult);
 
-    const [answersResult, likesResult, hashtagsResult] = await Promise.all([
+    const [likeStatus, answersResult, likesCount, hashtagsResult] = await Promise.all([
+        tlikeDao.tandyaLikeByAuthor(id, userId),
         taDao.tandyaAnsByScore(id),
-        tlikeDao.tandyaLikeById(id),
+        tlikeDao.tandyaLikeCount(id),
         thashDao.tandyaHashtagById(id)
     ]);
-
+    tandya.likeStatus = !!(likeStatus[0].count);
     tandya.answers = answersResult.map(parser.parseAnswer);
-    tandya.likes = likesResult.map(parser.parseTLike);
+    tandya.likeCount = likesCount[0].tlikeCount;
     tandya.hashtags = hashtagsResult.map(parser.parseHashtagT);
 
     tandya.answers = await applyAsyncToAll(tandya.answers, getFullAnswer);

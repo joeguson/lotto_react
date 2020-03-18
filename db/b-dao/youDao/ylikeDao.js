@@ -22,6 +22,15 @@ exports.youtublogLikeCount = (id) => doQuery(
     where y_id = ?`,
     id
 );
+
+exports.youtublogLikeByAuthor = (youtublogId, userId) => doQuery(
+    `SELECT COUNT(*) 
+    AS count
+    FROM y_like
+    WHERE y_id = ? AND u_id = ?;`,
+    [youtublogId, userId]
+);
+
 exports.youtublogLikeCountByAuthor = (id) => doQuery(
     `select count(c.y_id)
     as total

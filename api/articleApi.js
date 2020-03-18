@@ -171,15 +171,43 @@ route.post('/:type/warn', (req, res) => {
     );
 });
 
+/* ===== GET /{type}/reply ===== */
+// article type 에 따른 reply 요청 함수
+const replyGetFunctions = {
+    penobrol: penobrolService.getFullPenobrolComById,
+    tandya: tandyaService.getFullTandyaAnsById,
+    youtublog: youtublogService.getFullYoutublogComById
+};
+// reply 에 like/취소 를 요청하는 api
+route.get('/:type/reply/:id', (req, res) => {
+    const type = req.params['type'];
+    const articleId = req.params.id;
+
+    const replyGetFunction = replyGetFunctions[type];
+    if (replyGetFunction == null)
+        res.status(400).send('Wrong article type');
+    else replyGetFunction(
+        articleId,
+        req.session.id2
+    ).then(re =>
+        res.json({
+            'result': re
+        })
+    ).catch((e) => {
+            console.error(e);
+            res.status(500).send('Could not warn article')
+        }
+    );
+});
+
 // article, reply 에 like 요청을 보내기 위한 공용 함수
 function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions, idString) {
     return (req, res) => {
         const type = req.params['type'];
         const likeFunction = likeFunctions[type];
         const likeCountFunction = likeCountFunctions[type];
-
-        const id = req.body[idString];  // TODO unify idString to id
-        const clickVal = parseInt(req.body.clickVal);  // TODO refactor to boolean cancel
+        const id = req.body.id;  // TODO unify idString to id
+        const clickVal = req.body.cancel;  // TODO refactor to boolean cancel
 
         if (likeFunction == null)
             res.status(400).send('Wrong article type');

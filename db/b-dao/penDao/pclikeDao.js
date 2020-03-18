@@ -22,6 +22,13 @@ exports.penobrolComLikeCount = (id) => doQuery(
     where pc_id = ?`,
     id
 );
+exports.penobrolComLikeByAuthor = (penobrolComId, userId) => doQuery(
+    `SELECT COUNT(*) 
+    AS count
+    FROM pc_like
+    WHERE pc_id = ? AND u_id = ?;`,
+    [penobrolComId, userId]
+);
 exports.penobrolComLikeCountByAuthor = (id) => doQuery(
     `select count(c.pc_id)
     as total from(

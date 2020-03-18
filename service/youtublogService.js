@@ -64,21 +64,22 @@ exports.getOrderedYoutublog = async function() {
 };
 
 // youtublog id 로 youtublog 관련된 모든 정보를 읽어오는 함수
-exports.getFullYoutublogById = async function(id) {
+exports.getFullYoutublogById = async function(id, userId) {
     const youtublogResult = (await youtublogDao.youtublogById(id))[0];
 
     if(youtublogResult == null) return null;
 
     const youtublog = parser.parseYoutublog(youtublogResult);
 
-    const [commentsResult, likesResult, hashtagsResult] = await Promise.all([
+    const [likeStatus, commentsResult, likesCount, hashtagsResult] = await Promise.all([
+        ylikeDao.youtublogLikeByAuthor(id, userId),
         ycDao.youtublogComByScore(id),
-        ylikeDao.youtublogLikeById(id),
+        ylikeDao.youtublogLikeCount(id),
         yhashDao.youtublogHashtagById(id)
     ]);
-
+    youtublog.likeStatus = !!(likeStatus[0].count);
     youtublog.comments = commentsResult.map(parser.parseComment);
-    youtublog.likes = likesResult.map(parser.parseTLike);
+    youtublog.likeCount = likesCount[0].ylikeCount;
     youtublog.hashtags = hashtagsResult.map(parser.parseHashtagT);
 
     youtublog.comments = await applyAsyncToAll(youtublog.comments, getFullComments);

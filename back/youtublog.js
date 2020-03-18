@@ -18,7 +18,7 @@ route.get('/:youtublog_no', function (req, res, next) {
     const id = req.params.youtublog_no;
     const checkId = /^[0-9]+$/;
     if(checkId.test(id)){
-        youtublogService.getFullYoutublogById(id).then(result => {
+        youtublogService.getFullYoutublogById(id, req.session.id2).then(result => {
             if (!result) res.redirect('/youtublog/'); // 결과가 없으면 홈으로 이동
             else youtublogService.updateYoutublogView(result.id).then(() => // 받아왔으면 조회수 증가 후 페이지 표시
                 res.render('./jy/y-view', {

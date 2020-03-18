@@ -52,37 +52,13 @@ mixin articleContent(content)
             };
         }
 
-mixin likeButton(type ,likeObject, sessionId)
-    -var likeChecker = function(likeObject, sessionId){
-    -    for(var i of likeObject){
-    -        if(i.u_id == sessionId){
-    -            return true;
-    -        }
-    -     }
-    -     return false;
-    -}
-    -var result = likeChecker(likeObject, sessionId);
-    if(type === 'p')
-        if(result)
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/1' onclick="pLike(this);")
-                img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
-        else
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/0' onclick="pLike(this);")
-                img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
-    else if(type ==='t')
-        if(result)
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/1' onclick="tLike(this);")
-                img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
-        else
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/0' onclick="tLike(this);")
-                img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
+mixin likeButton(status)
+    if(status)
+        button(class="articleLikeButton" type="submit" id="articleLikeButton" value=topic.id)
+            img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
     else
-        if(result)
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/1' onclick="yLike(this);")
-                img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
-        else
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/0' onclick="yLike(this);")
-                img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
+        button(class="articleLikeButton" type="submit" id="articleLikeButton" value=topic.id)
+            img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
 
 mixin commentOrAnswer(type)
     if(type == 't')
@@ -142,6 +118,7 @@ mixin articlePop(type, loginUser, articleAuthor)
                     button(class="aPopMenu" onclick ="deletePenobrol()")
                         img(src="./icons/trash.png")
             else if(type === 't')
+
                 button(class="aPopMenu" value='t/t/'+topic.id onclick="warningArticle(this);")
                     img(src="./icons/warn.png")
                 if(loginUser === articleAuthor)

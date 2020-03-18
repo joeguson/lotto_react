@@ -64,25 +64,34 @@ exports.getOrderedPenobrol = async function() {
 };
 
 // penobrol id 로 penobrol 관련된 모든 정보를 읽어오는 함수
-exports.getFullPenobrolById = async function(id) {
+exports.getFullPenobrolById = async function(id, userId) {
     const penobrolResult = (await penobrolDao.penobrolById(id))[0];
 
     if(penobrolResult == null) return null;
 
     const penobrol = parser.parsePenobrol(penobrolResult);
-
-    const [commentsResult, likesResult, hashtagsResult] = await Promise.all([
+    const [likeStatus, commentsResult, likesCount, hashtagsResult] = await Promise.all([
+        plikeDao.penobrolLikeByAuthor(id, userId),
         pcDao.penobrolComByScore(id),
-        plikeDao.penobrolLikeById(id),
+        plikeDao.penobrolLikeCount(id),
         phashDao.penobrolHashtagById(id)
     ]);
 
+    penobrol.likeStatus = !!(likeStatus[0].count);
     penobrol.comments = commentsResult.map(parser.parseComment);
-    penobrol.likes = likesResult.map(parser.parsePLike);
+    penobrol.likeCount = likesCount[0].plikeCount;
     penobrol.hashtags = hashtagsResult.map(parser.parseHashtagP);
 
     penobrol.comments = await applyAsyncToAll(penobrol.comments, getFullComments);
     return penobrol;
+};
+
+exports.getFullPenobrolComById = async function(id, userId) {
+    const penobrolComResult = (await pcDao.penobrolComByScore(id)).map(parser.parseComment);
+    if(penobrolComResult == null) return null;
+    const penobrolComResultWithReply = await applyAsyncToAll(penobrolComResult, getFullComments);
+    console.log(penobrolComResultWithReply);
+    return penobrolComResultWithReply;
 };
 
 // penobrol 의 조회수를 올리고 그에 따라 점수를 업데이트 하는 함수
@@ -218,6 +227,7 @@ async function getFullComments(comment) {
 
     comment.comments = commentsResult.map(parser.parseCComment);
     comment.likes = likesResult.map(parser.parseCLike);
+    console.log(comment.likes);
     return comment;
 }
 

@@ -18,7 +18,7 @@ route.get('/:tandya_no', function (req, res, next) {
     const id = req.params.tandya_no;
     const checkId = /^[0-9]+$/;
     if (checkId.test(id)) {
-        tandyaService.getFullTandyaById(id).then(result => {
+        tandyaService.getFullTandyaById(id, req.session.id2).then(result => {
             if (!result) res.redirect('/tandya/'); // 결과가 없으면 홈으로 이동
             else tandyaService.updateTandyaView(result.id).then(() => // 받아왔으면 조회수 증가 후 페이지 표시
                 res.render('./jt/t-view', {

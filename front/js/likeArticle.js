@@ -1,22 +1,39 @@
-//////////////////////Variables//////////////////////
-let pLikeClick = true;
-let tLikeClick = true;
-let yLikeClick = true;
-let pcLikeClick = true;
-let taLikeClick = true;
-let ycLikeClick = true;
+// /* ===== replyLike ===== */
+// function replyLike(reply){
+//     let __article = {
+//         __like: #{topic.likeStatus},  // update value with __updateLikeState()
+//         __likeCount: #{topic.likeCount}
+//     };
+//     document.getElementById("articleLikeButton").onclick = function () {
+//         //버튼을 누르자마자 현재 __like를 기준으로 우선 그림과 숫자를 바꿔줌
+//         var articleLikeNum = document.getElementById('articleLikeNum');
+//         var imgTag = this.childNodes[0];
+//         if(__article.__like){
+//             articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML)-1;
+//             imgTag.src = location.origin +'/icons/cap.png';
+//         }
+//         else{
+//             articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML)+1;
+//             imgTag.src = location.origin +'/icons/nocap.png';
+//         }
+//
+//         //이후에 ajax 요청을 보냄
+//         var type = window.location.href.split('/')[3];
+//         var id = window.location.href.split('/')[4];
+//         var data = {
+//             "id": id,
+//             "cancel": __article.__like
+//         };
+//         __article.__like = !__article.__like;
+//         makeRequest('POST', 'api/article/' + type + '/like', data)
+//             .then(function (e) {
+//                 e = JSON.parse(e);
+//                 console.log(e);
+//             });
+//     }
+// }
 
 //////////////////////Penobrol//////////////////////
-function pLike(penobrol) {
-    let articleLikeNum = document.getElementById('articleLikeNum');
-    let data = getData(penobrol);
-    let url = 'api/article/penobrol/like';
-    likeResult(articleLikeNum, penobrol, url, data);
-    if(data.clickVal) penobrol.childNodes[0].src = "./icons/nocap.png";
-    else penobrol.childNodes[0].src = "./icons/cap.png";
-    penobrol.value = data.articleId+'/'+data.comAnsId+'/'+(data.clickVal ? 0 : 1);
-}
-
 function pcLike(comment) {
     let pclikeNum = document.getElementById('pCommentlikes'+comment.value.split('/')[1]);
     let data = getData(comment);
@@ -31,19 +48,6 @@ function pcLike(comment) {
 }
 
 //////////////////////Tandya//////////////////////
-function tLike(tandya){
-    let articleLikeNum = document.getElementById('articleLikeNum');
-    let data = getData(tandya);
-    let url = 'api/article/tandya/like';
-    if(tLikeClick){
-        tLikeClick = !tLikeClick;
-        likeResult(articleLikeNum, tandya, url, data);
-        setTimeout(function(){
-            tLikeClick = true;
-        },2000);
-    }
-}
-
 function taLike(answer){
     let talikeNum = document.getElementById('tAnswerlikes'+answer.value.split('/')[1]);
     let data = getData(answer);
@@ -58,19 +62,6 @@ function taLike(answer){
 }
 
 //////////////////////Youtublog//////////////////////
-function yLike(youtublog) {
-    let articleLikeNum = document.getElementById('articleLikeNum');
-    let data = getData(youtublog);
-    let url = 'api/article/youtublog/like';
-    if(yLikeClick){
-        yLikeClick = !yLikeClick;
-        likeResult(articleLikeNum, youtublog, url, data);
-        setTimeout(function(){
-            yLikeClick = true;
-        },2000);
-    }
-}
-
 function ycLike(comment) {
     let yclikeNum = document.getElementById('yCommentlikes'+comment.value.split('/')[1]);
     let data = getData(comment);

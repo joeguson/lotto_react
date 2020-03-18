@@ -22,6 +22,15 @@ exports.tandyaLikeCount = (id) => doQuery(
     where t_id = ?`,
     id
 );
+
+exports.tandyaLikeByAuthor = (tandyaId, userId) => doQuery(
+    `SELECT COUNT(*) 
+    AS count
+    FROM t_like
+    WHERE t_id = ? AND u_id = ?`,
+    [tandyaId, userId]
+);
+
 exports.tandyaLikeCountByAuthor = (id) => doQuery(
     `select count(c.t_id)
     as total

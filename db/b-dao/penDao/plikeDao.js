@@ -15,6 +15,7 @@ exports.penobrolLikeById = (id) => doQuery(
     WHERE p_id = ?`,
     id
 );
+
 exports.penobrolLikeCount = (id) => doQuery(
     `select count(p_id)
     as plikeCount
@@ -22,6 +23,15 @@ exports.penobrolLikeCount = (id) => doQuery(
     where p_id = ?`,
     id
 );
+
+exports.penobrolLikeByAuthor = (penobrolId, userId) => doQuery(
+    `SELECT COUNT(*) 
+    AS count
+    FROM p_like
+    WHERE p_id = ? AND u_id = ?;`,
+    [penobrolId, userId]
+);
+
 exports.penobrolLikeCountByAuthor = (id) => doQuery(
     `select count(c.p_id)
     as total from(
