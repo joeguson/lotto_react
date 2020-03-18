@@ -1,6 +1,5 @@
 //url - '/tandya'
 const route = require('express').Router();
-const jsForBack = require('./jsForBack.js');
 const tandyaService = require('../service/tandyaService.js');
 
 /* ===== tandya ===== */
@@ -57,7 +56,11 @@ route.get('/edit/:tandya_no', function (req, res) {
 
     tandyaService.getFullTandyaById(t_id).then(tandya => {
         if(tandya != null && tandya.author === u_id)
-            res.render('./jt/t-edit', {u_id: u_id, edit_content: tandya});
+            res.render('./article_edit', {
+                u_id: u_id,
+                type: 'tandya',
+                article: tandya
+            });
         else res.redirect('/tandya/' + t_id);
     });
 });

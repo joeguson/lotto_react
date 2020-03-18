@@ -1,10 +1,10 @@
 let edit = true;
 let originalImages;
 let changedImages;
-window.onload= () => {
-    var content = document.getElementById('editor').value();
+window.addEventListener('load', () => {
+    const content = document.getElementById('editor').value();
     originalImages = parseImgTags(content);
-};
+});
 
 function checkImage(imageObject){
     let originalImageName = Object.values(originalImages.imgs);
@@ -30,10 +30,9 @@ function checkImage(imageObject){
 
 if(edit){
     edit = !edit;
-    function postEditArticle(target) {
-        const type = target.name;
+    function postEditArticle(type) {
         const isPublic = document.getElementById('rbP').checked ? 'p' : 'a';
-        var content = document.getElementById('editor').value();
+        let content = document.getElementById('editor').value();
         const hashtag = document.getElementById('hashtag').value;
         const thumbnail = document.getElementById('thumbnail').value;
         var deleteImg;
@@ -43,14 +42,24 @@ if(edit){
             hashtag: hashtag,
             thumbnail: thumbnail
         };
-        if(type === 't') req.question = document.getElementById('question').value;
-        else req.title = document.getElementById('title').value;
+
+        switch (type) {
+            case 'penobrol':
+            case 'youtublog':
+                req.title = document.getElementById('mainColumn').value;
+                break;
+            case 'tandya':
+                req.question = document.getElementById('mainColumn').value;
+                break;
+            default:
+                return;
+        }
 
         const parsed = parseImgTags(content);
         content = parsed.content;
 
         const imgCount = Object.keys(parsed.imgs).length;
-        if(imgCount === 0) finalPost(req);
+        if(imgCount === 0) finalPost(type, req);
         else {
             deleteImg = checkImage(parsed.imgs);
             let done = 0;
@@ -61,7 +70,7 @@ if(edit){
                         req.content = content;
                         done++;
                         if(done === imgCount){
-                            finalPost(req);
+                            finalPost(type, req);
                         }
                     });
                 }
@@ -91,7 +100,7 @@ if(edit){
                 deleteImage(deleteImg);
             }
             if(done === imgCount){
-                finalPost(req);
+                finalPost(type, req);
             }
         }
 
@@ -99,71 +108,6 @@ if(edit){
     setTimeout(function(){
         edit = true;
     },2000);
-}
-
-function parseImgTags(content) {
-    var id = 1;
-    var imgIndex = 0;
-    var imgMaps = {};
-    var posMaps = {};
-    while(true) {
-        // <img
-        imgIndex = content.indexOf('<img', imgIndex);
-        if(imgIndex === -1) break;
-        // src="
-        const srcIndex = content.indexOf('src=\"', imgIndex);
-        // data
-        const dataIndex = srcIndex + 5;
-        // ">
-        const endIndex = content.indexOf('\">', imgIndex);
-        const data = content.substring(dataIndex, endIndex);
-        posMaps[id] = {s: dataIndex, e: endIndex};
-        imgMaps[id] = data;
-        id++;
-        imgIndex = endIndex;
-    }
-    for(--id; id >= 1; id--) {
-        const prev = content.substring(0, posMaps[id].s);
-        const post = content.substring(posMaps[id].e);
-        content = prev + id.toString() + post;
-    }
-    return {
-        content: content,
-        imgs: imgMaps
-    };
-}
-function uploadImage(id, data, onUploaded) {
-    var json = JSON.stringify({
-        img: data
-    });
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/image', true);
-    xhr.setRequestHeader('Content-type', "application/json");
-    xhr.send(json);
-    xhr.onload = () => {
-        var result = JSON.parse(xhr.responseText).filename;
-        onUploaded(id, result);
-    };
-}
-
-
-function replace(content, id, filename, index = 0) {
-    filename = "https://beritamus.s3-ap-southeast-1.amazonaws.com/images/" + filename;
-    var s = 0, e = 0;
-    while(true) {
-        const imgIndex = content.indexOf('<img', index);
-        const srcIndex = content.indexOf('src="', imgIndex);
-        const endIndex = content.indexOf('"', srcIndex+5);
-        if(imgIndex === -1 || srcIndex === -1 || endIndex === -1) break;
-        const curId = parseInt(content.substring(srcIndex + 5, endIndex));
-        if(curId === id) {
-            s = srcIndex + 5;
-            e = endIndex;
-            break;
-        }
-        index = endIndex;
-    }
-    return content.substring(0, s) + filename + content.substring(e);
 }
 
 function deleteImage() {
@@ -178,24 +122,14 @@ function deleteImage() {
     };
 }
 
-function finalPost(body) {
-    let type;
-    let postUrl;
+function finalPost(type, body) {
     let articleId = location.pathname.split('/')[3];
 
-    if(body.question) type = 't';
-    else type = 'p';
+    const postUrl = `api/article/${type}/${articleId}`;
 
-    if(type ==='p') postUrl = 'api/article/penobrol/' + articleId;
-    else postUrl = 'api/article/tandya/' + articleId;
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('PUT', postUrl, true);
-    xhr.setRequestHeader('Content-type', "application/json");
-    xhr.withCredentials = true;
-    xhr.send(JSON.stringify(body));
-    xhr.onload = () => {
-        let id = JSON.parse(xhr.responseText).id;
-        window.location.href = location.origin + "/penobrol/view/" + id.toString();
-    };
+    makeRequest('PUT', postUrl, body)
+        .then(res => {
+            const id = JSON.parse(res.toString()).id;
+            window.location.href = `/${type}/${id}`;
+        });
 }

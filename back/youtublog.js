@@ -1,6 +1,5 @@
 //url - '/youtublog'
 const route = require('express').Router();
-var jsForBack = require('./jsForBack.js');
 const youtublogService = require('../service/youtublogService.js');
 
 /************FOR YOUTUBLOG************/
@@ -52,12 +51,16 @@ route.post('/comment/:youtublog_no', function (req, res) {
 });
 
 route.get('/edit/:youtublog_no', function (req, res) {
-    const y_id = req.params.youtublog_no;
+    const y_id = req.params['youtublog_no'];
     const u_id = req.session.id2;
 
     youtublogService.getFullYoutublogById(y_id).then(youtublog => {
-        if(youtublog != null && youtublog.author === u_id)
-            res.render('./jy/y-edit', {u_id: u_id, edit_content: youtublog});
+        if(youtublog && youtublog.author === u_id)
+            res.render('./article_edit', {
+                u_id: u_id,
+                type: 'youtublog',
+                article: youtublog
+            });
         else res.redirect('/youtublog/' + y_id);
     });
 });
