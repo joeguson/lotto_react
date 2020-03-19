@@ -50,13 +50,32 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
         // TODO Open progress dialog
 
         const source = this.__sourceUrl(this.__youtubeId);
+        const timeRows = Array.from(this.getElementsByTagName('b-youtube-time'))
+            .map(e => {
+                const hour = this.__pad(e.children[0].value, 2);
+                const minute = this.__pad(e.children[1].value, 2);
+                const second = this.__pad(e.children[2].value, 2);
+                return {
+                    time: hour + ':' + minute + ':' + second,
+                    desc: e.children[3].value
+                };
+            });
+
         makeRequest('POST', '/api/youtube', {source: source})
-            .then((res) => {
-                const id = JSON.parse(res.toString()).id;
-                // TODO Request post time rows
-                if (this.onConfirmCallback) {
-                    this.onConfirmCallback(id);
-                }
+            .then(res => {
+                const sourceId = JSON.parse(res.toString()).id;
+
+                makeRequest('POST', '/api/youtube/time-row', {
+                    sourceId: sourceId,
+                    timeRows: timeRows
+                }).then(() => {
+                    if (this.onConfirmCallback) {
+                        this.onConfirmCallback(sourceId);
+                    }
+                }).catch(e => {
+                    console.error(e);
+                    // TODO Close progress dialog
+                });
             })
             .catch((e) => {
                 console.error(e);
@@ -91,6 +110,10 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
         return c;
     }
 
+    __pad(n, width) {
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+    }
 }
 
 customElements.define('b-youtube-dialog', BeritamusYoutubeDialog);

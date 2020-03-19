@@ -29,6 +29,7 @@ html
                     const width = embeddedYoutube.offsetWidth;
                     const height = width * 315 / 560;
                     embeddedYoutube.style.height = height + "px";
+                    dispatchEvent(new Event('load'));
                 }
 
                 function setOnClickToTimeButton(timeButton) {
