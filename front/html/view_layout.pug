@@ -27,7 +27,7 @@ block main
         .articleLike
             .articleLikeNum(id="articleLikeNum")= topic.likeCount
             if u_id
-                +likeButton(topic.likeStatus)
+                +aritcleLikeButton(topic.likeStatus)
     if(u_id)
         .commentOrAnswer
             +commentOrAnswer(topic.identifier)
@@ -47,7 +47,7 @@ block jscript
             makeRequest('GET', 'api/article/' + type + '/reply/'+#{topic.id})
                 .then(function (e) {
                     let ele = JSON.parse(e);
-                    ele.result.forEach(element => createReplyLi(element));
+                    ele.result.forEach(element => createReplyLi(element, type));
                 });
         });
 

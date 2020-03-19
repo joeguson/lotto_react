@@ -18,7 +18,7 @@ exports.penobrolLikeById = (id) => doQuery(
 
 exports.penobrolLikeCount = (id) => doQuery(
     `select count(p_id)
-    as plikeCount
+    as articleLikeCount
     from p_like
     where p_id = ?`,
     id

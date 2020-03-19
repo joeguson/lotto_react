@@ -17,7 +17,7 @@ exports.youtublogLikeById = (id) => doQuery(
 );
 exports.youtublogLikeCount = (id) => doQuery(
     `select count(y_id)
-    as ylikeCount
+    as articleLikeCount
     from y_like
     where y_id = ?`,
     id

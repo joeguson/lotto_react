@@ -54,23 +54,12 @@ mixin articleContent(content)
             ;
         }
 
-mixin likeButton(type ,likeObject, sessionId)
-    if(type === 'p')
-        if(result)
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/1' onclick="pLike(this);")
-                img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
-        else
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/0' onclick="pLike(this);")
-                img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
-    else if(type === 't')
-        if(result)
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/1' onclick="tLike(this);")
-                img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
-        else
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/0' onclick="tLike(this);")
-                img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
+mixin aritcleLikeButton(status)
+    if(status)
+        button(class="articleLikeButton" type="submit" id="articleLikeButton")
+            img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
     else
-        button(class="articleLikeButton" type="submit" id="articleLikeButton" value=topic.id)
+        button(class="articleLikeButton" type="submit" id="articleLikeButton")
             img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
 
 mixin commentOrAnswer(type)

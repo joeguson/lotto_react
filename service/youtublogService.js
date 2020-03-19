@@ -63,27 +63,11 @@ exports.getOrderedYoutublog = async function () {
     return await Promise.all(parsed.map((list) => applyAsyncToAll(list, getFullYoutublog)));
 };
 
-// youtublog id 로 youtublog 관련된 모든 정보를 읽어오는 함수
-exports.getFullYoutublogById = async function(id, userId) {
-    const youtublogResult = (await youtublogDao.youtublogById(id))[0];
-
-    if (youtublogResult == null) return null;
-
-    const youtublog = parser.parseYoutublog(youtublogResult);
-
-    const [likeStatus, commentsResult, likesCount, hashtagsResult] = await Promise.all([
-        ylikeDao.youtublogLikeByAuthor(id, userId),
-        ycDao.youtublogComByScore(id),
-        ylikeDao.youtublogLikeCount(id),
-        yhashDao.youtublogHashtagById(id)
-    ]);
-    youtublog.likeStatus = !!(likeStatus[0].count);
-    youtublog.comments = commentsResult.map(parser.parseComment);
-    youtublog.likeCount = likesCount[0].ylikeCount;
-    youtublog.hashtags = hashtagsResult.map(parser.parseHashtagT);
-
-    youtublog.comments = await applyAsyncToAll(youtublog.comments, getFullComments);
-    return youtublog;
+exports.getFullYoutublogComById = async function(id, userId) {
+    const youtublogComResult = (await ycDao.youtublogComByScore(id)).map(parser.parseComment);
+    if(youtublogComResult == null) return null;
+    const youtublogComResultWithReply = await applyAsyncToAll(youtublogComResult, getFullComments);
+    return youtublogComResultWithReply;
 };
 
 // youtublog 의 조회수를 올리고 그에 따라 점수를 업데이트 하는 함수

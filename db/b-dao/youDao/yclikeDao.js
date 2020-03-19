@@ -17,10 +17,17 @@ exports.youtublogComLikeById = (id) => doQuery(
 );
 exports.youtublogComLikeCount = (id) => doQuery(
     `select count(yc_id)
-    as ycLikeCount
+    as replyLikeCount
     from yc_like
     where yc_id = ?`,
     id
+);
+exports.youtublogComLikeByAuthor = (youtublogComId, userId) => doQuery(
+    `SELECT COUNT(*) 
+    AS count
+    FROM yc_like
+    WHERE yc_id = ? AND u_id = ?;`,
+    [youtublogComId, userId]
 );
 exports.youtublogComLikeCountByAuthor = (id) => doQuery(
     `select count(c.yc_id)

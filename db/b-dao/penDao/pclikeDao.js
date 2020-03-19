@@ -17,7 +17,7 @@ exports.penobrolComLikeById = (id) => doQuery(
 );
 exports.penobrolComLikeCount = (id) => doQuery(
     `select count(pc_id)
-    as pcLikeCount
+    as replyLikeCount
     from pc_like
     where pc_id = ?`,
     id

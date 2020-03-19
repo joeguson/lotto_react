@@ -17,7 +17,7 @@ exports.tandyaLikeById = (id) => doQuery(
 );
 exports.tandyaLikeCount = (id) => doQuery(
     `select count(t_id)
-    as tlikeCount
+    as articleLikeCount
     from t_like
     where t_id = ?`,
     id

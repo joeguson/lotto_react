@@ -8,39 +8,10 @@ block articleInfo
     dt.aTtileDt
         span Q :
         span #{topic.question}
-    +basicPInfo(topic.u_id, topic.date, topic.view, topic.answers.length)
+    +basicPInfo(topic.u_id, topic.date, topic.view, topic.reply.length)
 
 block ulComAndAns
-    if topic.answers.length > 0
-        each a in topic.answers
-            li.liComAndAns(id='ta/' + topic.id + '/' + a.id)
-                dl.dlComAndAns
-                    - var answerStart = '@'+ topic.u_id
-                    - var date_result2 = 'by '+ a.u_id + ' / '+a.date+' / like : '
-                    .comAnsStart #{answerStart}
-                        if u_id
-                            +caPop(topic.identifier, id2, a.author, a.id)
-                    dt.dtComAndAns
-                        pre(class="tanswer-dt") "#{a.answer}"
-                    dd.ddComAndAns #{date_result2}
-                        span.comAnsLike(id="tAnswerlikes" + a.id)= a.likes.length
-                        if u_id
-                            span.comAnsButton
-                                +likeButton2('ta', a.likes, id2, a.id)
-                                span.dummy
-                .pccOrTac
-                    if u_id
-                        textarea(name='acomment' class="pccTacInput" id='tacInput')
-                        input(type='submit' name=a.id onclick="pcacSendAjax(this);" value="comment" class="pccTacInputButton")
-                each acs in a.comments
-                    dl(class='dlPccAndTac')
-                        - var acommentStart = '- "'+acs.content+'"'
-                        - var date_result3 = 'by : ' + acs.u_id + ' / '+acs.date
-                        dt.dtPccAndTac
-                            pre(class="tacomment-dt") #{acommentStart}
-                            if u_id
-                                +pcctacPop(topic.identifier, id2, acs.author, acs.id)
-                        dd.ddPccAndTac #{date_result3}    
+
     script.
         function taChecksubmit() {
             if (taInput.value.length < 5) {

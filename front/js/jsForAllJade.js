@@ -24,9 +24,10 @@ function makeRequest(method, url, data) {
     });
 }
 
-function createReplyLi(reply){
+function createReplyLi(reply, type){
     const replyUl = document.getElementById('replyUl');
     console.log(reply);
+    console.log(type);
     {
         const replyLi = document.createElement('li');
         replyLi.className = "liComAndAns";
@@ -42,7 +43,8 @@ function createReplyLi(reply){
                     //inside replyDt
                     const replyPre = document.createElement('pre');
                     replyPre.className = "pcomment-dt";
-                    replyPre.innerHTML = `${reply.content}`;
+                    if(type==='tandya') replyPre.innerHTML = `${reply.answer}`;
+                    else replyPre.innerHTML = `${reply.content}`;
 
                     replyDt.appendChild(replyPre);
                 }
