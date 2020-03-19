@@ -3,16 +3,21 @@ html
         link(rel='stylesheet' href="/css/youtube_embed.css" type="text/css")
     body
         if youtube
-            iframe(id='embedded_youtube' width='100%' src=youtube.source)
+            iframe(id='embedded_youtube' width='100%' src=youtube.source
+                allow='accelerometer; autoplay; encrypted-media; gyroscope; allowfullscreen')
             each timeRow in youtube.timeRows
                 div(class='time_row')
-                    button=timeRow.time
+                    button(id="time-" + timeRow.time)=timeRow.time
                     span=timeRow.desc
             script.
                 const embeddedYoutube = document.getElementById('embedded_youtube');
 
                 window.onload = () => {
                     matchEmbeddedIframeAspectRatio();
+
+                    [...document.getElementsByTagName('button')]
+                        .filter(e => e.id.startsWith('time-'))
+                        .forEach(e => setOnClickToTimeButton(e));
                 };
 
                 window.onresize = () => {
@@ -23,6 +28,23 @@ html
                     const width = embeddedYoutube.offsetWidth;
                     const height = width * 315 / 560;
                     embeddedYoutube.style.height = height + "px";
+                }
+
+                function setOnClickToTimeButton(timeButton) {
+                    timeButton.onclick = function() {
+                        const time = parseTimeFromId(timeButton.id);
+                        const src = embeddedYoutube.src;
+                        const startStringIndex = src.indexOf('?');
+                        const queryParams = '?autoplay=1&rel=0&start=' + time;
+                        embeddedYoutube.src = src.substring(0, startStringIndex) + queryParams;
+                    };
+                }
+
+                function parseTimeFromId(timeId) {
+                    const hyphenIndex = timeId.indexOf('-');
+                    const [h, m, s] =  timeId.substring(hyphenIndex + 1).split(':')
+                        .map(s => parseInt(s));
+                    return 60 * 60 * h + 60 * m + s;
                 }
         else
             h1='Wrong youtube source id'
