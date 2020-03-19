@@ -196,8 +196,10 @@ exports.getYoutubeById = async function(id) {
     ]);
 
     const youtube = sourceResult[0];
-    youtube.timeRows = timeRowResult;
 
+    if (youtube == null) return null;
+
+    youtube.timeRows = timeRowResult;
     return youtube;
 };
 
