@@ -204,7 +204,12 @@ exports.getYoutubeById = async function(id) {
 };
 
 exports.newYoutube = async function(source) {
-    return (await youtubeDao.insertYoutubeSource(source))[0];
+    try {
+        return (await youtubeDao.insertYoutubeSource(source))[0];
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
 };
 
 /* ===== local functions ===== */

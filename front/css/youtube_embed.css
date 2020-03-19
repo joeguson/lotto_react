@@ -3,6 +3,14 @@
  * All rights reserved.
  */
 
+body {
+    margin: 0;
+}
+
+iframe {
+    border: none;
+}
+
 .time_row {
     display: flex;
 }

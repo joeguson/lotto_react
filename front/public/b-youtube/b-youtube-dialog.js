@@ -40,31 +40,38 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
 
     showModal(youtubeId) {
         this.__youtubeId = youtubeId;
-        this.__iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?";
+        this.__iframe.src = this.__sourceUrl(youtubeId);
         super.showModal();
     }
 
     onConfirm() {
         super.onConfirm();
-        if (this.onConfirmCallback) {
-            const data = {
-                youtubeId: this.__youtubeId,
-                times: Array.from(this.getElementsByTagName('b-youtube-time'))
-                    .map(e => {
-                        return {
-                            hour: e.children[0].value,
-                            minute: e.children[1].value,
-                            second: e.children[2].value,
-                            desc: e.children[3].value
-                        }
-                    })
-            };
-            this.onConfirmCallback(data);
-            Array.from(this.getElementsByTagName('b-youtube-time'))
-                .forEach((e) => {
-                    e.parentElement.parentElement.removeChild(e.parentElement);
-                });
-        }
+
+        // TODO Open progress dialog
+
+        const source = this.__sourceUrl(this.__youtubeId);
+        makeRequest('POST', '/api/youtube', {source: source})
+            .then((res) => {
+                const id = JSON.parse(res.toString()).id;
+                // TODO Request post time rows
+                if (this.onConfirmCallback) {
+                    this.onConfirmCallback(id);
+                }
+            })
+            .catch((e) => {
+                console.error(e);
+                // TODO Close progress dialog
+            });
+
+        Array.from(this.getElementsByTagName('b-youtube-time'))
+            .forEach((e) => {
+                e.parentElement.parentElement.removeChild(e.parentElement);
+            });
+
+    }
+
+    __sourceUrl(source) {
+        return "https://www.youtube.com/embed/" + source + "?"
     }
 
     __newYoutubeTimeDescriptionCard(minusCallback) {

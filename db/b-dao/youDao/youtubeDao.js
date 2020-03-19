@@ -30,8 +30,6 @@ exports.insertYoutubeSource = (source) => new Promise((res, rej) => {
 
             con.query(`SELECT LAST_INSERT_ID() as id;`, null, (err, rows) => {
                 if (err) rej(err);
-
-                console.log(rows);
                 res(rows);
             });
         });
