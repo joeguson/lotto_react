@@ -49,7 +49,6 @@
 
         this.youtubeDialog = document.createElement("b-youtube-dialog");
         this.appendChild(this.youtubeDialog);
-
     }
 
     buildControls(w) {
@@ -188,12 +187,7 @@
         this.sizePicker.onchange = (e) => this.cmd("FontSize", false, e.target.value)();
         this.imageInput.onchange = (e) => { this.__onImgClick(); };
 
-        this.controlButtons["Create link"].onclick = () =>{
-            this.__onLinkClick();
-            // //modal로 다시 표현해서 meta tag 정보 가져오기
-            // this.cmd("CreateLink", false, prompt("Enter a URL", "www."))();
-        };
-
+        this.controlButtons["Create link"].onclick = () =>{this.__onLinkClick();};
         this.controlButtons["Remove link"].onclick = this.cmd("UnLink");
         this.controlButtons["Insert image"].onclick = () => this.imageInput.click();
         this.controlButtons["Undo"].onclick = this.cmd("undo");
@@ -294,7 +288,7 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 this.editor.body.focus();
-                var img = document.createElement("img");
+                let img = document.createElement("img");
                 img.src = e.target.result.toString();
                 img.onload = () => {
                     let canvas = document.createElement("canvas");
@@ -328,13 +322,9 @@
         }
     }
 
-    __onLinkClick(){
-        this.linkDialog.showModal();
-    }
+    __onLinkClick(){this.linkDialog.showModal();}
 
-    __onYoutubeClick() {
-        this.youtubeIdDialog.showModal();
-    }
+    __onYoutubeClick() {this.youtubeIdDialog.showModal();}
 
 }
 
