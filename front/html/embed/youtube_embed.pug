@@ -1,0 +1,28 @@
+html
+    head
+        link(rel='stylesheet' href="/css/youtube_embed.css" type="text/css")
+    body
+        if youtube
+            iframe(id='embedded_youtube' width='100%' src=youtube.source)
+            each timeRow in youtube.timeRows
+                div(class='time_row')
+                    button=timeRow.time
+                    span=timeRow.desc
+            script.
+                const embeddedYoutube = document.getElementById('embedded_youtube');
+
+                window.onload = () => {
+                    matchEmbeddedIframeAspectRatio();
+                };
+
+                window.onresize = () => {
+                    matchEmbeddedIframeAspectRatio();
+                };
+
+                function matchEmbeddedIframeAspectRatio() {
+                    const width = embeddedYoutube.offsetWidth;
+                    const height = width * 315 / 560;
+                    embeddedYoutube.style.height = height + "px";
+                }
+        else
+            h1='Wrong youtube source id'
