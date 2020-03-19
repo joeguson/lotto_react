@@ -55,15 +55,6 @@ mixin articleContent(content)
         }
 
 mixin likeButton(type ,likeObject, sessionId)
-    -var likeChecker = function (likeObject, sessionId) {
-    -    for (var i of likeObject) {
-    -        if(i.u_id == sessionId){
-    -            return true;
-    -        }
-    -     }
-    -     return false;
-    -}
-    -var result = likeChecker(likeObject, sessionId);
     if(type === 'p')
         if(result)
             button(class="articleLikeButton" type="submit" value=topic.id + '/0/1' onclick="pLike(this);")
