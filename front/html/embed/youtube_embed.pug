@@ -12,16 +12,23 @@ html
                     span=timeRow.desc
             script.
                 const embeddedYoutube = document.getElementById('embedded_youtube');
+                let init = true;
 
-                window.onload = () => {
-                    matchEmbeddedIframeAspectRatio();
+                window.onload = function() {
+                    if (init) {
+                        init = false;
 
-                    [...document.getElementsByTagName('button')]
-                        .filter(e => e.id.startsWith('time-'))
-                        .forEach(e => setOnClickToTimeButton(e));
+                        matchEmbeddedIframeAspectRatio();
+
+                        const buttons = Array.from(document.getElementsByTagName('button'));
+                        for (const button of buttons) {
+                            if (!button.id.startsWith('time-')) continue;
+                            setOnClickToTimeButton(button);
+                        }
+                    }
                 };
 
-                window.onresize = () => {
+                window.onresize = function() {
                     matchEmbeddedIframeAspectRatio();
                 };
 
@@ -33,20 +40,23 @@ html
                 }
 
                 function setOnClickToTimeButton(timeButton) {
+                    const time = parseTimeFromId(timeButton.id);
+                    const src = embeddedYoutube.src;
+                    const startStringIndex = src.indexOf('?');
+                    const queryParams = '?autoplay=1&rel=0&start=' + time;
                     timeButton.onclick = function() {
-                        const time = parseTimeFromId(timeButton.id);
-                        const src = embeddedYoutube.src;
-                        const startStringIndex = src.indexOf('?');
-                        const queryParams = '?autoplay=1&rel=0&start=' + time;
                         embeddedYoutube.src = src.substring(0, startStringIndex) + queryParams;
                     };
                 }
 
                 function parseTimeFromId(timeId) {
                     const hyphenIndex = timeId.indexOf('-');
-                    const [h, m, s] =  timeId.substring(hyphenIndex + 1).split(':')
-                        .map(s => parseInt(s));
+                    const [h, m, s] =  timeId.substring(hyphenIndex + 1).split(':').map(toInt);
                     return 60 * 60 * h + 60 * m + s;
+                }
+
+                function toInt(str) {
+                    return parseInt(str);
                 }
         else
             h1='Wrong youtube source id'
