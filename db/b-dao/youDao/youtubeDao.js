@@ -48,6 +48,17 @@ exports.insertYoutubeTimeRow = (sourceId, time, desc) => doQuery(
     [sourceId, time, desc]
 );
 
+/**
+ * Creates new youtube time rows of inserted youtube source.
+ * @param sourceId id of inserted youtube source
+ * @param rows list of time row data (time, desc)
+ * @returns {Promise}
+ */
+exports.insertYoutubeTimeRows = async (sourceId, rows) => {
+    const query = `INSERT INTO ${youtubeTimeRowTable} VALUES ` + rows.map(() => '(?, ?, ?)').join(', ') + ';';
+    await doQuery(query, rows.map(d => [sourceId, d.time, d.desc]).flat());
+};
+
 /* ===== READ ===== */
 /**
  * Selects single youtube source with given id.

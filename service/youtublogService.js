@@ -212,6 +212,10 @@ exports.newYoutube = async function(source) {
     }
 };
 
+exports.newYoutubeTimeRows = async function(sourceId, timeRows) {
+    return await youtubeDao.insertYoutubeTimeRows(sourceId, timeRows);
+};
+
 /* ===== local functions ===== */
 
 // 하나의 youtublog 에 hashtag 와 Comment 개수를 넣어주는 함수
