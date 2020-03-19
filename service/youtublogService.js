@@ -6,6 +6,7 @@ const yhashDao = require('../db/b-dao/youDao/yhashDao');
 const ywarnDao = require('../db/b-dao/youDao/ywarnDao');
 const youtublogDao = require('../db/b-dao/youDao/youtublogDao');
 const ylikeDao = require('../db/b-dao/youDao/ylikeDao');
+const youtubeDao = require('../db/b-dao/youDao/youtubeDao');
 
 /* ===== exports ===== */
 
@@ -186,6 +187,18 @@ exports.deleteComment = async function(yc_id, u_id) {
 
 exports.deleteCComment = async function(ycc_id, u_id) {
     return await deleteProcess(ycc_id, u_id, yccDao.youtublogComComById, yccDao.deleteYoutublogComCom);
+};
+
+exports.getYoutubeById = async function(id) {
+    const [sourceResult, timeRowResult] = await Promise.all([
+        youtubeDao.selectYoutubeSource(id),
+        youtubeDao.selectYoutubeTimeRows(id)
+    ]);
+
+    const youtube = sourceResult[0];
+    youtube.timeRows = timeRowResult;
+
+    return youtube;
 };
 
 /* ===== local functions ===== */
