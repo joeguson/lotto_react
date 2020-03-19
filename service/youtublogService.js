@@ -203,6 +203,10 @@ exports.getYoutubeById = async function(id) {
     return youtube;
 };
 
+exports.newYoutube = async function(source) {
+    return (await youtubeDao.insertYoutubeSource(source))[0];
+};
+
 /* ===== local functions ===== */
 
 // 하나의 youtublog 에 hashtag 와 Comment 개수를 넣어주는 함수

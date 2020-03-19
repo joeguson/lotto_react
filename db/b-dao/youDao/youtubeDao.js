@@ -21,10 +21,22 @@ const youtubeTimeRowTable = "youtube_time_row";
  * @param source youtube link to embed
  * @returns {Promise}
  */
-exports.insertYoutubeSource = (source) => doQuery(
-    `INSERT INTO ${youtubeSourceTable}(source) VALUES ?`,
-    source
-);
+exports.insertYoutubeSource = (source) => new Promise((res, rej) => {
+    pool.getConnection(function(err, con) {
+        if (err) rej(err);
+
+        con.query(`INSERT INTO ${youtubeSourceTable}(source) VALUES (?);`, source, (err) => {
+            if (err) rej(err);
+
+            con.query(`SELECT LAST_INSERT_ID() as id;`, null, (err, rows) => {
+                if (err) rej(err);
+
+                console.log(rows);
+                res(rows);
+            });
+        });
+    });
+});
 
 /**
  * Creates new youtube time row of inserted youtube source.
