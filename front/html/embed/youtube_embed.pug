@@ -4,7 +4,8 @@ html
     body
         if youtube
             iframe(id='embedded_youtube' width='100%' src=youtube.source
-                allow='accelerometer; autoplay; encrypted-media; gyroscope; allowfullscreen')
+                allow='accelerometer; autoplay; encrypted-media; gyroscope;'
+                allowfullscreen)
             each timeRow in youtube.timeRows
                 div(class='time_row')
                     button(id="time-" + timeRow.time)=timeRow.time
