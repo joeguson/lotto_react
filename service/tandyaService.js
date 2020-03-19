@@ -4,9 +4,8 @@ const tacDao = require('../db/b-dao/tanDao/tacDao');
 const taDao = require('../db/b-dao/tanDao/taDao');
 const talikeDao = require('../db/b-dao/tanDao/talikeDao');
 const thashDao = require('../db/b-dao/tanDao/thashDao');
-const twarnDao = require('../db/b-dao/tanDao/twarnDao');
 const tlikeDao = require('../db/b-dao/tanDao/tlikeDao');
-
+const warningDao = require('../db/b-dao/warningDao');
 
 /* ===== exports ===== */
 
@@ -149,18 +148,6 @@ exports.tandyaAnsLikeCountByAuthor = async function(id2) {
     return (await talikeDao.tandyaAnsLikeCountByAuthor(id2))[0].total;
 };
 
-const fs = {
-    t: [twarnDao.tandyaWarnById, twarnDao.insertTandyaWarn],
-    ta: [twarnDao.tandyaAnsWarnById, twarnDao.insertTandyaAnsWarn],
-    tac: [twarnDao.tandyaAnsComWarnById, twarnDao.insertTandyaAnsComWarn]
-};
-exports.warnTandya = async function(warnedItem, warnedId, user) {
-    const checking = await fs[warnedItem][0](user, warnedId);
-    if(checking.length) return 0;
-    await fs[warnedItem][1](warnedId, user);
-    return 1;
-};
-
 exports.editTandya = async function(t_id, question, content, publicCode, thumbnail, hashtags) {
     tandyaDao.updateTandyaDate(t_id);
     tandyaDao.updateTandya(question, content, publicCode, thumbnail, t_id);
@@ -193,6 +180,29 @@ exports.deleteAComment = async function(tac_id, u_id) {
     return await deleteProcess(tac_id, u_id, tacDao.tandyaAnsComById, tacDao.deleteTandyaAnsCom);
 };
 
+exports.warnTandya = async function(u_id, warned_id) {
+    return await warningDao.insertTandyaWarning(u_id, warned_id);
+};
+
+exports.warnTandyaAns = async function(u_id, warned_id) {
+    return await warningDao.insertTandyaAnsWarning(u_id, warned_id);
+};
+
+exports.warnTandyaAnsCom = async function(u_id, warned_id) {
+    return await warningDao.insertTandyaAnsComWarning(u_id, warned_id);
+};
+
+exports.didWarnTandya = async function(u_id, warned_id) {
+    return (await warningDao.countTandyaWarning(u_id, warned_id)) > 0;
+};
+
+exports.didWarnTandyaAns = async function(u_id, warned_id) {
+    return (await warningDao.countTandyaAnsWarning(u_id, warned_id)) > 0;
+};
+
+exports.didWarnTandyaAnsCom = async function(u_id, warned_id) {
+    return (await warningDao.countTandyaAnsComWarning(u_id, warned_id)) > 0;
+};
 /* ===== local functions ===== */
 
 // 하나의 tandya 에 hashtag 와 answer 개수를 넣어주는 함수

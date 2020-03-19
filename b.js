@@ -27,6 +27,7 @@ app.use(express.urlencoded({ limit:"50mb", extended: false }));
 app.locals.pretty = true;
 
 app.use(express.static('front'));
+app.use(express.static('vendor'));
 app.use(express.static('back'));
 app.use(express.static('images'));
 app.use("/pug", express.static('/'));
