@@ -263,7 +263,6 @@
             const iframe = this.editor.getElementById(tagId);
             iframe.onload = () => {
                 const content = iframe.contentDocument ? iframe.contentDocument : iframe.contentWindow.document;
-                console.log(content.body.scrollHeight);
                 iframe.height = content.body.scrollHeight;
             };
         };

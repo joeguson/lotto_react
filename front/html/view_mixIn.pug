@@ -26,8 +26,20 @@ mixin articleContent(content)
 
         function autoHeight() {
             let frame = iframe;
-            let sub = frame.contentDocument ? frame.contentDocument : frame.contentWindow.document
-            iframe.height = sub.body.scrollHeight
+            let sub = frame.contentDocument ? frame.contentDocument : frame.contentWindow.document;
+            iframe.height = sub.body.scrollHeight;
+
+            const innerIFrames = Array.from(sub.getElementsByTagName('iframe'));
+            for (const innerIFrame of innerIFrames) {
+                if (!innerIFrame.id.startsWith('embed-')) continue;
+                innerIFrame.onload = function() {
+                    const content = innerIFrame.contentDocument ? innerIFrame.contentDocument : innerIFrame.contentWindow.document;
+                    // height of youtube iframe
+                    innerIFrame.height = content.body.scrollHeight;
+                    // height of whole article
+                    iframe.height = sub.body.scrollHeight;
+                };
+            }
         }
 
         var cssLink = document.createElement("link") 
