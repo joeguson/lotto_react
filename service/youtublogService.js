@@ -204,6 +204,7 @@ exports.getYoutubeById = async function(id) {
 };
 
 exports.newYoutube = async function(source) {
+    if (source == null) return null;
     try {
         return (await youtubeDao.insertYoutubeSource(source))[0];
     } catch (e) {
@@ -213,10 +214,12 @@ exports.newYoutube = async function(source) {
 };
 
 exports.newYoutubeTimeRows = async function(sourceId, timeRows) {
+    if (sourceId == null || timeRows == null) return null;
     return await youtubeDao.insertYoutubeTimeRows(sourceId, timeRows);
 };
 
 exports.deleteYoutube = async function(id) {
+    if (id == null) return null;
     return (await youtubeDao.deleteYoutubeWithId(id)).affectedRows;
 };
 

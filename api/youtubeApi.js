@@ -9,23 +9,29 @@ const youtubeService = require('../service/youtublogService.js');
 
 route.post('/', (req, res) => {
     const source = req.body.source;
-    youtubeService.newYoutube(source).then(id => res.json(id));
+
+    if (source == null) res.status(400).send();
+    else youtubeService.newYoutube(source)
+        .then(id => res.json(id));
 });
 
 route.delete('/', (req, res) => {
     const youtubeId = req.body.id;
-    youtubeService.deleteYoutube(youtubeId)
+
+    if (youtubeId == null) res.status(400).send('No id given');
+    else youtubeService.deleteYoutube(youtubeId)
         .then(count => {
             if (count) res.status(200).send();
-            else if (count === 0) res.status(404).send();
-            else res.status(400).send('No id given');
+            else res.status(404).send();
         });
 });
 
 route.post('/time-row', (req, res) => {
     const sourceId = req.body.sourceId;
     const timeRows = req.body.timeRows;
-    youtubeService.newYoutubeTimeRows(sourceId, timeRows).then(() =>
+
+    if (sourceId == null || timeRows == null) res.status(400).send('No sourceId or timeRows given');
+    else youtubeService.newYoutubeTimeRows(sourceId, timeRows).then(() =>
         res.status(201).send()
     ).catch(e => {
         if (e.sqlState === 23000) {
@@ -39,7 +45,9 @@ route.post('/time-row', (req, res) => {
 
 route.get('/:id', (req, res) => {
     const youtubeId = req.params.id;
-    youtubeService.getYoutubeById(youtubeId)
+
+    if (youtubeId == null) res.status(400).send('No youtubeId given');
+    else youtubeService.getYoutubeById(youtubeId)
         .then(youtube => {
             if (youtube == null) res.status(404).send('Youtube source not found.');
             else res.json(youtube);
