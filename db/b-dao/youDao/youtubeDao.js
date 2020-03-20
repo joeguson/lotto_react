@@ -90,6 +90,16 @@ exports.updateYoutubeSourceArticleId = (id, articleId) => doQuery(
     `UPDATE ${youtubeSourceTable} SET article_id=? WHERE id=?`,
     [articleId, id]
 );
+/**
+ * Updates article id of given youtube source. Used to confirm article post.
+ * @param ids id list of youtube source
+ * @param articleId id of posted article
+ * @returns {Promise}
+ */
+exports.updateYoutubeSourceArticleIds = (ids, articleId) => doQuery(
+    `UPDATE ${youtubeSourceTable} SET article_id=? WHERE id IN (?)`,
+    [articleId, ids]
+);
 /* ===== DELETE ===== */
 /**
  * Deletes youtube source with given id and associated youtube time rows.

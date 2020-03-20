@@ -223,6 +223,11 @@ exports.deleteYoutube = async function(id) {
     return (await youtubeDao.deleteYoutubeWithId(id)).affectedRows;
 };
 
+exports.updateYoutube = async function(ids, articleId) {
+    if (ids == null || articleId == null) return null;
+    return (await youtubeDao.updateYoutubeSourceArticleIds(ids, articleId)).affectedRows;
+};
+
 /* ===== local functions ===== */
 
 // 하나의 youtublog 에 hashtag 와 Comment 개수를 넣어주는 함수

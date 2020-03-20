@@ -34,9 +34,18 @@ route.post('/:type', (req, res) => {
         req.body.public,
         req.body.thumbnail,
         jsForBack.finalHashtagMaker(req.body.hashtag)
-    ).then(id =>
-        res.json({'id': id})
-    ).catch(() =>
+    ).then(id => {
+        if (type === 'youtublog') {
+            youtublogService.updateYoutube(req.body.youtubes, id)
+                .then(count => {
+                    res.json({id: id, updatedYoutubes: count});
+                }).catch((e) => {
+                    console.error(e);
+                    res.status(500).send();
+                }
+            );
+        } else res.json({'id': id});
+    }).catch(() =>
         res.status(500).send('Could not post article')
     );
 });
@@ -165,7 +174,7 @@ route.post('/:type/warn', (req, res) => {
             'result': re
         })
     ).catch((e) => {
-        console.error(e);
+            console.error(e);
             res.status(500).send('Could not warn article')
         }
     );

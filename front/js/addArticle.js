@@ -17,6 +17,9 @@ function postArticle(target) {
         content: content,
         hashtag: hashtag
     };
+
+    if (type === 'y') req.youtubes = document.getElementById('editor').youtubes;
+
     //tandya일 경우 question을, penobrol과 youtublog일 경우 title을 가져옴
     if(type === 't') req.question = document.getElementById('question').value;
     else req.title = document.getElementById('title').value;

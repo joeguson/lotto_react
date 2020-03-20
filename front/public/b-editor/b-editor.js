@@ -13,7 +13,7 @@
         this.youtubeDialog = null;
         this.youtublog = null;
 
-        this.__youtubes = [];
+        this.youtubes = [];
     }
 
     // returns content as html tags
@@ -249,6 +249,8 @@
         };
 
         this.youtubeDialog.onConfirmCallback = (id) => {
+            this.youtubes.push(id);
+
             const tagId = 'embed-' + id;
 
             const embed = document.createElement('iframe');
