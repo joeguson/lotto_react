@@ -15,30 +15,35 @@ mixin basicTInfo(author, date, view, comAnsCount)
 mixin articleContent(content)
     iframe(id="content" class="aContent" style="border: none;")
     script.
-        var iframe = document.getElementById("content");
-        iframe.width = "100%";
-        var page = iframe.contentWindow.document;
-        var content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+        const contentFrame = document.getElementById("content");
+        contentFrame.width = "100%";
+        const page = contentFrame.contentWindow.document;
+        const content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
+
 
         window.addEventListener('DOMContentLoaded', function () {
-            iframe.addEventListener('load', autoHeight());
+            autoHeight();
+        });
+
+        window.addEventListener('resize', function () {
+            autoHeight();
         });
 
         function autoHeight() {
-            let frame = iframe;
-            let sub = frame.contentDocument ? frame.contentDocument : frame.contentWindow.document;
-            iframe.height = sub.body.scrollHeight;
+            contentFrame.height = page.body.scrollHeight + 'px';
 
-            const innerIFrames = Array.from(sub.getElementsByTagName('iframe'));
+            const innerIFrames = Array.from(page.getElementsByTagName('iframe'));
             for (const innerIFrame of innerIFrames) {
                 if (!innerIFrame.id.startsWith('embed-')) continue;
-                innerIFrame.onload = function() {
+
+                innerIFrame.onload = function () {
                     const content = innerIFrame.contentDocument ? innerIFrame.contentDocument : innerIFrame.contentWindow.document;
+
                     // height of youtube iframe
-                    innerIFrame.height = content.body.scrollHeight;
-                    // height of whole article
-                    iframe.height = sub.body.scrollHeight;
-                };
+                    innerIFrame.height = content.body.scrollHeight + 'px';
+                    // height of content iframe
+                    contentFrame.height = page.body.scrollHeight + 'px';
+                }
             }
         }
 

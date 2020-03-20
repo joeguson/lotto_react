@@ -12,6 +12,8 @@
         this.youtubeIdDialog = null;
         this.youtubeDialog = null;
         this.youtublog = null;
+
+        this.__youtubes = [];
     }
 
     // returns content as html tags

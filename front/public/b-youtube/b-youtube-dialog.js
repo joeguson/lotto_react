@@ -65,17 +65,23 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
             .then(res => {
                 const sourceId = JSON.parse(res.toString()).id;
 
-                makeRequest('POST', '/api/youtube/time-row', {
-                    sourceId: sourceId,
-                    timeRows: timeRows
-                }).then(() => {
+                if (timeRows.length > 0) {
+                    makeRequest('POST', '/api/youtube/time-row', {
+                        sourceId: sourceId,
+                        timeRows: timeRows
+                    }).then(() => {
+                        if (this.onConfirmCallback) {
+                            this.onConfirmCallback(sourceId);
+                        }
+                    }).catch(e => {
+                        console.error(e);
+                        // TODO Close progress dialog
+                    });
+                } else {
                     if (this.onConfirmCallback) {
                         this.onConfirmCallback(sourceId);
                     }
-                }).catch(e => {
-                    console.error(e);
-                    // TODO Close progress dialog
-                });
+                }
             })
             .catch((e) => {
                 console.error(e);
