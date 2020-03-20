@@ -198,11 +198,10 @@ async function getFullPenobrol(penobrol) {
         phashDao.penobrolHashtagById(penobrol.id),
         pcDao.penobrolComCountById(penobrol.id),
         plikeDao.penobrolLikeCount(penobrol.id)
-
     ]);
     penobrol.hashtags = hashtagResult.map(parser.parseHashtagP);
-    penobrol.commentCount = comCountResult[0].count;
-    penobrol.likeCount = penobrolLikeCount[0].plikeCount;
+    penobrol.commentCount = comCountResult[0].replyCount;
+    penobrol.likeCount = penobrolLikeCount[0].articleLikeCount;
     return penobrol;
 }
 

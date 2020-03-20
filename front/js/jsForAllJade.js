@@ -25,9 +25,8 @@ function makeRequest(method, url, data) {
 }
 
 function createReplyLi(reply, type){
-    const replyUl = document.getElementById('replyUl');
     console.log(reply);
-    console.log(type);
+    const replyUl = document.getElementById('replyUl');
     {
         const replyLi = document.createElement('li');
         replyLi.className = "liComAndAns";
@@ -53,7 +52,7 @@ function createReplyLi(reply, type){
                 replyDd.className = "ddComAndAns";
 
                 //아래에서 like는 현재 전체로 가지고 오고 있음. length가 아닌 몇개인지 count로 가지고 와야함
-                replyDd.innerHTML = 'by ' + `${reply.u_id}` + ' / ' + `${reply.date}` + ' / ' + `${reply.likes}`;
+                replyDd.innerHTML = 'by ' + `${reply.u_id}` + ' / ' + `${reply.date}` + ' / ' + `${reply.likeCount}`;
 
                 replyDl.appendChild(replyDt);
                 replyDl.appendChild(replyDd);

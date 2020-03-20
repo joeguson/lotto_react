@@ -42,6 +42,7 @@ block jscript
             __like: #{topic.likeStatus},  // update value with __updateLikeState()
             __likeCount: #{topic.likeCount}
         };
+
         window.addEventListener('load', function(){
             var type = window.location.href.split('/')[3];
             makeRequest('GET', 'api/article/' + type + '/reply/'+#{topic.id})

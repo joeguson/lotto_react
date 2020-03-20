@@ -313,7 +313,7 @@
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
                     let dataurl = canvas.toDataURL("image/png");
-                    const imgHTML = "<img style='overflow:auto;' onclick='__rotateImage(this);' class='rotate000' src='" + dataurl +"'/>";
+                    const imgHTML = "<img style='overflow:auto;' src='" + dataurl +"'/>";
                     this.editor.execCommand("insertHTML", false, imgHTML);
                 }
             };

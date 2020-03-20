@@ -25,7 +25,7 @@ exports.youtublogComById = (id) => doQuery(
 );
 exports.youtublogComCountById = (id) => doQuery(
     `select count(y_id)
-    as count
+    as replyCount
     from y_com
     where y_id = ?`,
     id

@@ -56,6 +56,11 @@ const likeCountFunctions = {
     tandya: tlikeDao.tandyaLikeCount,
     youtublog: ylikeDao.youtublogLikeCount
 };
+const getReplyCountFunctions = {
+    penobrol: pcDao.penobrolComCountById,
+    tandya: taDao.tandyaAnsCountById,
+    youtublog: ycDao.youtublogComCountById
+};
 const getReplyFunctions = {
     penobrol: pcDao.penobrolComByScore,
     tandya: taDao.tandyaAnsByScore,
@@ -95,21 +100,29 @@ exports.getFullArticleById = async function(id, userId, type){
     if (articleResult == null) return null;
 
     const article = articleParseFunctions[articleType](articleResult);
-    const [likeStatus, replyResult, likesCount, hashtagsResult] = await Promise.all([
+    const [likeStatus, replyCount, likesCount, hashtagsResult] = await Promise.all([
         likeStatusFunctions[articleType](id, userId),
-        getReplyFunctions[articleType](id),
+        getReplyCountFunctions[articleType](id),
         likeCountFunctions[articleType](id),
         getHashtagFunctions[articleType](id)
     ]);
 
     article.likeStatus = !!(likeStatus[0].count);
-    article.reply = replyResult.map(replyParseFunctions[articleType]);
+    article.replyCount = replyCount[0].replyCount;
     article.likeCount = likesCount[0].articleLikeCount;
     article.hashtags = hashtagsResult.map(hashtagParseFunctions[articleType]);
 
-    article.reply = await applyAsyncToAll(type, article.reply, userId, getFullReply);
-    console.log(article);
     return article;
+};
+
+exports.getFullReplyByArticleId = async function(id, userId, type){
+    const articleType = type;
+    const replyResult = (await getReplyFunctions[articleType](id));
+
+    let reply = replyResult.map(e => replyParseFunctions[articleType](e));
+    reply = await applyAsyncToAll(type, reply, userId, getFullReply);
+
+    return reply;
 };
 
 async function getFullReply(type, userId, reply) {
@@ -120,7 +133,7 @@ async function getFullReply(type, userId, reply) {
         replyLikeCountFunctions[replyType](reply.id)
     ]);
 
-    reply.re_reply = re_replyResult.map(rereplyParseFunctions[replyType]);
+    reply.comments = re_replyResult.map(rereplyParseFunctions[replyType]);
     reply.likeStatus = !!(likeStatus[0].count);
     reply.likeCount = likeCount[0].replyLikeCount;
     return reply;

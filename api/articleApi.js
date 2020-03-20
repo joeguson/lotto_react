@@ -2,6 +2,7 @@
 const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 
+const articleService = require('../service/articleService.js');
 const penobrolService = require('../service/penobrolService.js');
 const tandyaService = require('../service/tandyaService.js');
 const youtublogService = require('../service/youtublogService.js');
@@ -174,21 +175,22 @@ route.post('/:type/warn', (req, res) => {
 /* ===== GET /{type}/reply ===== */
 // article type 에 따른 reply 요청 함수
 const replyGetFunctions = {
-    penobrol: penobrolService.getFullPenobrolComById,
-    tandya: tandyaService.getFullTandyaAnsById,
-    youtublog: youtublogService.getFullYoutublogComById
+    penobrol: articleService.getFullReply,
+    tandya: articleService.getFullTandyaAnsById,
+    youtublog: articleService.getFullYoutublogComById
 };
-// reply 에 like/취소 를 요청하는 api
+// article의 reply를 요청하는 api
 route.get('/:type/reply/:id', (req, res) => {
     const type = req.params['type'];
     const articleId = req.params.id;
 
-    const replyGetFunction = replyGetFunctions[type];
+    const replyGetFunction = articleService.getFullReplyByArticleId;
     if (replyGetFunction == null)
         res.status(400).send('Wrong article type');
     else replyGetFunction(
         articleId,
-        req.session.id2
+        req.session.id2,
+        type
     ).then(re =>
         res.json({
             'result': re

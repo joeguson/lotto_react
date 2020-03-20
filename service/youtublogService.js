@@ -197,8 +197,8 @@ async function getFullYoutublog(youtublog) {
 
     ]);
     youtublog.hashtags = hashtagResult.map(parser.parseHashtagY);
-    youtublog.commentCount = comCountResult[0].count;
-    youtublog.likeCount = youtublogLikeCount[0].ylikeCount;
+    youtublog.commentCount = comCountResult[0].replyCount;
+    youtublog.likeCount = youtublogLikeCount[0].articleLikeCount;
     return youtublog;
 }
 

@@ -199,8 +199,8 @@ async function getFullTandya(tandya) {
     ]);
 
     tandya.hashtags = hashtagResult.map(parser.parseHashtagT);
-    tandya.answerCount = ansCountResult[0].count;
-    tandya.likeCount = tandyaLikeCount[0].tlikeCount;
+    tandya.answerCount = ansCountResult[0].replyCount;
+    tandya.likeCount = tandyaLikeCount[0].articleLikeCount;
     return tandya;
 }
 

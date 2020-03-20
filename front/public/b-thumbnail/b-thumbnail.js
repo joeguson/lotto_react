@@ -27,23 +27,11 @@ class BeritamusThumbnail extends HTMLElement {
 
                 if(imgWidth >= imgHeight){
                     //가로로 긴 사진이라면
-                    if(src.img.rotate === 'rotate090' || src.img.rotate ==='rotate270'){
-                        //세로로 긴 사진이 됨
-                        img.style.height = frameWidth + 'px';
-                    }
-                    else{
-                        img.style.width = frameWidth + 'px';
-                    }
+                    img.style.width = frameWidth + 'px';
                 }
                 else{
                     //세로로 긴 사진이라면
-                    if(src.img.rotate === 'rotate090' || src.img.rotate ==='rotate270'){
-                        //가로로 긴 사진이 됨
-                        img.style.height = frameWidth + 'px';
-                    }
-                    else{
-                        img.style.width = frameWidth + 'px';
-                    }
+                    img.style.width = frameWidth + 'px';
                 }
             }
         }
