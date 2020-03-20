@@ -184,101 +184,79 @@ const articleDidWarnFunctions = {
     youtublog: youtublogService.didWarnYoutublog
 };
 
-route.post('/:type/warn', (req, res) => {
-    const type = req.params['type']; // req.params.type
-    const articleWarnFunction = articleWarnFunctions[type];
-    const articleDidWarnFunction = articleDidWarnFunctions[type];
-
-    if (articleDidWarnFunction == null)
-        res.status(400).send("Wrong article type");
-    else articleDidWarnFunction(req.session.id2, req.body['warned_id'])
-        .then(didWarnArticle => {
-            if (!didWarnArticle) {
-                articleWarnFunction(req.session.id2, req.body['warned_id'])
-                    .then(result => {
-                        res.json({
-                            'result': result
-                        })
-                    }).catch(() => res.status(499).send('Cannot load state'));
-            } else {
-                res.status(409).send('Already Warn');
-            }
-        }).catch(() => res.status(501).send('Cannot load state'));
-});
+route.post('/:type/warn', __getWarnRequestHandlerFunction(
+        articleWarnFunctions,
+        articleDidWarnFunctions
+    )
+);
 
 /* ===== POST /{type}/reply/warn ===== */
 // reply type 에 따른 warn 요청 함수
 const replyWarnFunctions = {
-    penobrol: penobrolService.warnPenobrolCom,
-    tandya: tandyaService.warnTandyaAns,
-    youtublog: youtublogService.warnYoutublogCom
+    penobrolReply: penobrolService.warnPenobrolCom,
+    tandyaReply: tandyaService.warnTandyaAns,
+    youtublogReply: youtublogService.warnYoutublogCom
 };
 
 const replyDidWarnFunctions = {
-    penobrol: penobrolService.didWarnPenobrolCom,
-    tandya: tandyaService.didWarnTandyaAns,
-    youtublog: youtublogService.didWarnYoutublogCom
+    penobrolReply: penobrolService.didWarnPenobrolCom,
+    tandyaReply: tandyaService.didWarnTandyaAns,
+    youtublogReply: youtublogService.didWarnYoutublogCom
 };
 
 
-route.post('/:type/reply/warn', (req, res) => {
-    const type = req.params['type']; // req.params.type
-    const replyWarnFunction = replyWarnFunctions[type];
-    const replyDidWarnFunction = replyDidWarnFunctions[type];
-
-    if (replyDidWarnFunction == null)
-        res.status(400).send("Wrong article type");
-    else replyDidWarnFunction(req.session.id2, req.body['warned_id'])
-        .then(didWarnreply => {
-            if (!didWarnreply) {
-                replyWarnFunction(req.session.id2, req.body['warned_id'])
-                    .then(result => {
-                        res.json({
-                            'result': result
-                        })
-                    }).catch(() => res.status(499).send('Cannot load state'));
-            } else {
-                res.status(409).send('Already Warn');
-            }
-        }).catch(() => res.status(501).send('Cannot load state'));
-});
+route.post('/:type/reply/warn',
+    __getWarnRequestHandlerFunction(
+        replyWarnFunctions,
+        replyDidWarnFunctions
+    )
+);
 
 /* ===== POST /{type}/re-reply/warn ===== */
 // re-reply type 에 따른 warn 요청 함수
 const reReplyWarnFunctions = {
-    penobrol: penobrolService.warnPenobrolComCom,
-    tandya: tandyaService.warnTandyaAnsCom,
-    youtublog: youtublogService.warnYoutublogComCom
+    penobrolReReply: penobrolService.warnPenobrolComCom,
+    tandyaReReply: tandyaService.warnTandyaAnsCom,
+    youtublogReReply: youtublogService.warnYoutublogComCom
 };
 
 const reReplyDidWarnFunctions = {
-    penobrol: penobrolService.didWarnPenobrolComCom,
-    tandya: tandyaService.didWarnTandyaAnsCom,
-    youtublog: youtublogService.didWarnYoutublogComCom
+    penobrolReReply: penobrolService.didWarnPenobrolComCom,
+    tandyaReReply: tandyaService.didWarnTandyaAnsCom,
+    youtublogReReply: youtublogService.didWarnYoutublogComCom
 };
 
 
-route.post('/:type/re-reply/warn', (req, res) => {
-    const type = req.params['type']; // req.params.type
-    const reReplyWarnFunction = reReplyWarnFunctions[type];
-    const reReplyDidWarnFunction = reReplyDidWarnFunctions[type];
+route.post('/:type/warn',
+    __getWarnRequestHandlerFunction(
+        reReplyWarnFunctions,
+        reReplyDidWarnFunctions
+    )
+);
 
-    if (reReplyDidWarnFunction == null)
-        res.status(400).send("Wrong article type");
-    else reReplyDidWarnFunction(req.session.id2, req.body['warned_id'])
-        .then(didWarnReReply => {
-            if (!didWarnReReply) {
-                reReplyWarnFunction(req.session.id2, req.body['warned_id'])
-                    .then(result => {
-                        res.json({
-                            'result': result
-                        })
-                    }).catch(() => res.status(499).send('Cannot load state'));
-            } else {
-                res.status(409).send('Already Warn');
-            }
-        }).catch(() => res.status(501).send('Cannot load state'));
-});
+function __getWarnRequestHandlerFunction(warnFunctions, didWarnFunctions) {
+    return (req, res) => {
+        const type = req.params['type']; // req.params.type
+        const warnFunction = warnFunctions[type];
+        const didWarnFunction = didWarnFunctions[type];
+
+        if (didWarnFunction == null)
+            res.status(400).send("Wrong article type");
+        else didWarnFunction(req.session.id2, req.body['warned_id'])
+            .then(didWarn => {
+                if (!didWarn) {
+                    warnFunction(req.session.id2, req.body['warned_id'])
+                        .then(result => {
+                            res.json({
+                                'result': result
+                            })
+                        }).catch(() => res.status(499).send('Cannot load state'));
+                } else {
+                    res.status(409).send('Already Warn');
+                }
+            }).catch(() => res.status(501).send('Cannot load state'));
+    }
+}
 
 
 module.exports = route;
