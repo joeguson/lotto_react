@@ -91,4 +91,13 @@ exports.updateYoutubeSourceArticleId = (id, articleId) => doQuery(
     [articleId, id]
 );
 /* ===== DELETE ===== */
+/**
+ * Deletes youtube source with given id and associated youtube time rows.
+ * @param id id of youtube source
+ * @returns {Promise}
+ */
+exports.deleteYoutubeWithId = (id) => doQuery(
+    `DELETE FROM ${youtubeSourceTable} WHERE id=?`,
+    id
+);
 // TODO delete all youtube sources with null article id and created time has passed over specific amount of time.

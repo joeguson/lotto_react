@@ -12,6 +12,16 @@ route.post('/', (req, res) => {
     youtubeService.newYoutube(source).then(id => res.json(id));
 });
 
+route.delete('/', (req, res) => {
+    const youtubeId = req.body.id;
+    youtubeService.deleteYoutube(youtubeId)
+        .then(count => {
+            if (count) res.status(200).send();
+            else if (count === 0) res.status(404).send();
+            else res.status(400).send('No id given');
+        });
+});
+
 route.post('/time-row', (req, res) => {
     const sourceId = req.body.sourceId;
     const timeRows = req.body.timeRows;
