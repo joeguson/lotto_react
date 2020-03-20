@@ -7,6 +7,8 @@ const akuRouter = require('./akuApi');
 const cariRouter = require('./cariApi');
 const samusil = require('./samusilApi');
 const article = require('./articleApi');
+const youtube = require('./youtubeApi');
+
 const config =require('../config.json');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3(config.aws_config);
@@ -15,6 +17,7 @@ api.use('/aku', akuRouter);
 api.use('/cari', cariRouter);
 api.use('/samusil', samusil);
 api.use('/article', article);
+api.use('/youtube', youtube);
 
 api.delete('/image', (req, res) => {
     // let img = req.body.img;

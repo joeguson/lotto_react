@@ -12,6 +12,8 @@
         this.youtubeIdDialog = null;
         this.youtubeDialog = null;
         this.youtublog = null;
+
+        this.youtubes = [];
     }
 
     // returns content as html tags
@@ -246,37 +248,27 @@
             this.youtubeDialog.showModal(youtubeId);
         };
 
-        this.youtubeDialog.onConfirmCallback = (data) => {
-            const table = document.createElement('table');
-            const youtubeIframe = document.createElement('iframe');
-            youtubeIframe.src = "https://www.youtube.com/embed/" + data.youtubeId + "?";
-            youtubeIframe.id = data.youtubeId;
-            youtubeIframe.style.width = "80%";
-            youtubeIframe.style.height = "300px";
+        this.youtubeDialog.onConfirmCallback = (id) => {
+            this.youtubes.push(id);
 
-            data.times.forEach(e => {
-                let row = document.createElement('tr');
-                let time = document.createElement('td');
-                let desc = document.createElement('td');
+            const tagId = 'embed-' + id;
 
-                let buttonTag = document.createElement('button');
-                let spanTag = document.createElement('span');
+            const embed = document.createElement('iframe');
+            embed.id = tagId;
+            embed.src = '/youtublog/embed/' + id;
+            embed.style.border = 'none';
+            embed.style.width = '100%';
 
-                buttonTag.innerHTML = e.hour + e.minute + e.second;
-                buttonTag.setAttribute('onclick', `changeStartTime("${data.youtubeId}", "${e.hour + e.minute + e.second}");`);
-                spanTag.innerHTML = e.desc;
+            const embedHTML = embed.outerHTML;
 
-                time.appendChild(buttonTag);
-                desc.appendChild(spanTag);
-                row.appendChild(time);
-                row.appendChild(desc);
-                table.appendChild(row);
-            });
-            const youtubeHTML = youtubeIframe.outerHTML;
-            const timeTable = table.outerHTML;
             this.editor.body.focus();
-            this.editor.execCommand("insertHTML", false, youtubeHTML);
-            this.editor.execCommand("insertHTML", false, timeTable);
+            this.editor.execCommand('insertHTML', false, embedHTML);
+
+            const iframe = this.editor.getElementById(tagId);
+            iframe.onload = () => {
+                const content = iframe.contentDocument ? iframe.contentDocument : iframe.contentWindow.document;
+                iframe.height = content.body.scrollHeight;
+            };
         };
     }
 

@@ -6,6 +6,7 @@ const yhashDao = require('../db/b-dao/youDao/yhashDao');
 const youtublogDao = require('../db/b-dao/youDao/youtublogDao');
 const ylikeDao = require('../db/b-dao/youDao/ylikeDao');
 const warningDao = require('../db/b-dao/warningDao');
+const youtubeDao = require('../db/b-dao/youDao/youtubeDao');
 
 /* ===== exports ===== */
 
@@ -198,6 +199,45 @@ exports.didWarnYoutublogCom = async function(u_id, warned_id) {
 
 exports.didWarnYoutublogComCom = async function(u_id, warned_id) {
     return (await warningDao.countYoutublogComComWarning(u_id, warned_id)) > 0;
+};
+
+exports.getYoutubeById = async function(id) {
+    const [sourceResult, timeRowResult] = await Promise.all([
+        youtubeDao.selectYoutubeSource(id),
+        youtubeDao.selectYoutubeTimeRows(id)
+    ]);
+
+    const youtube = sourceResult[0];
+
+    if (youtube == null) return null;
+
+    youtube.timeRows = timeRowResult;
+    return youtube;
+};
+
+exports.newYoutube = async function(source) {
+    if (source == null) return null;
+    try {
+        return (await youtubeDao.insertYoutubeSource(source))[0];
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+};
+
+exports.newYoutubeTimeRows = async function(sourceId, timeRows) {
+    if (sourceId == null || timeRows == null) return null;
+    return await youtubeDao.insertYoutubeTimeRows(sourceId, timeRows);
+};
+
+exports.deleteYoutube = async function(id) {
+    if (id == null) return null;
+    return (await youtubeDao.deleteYoutubeWithId(id)).affectedRows;
+};
+
+exports.updateYoutube = async function(ids, articleId) {
+    if (ids == null || articleId == null) return null;
+    return (await youtubeDao.updateYoutubeSourceArticleIds(ids, articleId)).affectedRows;
 };
 
 /* ===== local functions ===== */

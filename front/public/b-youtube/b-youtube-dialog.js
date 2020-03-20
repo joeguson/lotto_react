@@ -40,31 +40,63 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
 
     showModal(youtubeId) {
         this.__youtubeId = youtubeId;
-        this.__iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?";
+        this.__iframe.src = this.__sourceUrl(youtubeId);
         super.showModal();
     }
 
     onConfirm() {
         super.onConfirm();
-        if (this.onConfirmCallback) {
-            const data = {
-                youtubeId: this.__youtubeId,
-                times: Array.from(this.getElementsByTagName('b-youtube-time'))
-                    .map(e => {
-                        return {
-                            hour: e.children[0].value,
-                            minute: e.children[1].value,
-                            second: e.children[2].value,
-                            desc: e.children[3].value
+
+        // TODO Open progress dialog
+
+        const source = this.__sourceUrl(this.__youtubeId);
+        const timeRows = Array.from(this.getElementsByTagName('b-youtube-time'))
+            .map(e => {
+                const hour = this.__pad(e.children[0].value, 2);
+                const minute = this.__pad(e.children[1].value, 2);
+                const second = this.__pad(e.children[2].value, 2);
+                return {
+                    time: hour + ':' + minute + ':' + second,
+                    desc: e.children[3].value
+                };
+            });
+
+        makeRequest('POST', '/api/youtube', {source: source})
+            .then(res => {
+                const sourceId = JSON.parse(res.toString()).id;
+
+                if (timeRows.length > 0) {
+                    makeRequest('POST', '/api/youtube/time-row', {
+                        sourceId: sourceId,
+                        timeRows: timeRows
+                    }).then(() => {
+                        if (this.onConfirmCallback) {
+                            this.onConfirmCallback(sourceId);
                         }
-                    })
-            };
-            this.onConfirmCallback(data);
-            Array.from(this.getElementsByTagName('b-youtube-time'))
-                .forEach((e) => {
-                    e.parentElement.parentElement.removeChild(e.parentElement);
-                });
-        }
+                    }).catch(e => {
+                        console.error(e);
+                        // TODO Close progress dialog
+                    });
+                } else {
+                    if (this.onConfirmCallback) {
+                        this.onConfirmCallback(sourceId);
+                    }
+                }
+            })
+            .catch((e) => {
+                console.error(e);
+                // TODO Close progress dialog
+            });
+
+        Array.from(this.getElementsByTagName('b-youtube-time'))
+            .forEach((e) => {
+                e.parentElement.parentElement.removeChild(e.parentElement);
+            });
+
+    }
+
+    __sourceUrl(source) {
+        return "https://www.youtube.com/embed/" + source + "?"
     }
 
     __newYoutubeTimeDescriptionCard(minusCallback) {
@@ -84,6 +116,10 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
         return c;
     }
 
+    __pad(n, width) {
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+    }
 }
 
 customElements.define('b-youtube-dialog', BeritamusYoutubeDialog);

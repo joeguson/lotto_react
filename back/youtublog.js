@@ -121,6 +121,13 @@ route.delete('/ccomment/:id', function(req, res){
     });
 });
 
+route.get('/embed/:id', function(req, res) {
+    const id = req.params.id;
+    youtublogService.getYoutubeById(id).then(youtube =>
+        res.render('./embed/youtube_embed', {youtube: youtube})
+    );
+});
+
 route.all('*', function(req, res){
     res.redirect('/youtublog');
 });
