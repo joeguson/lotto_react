@@ -23,19 +23,18 @@ class BeritamusThumbnail extends HTMLElement {
                 let imgHeight = img.offsetHeight;
 
                 let frameWidth = div.offsetWidth;
-                img.className = this.src.img.rotate;
+                let frameHeight = (frameWidth * 3) /4;
 
-                if(imgWidth >= imgHeight){
+                if(imgWidth > imgHeight){
                     //가로로 긴 사진이라면
                     img.style.width = frameWidth + 'px';
                 }
                 else{
-                    //세로로 긴 사진이라면
-                    img.style.width = frameWidth + 'px';
+                    //세로로 길거나 정사각형의 사진
+                    img.style.height = frameHeight + 'px';
                 }
             }
         }
-
     }
     __build() {
         const li = document.createElement("li");
@@ -91,7 +90,6 @@ class BeritamusThumbnail extends HTMLElement {
         if(this.src.img) {
             this.img = document.createElement("img");
             this.img.src = this.src.img.src;
-            // this.img.className = this.src.img.rotate;
             this.div.appendChild(this.img);
         }
         return this.div;

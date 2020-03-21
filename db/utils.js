@@ -35,3 +35,18 @@ exports.getImage = function(contentString){
     returnObj.src = returnObj.src.substring(0, returnObj.src.indexOf('images/')+6)+ '/thumbnail'+returnObj.src.substring(returnObj.src.indexOf('images/')+6, endIndex);
     return returnObj;
 };
+
+exports.getYoutube = function(contentString){
+    var returnObj = {};
+    //need img src and rotate info
+    const iframeIndex = contentString.indexOf('<iframe', 0);
+    const srcIndex = contentString.indexOf('src="', iframeIndex);
+    const endIndex = contentString.indexOf('?', srcIndex+5);
+    if(iframeIndex == -1 || srcIndex == -1 || endIndex == -1) return null;
+
+    returnObj.src = contentString.substring(srcIndex + 5, endIndex);
+    //openGraph를 통해 image 가져오기
+    console.log(returnObj.src);
+    returnObj.src = returnObj.src.substring(0, returnObj.src.indexOf('images/')+6)+ '/thumbnail'+returnObj.src.substring(returnObj.src.indexOf('images/')+6, endIndex);
+    return returnObj;
+};

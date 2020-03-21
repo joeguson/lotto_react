@@ -88,8 +88,7 @@ const articleLikeCountFunctions = {
 route.post('/:type/like',
     __getLikeRequestHandlerFunction(
         articleLikeFunctions,
-        articleLikeCountFunctions,
-        "articleId"
+        articleLikeCountFunctions
     )
 );
 
@@ -110,8 +109,7 @@ const replyLikeCountFunctions = {
 route.post('/:type/reply/like',
     __getLikeRequestHandlerFunction(
         replyLikeFunctions,
-        replyLikeCountFunctions,
-        "comAnsId"
+        replyLikeCountFunctions
     )
 );
 
@@ -203,20 +201,20 @@ route.get('/:type/reply/:id', (req, res) => {
 });
 
 // article, reply 에 like 요청을 보내기 위한 공용 함수
-function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions, idString) {
+function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions) {
     return (req, res) => {
         const type = req.params['type'];
         const likeFunction = likeFunctions[type];
         const likeCountFunction = likeCountFunctions[type];
-        const id = req.body.id;  // TODO unify idString to id
-        const clickVal = req.body.cancel;  // TODO refactor to boolean cancel
+        const id = req.body.id;
+        const cancel = req.body.cancel;
 
         if (likeFunction == null)
             res.status(400).send('Wrong article type');
         else likeFunction(
             id,
             req.session.id2,
-            clickVal
+            cancel
         ).then(val =>
             likeCountFunction(id).then(count =>
                 res.json({
@@ -285,7 +283,7 @@ const reReplyDidWarnFunctions = {
 };
 
 
-route.post('/:type/warn',
+route.post('/:type/re-reply/warn',
     __getWarnRequestHandlerFunction(
         reReplyWarnFunctions,
         reReplyDidWarnFunctions

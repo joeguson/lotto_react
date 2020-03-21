@@ -76,38 +76,6 @@ mixin commentOrAnswer(type)
             textarea(name='comment' id='ycInput' class="pctaInput")
             input(type='submit' value='comment' class="pctaInputButton" id="ycInputButton")
 
-mixin likeButton2(type, likeObject, sessionId, id)
-    -var likeChecker = function (likeObject, sessionId) {
-    -    for (var i of likeObject) {
-    -        if(i.u_id == sessionId){
-    -            return true;
-    -        }
-    -     }
-    -     return false;
-    -}
-    -var result = likeChecker(likeObject, sessionId);
-    if(type == 'pc')
-        if(result)
-            button(class="pctalikeButton" type="submit" value=topic.id + '/' + id + '/1' onclick="pcLike(this);")
-                img(src="icons/nocap.png" class="pctalikeImage" id="likeImage")
-        else
-            button(class="pctalikeButton" type="submit" value=topic.id + '/' + id + '/0' onclick="pcLike(this);")
-                img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
-    else if(type === 'ta')
-        if(result)
-            button(class="pctalikeButton" type="submit" value=topic.id + '/' + id + '/1' onclick="taLike(this);")
-                img(src="icons/nocap.png" class="pctalikeImage" id="likeImage")
-        else
-            button(class="pctalikeButton" type="submit" value=topic.id + '/' + id + '/0' onclick="taLike(this);")
-                img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
-    else
-        if(result)
-            button(class="pctalikeButton" type="submit" value=topic.id + '/' + id + '/1' onclick="ycLike(this);")
-                img(src="icons/nocap.png" class="pctalikeImage" id="likeImage")
-        else
-            button(class="pctalikeButton" type="submit" value=topic.id + '/' + id + '/0' onclick="ycLike(this);")
-                img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
-
 mixin articlePop(type, loginUser, articleAuthor)
     .aPopButton(onclick="aMenuButton()") ≡
         .aPopDiv(id='aPopDiv')

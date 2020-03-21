@@ -19,16 +19,16 @@ block main
         .articleInfo
             dl.aTtileDl
                 block articleInfo
-                if u_id
+                if(id2)
                     +articlePop(topic.identifier, id2, topic.author)
                 +hashtag(topic.hashtags)
         .articleContent
             +articleContent(topic.content)
         .articleLike
             .articleLikeNum(id="articleLikeNum")= topic.likeCount
-            if u_id
+            if(id2)
                 +aritcleLikeButton(topic.likeStatus)
-    if(u_id)
+    if(id2)
         .commentOrAnswer
             +commentOrAnswer(topic.identifier)
     .comAns
@@ -48,7 +48,7 @@ block jscript
             makeRequest('GET', 'api/article/' + type + '/reply/'+#{topic.id})
                 .then(function (e) {
                     let ele = JSON.parse(e);
-                    ele.result.forEach(element => createReplyLi(element, type));
+                    ele.result.forEach(element => createReplyLi(element, type, #{id2}));
                 });
         });
 
@@ -75,7 +75,6 @@ block jscript
             makeRequest('POST', 'api/article/' + type + '/like', data)
                 .then(function (e) {
                     e = JSON.parse(e);
-                    console.log(e);
                 });
         }
 

@@ -24,13 +24,11 @@ function makeRequest(method, url, data) {
     });
 }
 
-function createReplyLi(reply, type){
-    console.log(reply);
+function createReplyLi(reply, type, userId){
     const replyUl = document.getElementById('replyUl');
     {
         const replyLi = document.createElement('li');
         replyLi.className = "liComAndAns";
-        replyLi.id = `${reply.id}`;
         {
             //inside replyLi
             const replyDl = document.createElement('dl');
@@ -48,16 +46,69 @@ function createReplyLi(reply, type){
                     replyDt.appendChild(replyPre);
                 }
                 const replyDd = document.createElement('dd');
+                {
+                    // inside replyDd
+                    const replyInfo = document.createElement('span');
+                    replyInfo.className = "ddComAndAns";
+                    replyInfo.innerHTML = 'by ' + `${reply.u_id}` + ' / ' + `${reply.date}` + ' / ';
+
+                    const replyLikeNum = document.createElement('span');
+                    replyLikeNum.className = "comAnsLike";
+                    replyLikeNum.id = reply.id;
+                    replyLikeNum.innerHTML = reply.likeCount;
+
+                    replyDd.appendChild(replyInfo);
+                    replyDd.appendChild(replyLikeNum);
+
+                    // like button for reply
+                    if(userId){
+                        const replyLikeSpan= document.createElement('span');
+                        replyLikeSpan.className = "comAnsButton";
+                        const replyLikeButton= document.createElement('button');
+                        const replyLikeImg= document.createElement('img');
+                        replyLikeButton.className = "pctalikeButton";
+                        replyLikeButton.type = "submit";
+                        replyLikeButton.value = reply.id;
+                        replyLikeButton.onclick = () =>{
+                            //버튼을 누르자마자 현재 __like를 기준으로 우선 그림과 숫자를 바꿔줌
+                            let replyLikeNumOnclick = document.getElementById(reply.id);
+                            if(reply.likeStatus){
+                                replyLikeNumOnclick.innerHTML = parseInt(replyLikeNumOnclick.innerHTML)-1;
+                                replyLikeImg.src = location.origin +'/icons/cap.png';
+                            }
+                            else{
+                                replyLikeNum.innerHTML = parseInt(replyLikeNum.innerHTML)+1;
+                                replyLikeImg.src = location.origin +'/icons/nocap.png';
+                            }
+                            //이후에 ajax 요청을 보냄
+                            let data = {
+                                "id": reply.id,
+                                "cancel": reply.likeStatus
+                            };
+                            reply.likeStatus = !reply.likeStatus;
+                            makeRequest('POST', 'api/article/' + type + '/reply/like', data)
+                                .then(function (e) {
+                                    e = JSON.parse(e);
+                                    console.log(e);
+                                });
+                        };
+                        replyLikeImg.className = "pctalikeImage";
+                        if(reply.likeStatus) replyLikeImg.src = location.origin +'/icons/nocap.png';
+                        else replyLikeImg.src = location.origin +'/icons/cap.png';
+
+                        replyLikeButton.appendChild(replyLikeImg);
+                        replyLikeSpan.appendChild(replyLikeButton);
+                        replyDd.appendChild(replyLikeSpan);
+                    }
+                }
                 replyDt.className = "dtComAndAns";
                 replyDd.className = "ddComAndAns";
-
-                //아래에서 like는 현재 전체로 가지고 오고 있음. length가 아닌 몇개인지 count로 가지고 와야함
-                replyDd.innerHTML = 'by ' + `${reply.u_id}` + ' / ' + `${reply.date}` + ' / ' + `${reply.likeCount}`;
 
                 replyDl.appendChild(replyDt);
                 replyDl.appendChild(replyDd);
                 replyLi.appendChild(replyDl);
             }
+
             const re_replyDiv = document.createElement('div');
             {
                 re_replyDiv.className = "pccOrTac";

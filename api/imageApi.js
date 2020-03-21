@@ -6,6 +6,7 @@ const AWS = require('aws-sdk');
 const imageThumbnail = require('image-thumbnail');
 const s3 = new AWS.S3(config.aws_config);
 /* ===== image ===== */
+let options = { percentage: 50};
 
 route.delete('/', (req, res) => {
     // let img = req.body.img;
@@ -38,7 +39,7 @@ route.post('/', (req, res) => {
         case "png": filename += '.png'; break;
         default: /* Raise error */ break;
     }
-    imageThumbnail(data).then((thumbnail) => {
+    imageThumbnail(data, options).then((thumbnail) => {
         saveImage("images", filename, data, (err) => {
             if(err) {
                 console.log("err: ", err);
