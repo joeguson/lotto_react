@@ -17,10 +17,17 @@ exports.tandyaAnsLikeById = (id) => doQuery(
 );
 exports.tandyaAnsLikeCount = (id) => doQuery(
     `select count(ta_id)
-    as taLikeCount
+    as replyLikeCount
     from ta_like
     where ta_id = ?`,
     id
+);
+exports.tandyaAnsLikeByAuthor = (tandyaAnsId, userId) => doQuery(
+    `SELECT COUNT(*) 
+    AS count
+    FROM ta_like
+    WHERE ta_id = ? AND u_id = ?;`,
+    [tandyaAnsId, userId]
 );
 exports.tandyaAnsLikeCountByAuthor = (id) => doQuery(
     `select count(c.ta_id)

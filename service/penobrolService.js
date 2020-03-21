@@ -63,26 +63,11 @@ exports.getOrderedPenobrol = async function () {
     return await Promise.all(parsed.map((list) => applyAsyncToAll(list, getFullPenobrol)));
 };
 
-// penobrol id 로 penobrol 관련된 모든 정보를 읽어오는 함수
-exports.getFullPenobrolById = async function (id) {
-    const penobrolResult = (await penobrolDao.penobrolById(id))[0];
-
-    if (penobrolResult == null) return null;
-
-    const penobrol = parser.parsePenobrol(penobrolResult);
-
-    const [commentsResult, likesResult, hashtagsResult] = await Promise.all([
-        pcDao.penobrolComByScore(id),
-        plikeDao.penobrolLikeById(id),
-        phashDao.penobrolHashtagById(id)
-    ]);
-
-    penobrol.comments = commentsResult.map(parser.parseComment);
-    penobrol.likes = likesResult.map(parser.parsePLike);
-    penobrol.hashtags = hashtagsResult.map(parser.parseHashtagP);
-
-    penobrol.comments = await applyAsyncToAll(penobrol.comments, getFullComments);
-    return penobrol;
+exports.getFullPenobrolComById = async function(id, userId) {
+    const penobrolComResult = (await pcDao.penobrolComByScore(id)).map(parser.parseComment);
+    if(penobrolComResult == null) return null;
+    const penobrolComResultWithReply = await applyAsyncToAll(penobrolComResult, getFullComments);
+    return penobrolComResultWithReply;
 };
 
 // penobrol 의 조회수를 올리고 그에 따라 점수를 업데이트 하는 함수
@@ -213,11 +198,10 @@ async function getFullPenobrol(penobrol) {
         phashDao.penobrolHashtagById(penobrol.id),
         pcDao.penobrolComCountById(penobrol.id),
         plikeDao.penobrolLikeCount(penobrol.id)
-
     ]);
     penobrol.hashtags = hashtagResult.map(parser.parseHashtagP);
-    penobrol.commentCount = comCountResult[0].count;
-    penobrol.likeCount = penobrolLikeCount[0].plikeCount;
+    penobrol.commentCount = comCountResult[0].replyCount;
+    penobrol.likeCount = penobrolLikeCount[0].articleLikeCount;
     return penobrol;
 }
 

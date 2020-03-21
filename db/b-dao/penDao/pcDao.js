@@ -25,11 +25,12 @@ exports.penobrolComById = (id) => doQuery(
 );
 exports.penobrolComCountById = (id) => doQuery(
     `select count(p_id)
-    as count
+    as replyCount
     from p_com
     where p_id = ?`,
     id
 );
+
 
 /* ===== update ===== */
 exports.updatePenobrolCom = (content, id, p_id) => doQuery(

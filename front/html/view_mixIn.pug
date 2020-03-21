@@ -69,37 +69,13 @@ mixin articleContent(content)
             };
         }
 
-mixin likeButton(type ,likeObject, sessionId)
-    -const likeChecker = function (likeObject, sessionId) {
-    -    for (var i of likeObject) {
-    -        if(i.u_id == sessionId){
-    -            return true;
-    -        }
-    -     }
-    -     return false;
-    -}
-    -var result = likeChecker(likeObject, sessionId);
-    if(type === 'p')
-        if(result)
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/1' onclick="pLike(this);")
-                img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
-        else
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/0' onclick="pLike(this);")
-                img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
-    else if(type === 't')
-        if(result)
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/1' onclick="tLike(this);")
-                img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
-        else
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/0' onclick="tLike(this);")
-                img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
+mixin aritcleLikeButton(status)
+    if(status)
+        button(class="articleLikeButton" type="submit" id="articleLikeButton")
+            img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
     else
-        if(result)
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/1' onclick="yLike(this);")
-                img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
-        else
-            button(class="articleLikeButton" type="submit" value=topic.id + '/0/0' onclick="yLike(this);")
-                img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
+        button(class="articleLikeButton" type="submit" id="articleLikeButton")
+            img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
 
 mixin commentOrAnswer(type)
     if(type === 't')
@@ -114,38 +90,6 @@ mixin commentOrAnswer(type)
         form(action='youtublog/comment/' + topic.id method='post' class='comansForm' onsubmit='return ycChecksubmit();')
             textarea(name='comment' id='ycInput' class="pctaInput")
             input(type='submit' value='comment' class="pctaInputButton" id="ycInputButton")
-
-mixin likeButton2(type, likeObject, sessionId, id)
-    -var likeChecker = function (likeObject, sessionId) {
-    -    for (var i of likeObject) {
-    -        if(i.u_id == sessionId){
-    -            return true;
-    -        }
-    -     }
-    -     return false;
-    -}
-    -var result = likeChecker(likeObject, sessionId);
-    if(type === 'pc')
-        if(result)
-            button(class="pctalikeButton" type="submit" value=topic.id+'/'+id+'/1' onclick="pcLike(this);")
-                img(src="icons/nocap.png" class="pctalikeImage" id="likeImage")
-        else
-            button(class="pctalikeButton" type="submit" value=topic.id+'/'+id+'/0' onclick="pcLike(this);")
-                img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
-    else if(type === 'ta')
-        if(result)
-            button(class="pctalikeButton" type="submit" value=topic.id+'/'+id+'/1' onclick="taLike(this);")
-                img(src="icons/nocap.png" class="pctalikeImage" id="likeImage")
-        else
-            button(class="pctalikeButton" type="submit" value=topic.id+'/'+id+'/0' onclick="taLike(this);")
-                img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
-    else
-        if(result)
-            button(class="pctalikeButton" type="submit" value=topic.id+'/'+id+'/1' onclick="ycLike(this);")
-                img(src="icons/nocap.png" class="pctalikeImage" id="likeImage")
-        else
-            button(class="pctalikeButton" type="submit" value=topic.id+'/'+id+'/0' onclick="ycLike(this);")
-                img(src="icons/cap.png" class="pctalikeImage" id="likeImage")
 
 mixin articlePop(type, loginUser, articleAuthor)
     .aPopButton(onclick="aMenuButton()") ≡

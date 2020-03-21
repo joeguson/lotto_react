@@ -1,5 +1,6 @@
 //url - '/youtublog'
 const route = require('express').Router();
+const articleService = require('../service/articleService.js');
 const youtublogService = require('../service/youtublogService.js');
 
 /************FOR YOUTUBLOG************/
@@ -17,7 +18,7 @@ route.get('/:youtublog_no', function (req, res, next) {
     const id = req.params.youtublog_no;
     const checkId = /^[0-9]+$/;
     if(checkId.test(id)){
-        youtublogService.getFullYoutublogById(id).then(result => {
+        articleService.getFullArticleById(id, req.session.id2, 'youtublog').then(result => {
             if (!result) res.redirect('/youtublog/'); // 결과가 없으면 홈으로 이동
             else youtublogService.updateYoutublogView(result.id).then(() => // 받아왔으면 조회수 증가 후 페이지 표시
                 res.render('./jy/y-view', {

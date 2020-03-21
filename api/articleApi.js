@@ -2,6 +2,7 @@
 const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 
+const articleService = require('../service/articleService.js');
 const penobrolService = require('../service/penobrolService.js');
 const tandyaService = require('../service/tandyaService.js');
 const youtublogService = require('../service/youtublogService.js');
@@ -96,8 +97,7 @@ const articleLikeCountFunctions = {
 route.post('/:type/like',
     __getLikeRequestHandlerFunction(
         articleLikeFunctions,
-        articleLikeCountFunctions,
-        "articleId"
+        articleLikeCountFunctions
     )
 );
 
@@ -118,8 +118,7 @@ const replyLikeCountFunctions = {
 route.post('/:type/reply/like',
     __getLikeRequestHandlerFunction(
         replyLikeFunctions,
-        replyLikeCountFunctions,
-        "comAnsId"
+        replyLikeCountFunctions
     )
 );
 
@@ -151,22 +150,80 @@ route.post('/:type/re-reply', (req, res) => {
     );
 });
 
+/* ===== POST /{type}/warn ===== */
+// article type 에 따른 warn 요청 함수
+const warnPostFunctions = {
+    penobrol: penobrolService.warnPenobrol,
+    tandya: tandyaService.warnTandya,
+    youtublog: youtublogService.warnYoutublog
+};
+// reply 에 like/취소 를 요청하는 api
+route.post('/:type/warn', (req, res) => {
+    const type = req.params['type'];
+    const warnPostFunction = warnPostFunctions[type];
+
+    if (warnPostFunction == null)
+        res.status(400).send('Wrong article type');
+    else warnPostFunction(
+        req.body.warnedItem,
+        req.body.warnedId,
+        req.session.id2
+    ).then(re =>
+        res.json({
+            'result': re
+        })
+    ).catch((e) => {
+        console.error(e);
+            res.status(500).send('Could not warn article')
+        }
+    );
+});
+
+/* ===== GET /{type}/reply ===== */
+// article type 에 따른 reply 요청 함수
+const replyGetFunctions = {
+    penobrol: articleService.getFullReply,
+    tandya: articleService.getFullTandyaAnsById,
+    youtublog: articleService.getFullYoutublogComById
+};
+// article의 reply를 요청하는 api
+route.get('/:type/reply/:id', (req, res) => {
+    const type = req.params['type'];
+    const articleId = req.params.id;
+
+    const replyGetFunction = articleService.getFullReplyByArticleId;
+    if (replyGetFunction == null)
+        res.status(400).send('Wrong article type');
+    else replyGetFunction(
+        articleId,
+        req.session.id2,
+        type
+    ).then(re =>
+        res.json({
+            'result': re
+        })
+    ).catch((e) => {
+            console.error(e);
+            res.status(500).send('Could not warn article')
+        }
+    );
+});
+
 // article, reply 에 like 요청을 보내기 위한 공용 함수
-function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions, idString) {
+function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions) {
     return (req, res) => {
         const type = req.params['type'];
         const likeFunction = likeFunctions[type];
         const likeCountFunction = likeCountFunctions[type];
-
-        const id = req.body[idString];  // TODO unify idString to id
-        const clickVal = parseInt(req.body.clickVal);  // TODO refactor to boolean cancel
+        const id = req.body.id;
+        const cancel = req.body.cancel;
 
         if (likeFunction == null)
             res.status(400).send('Wrong article type');
         else likeFunction(
             id,
             req.session.id2,
-            clickVal
+            cancel
         ).then(val =>
             likeCountFunction(id).then(count =>
                 res.json({
@@ -235,7 +292,7 @@ const reReplyDidWarnFunctions = {
 };
 
 
-route.post('/:type/warn',
+route.post('/:type/re-reply/warn',
     __getWarnRequestHandlerFunction(
         reReplyWarnFunctions,
         reReplyDidWarnFunctions

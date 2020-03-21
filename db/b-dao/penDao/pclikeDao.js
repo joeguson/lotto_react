@@ -17,10 +17,17 @@ exports.penobrolComLikeById = (id) => doQuery(
 );
 exports.penobrolComLikeCount = (id) => doQuery(
     `select count(pc_id)
-    as pcLikeCount
+    as replyLikeCount
     from pc_like
     where pc_id = ?`,
     id
+);
+exports.penobrolComLikeByAuthor = (penobrolComId, userId) => doQuery(
+    `SELECT COUNT(*) 
+    AS count
+    FROM pc_like
+    WHERE pc_id = ? AND u_id = ?;`,
+    [penobrolComId, userId]
 );
 exports.penobrolComLikeCountByAuthor = (id) => doQuery(
     `select count(c.pc_id)

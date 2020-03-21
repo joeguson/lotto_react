@@ -63,26 +63,11 @@ exports.getOrderedTandya = async function() {
     return await Promise.all(parsed.map((list) => applyAsyncToAll(list, getFullTandya)));
 };
 
-// tandya id 로 tandya 관련된 모든 정보를 읽어오는 함수
-exports.getFullTandyaById = async function(id) {
-    const tandyaResult = (await tandyaDao.tandyaById(id))[0];
-
-    if(tandyaResult == null) return null;
-
-    const tandya = parser.parseTandya(tandyaResult);
-
-    const [answersResult, likesResult, hashtagsResult] = await Promise.all([
-        taDao.tandyaAnsByScore(id),
-        tlikeDao.tandyaLikeById(id),
-        thashDao.tandyaHashtagById(id)
-    ]);
-
-    tandya.answers = answersResult.map(parser.parseAnswer);
-    tandya.likes = likesResult.map(parser.parseTLike);
-    tandya.hashtags = hashtagsResult.map(parser.parseHashtagT);
-
-    tandya.answers = await applyAsyncToAll(tandya.answers, getFullAnswer);
-    return tandya;
+exports.getFullTandyaAnsById = async function(id, userId) {
+    const tandyaAnsResult = (await taDao.tandyaAnsByScore(id)).map(parser.parseAnswer);
+    if(tandyaAnsResult == null) return null;
+    const tandyaAnsResultWithReply = await applyAsyncToAll(tandyaAnsResult, getFullAnswer);
+    return tandyaAnsResultWithReply;
 };
 
 // tandya 의 조회수를 올리고 그에 따라 점수를 업데이트 하는 함수
@@ -214,8 +199,8 @@ async function getFullTandya(tandya) {
     ]);
 
     tandya.hashtags = hashtagResult.map(parser.parseHashtagT);
-    tandya.answerCount = ansCountResult[0].count;
-    tandya.likeCount = tandyaLikeCount[0].tlikeCount;
+    tandya.answerCount = ansCountResult[0].replyCount;
+    tandya.likeCount = tandyaLikeCount[0].articleLikeCount;
     return tandya;
 }
 

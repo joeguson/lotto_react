@@ -25,7 +25,7 @@ exports.tandyaAnsById = (id) => doQuery(
 );
 exports.tandyaAnsCountById = (id) => doQuery(
     `select count(t_id)
-    as count
+    as replyCount
     from t_ans
     where t_id = ?`,
     id

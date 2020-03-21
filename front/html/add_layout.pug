@@ -1,12 +1,16 @@
 extends ./layout
 
 block js
+    script(type="text/javascript" src='./js/addArticle.js')
     script(src='./js/updateArticle.js')
     script(src='./js/addArticle.js')
     script(type="text/javascript" src="/js/jsForAllJade.js")
     script(src="./public/b-editor/b-editor.js")
     script(src="./public/b-dialog.js")
     script(src="./public/b-link/b-link-dialog.js")
+    script(type="text/javascript" src="./public/b-editor/b-editor.js")
+    script(type="text/javascript" src="./public/b-youtube/b-dialog.js")
+    script(type="text/javascript" src="./public/b-link/b-link-dialog.js")
     block addJs
 
 block css
@@ -19,15 +23,15 @@ block main
     .article
         block newArticleInfo
         p
-            input(type='text' name='thumbnail' placeholder='thumbnail' maxlength="200" class="thumbnail" id="thumbnail")
+            input(class="thumbnail" id="thumbnail" type='text' name='thumbnail' placeholder='thumbnail' maxlength="200")
         p.infoP
-            span(id='thumbnailInfo' class='infoSpan') 200/200
+            span(class='infoSpan' id='thumbnailInfo') 200/200
         p
             block newArticleContent
         p
-            input(id='hashtag' type='text' name='hashtag' placeholder='#put #hashtags #like #this' class="hashtag")
+            input(class="hashtag" id='hashtag' type='text' name='hashtag' placeholder='#put #hashtags #like #this')
         p.infoP
-            span(id='hashInfo' class='infoSpan') 20/20
+            span(class='infoSpan' id='hashInfo') 20/20
         p
             block newArticleSubmit
 
