@@ -78,3 +78,10 @@ block jscript
                 });
         }
 
+        document.getElementById("articleWarnButton").onclick = function () {
+            var type = window.location.href.split('/')[3];
+            if(type==='penobrol') warnPenobrol(#{topic.id});
+            else if(type==='tandya') warnTandya(#{topic.id});
+            else if(type==='youtublog') warnYoutublog(#{topic.id});
+        }
+

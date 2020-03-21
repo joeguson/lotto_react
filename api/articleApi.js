@@ -165,8 +165,8 @@ route.post('/:type/warn', (req, res) => {
     if (warnPostFunction == null)
         res.status(400).send('Wrong article type');
     else warnPostFunction(
-        req.body.warnedItem,
-        req.body.warnedId,
+        req.session.id2,
+        req.body.warned_id,
         req.session.id2
     ).then(re =>
         res.json({

@@ -1,6 +1,7 @@
 function __selectWarnFunc(warn_target) {
     return (warned_id) => {
         let data = {warned_id: warned_id};
+        console.log(data);
         const url = '/api/article/'+ warn_target +'/warn';
         makeRequest('POST', url, data)
             .then(res => {
