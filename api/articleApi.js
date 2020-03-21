@@ -150,35 +150,6 @@ route.post('/:type/re-reply', (req, res) => {
     );
 });
 
-/* ===== POST /{type}/warn ===== */
-// article type 에 따른 warn 요청 함수
-const warnPostFunctions = {
-    penobrol: penobrolService.warnPenobrol,
-    tandya: tandyaService.warnTandya,
-    youtublog: youtublogService.warnYoutublog
-};
-// reply 에 like/취소 를 요청하는 api
-route.post('/:type/warn', (req, res) => {
-    const type = req.params['type'];
-    const warnPostFunction = warnPostFunctions[type];
-
-    if (warnPostFunction == null)
-        res.status(400).send('Wrong article type');
-    else warnPostFunction(
-        req.session.id2,
-        req.body.warned_id,
-        req.session.id2
-    ).then(re =>
-        res.json({
-            'result': re
-        })
-    ).catch((e) => {
-        console.error(e);
-            res.status(500).send('Could not warn article')
-        }
-    );
-});
-
 /* ===== GET /{type}/reply ===== */
 // article type 에 따른 reply 요청 함수
 const replyGetFunctions = {
@@ -249,7 +220,8 @@ const articleDidWarnFunctions = {
     youtublog: youtublogService.didWarnYoutublog
 };
 
-route.post('/:type/warn', __getWarnRequestHandlerFunction(
+route.post('/:type/warn',
+    __getWarnRequestHandlerFunction(
         articleWarnFunctions,
         articleDidWarnFunctions
     )
@@ -258,17 +230,16 @@ route.post('/:type/warn', __getWarnRequestHandlerFunction(
 /* ===== POST /{type}/reply/warn ===== */
 // reply type 에 따른 warn 요청 함수
 const replyWarnFunctions = {
-    penobrolReply: penobrolService.warnPenobrolCom,
-    tandyaReply: tandyaService.warnTandyaAns,
-    youtublogReply: youtublogService.warnYoutublogCom
+    penobrol: penobrolService.warnPenobrolCom,
+    tandya: tandyaService.warnTandyaAns,
+    youtublog: youtublogService.warnYoutublogCom
 };
 
 const replyDidWarnFunctions = {
-    penobrolReply: penobrolService.didWarnPenobrolCom,
-    tandyaReply: tandyaService.didWarnTandyaAns,
-    youtublogReply: youtublogService.didWarnYoutublogCom
+    penobrol: penobrolService.didWarnPenobrolCom,
+    tandya: tandyaService.didWarnTandyaAns,
+    youtublog: youtublogService.didWarnYoutublogCom
 };
-
 
 route.post('/:type/reply/warn',
     __getWarnRequestHandlerFunction(
@@ -280,17 +251,16 @@ route.post('/:type/reply/warn',
 /* ===== POST /{type}/re-reply/warn ===== */
 // re-reply type 에 따른 warn 요청 함수
 const reReplyWarnFunctions = {
-    penobrolReReply: penobrolService.warnPenobrolComCom,
-    tandyaReReply: tandyaService.warnTandyaAnsCom,
-    youtublogReReply: youtublogService.warnYoutublogComCom
+    penobrol: penobrolService.warnPenobrolComCom,
+    tandya: tandyaService.warnTandyaAnsCom,
+    youtublog: youtublogService.warnYoutublogComCom
 };
 
 const reReplyDidWarnFunctions = {
-    penobrolReReply: penobrolService.didWarnPenobrolComCom,
-    tandyaReReply: tandyaService.didWarnTandyaAnsCom,
-    youtublogReReply: youtublogService.didWarnYoutublogComCom
+    penobrol: penobrolService.didWarnPenobrolComCom,
+    tandya: tandyaService.didWarnTandyaAnsCom,
+    youtublog: youtublogService.didWarnYoutublogComCom
 };
-
 
 route.post('/:type/re-reply/warn',
     __getWarnRequestHandlerFunction(
@@ -307,10 +277,10 @@ function __getWarnRequestHandlerFunction(warnFunctions, didWarnFunctions) {
 
         if (didWarnFunction == null)
             res.status(400).send("Wrong article type");
-        else didWarnFunction(req.session.id2, req.body['warned_id'])
+        else didWarnFunction(req.session.id2, req.body.warned_id)
             .then(didWarn => {
                 if (!didWarn) {
-                    warnFunction(req.session.id2, req.body['warned_id'])
+                    warnFunction(req.session.id2, req.body.warned_id)
                         .then(result => {
                             res.json({
                                 'result': result

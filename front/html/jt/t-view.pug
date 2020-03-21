@@ -21,35 +21,3 @@ block ulComAndAns
                 return true;
             }
         }
-        function aMenuButton() {
-            document.getElementById("aPopDiv").classList.toggle("show");
-        }
-        function caMenuButton(target) {
-            target.childNodes[1].classList.toggle("show");
-        }
-        function pcctacMenuButton(target) {
-            target.childNodes[1].classList.toggle("show");
-        }
-        window.onclick = function(event) {
-            if (!event.target.matches('.aPopButton')) {
-                var dropdowns = document.getElementsByClassName("aPopDiv");
-                var i;
-                for (i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-            if (!event.target.matches('.caPopButton')) {
-                var dropdowns = document.getElementsByClassName("caPopDiv");
-                var i;
-                for (i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-    script(type="text/javascript" src="/js/jsForAllJade.js")

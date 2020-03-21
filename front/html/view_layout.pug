@@ -85,3 +85,36 @@ block jscript
             else if(type==='youtublog') warnYoutublog(#{topic.id});
         }
 
+        function aMenuButton() {
+            document.getElementById("aPopDiv").classList.toggle("show");
+        }
+        function caMenuButton(target) {
+            target.childNodes[1].classList.toggle("show");
+        }
+        function pcctacMenuButton(target) {
+            target.childNodes[1].classList.toggle("show");
+        }
+        window.onclick = function (event) {
+            if (!event.target.matches('.aPopButton')) {
+                var dropdowns = document.getElementsByClassName("aPopDiv");
+                fold_dropDown(dropdowns);
+            }
+            if (!event.target.matches('.caPopButton')) {
+                var dropdowns = document.getElementsByClassName("caPopDiv");
+                fold_dropDown(dropdowns);
+            }
+            if (!event.target.matches('.pcctacPopButton')) {
+                var dropdowns = document.getElementsByClassName("pcctacPopDiv");
+                fold_dropDown(dropdowns);
+            }
+
+            function fold_dropDown(dropdown) {
+                var i;
+                for (i = 0; i < dropdown.length; i++) {
+                    var openDropdown = dropdown[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }

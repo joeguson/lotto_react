@@ -25,6 +25,7 @@ function makeRequest(method, url, data) {
 }
 
 function createReplyLi(reply, type, userId){
+    console.log(reply);;
     const replyUl = document.getElementById('replyUl');
     {
         const replyLi = document.createElement('li');
@@ -43,6 +44,33 @@ function createReplyLi(reply, type, userId){
                     if(type==='tandya') replyPre.innerHTML = `${reply.answer}`;
                     else replyPre.innerHTML = `${reply.content}`;
 
+                    if(userId){
+                        const replyPopButton= document.createElement('div');
+                        replyPopButton.innerHTML = "≡";
+                        replyPopButton.className = "caPopButton";
+                        replyPopButton.onclick = () =>{
+                            replyPopButton.childNodes[1].classList.toggle("show");
+                        };
+                        const replyPopDiv= document.createElement('div');
+                        {
+                            replyPopDiv.className = "caPopDiv";
+                            {
+                                const replyWarnButton = document.createElement('button');
+                                replyWarnButton.className="caPopMenu";
+                                const replyWarnImg= document.createElement('img');
+                                replyWarnImg.src = location.origin +'/icons/warn.png';
+                                replyWarnButton.onclick = () => {
+                                    if(type==='penobrol') warnPenobrolCom(reply.id);
+                                    else if(type==='tandya') warnTandyaAns(reply.id);
+                                    else if(type==='youtublog') warnYoutublogCom(reply.id);
+                                };
+                                replyWarnButton.appendChild(replyWarnImg);
+                                replyPopDiv.appendChild(replyWarnButton);
+                            }
+                        }
+                        replyPopButton.appendChild(replyPopDiv);
+                        replyDt.appendChild(replyPopButton);
+                    }
                     replyDt.appendChild(replyPre);
                 }
                 const replyDd = document.createElement('dd');
@@ -70,7 +98,6 @@ function createReplyLi(reply, type, userId){
                         replyLikeButton.type = "submit";
                         replyLikeButton.value = reply.id;
                         replyLikeButton.onclick = () =>{
-                            //버튼을 누르자마자 현재 __like를 기준으로 우선 그림과 숫자를 바꿔줌
                             let replyLikeNumOnclick = document.getElementById(reply.id);
                             if(reply.likeStatus){
                                 replyLikeNumOnclick.innerHTML = parseInt(replyLikeNumOnclick.innerHTML)-1;
@@ -139,6 +166,35 @@ function createReplyLi(reply, type, userId){
                         const re_replyPre = document.createElement('pre');
                         re_replyPre.className = "pccomment-dt";
                         re_replyPre.innerHTML = `${re_reply.content}`;
+
+                        if(userId){
+                            const re_replyPopButton= document.createElement('div');
+                            re_replyPopButton.innerHTML = "≡";
+                            re_replyPopButton.className = "pcctacPopButton";
+                            re_replyPopButton.onclick = () =>{
+                                re_replyPopButton.childNodes[1].classList.toggle("show");
+                            };
+                            const re_replyPopDiv= document.createElement('div');
+                            {
+                                re_replyPopDiv.className = "pcctacPopDiv";
+                                {
+                                    const re_replyWarnButton = document.createElement('button');
+                                    re_replyWarnButton.className="caPopMenu";
+                                    const re_replyWarnImg= document.createElement('img');
+                                    re_replyWarnImg.src = location.origin +'/icons/warn.png';
+                                    re_replyWarnButton.onclick = () => {
+                                        if(type==='penobrol') warnPenobrolComCom(re_reply.id);
+                                        else if(type==='tandya') warnTandyaAnsCom(re_reply.id);
+                                        else if(type==='youtublog') warnYoutublogComCom(re_reply.id);
+                                    };
+                                    re_replyWarnButton.appendChild(re_replyWarnImg);
+                                    re_replyPopDiv.appendChild(re_replyWarnButton);
+                                }
+                            }
+                            re_replyPopButton.appendChild(re_replyPopDiv);
+                            re_replyDt.appendChild(re_replyPopButton);
+                        }
+
                         re_replyDt.appendChild(re_replyPre);
                     }
                     re_replyDd.className = "ddPccAndTac";
