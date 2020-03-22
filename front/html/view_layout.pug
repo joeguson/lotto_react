@@ -85,6 +85,13 @@ block jscript
             else if(type==='youtublog') warnYoutublog(#{topic.id});
         }
 
+        document.getElementById("articleDeleteButton").onclick = function () {
+            var type = window.location.href.split('/')[3];
+            if (type === 'penobrol') deletePenobrol(#{topic.id});
+            else if (type === 'tandya') deleteTandya(#{topic.id});
+            else if (type === 'youtublog') deleteYoutublog(#{topic.id});
+        }
+
         function aMenuButton() {
             document.getElementById("aPopDiv").classList.toggle("show");
         }

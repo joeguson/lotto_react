@@ -80,6 +80,8 @@ route.put('/:type/:id', (req, res) => {
     );
 });
 
+//**********  Like **********//
+
 /* ===== POST /{type}/like ===== */
 // article type 에 따른 like 요청 함수
 const articleLikeFunctions = {
@@ -189,8 +191,7 @@ function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions) {
         const id = req.body.id;
         const cancel = req.body.cancel;
 
-        if (likeFunction == null)
-            res.status(400).send('Wrong article type');
+        if (likeFunction == null) res.status(400).send('Wrong article type');
         else likeFunction(
             id,
             req.session.id2,
@@ -205,6 +206,8 @@ function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions) {
         ).catch(() => res.status(409).send('Already in like state'));
     }
 }
+
+//**********  Warn **********//
 
 /* ===== POST /{type}/warn ===== */
 // article type 에 따른 warn 요청 함수
@@ -286,10 +289,68 @@ function __getWarnRequestHandlerFunction(warnFunctions, didWarnFunctions) {
                                 'result': result
                             })
                         }).catch(() => res.status(499).send('Cannot load state'));
-                } else {
-                    res.status(409).send('Already Warn');
-                }
+                } else res.status(409).send('Already Warn');
             }).catch(() => res.status(501).send('Cannot load state'));
+    }
+}
+
+//**********  DELETE **********//
+
+/* ===== DELETE /{type} ===== */
+// article type 에 따른 delete 요청 함수
+const articleDeleteFunctions = {
+    penobrol: penobrolService.deletePenobrol,
+    tandya: tandyaService.deleteTandya,
+    youtublog: youtublogService.deleteYoutublog
+};
+
+route.delete('/:type',
+    __getDeleteRequestHandlerFunction(
+        articleDeleteFunctions
+    )
+);
+
+/* ===== DELETE /{type}/reply ===== */
+// reply type 에 따른 warn 요청 함수
+const replyDeleteFunctions = {
+    penobrol: penobrolService.deleteComment,
+    tandya: tandyaService.deleteAnswer,
+    youtublog: youtublogService.deleteComment
+};
+
+route.delete('/:type/reply',
+    __getDeleteRequestHandlerFunction(
+        replyDeleteFunctions
+    )
+);
+
+/* ===== DELETE /{type}/re-reply ===== */
+// re-reply type 에 따른 warn 요청 함수
+const reReplyDeleteFunctions = {
+    penobrol: penobrolService.deleteCComment,
+    tandya: tandyaService.deleteAComment,
+    youtublog: youtublogService.deleteCComment
+};
+
+route.delete('/:type/re-reply',
+    __getDeleteRequestHandlerFunction(
+        reReplyDeleteFunctions
+    )
+);
+
+function __getDeleteRequestHandlerFunction(deleteFunctions) {
+    return (req, res) => {
+        const type = req.params['type']; // req.params.type
+        const deleteFunction = deleteFunctions[type];
+
+        if (deleteFunction == null)
+            res.status(400).send("Wrong article type");
+        deleteFunction(req.body.delete_id, req.session.id2)
+            .then(result => {
+                res.json({
+                    "result": "deleted"
+                })
+            }).catch(() => res.status(499).send('Cannot load state'));
     }
 }
 

@@ -31,8 +31,8 @@ block main
                 .card-body
                     .row.no-gutters.align-items-center
                         .col.mr-2
-                            .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 COMMENT
-                            div(id="comment").h5.mb-0.font-weight-bold.text-gray-800 #{comment}
+                            .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 Penobrol COMMENT
+                            div(id="pcomment").h5.mb-0.font-weight-bold.text-gray-800 #{comment}
                         .col-auto
                             i.fas.fa-calendar.fa-2x.text-gray-300
 
@@ -43,6 +43,16 @@ block main
                         .col.mr-2
                             .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 ANSWER
                             div(id="answer").h5.mb-0.font-weight-bold.text-gray-800 #{answer}
+                        .col-auto
+                            i.fas.fa-calendar.fa-2x.text-gray-300
+
+        .col-xl-3.col-md-6.mb-4
+            .card.border-left-primary.shadow.h-100.py-2
+                .card-body
+                    .row.no-gutters.align-items-center
+                        .col.mr-2
+                            .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 Youtublog COMMENT
+                            div(id="comment").h5.mb-0.font-weight-bold.text-gray-800 #{comment}
                         .col-auto
                             i.fas.fa-calendar.fa-2x.text-gray-300
 
@@ -118,8 +128,6 @@ block main
                     myPieChart.data.datasets[0].data[1] = res.tandya;
                     myPieChart.data.datasets[0].data[2] = res.youtublog;
                     myPieChart.update();
-
-
                 });
             }
             countsec -= 1;

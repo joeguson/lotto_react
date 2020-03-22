@@ -25,7 +25,7 @@ function makeRequest(method, url, data) {
 }
 
 function createReplyLi(reply, type, userId){
-    console.log(reply);;
+    console.log(reply);
     const replyUl = document.getElementById('replyUl');
     {
         const replyLi = document.createElement('li');
@@ -66,6 +66,19 @@ function createReplyLi(reply, type, userId){
                                 };
                                 replyWarnButton.appendChild(replyWarnImg);
                                 replyPopDiv.appendChild(replyWarnButton);
+                            }
+                            if(userId === reply.author){
+                                const replyDeleteButton = document.createElement('button');
+                                replyDeleteButton.className="caPopMenu";
+                                const replyDeleteImg= document.createElement('img');
+                                replyDeleteImg.src = location.origin +'/icons/trash.png';
+                                replyDeleteButton.onclick = () => {
+                                    if(type==='penobrol') deletePenobrolCom(reply.id);
+                                    else if(type==='tandya') deleteTandyaAns(reply.id);
+                                    else if(type==='youtublog') deleteYoutublogCom(reply.id);
+                                };
+                                replyDeleteButton.appendChild(replyDeleteImg);
+                                replyPopDiv.appendChild(replyDeleteButton);
                             }
                         }
                         replyPopButton.appendChild(replyPopDiv);
@@ -189,6 +202,19 @@ function createReplyLi(reply, type, userId){
                                     };
                                     re_replyWarnButton.appendChild(re_replyWarnImg);
                                     re_replyPopDiv.appendChild(re_replyWarnButton);
+                                    if(userId === re_reply.author){
+                                        const re_replyDeleteButton = document.createElement('button');
+                                        re_replyDeleteButton.className="pcctacPopMenu";
+                                        const re_replyDeleteImg= document.createElement('img');
+                                        re_replyDeleteImg.src = location.origin +'/icons/trash.png';
+                                        re_replyDeleteButton.onclick = () => {
+                                            if(type==='penobrol') deletePenobrolComCom(re_reply.id);
+                                            else if(type==='tandya') deleteTandyaAnsCom(re_reply.id);
+                                            else if(type==='youtublog') deleteYoutublogComCom(re_reply.id);
+                                        }
+                                        re_replyDeleteButton.appendChild(re_replyDeleteImg);
+                                        re_replyPopDiv.appendChild(re_replyDeleteButton);
+                                    }
                                 }
                             }
                             re_replyPopButton.appendChild(re_replyPopDiv);
