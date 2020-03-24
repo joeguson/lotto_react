@@ -34,6 +34,7 @@ function postArticle(target) {
     else {
         var done = 0;
         for(var id in parsed.imgs) {
+            console.log(parsed.imgs);
             uploadImage(id, parsed.imgs[id], (id, filename) => {
                 content = replace(content, id, filename);
                 req.content = content;

@@ -54,7 +54,7 @@ route.get('/edit/:penobrol_no', function (req, res) {
     const p_id = req.params['penobrol_no'];
     const u_id = req.session.id2;
 
-    penobrolService.getFullPenobrolById(p_id).then(penobrol => {
+    articleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
         if(penobrol && penobrol.author === u_id)
             res.render('./article_edit', {
                 u_id: u_id,
@@ -69,12 +69,11 @@ route.get('/edit/comment/:penobrol_no/:pcomment_no',function (req, res) {
     const p_id = req.params.penobrol_no;
     const pc_id = req.params.pcomment_no;
     const u_id = req.session.id2;
-
     penobrolService.getCommentById(pc_id).then(comment => {
         if (u_id !== comment.author) res.redirect('/comment/view/' + p_id);
-        else penobrolService.getFullPenobrolById(p_id).then(penobrol => {
+        else articleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
             res.render('./jp/pc-edit', {
-                u_id: 'y',
+                id2: req.session.id2,
                 topic: penobrol,
                 edit_content: comment
             });

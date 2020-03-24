@@ -12,7 +12,6 @@
         this.youtubeIdDialog = null;
         this.youtubeDialog = null;
         this.youtublog = null;
-
         this.youtubes = [];
     }
 
@@ -51,6 +50,7 @@
 
         this.youtubeDialog = document.createElement("b-youtube-dialog");
         this.appendChild(this.youtubeDialog);
+
     }
 
     buildControls(w) {
@@ -167,6 +167,7 @@
     }
 
     start() {
+        this.iframe.contentWindow.console = console;
         const editor = this.editor = this.iframe.contentWindow.document;
         editor.designMode = "on";
         this.controlButtons["Bold"].onclick = this.cmd("Bold");
@@ -200,42 +201,36 @@
         js.src = "../../public/b-editor/__b-editor.js";
         editor.head.append(js);
 
+        const blink = document.createElement("script");
+        js.type = "text/javascript";
+        js.src = "../../public/b-link/b-link.js";
+        editor.head.append(blink);
+
         const css = document.createElement("link");
         css.rel = "stylesheet";
         css.href = "../../public/b-editor/__b-editor.css";
         editor.head.append(css);
 
         this.linkDialog.onConfirmCallback = (linkAddress) => {
-            let data = {"urlSource" : linkAddress}
+            let data = {"urlSource" : linkAddress};
             let url = '/api/opengraph';
-            let ajaxResult = '';
-            getUrlOpengraph(url, data);
-            async function getUrlOpengraph(url, data){
-                ajaxResult = await makeRequest('post', url, data);
-                ajaxResult = JSON.parse(ajaxResult);
-                const linkDiv = document.createElement('div');
-                const linkImg = document.createElement('img');
-                const linkTitle = document.createElement('div');
-                const linkDesc = document.createElement('div');
-
-                linkImg.style.width = '90%';
-                linkImg.src = ajaxResult.ogs.data.ogImage.url;
-                linkImg.onclick = () => {console.log('hi');};
-
-                linkTitle.style.width = '90%';
-                linkTitle.innerText = ajaxResult.ogs.data.ogTitle;
-
-                linkDesc.style.width = '90%';
-                linkDesc.innerText = ajaxResult.ogs.data.ogDescription;
-
-                linkDiv.appendChild(linkImg);
-                linkDiv.appendChild(linkTitle);
-                linkDiv.appendChild(linkDesc);
-
-                const linkHTML = linkDiv.outerHTML;
-                editor.body.focus();
-                editor.execCommand("insertHTML", false, linkHTML);
-            }
+            makeRequest('post', url, data)
+                .then(result => {
+                    result = JSON.parse(result);
+                    let ogData = {
+                        url : result.ogs.data.ogUrl,
+                        img : result.ogs.data.ogImage.url,
+                        title : result.ogs.data.ogTitle,
+                        desc : result.ogs.data.ogDescription
+                    };
+                    const linkDiv = document.createElement('b-link');
+                    linkDiv.setAttribute('jsonSrc', JSON.stringify(ogData));
+                    let linkDivHTML  = linkDiv.outerHTML;
+                    console.log(linkDivHTML);
+                    editor.body.focus();
+                    editor.execCommand('insertHTML', false, linkDivHTML);
+                }
+            );
         };
 
         this.youtubeIdDialog.onConfirmCallback = (youtubeId) => {

@@ -117,18 +117,12 @@ mixin caPop(type, loginUser, caAuthor, caId)
                 if(type === 'p')
                     a(class="caPopMenu" href='/penobrol/edit/comment/'+caId)
                         img(src="./icons/edit.png")
-                    button(class="caPopMenu" value=caId onclick="postDeletePcomment(this);")
-                        img(src="./icons/trash.png")
                 else if(type === 't')
                     a(class="caPopMenu" href='/tandya/edit/answer/'+caId)
                         img(src="./icons/edit.png")
-                    button(class="caPopMenu" value=caId onclick="postDeleteTanswer(this);")
-                        img(src="./icons/trash.png")
                 else if(type === 'y')
                     a(class="caPopMenu" href='/penobrol/edit/comment/'+caId)
                         img(src="./icons/edit.png")
-                    button(class="caPopMenu" value=caId onclick="postDeleteYcomment(this);")
-                        img(src="./icons/trash.png")
 
 
     

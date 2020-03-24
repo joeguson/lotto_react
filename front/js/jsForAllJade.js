@@ -77,8 +77,15 @@ function createReplyLi(reply, type, userId){
                                     else if(type==='tandya') deleteTandyaAns(reply.id);
                                     else if(type==='youtublog') deleteYoutublogCom(reply.id);
                                 };
-                                replyDeleteButton.appendChild(replyDeleteImg);
-                                replyPopDiv.appendChild(replyDeleteButton);
+                                const replyEditA = document.createElement('a');
+                                replyEditA.className="caPopMenu";
+                                if(type==='penobrol') replyEditA.href = type+'/edit/comment/'+reply.p_id+'/'+reply.id;
+                                else if(type==='tandya') replyEditA.href = type+'/edit/answer/'+reply.t_id+'/'+reply.id;
+                                else if(type==='youtublog') replyEditA.href = type+'/edit/comment/'+reply.y_id+'/'+reply.id;
+                                const replyEditImg= document.createElement('img');
+                                replyEditImg.src = location.origin +'/icons/edit.png';
+                                replyEditA.appendChild(replyEditImg);
+                                replyPopDiv.appendChild(replyEditA);
                             }
                         }
                         replyPopButton.appendChild(replyPopDiv);

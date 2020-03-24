@@ -29,7 +29,7 @@ route.delete('/', (req, res) => {
 
 route.post('/', (req, res) => {
     let img = req.body.img;
-    let data =img.replace(/^data:image\/\w+;base64,/, "");
+    let data = img.replace(/^data:image\/\w+;base64,/, "");
     let filename = jsForBack.generateFilename();
 
     switch (img.split(";")[0].split("/")[1]) {
