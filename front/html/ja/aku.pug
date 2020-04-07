@@ -1,9 +1,12 @@
 extends ../user_layout
 
-block personalInfo
-    a.changinfo(href= '/aku/change') #{u_id}
+block userInfo
+    span.userInfoSpan
+        a.changinfo(href= '/aku/change') #{u_id}
+    span.userInfoSpan #{follower} followers
+    span.userInfoSpan following  #{following}
 
-block personalStat
+block userStat
     .likeStat
         span.likeSpan
             p.likeHeading Penobrol
@@ -11,13 +14,20 @@ block personalStat
         span.likeSpan
             p.likeHeading Tandya
             p.likeCount= totalLikes.tandya
+        span.likeSpan
+            p.likeHeading Youtublog
+            p.likeCount= totalLikes.youtublog
     .likeStat
         span.likeSpan
-            p.likeHeading Comment
-            p.likeCount= totalLikes.comment
+            p.likeHeading Penobrol Comment
+            p.likeCount= totalLikes.pcomment
         span.likeSpan
-            p.likeHeading Answer
+            p.likeHeading Tandya Answer
             p.likeCount= totalLikes.answer
+        span.likeSpan
+            p.likeHeading Youtublog Comment
+            p.likeCount= totalLikes.ycomment
+
 
 block userPenobrol
     p Penobrol
@@ -27,11 +37,7 @@ block userPenobrol
                     b-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
+                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
 
 block userTandya
     p Tandya
@@ -41,11 +47,7 @@ block userTandya
                     b-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
+                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
 
 block userYoutublog
     p Youtublog
@@ -55,11 +57,7 @@ block userYoutublog
                     b-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
+                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
 
 block logout
     a.logout(href= '/aku/logout') Logout

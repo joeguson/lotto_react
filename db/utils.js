@@ -24,15 +24,16 @@ exports.commentLikeChecker = function(likeObject, cId, userId){
 };
 
 exports.getImage = function(contentString){
-    var returnObj = {};
-    //need img src and rotate info
+    let returnObj = {};
     const imgIndex = contentString.indexOf('<img', 0);
     const srcIndex = contentString.indexOf('src="', imgIndex);
     const endIndex = contentString.indexOf('"', srcIndex+5);
     if(imgIndex == -1 || srcIndex == -1 || endIndex == -1) return null;
 
     returnObj.src = contentString.substring(srcIndex + 5, endIndex);
-    returnObj.src = returnObj.src.substring(0, returnObj.src.indexOf('images/')+6)+ '/thumbnail'+returnObj.src.substring(returnObj.src.indexOf('images/')+6, endIndex);
+    if(returnObj.src.indexOf('beritamus', 0) != -1){
+        returnObj.src = returnObj.src.substring(0, returnObj.src.indexOf('images/')+6)+ '/thumbnail'+returnObj.src.substring(returnObj.src.indexOf('images/')+6, endIndex);
+    }
     return returnObj;
 };
 

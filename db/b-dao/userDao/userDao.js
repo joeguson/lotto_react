@@ -61,6 +61,13 @@ exports.userSearch = (string) => doQuery(
     [string]
 );
 
+exports.getUserId2 = (userId) => doQuery(
+    `SELECT id
+    FROM users
+    WHERE u_id = ?`,
+    [userId]
+);
+
 ////////////////Update////////////////
 exports.updateLoginDate = (id) => doQuery(
     `UPDATE users

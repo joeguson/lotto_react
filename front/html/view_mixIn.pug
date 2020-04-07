@@ -20,7 +20,6 @@ mixin articleContent(content)
         const page = contentFrame.contentWindow.document;
         const content = "#{topic.content}".replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g, '\"');
 
-
         window.addEventListener('DOMContentLoaded', function () {
             autoHeight();
         });
@@ -77,7 +76,7 @@ mixin aritcleLikeButton(status)
         button(class="articleLikeButton" type="submit" id="articleLikeButton")
             img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
 
-mixin commentOrAnswer(type)
+mixin reply(type)
     if(type === 't')
         form(action='tandya/answer/' + topic.id method='post' class='comansForm' onsubmit='return taChecksubmit();')
             textarea(name='answer' id="taInput" class="pctaInput")

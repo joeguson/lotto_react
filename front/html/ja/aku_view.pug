@@ -1,10 +1,12 @@
 extends ../user_layout
 
-block personalInfo
-    p #{u_id}
-    //admin1로 로그인 한 상태에서 admin2의 정보를 바꿀수 있으면 안됨. 삭제함
+block userInfo
+    span.userInfoSpan
+        p #{u_id}
+    span.userInfoSpan #{follower} followers
+    span.userInfoSpan following #{following}
 
-block personalStat
+block userStat
     if(follow)
         button(type="submit" id="followId") UNFOLLOW
     else
@@ -15,7 +17,7 @@ block userPenobrol
         if penobrols.length > 0
             ul.thumbnailUl
                 each p in penobrols
-                    b-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
+                    b-my-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
                 span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
@@ -29,7 +31,7 @@ block userTandya
         if tandyas.length > 0
             ul.thumbnailUl
                 each t in tandyas
-                    b-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
+                    b-my-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
                 span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
@@ -43,7 +45,7 @@ block userYoutublog
         if youtublogs.length > 0
             ul.thumbnailUl
                 each y in youtublogs
-                    b-thumbnail(jsonSrc=`${JSON.stringify(y)}`)
+                    b-my-thumbnail(jsonSrc=`${JSON.stringify(y)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
                 span(style="font-family: 'Fruktur', cursive; font-size:28px;") K

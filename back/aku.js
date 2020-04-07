@@ -34,14 +34,19 @@ route.post('/register', function(req, res){
 route.get('/', function(req, res){
     if(req.session.u_id) {
         akuService.getUserArticle(req.session.id2)
-            .then(([userPenobrol, userTandya, userYoutublog, totalLikes]) => res.render('./ja/aku', {
-                user:req.session.id2,
-                u_id:req.session.u_id,
-                penobrols:userPenobrol,
-                tandyas:userTandya,
-                youtublog:userYoutublog,
-                totalLikes:totalLikes
-            }));
+            .then(([userPenobrol, userTandya, userYoutublog, totalLikes]) => {
+                akuService.countFollow(req.session.id2)
+                    .then(([following, follower]) => res.render('./ja/aku', {
+                        user:req.session.id2,
+                        u_id:req.session.u_id,
+                        following: following[0].following,
+                        follower: follower[0].follower,
+                        penobrols:userPenobrol,
+                        tandyas:userTandya,
+                        youtublog:userYoutublog,
+                        totalLikes:totalLikes
+                    }));
+            });
     }
     else{
         res.render('./ja/login');
@@ -51,14 +56,19 @@ route.get('/', function(req, res){
 route.get('/user/:user_id', function(req, res, next){
     let user_id = req.params.user_id;
         akuService.getUserArticleByForeigner(user_id, req.session.id2)
-            .then(([userPenobrol, userTandya, userYoutublog, followResult]) => res.render('./ja/akuView', {
-                user:req.session.id2,
-                u_id:user_id,
-                penobrols:userPenobrol,
-                tandyas:userTandya,
-                youtublogs:userYoutublog,
-                follow: followResult.length > 0
-            }));
+            .then(([userPenobrol, userTandya, userYoutublog, followResult]) => {
+                akuService.countFollowByForeigner(user_id)
+                    .then(([following, follower]) => res.render('./ja/aku_view', {
+                        user:req.session.id2,
+                        u_id:user_id,
+                        following: following[0].following,
+                        follower: follower[0].follower,
+                        penobrols:userPenobrol,
+                        tandyas:userTandya,
+                        youtublogs:userYoutublog,
+                        follow: followResult.length > 0
+                    }));
+            });
 });
 
 route.get('/logout', function(req, res){
@@ -126,13 +136,15 @@ route.post('/find', function(req, res){
 });
 
 route.get('/change', function(req, res){
-    if(req.session.id2) res.render('./ja/changeUserInfoLogin');
+    if(req.session.id2) res.render('./ja/change_login', {
+        u_id: req.session.u_id
+    });
     else res.redirect('/aku')
 });
 
 route.post('/change', function(req, res){
     if(req.session.id2){
-        akuService.userLogin(req.body.u_id, req.body.u_pw)
+        akuService.userLogin(req.session.u_id, req.body.u_pw)
             .then(result => {
                 if(result){
                     req.session.valid = 'valid';

@@ -20,7 +20,7 @@ exports.countFollower = (id) => doQuery(
   `select count(*)
     AS follower 
     from follow 
-    where id = ?`,
+    where followed = ?`,
     id
 );
 
@@ -28,7 +28,7 @@ exports.countFollowing = (id) => doQuery(
       `select count(*)
     AS following 
     from follow 
-    where id = ?`,
+    where following = ?`,
     id
 );
 

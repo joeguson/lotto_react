@@ -22,11 +22,11 @@ function replace(content, id, filename, index = 0) {
 
 // parse image tag src and index them
 function parseImgTags(content) {
-    var id = 1;
-    var imgIndex = 0;
+    let id = 1;
+    let imgIndex = 0;
 
-    var imgMaps = {};
-    var posMaps = {};
+    let imgMaps = {};
+    let posMaps = {};
 
     while (true) {
         // <img
@@ -39,9 +39,11 @@ function parseImgTags(content) {
         // ">
         const endIndex = content.indexOf('\">', imgIndex);
         const data = content.substring(dataIndex, endIndex);
-        posMaps[id] = {s: dataIndex, e: endIndex};
-        imgMaps[id] = data;
-        id++;
+        if(data.substring(0,4) != "http"){
+            posMaps[id] = {s: dataIndex, e: endIndex};
+            imgMaps[id] = data;
+            id++;
+        }
         imgIndex = endIndex;
     }
     for (--id; id >= 1; id--) {

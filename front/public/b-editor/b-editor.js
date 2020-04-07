@@ -115,7 +115,6 @@
         controls.appendChild(sizes);
 
         this.addControlButton(controls, "Create link", "Link");
-        this.addControlButton(controls, "Remove link", "Unlink");
 
         const input = this.imageInput = document.createElement("input");
         input.type = "file";
@@ -167,7 +166,6 @@
     }
 
     start() {
-        this.iframe.contentWindow.console = console;
         const editor = this.editor = this.iframe.contentWindow.document;
         editor.designMode = "on";
         this.controlButtons["Bold"].onclick = this.cmd("Bold");
@@ -191,7 +189,6 @@
         this.imageInput.onchange = (e) => { this.__onImgClick(); };
 
         this.controlButtons["Create link"].onclick = () =>{this.__onLinkClick();};
-        this.controlButtons["Remove link"].onclick = this.cmd("UnLink");
         this.controlButtons["Insert image"].onclick = () => this.imageInput.click();
         this.controlButtons["Undo"].onclick = this.cmd("undo");
         this.controlButtons["Redo"].onclick = this.cmd("redo");
@@ -202,8 +199,8 @@
         editor.head.append(js);
 
         const blink = document.createElement("script");
-        js.type = "text/javascript";
-        js.src = "../../public/b-link/b-link.js";
+        blink.type = "text/javascript";
+        blink.src = "../../public/b-link/b-link.js";
         editor.head.append(blink);
 
         const css = document.createElement("link");
@@ -220,13 +217,16 @@
                     let ogData = {
                         url : result.ogs.data.ogUrl,
                         img : result.ogs.data.ogImage.url,
+                        imgWidth : result.ogs.data.ogImage.width,
+                        imgHeight : result.ogs.data.ogImage.height,
                         title : result.ogs.data.ogTitle,
                         desc : result.ogs.data.ogDescription
                     };
                     const linkDiv = document.createElement('b-link');
+                    linkDiv.contentEditable = "false";
                     linkDiv.setAttribute('jsonSrc', JSON.stringify(ogData));
                     let linkDivHTML  = linkDiv.outerHTML;
-                    console.log(linkDivHTML);
+                    linkDiv.style.margin = "0 auto";
                     editor.body.focus();
                     editor.execCommand('insertHTML', false, linkDivHTML);
                 }
@@ -300,7 +300,7 @@
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
                     let dataurl = canvas.toDataURL("image/png");
-                    const imgHTML = "<img style='overflow:auto;' src='" + dataurl +"'/>";
+                    const imgHTML = `<img style='overflow:auto; width:90%; margin: 0 auto;' src='` + dataurl +`'/>`;
                     this.editor.execCommand("insertHTML", false, imgHTML);
                 }
             };

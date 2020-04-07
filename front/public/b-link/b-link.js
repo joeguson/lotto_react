@@ -2,31 +2,56 @@ class BeritamusLink extends HTMLElement {
     constructor() {
         super();
         this.src = null;
-        console.log(this);
-        console.log('hi');
+        this.img = null;
     }
 
     connectedCallback() {
         this.src = JSON.parse(this.getAttribute("jsonSrc"));
-        this.__buildLink();
+        this.__build();
     }
 
-    __buildLink() {
+    __build() {
         const ogData = this.src;
         console.log(ogData);
         const linkDiv = document.createElement("div");
-        const linkImg = document.createElement('img');
-        const linkTitle = document.createElement('div');
-        const linkDesc = document.createElement('div');
-
-        linkImg.src = ogData.img;
-        linkTitle.innerHTML = ogData.title;
-        linkDesc.innerHTML = ogData.desc;
-        linkDiv.appendChild(linkImg);
-        linkDiv.appendChild(linkTitle);
-        linkDiv.appendChild(linkDesc);
-
+        linkDiv.appendChild(this.__buildImage());
+        linkDiv.appendChild(this.__buildTitle());
+        linkDiv.appendChild(this.__buildDesc());
+        linkDiv.style.textAlign = "center";
+        linkDiv.setAttribute("onclick", `window.open('${ogData.url}')`);
+        //아래의 방법은 왜 안되는지....
+        // linkDiv.onclick = () => {
+        //     window.open(ogData.url);
+        // };
         this.appendChild(linkDiv);
+    }
+
+    __buildImage() {
+        const linkImg = document.createElement('img');
+        if(this.src.img){
+            linkImg.src = this.src.img;
+            linkImg.style.width = "90%";
+            linkImg.style.textAlign = "center";
+        }
+        return linkImg;
+    }
+
+    __buildTitle() {
+        const titleDiv = document.createElement('div');
+        if(this.src.title) {
+            titleDiv.innerHTML = this.src.title;
+            titleDiv.style.width = "90%";
+        }
+        return titleDiv;
+    }
+
+    __buildDesc() {
+        const titleDesc = document.createElement('div');
+        if(this.src.desc) {
+            titleDesc.innerHTML = this.src.desc;
+            titleDesc.style.width = "90%";
+        }
+        return titleDesc;
     }
 }
 customElements.define('b-link', BeritamusLink);

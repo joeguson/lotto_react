@@ -3,8 +3,6 @@ extends ../layout
 block js
     script(type="text/javascript" src="../js/aku.js")
     script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
-    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
 
 block css
     link(rel='stylesheet', href='/css/aku.css' type="text/css")
@@ -12,7 +10,7 @@ block css
 
 block main
     form(action='/aku/change' method='post')
-        input(type='text' name='u_id' placeholder='  ID' id="input_id" required)
+        p(name='u_id' id="input_id") #{u_id}
         input(type='password' name='u_pw' placeholder='  Password' id="input_pw" required)
         input(type='submit' value="Login 1 more time to Change your Info" id="login" onclick='noDouble()')
     

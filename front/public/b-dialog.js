@@ -18,6 +18,7 @@ class BeritamusDialog extends HTMLElement{
         this.__dialog.appendChild(this.__buildContentArea());
         this.__dialog.appendChild(this.__buildButtonArea());
         this.__dialog.style.margin = "auto";
+        this.__dialog.style.width = "50%";
         this.__dialog.className = "dialogForm";
         this.appendChild(this.__dialog);
     }

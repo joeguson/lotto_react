@@ -31,7 +31,17 @@ button {
 
 .content{height:500px; width:90%;}
 .hashtag{height:40px; width:90%;}
-.submit{.button(); width:90%; margin:@marginbottom-mbl auto 0; display: block; .border-radius(); font-size: 14px; line-height: 35px; height:35px;}
+.submit{.button(); width:90%; margin:@marginbottom-mbl auto 0; display: block; font-size: 14px; line-height: 35px; height:35px;}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 /*for bigger windows*/
 @media (min-width:768px){

@@ -1,4 +1,4 @@
- const userDao = require('../db/b-dao/userDao/userDao');
+const userDao = require('../db/b-dao/userDao/userDao');
 const followDao = require('../db/b-dao/userDao/followDao');
 const tandyaService = require('./tandyaService');
 const penobrolService = require('./penobrolService');
@@ -38,7 +38,22 @@ exports.unfollowUser = async function(source, target) {
 
 exports.isFollowing = async function(source, target) {
     const result = await followDao.select(source, target);
-    return result.length > 0;
+    return result;
+};
+
+exports.countFollow = async function(id2) {
+    return await Promise.all([
+        followDao.countFollowing(id2),
+        followDao.countFollower(id2)
+    ]);
+};
+
+exports.countFollowByForeigner = async function(userId) {
+    const id2 = (await userDao.getUserId2(userId))[0].id;
+    return await Promise.all([
+        followDao.countFollowing(id2),
+        followDao.countFollower(id2)
+    ]);
 };
 
 exports.searchUser = async function(string) {
@@ -163,17 +178,21 @@ exports.updateUserInfo = async function(pw, id2){
 /* ===== local functions ===== */
 // user의 정보에 총 like 개수를 넣어주는 함수
 async function getUserLikes(id2) {
-    const [penobrolLikes, tandyaLikes, pcommentLikes, tanswerLikes] = await Promise.all([
+    const [penobrolLikes, tandyaLikes, youtublogLikes, pcommentLikes, tanswerLikes, ycommentLikes] = await Promise.all([
         penobrolService.penobrolLikeCountByAuthor(id2),
         tandyaService.tandyaLikeCountByAuthor(id2),
+        youtublogService.youtublogLikeCountByAuthor(id2),
         penobrolService.penobrolComLikeCountByAuthor(id2),
-        tandyaService.tandyaAnsLikeCountByAuthor(id2)
+        tandyaService.tandyaAnsLikeCountByAuthor(id2),
+        youtublogService.youtublogComLikeCountByAuthor(id2)
     ]);
     return {
         "penobrol": penobrolLikes,
         "tandya": tandyaLikes,
-        "comment": pcommentLikes,
-        "answer": tanswerLikes
+        "youtublog": youtublogLikes,
+        "pcomment": pcommentLikes,
+        "answer": tanswerLikes,
+        "ycomment": ycommentLikes
     };
 }
 

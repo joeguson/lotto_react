@@ -11,6 +11,7 @@ class BeritamusIdDialog extends BeritamusDialog {
         this.contentAreaBuilder = () => {
             const input = document.createElement("input");
             input.style.display = "block";
+            input.style.width = "100%";
             input.id = "videoInput";
             this.idInput = input;
             return input;

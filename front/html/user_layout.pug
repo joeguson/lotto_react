@@ -3,6 +3,7 @@ include ./mixIn
 
 block js
     script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
+    script(type="text/javascript" src="/public/b-thumbnail/b-my-thumbnail.js")
     script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
 
 block css
@@ -13,11 +14,11 @@ block css
 block submain
 
 block main
-    .personalInfo
-        block personalInfo
-    .personalStat
-        block personalStat
-    .personalArticle
+    .userInfo
+        block userInfo
+    .userStat
+        block userStat
+    .userArticle
         .userPenobrol
             block userPenobrol
         .userTandya
