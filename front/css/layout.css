@@ -69,11 +69,13 @@ nav {
   background-color: #0f4c81;
 }
 .sub-main {
+  max-width: 800px;
   width: 100%;
   margin: 0 auto 10px;
   background-color: #ebedf2;
 }
 .main {
+  max-width: 800px;
   width: 100%;
   margin: 0 auto 10px auto;
   background-color: #ebedf2;

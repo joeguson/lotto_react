@@ -1,6 +1,6 @@
 
-let loadMore = function() {
-    makeRequest('GET', 'api/cari')
+let loadMore = function(pathname) {
+    makeRequest('GET', 'api/article'+pathname+'/load')
         .then(result => {
             result = JSON.parse(result);
             let randomUl = document.getElementById('uls');
@@ -17,7 +17,11 @@ let loadMore = function() {
 };
 
 window.addEventListener('scroll', function(){
-    if (document.documentElement.scrollTop * 1.01 + document.documentElement.clientHeight  >= document.documentElement.scrollHeight) {
-        loadMore();
+    let pathname = window.location.pathname;
+    if(pathname != '/cari'){
+        if (document.documentElement.scrollTop + document.documentElement.clientHeight  == document.documentElement.scrollHeight) {
+            loadMore(pathname);
+        }
     }
 });
+

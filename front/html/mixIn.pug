@@ -5,16 +5,9 @@ mixin frontPage(type)
             a.addArticle(href= `${href}`) +
         else
             a.addArticle(href='/aku') +
-    .newArticle
-        .articleHeading Terbaru
-        ul.thumbnailUl
-            for v in dateTopics
-                b-thumbnail(jsonSrc=`${JSON.stringify(v)}`)
-    .popArticle
-        .articleHeading Terkenal
-        ul.thumbnailUl
-            for w in scoreTopics
-                b-thumbnail(jsonSrc=`${JSON.stringify(w)}`)
+    ul.thumbnailUl(id="uls")
+        for v in dateTopics
+            b-thumbnail(jsonSrc=`${JSON.stringify(v)}`)
 
 mixin basicPInfo(author, date, view, comAnsCount)
     - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' comments'

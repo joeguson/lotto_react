@@ -36,6 +36,12 @@ const articleParseFunctions = {
     tandya: parser.parseTandya,
     youtublog: parser.parseYoutublog
 };
+const articleParseFrontFunctions = {
+    penobrol: parser.parseFrontPenobrol,
+    tandya: parser.parseFrontTandya,
+    youtublog: parser.parseFrontYoutublog
+};
+
 const replyParseFunctions = {
     penobrol: parser.parseComment,
     tandya: parser.parseAnswer,

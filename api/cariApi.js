@@ -3,17 +3,17 @@ const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 const cariService = require('../service/cariService.js');
 
-/* ===== aku ===== */
+/* ===== cari ===== */
 
-route.get('/', function(req, res){
-    cariService.getRandArticle()
-        .then(([randPenobrol, randTandya, randYoutublog]) => {
-            let result = randPenobrol.concat(randTandya);
-            result = result.concat(randYoutublog);
-            jsForBack.shuffle(result);
-            let responseData = result;
-            res.json(responseData);
-        });
-});
+// route.get('/', function(req, res){
+//     cariService.getRandArticle()
+//         .then(([randPenobrol, randTandya, randYoutublog]) => {
+//             let result = randPenobrol.concat(randTandya);
+//             result = result.concat(randYoutublog);
+//             jsForBack.shuffle(result);
+//             let responseData = result;
+//             res.json(responseData);
+//         });
+// });
 
 module.exports = route;
