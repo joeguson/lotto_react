@@ -1,16 +1,9 @@
-const mysql = require('mysql');
-const b = require('../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../dbconnection');
-
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../daoUtil');
 
 ////////////////Insert////////////////
 
 function __insertWarningFunction(table_name) {
-    return (u_id, warned_id) => doQuery(
+    return (u_id, warned_id) => daoUtil.doQuery(
         `INSERT INTO ${table_name} (u_id, warned_id) VALUES(?, ?)`,
         [u_id, warned_id]
     );
@@ -30,7 +23,7 @@ exports.insertYoutublogComComWarning = __insertWarningFunction("ycc_warning");
 
 function __selectWarningFunc(table_name) {
     return (u_id, warned_id) =>
-        new Promise(resolve => doQuery(
+        new Promise(resolve => daoUtil.doQuery(
             `SELECT COUNT(u_id) AS count FROM ${table_name} WHERE u_id = ? AND warned_id = ?`,
             [u_id, warned_id]
             ).then(e => resolve(e[0].count))

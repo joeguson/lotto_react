@@ -9,13 +9,3 @@ block articleInfo
     +basicPInfo(topic.u_id, topic.date, topic.view, topic.replyCount)
 
 block ulComAndAns
-
-    script.
-        function pcChecksubmit() {
-            if (pcInput.value.length < 5) {
-                alert('kontennya harus lebih dari 5 alphabet');
-                return false;
-            } else {
-                return true;
-            }
-        }

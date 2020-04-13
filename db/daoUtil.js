@@ -1,8 +1,17 @@
-exports.doQuery = function(pool, sql, arg) {
+/*
+ * Copyright (c) 2020. Created by Seung Joo Noh.
+ * All rights reserved.
+ */
+
+const mysql = require('mysql');
+const b = require('../b');
+const pool = mysql.createPool(b.poolConfig);
+
+exports.doQuery = (query, args) => {
     return new Promise(function(resolve, reject){
         pool.getConnection(function(err, connection) {
             if(err){ reject(err); }
-            connection.query(sql, arg, function(err, rows) {
+            connection.query(query, args, function(err, rows) {
                 if(err){ reject(err); }
                 else resolve(rows);
                 connection.release();
@@ -10,3 +19,4 @@ exports.doQuery = function(pool, sql, arg) {
         })
     });
 };
+

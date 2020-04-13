@@ -1,21 +1,13 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
-exports.tandyaLikeById = (id) => doQuery(
+exports.tandyaLikeById = (id) => daoUtil.doQuery(
     `SELECT *
     from t_like
     where t_id = ?`,
     id
 );
-exports.tandyaLikeCount = (id) => doQuery(
+exports.tandyaLikeCount = (id) => daoUtil.doQuery(
     `select count(t_id)
     as articleLikeCount
     from t_like
@@ -23,7 +15,7 @@ exports.tandyaLikeCount = (id) => doQuery(
     id
 );
 
-exports.tandyaLikeByAuthor = (tandyaId, userId) => doQuery(
+exports.tandyaLikeByAuthor = (tandyaId, userId) => daoUtil.doQuery(
     `SELECT COUNT(*) 
     AS count
     FROM t_like
@@ -31,7 +23,7 @@ exports.tandyaLikeByAuthor = (tandyaId, userId) => doQuery(
     [tandyaId, userId]
 );
 
-exports.tandyaLikeCountByAuthor = (id) => doQuery(
+exports.tandyaLikeCountByAuthor = (id) => daoUtil.doQuery(
     `select count(c.t_id)
     as total
     from(
@@ -49,14 +41,14 @@ exports.tandyaLikeCountByAuthor = (id) => doQuery(
 /* ===== update ===== */
 
 /* ===== insert ===== */
-exports.insertTandyaLike = (t_id, u_id) => doQuery(
+exports.insertTandyaLike = (t_id, u_id) => daoUtil.doQuery(
     `INSERT INTO t_like (t_id, u_id)
     VALUES (?, ?)`,
     [t_id, u_id]
 );
 
 /* ===== delete ===== */
-exports.deleteTandyaLike = (id, u_id) => doQuery(
+exports.deleteTandyaLike = (id, u_id) => daoUtil.doQuery(
     `DELETE FROM t_like
     WHERE t_id = ?
     AND u_id = ?`,

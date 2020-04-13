@@ -1,15 +1,7 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
-exports.youtublogComComByYcId = (id) => doQuery(
+exports.youtublogComComByYcId = (id) => daoUtil.doQuery(
     `SELECT y.*, u.u_id
     FROM yc_com as y
     join users as u
@@ -17,7 +9,7 @@ exports.youtublogComComByYcId = (id) => doQuery(
     WHERE y.yc_id = ?`,
     id
 );
-exports.youtublogComComById = (id) => doQuery(
+exports.youtublogComComById = (id) => daoUtil.doQuery(
     `select y.*, u.u_id
     from yc_com as y
     join users as u
@@ -27,14 +19,14 @@ exports.youtublogComComById = (id) => doQuery(
 );
 
 /* ===== insert ===== */
-exports.insertYoutublogComCom = (author, content, yc_id) => doQuery(
+exports.insertYoutublogComCom = (author, content, yc_id) => daoUtil.doQuery(
     `INSERT INTO yc_com (author, content, yc_id)
     VALUES (?, ?, ?)`,
     [author, content, yc_id]
 );
 
 /* ===== delete ===== */
-exports.deleteYoutublogComCom = (id) => doQuery(
+exports.deleteYoutublogComCom = (id) => daoUtil.doQuery(
     `Delete from yc_com
     where id = ?`,
     id

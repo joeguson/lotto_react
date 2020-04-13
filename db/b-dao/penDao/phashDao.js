@@ -1,21 +1,13 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
-exports.penobrolHashtagById = (id) => doQuery(
+exports.penobrolHashtagById = (id) => daoUtil.doQuery(
     `select *
     from penobrol_hashtag
     where p_id = ?`,
     id
 );
-exports.penobrolSearchByHash = (hash) => doQuery(
+exports.penobrolSearchByHash = (hash) => daoUtil.doQuery(
     `select *
     from penobrol
     where id in
@@ -24,14 +16,14 @@ exports.penobrolSearchByHash = (hash) => doQuery(
 );
 
 /* ===== insert ===== */
-exports.insertPenobrolHash = (id, hash) => doQuery(
+exports.insertPenobrolHash = (id, hash) => daoUtil.doQuery(
     `INSERT INTO penobrol_hashtag (p_id, hash)
     VALUES (?, ?)`,
     [id, hash]
 );
 
 /* ===== delete ===== */
-exports.deletePenobrolHash = (id) => doQuery(
+exports.deletePenobrolHash = (id) => daoUtil.doQuery(
     `Delete from penobrol_hashtag
     where p_id = ?`,
     id

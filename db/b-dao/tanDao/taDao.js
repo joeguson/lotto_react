@@ -1,15 +1,7 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
-exports.tandyaAnsByScore = (id) => doQuery(
+exports.tandyaAnsByScore = (id) => daoUtil.doQuery(
     `SELECT t.*, u.u_id
     FROM t_ans as t
     join users as u on t.author = u.id
@@ -17,13 +9,13 @@ exports.tandyaAnsByScore = (id) => doQuery(
     order by score desc`,
     id
 );
-exports.tandyaAnsById = (id) => doQuery(
+exports.tandyaAnsById = (id) => daoUtil.doQuery(
     `select *
     from t_ans
     where id = ?`,
     id
 );
-exports.tandyaAnsCountById = (id) => doQuery(
+exports.tandyaAnsCountById = (id) => daoUtil.doQuery(
     `select count(t_id)
     as replyCount
     from t_ans
@@ -32,14 +24,14 @@ exports.tandyaAnsCountById = (id) => doQuery(
 );
 
 /* ===== update ===== */
-exports.updateTandyaAns = (content, id, t_id) => doQuery(
+exports.updateTandyaAns = (content, id, t_id) => daoUtil.doQuery(
     `UPDATE t_ans
     SET answer = ?, changed_date = now()
     where id = ?
     AND t_id = ?`,
     [content, id, t_id]
 );
-exports.updateTandyaAnsScore = (ta_id) => doQuery(
+exports.updateTandyaAnsScore = (ta_id) => daoUtil.doQuery(
     `UPDATE t_ans
     set score = (
         (select count(ta_id) from ta_com where ta_id = ?) *.3
@@ -50,14 +42,14 @@ exports.updateTandyaAnsScore = (ta_id) => doQuery(
 );
 
 /* ===== insert ===== */
-exports.insertTandyaAns = (author, answer, t_id) => doQuery(
+exports.insertTandyaAns = (author, answer, t_id) => daoUtil.doQuery(
     `INSERT INTO t_ans (author, answer, t_id)
     VALUES (?, ?, ?)`,
     [author, answer, t_id]
 );
 
 /* ===== delete ===== */
-exports.deleteTandyaAns = (id) => doQuery(
+exports.deleteTandyaAns = (id) => daoUtil.doQuery(
     `Delete from t_ans
     where id = ?`,
     id

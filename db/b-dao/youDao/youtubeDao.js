@@ -3,14 +3,7 @@
  * All rights reserved.
  */
 
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 const youtubeSourceTable = "youtube_source";
 const youtubeTimeRowTable = "youtube_time_row";
@@ -43,7 +36,7 @@ exports.insertYoutubeSource = (source) => new Promise((res, rej) => {
  * @param desc string description of time row
  * @returns {Promise}
  */
-exports.insertYoutubeTimeRow = (sourceId, time, desc) => doQuery(
+exports.insertYoutubeTimeRow = (sourceId, time, desc) => daoUtil.doQuery(
     `INSERT INTO ${youtubeTimeRowTable} VALUES (?, ?, ?)`,
     [sourceId, time, desc]
 );
@@ -56,7 +49,7 @@ exports.insertYoutubeTimeRow = (sourceId, time, desc) => doQuery(
  */
 exports.insertYoutubeTimeRows = async (sourceId, rows) => {
     const query = `INSERT INTO ${youtubeTimeRowTable} VALUES ` + rows.map(() => '(?, ?, ?)').join(', ') + ';';
-    await doQuery(query, rows.map(d => [sourceId, d.time, d.desc]).flat());
+    await daoUtil.doQuery(query, rows.map(d => [sourceId, d.time, d.desc]).flat());
 };
 
 /* ===== READ ===== */
@@ -65,7 +58,7 @@ exports.insertYoutubeTimeRows = async (sourceId, rows) => {
  * @param id id of youtube source
  * @returns {Promise}
  */
-exports.selectYoutubeSource = (id) => doQuery(
+exports.selectYoutubeSource = (id) => daoUtil.doQuery(
     `SELECT * FROM ${youtubeSourceTable} WHERE id=?`,
     id
 );
@@ -74,7 +67,7 @@ exports.selectYoutubeSource = (id) => doQuery(
  * @param sourceId youtube source id to find
  * @returns {Promise}
  */
-exports.selectYoutubeTimeRows = (sourceId) => doQuery(
+exports.selectYoutubeTimeRows = (sourceId) => daoUtil.doQuery(
     `SELECT * FROM ${youtubeTimeRowTable} WHERE youtube_source_id=?`,
     sourceId
 );
@@ -86,7 +79,7 @@ exports.selectYoutubeTimeRows = (sourceId) => doQuery(
  * @param articleId id of posted article
  * @returns {Promise}
  */
-exports.updateYoutubeSourceArticleId = (id, articleId) => doQuery(
+exports.updateYoutubeSourceArticleId = (id, articleId) => daoUtil.doQuery(
     `UPDATE ${youtubeSourceTable} SET article_id=? WHERE id=?`,
     [articleId, id]
 );
@@ -96,7 +89,7 @@ exports.updateYoutubeSourceArticleId = (id, articleId) => doQuery(
  * @param articleId id of posted article
  * @returns {Promise}
  */
-exports.updateYoutubeSourceArticleIds = (ids, articleId) => doQuery(
+exports.updateYoutubeSourceArticleIds = (ids, articleId) => daoUtil.doQuery(
     `UPDATE ${youtubeSourceTable} SET article_id=? WHERE id IN (?)`,
     [articleId, ids]
 );
@@ -106,7 +99,7 @@ exports.updateYoutubeSourceArticleIds = (ids, articleId) => doQuery(
  * @param id id of youtube source
  * @returns {Promise}
  */
-exports.deleteYoutubeWithId = (id) => doQuery(
+exports.deleteYoutubeWithId = (id) => daoUtil.doQuery(
     `DELETE FROM ${youtubeSourceTable} WHERE id=?`,
     id
 );

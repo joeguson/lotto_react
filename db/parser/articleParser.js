@@ -1,4 +1,9 @@
-const utils = require("./utils.js");
+/*
+ * Copyright (c) 2020. Created by Seung Joo Noh.
+ * All rights reserved.
+ */
+
+const utils = require("../utils.js");
 
 function anonymouseMaker(username) {
     return username.substring(0, 3) + '****';

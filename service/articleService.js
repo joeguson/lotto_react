@@ -23,7 +23,7 @@ const phashDao = require('../db/b-dao/penDao/phashDao');
 const thashDao = require('../db/b-dao/tanDao/thashDao');
 const yhashDao = require('../db/b-dao/youDao/yhashDao');
 //others
-const parser = require('../db/parser.js');
+const parser = require('../db/parser/articleParser.js');
 const warningDao = require('../db/b-dao/warningDao');
 
 const getFullArticleFunctions = {

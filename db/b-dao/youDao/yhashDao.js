@@ -1,21 +1,13 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
-exports.youtublogHashtagById = (id) => doQuery(
+exports.youtublogHashtagById = (id) => daoUtil.doQuery(
     `SELECT *
     FROM youtublog_hashtag
     where y_id = ?`,
     id
 );
-exports.youtublogSearchByHash = (hash) => doQuery(
+exports.youtublogSearchByHash = (hash) => daoUtil.doQuery(
     `select *
     from youtublog
     where id in
@@ -23,13 +15,13 @@ exports.youtublogSearchByHash = (hash) => doQuery(
     hash
 );
 /* ===== insert ===== */
-exports.insertYoutublogHash = (y_id, hash) => doQuery(
+exports.insertYoutublogHash = (y_id, hash) => daoUtil.doQuery(
     `INSERT INTO youtublog_hashtag (y_id, hash)
     VALUES (?, ?)`,
     [y_id, hash]
 );
 /* ===== delete ===== */
-exports.deleteYoutublogHash = (id) => doQuery(
+exports.deleteYoutublogHash = (id) => daoUtil.doQuery(
     `Delete from youtublog_hashtag
     where y_id = ?`,
     id

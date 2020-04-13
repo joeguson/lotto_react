@@ -3,7 +3,6 @@ include ./mixIn
 
 block js
     script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/js/loadMore.js")
     script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
     script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
     block frontJs
@@ -18,3 +17,28 @@ block submain
 block main
 
 block jscript
+    script.
+        window.addEventListener('scroll', function(){
+            var pathname = window.location.pathname;
+            if(pathname != '/cari'){
+                if (document.documentElement.scrollTop + document.documentElement.clientHeight == document.documentElement.scrollHeight){
+                    loadMore(pathname);
+                }
+            }
+        });
+
+        let loadMore = function(pathname){
+            makeRequest('GET', 'api/article' + pathname+'/load').then(function(result){
+                result = JSON.parse(result);
+                let randomUl = document.getElementById('uls');
+                result.map(function(data){
+                    let lis = document.createElement("b-thumbnail");
+                    lis.setAttribute("jsonSrc", JSON.stringify(data));
+                    return lis;
+                }).forEach(function(li){
+                    randomUl.appendChild(li);
+                });
+            }).catch(function(){
+                console.log(err);
+                });
+        };

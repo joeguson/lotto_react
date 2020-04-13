@@ -1,22 +1,14 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-function doQuery(query, args) {
-  return dbcon.doQuery(pool, query, args);
-}
-
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
 
-exports.select = (source, target) => doQuery( //target의 아이디는 현재 문자열 id로 숫자 id를 가져와야함
+exports.select = (source, target) => daoUtil.doQuery( //target의 아이디는 현재 문자열 id로 숫자 id를 가져와야함
     `SELECT * FROM follow WHERE following = ? 
     AND followed = (SELECT id FROM users WHERE u_id = ?)`,
     [source, target]
 );
 
-exports.countFollower = (id) => doQuery(
+exports.countFollower = (id) => daoUtil.doQuery(
   `select count(*)
     AS follower 
     from follow 
@@ -24,7 +16,7 @@ exports.countFollower = (id) => doQuery(
     id
 );
 
-exports.countFollowing = (id) => doQuery(
+exports.countFollowing = (id) => daoUtil.doQuery(
       `select count(*)
     AS following 
     from follow 
@@ -33,7 +25,7 @@ exports.countFollowing = (id) => doQuery(
 );
 
 /* ===== insert ===== */
-exports.insertFollowUser = (source, target) => doQuery(
+exports.insertFollowUser = (source, target) => daoUtil.doQuery(
     `INSERT INTO follow(following, followed) 
     VALUES (?, (SELECT id FROM users WHERE u_id = ?))
     ON DUPLICATE KEY UPDATE followed = ?`,
@@ -42,14 +34,14 @@ exports.insertFollowUser = (source, target) => doQuery(
 
 
 /* ===== delete ===== */
-exports.weeklyInsert = (id) => doQuery(
+exports.weeklyInsert = (id) => daoUtil.doQuery(
     `DELETE 
     FROM follow
     WHERE id = ?`,
     id
 );
 
-exports.deleteFollowUser = (source, target) => doQuery(
+exports.deleteFollowUser = (source, target) => daoUtil.doQuery(
     `DELETE FROM follow 
     WHERE following=? 
     AND followed=(select id from users where u_id = ?)`,

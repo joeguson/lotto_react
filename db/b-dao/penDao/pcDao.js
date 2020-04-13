@@ -1,15 +1,7 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
-exports.penobrolComByScore = (id) => doQuery(
+exports.penobrolComByScore = (id) => daoUtil.doQuery(
     `SELECT p.*, u.u_id
     FROM p_com as p
     join users as u on p.author = u.id
@@ -17,13 +9,13 @@ exports.penobrolComByScore = (id) => doQuery(
     order by score desc`,
     id
 );
-exports.penobrolComById = (id) => doQuery(
+exports.penobrolComById = (id) => daoUtil.doQuery(
     `select *
     from p_com
     where id = ?`,
     id
 );
-exports.penobrolComCountById = (id) => doQuery(
+exports.penobrolComCountById = (id) => daoUtil.doQuery(
     `select count(p_id)
     as replyCount
     from p_com
@@ -33,14 +25,14 @@ exports.penobrolComCountById = (id) => doQuery(
 
 
 /* ===== update ===== */
-exports.updatePenobrolCom = (content, id, p_id) => doQuery(
+exports.updatePenobrolCom = (content, id, p_id) => daoUtil.doQuery(
     `UPDATE p_com
     SET content = ?, changed_date = now()
     where id = ?
     AND p_id = ?`
         [content, id, p_id]
 );
-exports.updatePenobrolComScore = (pc_id, p_id) => doQuery(
+exports.updatePenobrolComScore = (pc_id, p_id) => daoUtil.doQuery(
     `UPDATE p_com
     set score = (
         (select count(pc_id) from pc_com where pc_id = ?) *.3
@@ -51,14 +43,14 @@ exports.updatePenobrolComScore = (pc_id, p_id) => doQuery(
 );
 
 /* ===== insert ===== */
-exports.insertPenobrolCom = (author, content, p_id) => doQuery(
+exports.insertPenobrolCom = (author, content, p_id) => daoUtil.doQuery(
     `INSERT INTO p_com (author, content, p_id)
     VALUES (?, ?, ?)`,
     [author, content, p_id]
 );
 
 /* ===== delete ===== */
-exports.deletePenobrolCom = (id) => doQuery(
+exports.deletePenobrolCom = (id) => daoUtil.doQuery(
     `Delete from p_com
     where id = ?`,
     id

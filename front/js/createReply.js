@@ -1,5 +1,5 @@
+/* == Create Reply== */
 function createReplyLi(reply, type, userId){
-    console.log(reply);
     const replyUl = document.getElementById('replyUl');
     {
         const replyLi = document.createElement('li');
@@ -58,8 +58,11 @@ function createReplyLi(reply, type, userId){
                                 else if(type==='youtublog') replyEditA.href = type+'/edit/comment/'+reply.y_id+'/'+reply.id;
                                 const replyEditImg= document.createElement('img');
                                 replyEditImg.src = location.origin +'/icons/edit.png';
+
                                 replyEditA.appendChild(replyEditImg);
+                                replyDeleteButton.appendChild(replyDeleteImg);
                                 replyPopDiv.appendChild(replyEditA);
+                                replyPopDiv.appendChild(replyDeleteButton);
                             }
                         }
                         replyPopButton.appendChild(replyPopDiv);
@@ -129,90 +132,98 @@ function createReplyLi(reply, type, userId){
                 replyDl.appendChild(replyDd);
                 replyLi.appendChild(replyDl);
             }
-
-            const re_replyDiv = document.createElement('div');
-            {
-                re_replyDiv.className = "pccOrTac";
-                //inside re_replyDiv
-                const re_replyTextarea = document.createElement('textarea');
-                const re_replySubmit = document.createElement('input');
-
-                re_replyTextarea.className = "pccTacInput";
-                re_replySubmit.className = "pccTacInputButton";
-
-                re_replyDiv.appendChild(re_replyTextarea);
-                re_replyDiv.appendChild(re_replySubmit);
-
-                replyLi.appendChild(re_replyDiv);
-            }
+            if(userId) replyLi.appendChild(createReReplyInput());
 
             reply.comments.forEach(re_reply => {
-                const re_replyDl = document.createElement('dl');
-                {
-                    re_replyDl.className = "dlPccAndTac";
-                    //inside re_replyDl
-                    const re_replyDt = document.createElement('dt');
-                    const re_replyDd = document.createElement('dd');
-
-                    re_replyDt.className = "dtPccAndTac";
-                    {
-                        //inside re_replyDt
-                        const re_replyPre = document.createElement('pre');
-                        re_replyPre.className = "pccomment-dt";
-                        re_replyPre.innerHTML = `${re_reply.content}`;
-
-                        if(userId){
-                            const re_replyPopButton= document.createElement('div');
-                            re_replyPopButton.innerHTML = "≡";
-                            re_replyPopButton.className = "pcctacPopButton";
-                            re_replyPopButton.onclick = () =>{
-                                re_replyPopButton.childNodes[1].classList.toggle("show");
-                            };
-                            const re_replyPopDiv= document.createElement('div');
-                            {
-                                re_replyPopDiv.className = "pcctacPopDiv";
-                                {
-                                    const re_replyWarnButton = document.createElement('button');
-                                    re_replyWarnButton.className="caPopMenu";
-                                    const re_replyWarnImg= document.createElement('img');
-                                    re_replyWarnImg.src = location.origin +'/icons/warn.png';
-                                    re_replyWarnButton.onclick = () => {
-                                        if(type==='penobrol') warnPenobrolComCom(re_reply.id);
-                                        else if(type==='tandya') warnTandyaAnsCom(re_reply.id);
-                                        else if(type==='youtublog') warnYoutublogComCom(re_reply.id);
-                                    };
-                                    re_replyWarnButton.appendChild(re_replyWarnImg);
-                                    re_replyPopDiv.appendChild(re_replyWarnButton);
-                                    if(userId === re_reply.author){
-                                        const re_replyDeleteButton = document.createElement('button');
-                                        re_replyDeleteButton.className="pcctacPopMenu";
-                                        const re_replyDeleteImg= document.createElement('img');
-                                        re_replyDeleteImg.src = location.origin +'/icons/trash.png';
-                                        re_replyDeleteButton.onclick = () => {
-                                            if(type==='penobrol') deletePenobrolComCom(re_reply.id);
-                                            else if(type==='tandya') deleteTandyaAnsCom(re_reply.id);
-                                            else if(type==='youtublog') deleteYoutublogComCom(re_reply.id);
-                                        }
-                                        re_replyDeleteButton.appendChild(re_replyDeleteImg);
-                                        re_replyPopDiv.appendChild(re_replyDeleteButton);
-                                    }
-                                }
-                            }
-                            re_replyPopButton.appendChild(re_replyPopDiv);
-                            re_replyDt.appendChild(re_replyPopButton);
-                        }
-
-                        re_replyDt.appendChild(re_replyPre);
-                    }
-                    re_replyDd.className = "ddPccAndTac";
-                    re_replyDd.innerHTML = 'by ' + `${re_reply.u_id}` + ' / ' + `${re_reply.date}`;
-                    re_replyDl.appendChild(re_replyDt);
-                    re_replyDl.appendChild(re_replyDd);
-                }
-                replyLi.appendChild(re_replyDl);
+                replyLi.appendChild(createReReply(re_reply, userId));
             });
 
             replyUl.appendChild(replyLi);
         }
     }
+}
+
+/* == Create Re-reply Input== */
+function createReReplyInput(){
+    const re_replyDiv = document.createElement('div');
+    re_replyDiv.className = "pccOrTac";
+    //inside re_replyDiv
+    const re_replyTextarea = document.createElement('textarea');
+    const re_replySubmit = document.createElement('input');
+
+    re_replyTextarea.className = "pccTacInput";
+    re_replySubmit.className = "pccTacInputButton";
+    re_replySubmit.type = "submit";
+    re_replySubmit.value = "submit";
+
+    re_replyDiv.appendChild(re_replyTextarea);
+    re_replyDiv.appendChild(re_replySubmit);
+
+    return re_replyDiv;
+}
+
+/* == Create Re-reply== */
+function createReReply(re_reply, userId){
+    const re_replyDl = document.createElement('dl');
+    re_replyDl.className = "dlPccAndTac";
+    //inside re_replyDl
+    const re_replyDt = document.createElement('dt');
+    const re_replyDd = document.createElement('dd');
+
+    re_replyDt.className = "dtPccAndTac";
+    {
+        //inside re_replyDt
+        const re_replyPre = document.createElement('pre');
+        re_replyPre.className = "pccomment-dt";
+        re_replyPre.innerHTML = `${re_reply.content}`;
+
+        if(userId){
+            const re_replyPopButton= document.createElement('div');
+            re_replyPopButton.innerHTML = "≡";
+            re_replyPopButton.className = "pcctacPopButton";
+            re_replyPopButton.onclick = () =>{
+                re_replyPopButton.childNodes[1].classList.toggle("show");
+            };
+            const re_replyPopDiv= document.createElement('div');
+
+            {
+                re_replyPopDiv.className = "pcctacPopDiv";
+                {
+                    const re_replyWarnButton = document.createElement('button');
+                    re_replyWarnButton.className="caPopMenu";
+                    const re_replyWarnImg= document.createElement('img');
+                    re_replyWarnImg.src = location.origin +'/icons/warn.png';
+                    re_replyWarnButton.onclick = () => {
+                        if(type==='penobrol') warnPenobrolComCom(re_reply.id);
+                        else if(type==='tandya') warnTandyaAnsCom(re_reply.id);
+                        else if(type==='youtublog') warnYoutublogComCom(re_reply.id);
+                    };
+                    re_replyWarnButton.appendChild(re_replyWarnImg);
+                    re_replyPopDiv.appendChild(re_replyWarnButton);
+                    if(userId === re_reply.author){
+                        const re_replyDeleteButton = document.createElement('button');
+                        re_replyDeleteButton.className="pcctacPopMenu";
+                        const re_replyDeleteImg= document.createElement('img');
+                        re_replyDeleteImg.src = location.origin +'/icons/trash.png';
+                        re_replyDeleteButton.onclick = () => {
+                            if(type==='penobrol') deletePenobrolComCom(re_reply.id);
+                            else if(type==='tandya') deleteTandyaAnsCom(re_reply.id);
+                            else if(type==='youtublog') deleteYoutublogComCom(re_reply.id);
+                        };
+                        re_replyDeleteButton.appendChild(re_replyDeleteImg);
+                        re_replyPopDiv.appendChild(re_replyDeleteButton);
+                    }
+                }
+            }
+            re_replyPopButton.appendChild(re_replyPopDiv);
+            re_replyDt.appendChild(re_replyPopButton);
+        }
+        re_replyDt.appendChild(re_replyPre);
+    }
+    re_replyDd.className = "ddPccAndTac";
+    re_replyDd.innerHTML = 'by ' + `${re_reply.u_id}` + ' / ' + `${re_reply.date}`;
+    re_replyDl.appendChild(re_replyDt);
+    re_replyDl.appendChild(re_replyDd);
+
+    return re_replyDl;
 }

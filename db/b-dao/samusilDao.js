@@ -1,38 +1,31 @@
-const mysql = require('mysql');
-const b = require('../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../dbconnection');
-
-function doQuery(query, args) {
-  return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../daoUtil');
 
 ////////////////Select////////////////
-exports.countUsers = () => doQuery(
+exports.countUsers = () => daoUtil.doQuery(
   `select count(*)
   AS users from users`
 );
-exports.countPenobrol = () => doQuery(
+exports.countPenobrol = () => daoUtil.doQuery(
   `select count(*)
   AS penobrol from penobrol`
 );
-exports.countTandya = () => doQuery(
+exports.countTandya = () => daoUtil.doQuery(
   `select count(*)
   AS tandya from tandya`
 );
-exports.countYoutublog = () => doQuery(
+exports.countYoutublog = () => daoUtil.doQuery(
     `select count(*)
   AS youtublog from youtublog`
 );
-exports.countComments = () => doQuery(
+exports.countComments = () => daoUtil.doQuery(
   `select count(*)
   AS pcom from p_com`
 );
-exports.countAnswers = () => doQuery(
+exports.countAnswers = () => daoUtil.doQuery(
   `select count(*)
   AS tans from t_ans`
 );
-exports.tWeekly = (date1, date2) => doQuery(
+exports.tWeekly = (date1, date2) => daoUtil.doQuery(
   `select *
   from tandya
   where date
@@ -41,7 +34,7 @@ exports.tWeekly = (date1, date2) => doQuery(
   desc limit 2`,
   [date1, date2]
 );
-exports.pWeekly = (date1, date2) => doQuery(
+exports.pWeekly = (date1, date2) => daoUtil.doQuery(
   `select *
   from penobrol
   where date
@@ -51,7 +44,7 @@ exports.pWeekly = (date1, date2) => doQuery(
   [date1, date2]
 );
 ////////////////Update////////////////
-exports.updateLoginDate = (id) => doQuery(
+exports.updateLoginDate = (id) => daoUtil.doQuery(
     `UPDATE users
     SET last_login = NOW()
     WHERE u_id = ?`,
@@ -59,7 +52,7 @@ exports.updateLoginDate = (id) => doQuery(
 );
 
 ////////////////Insert////////////////
-exports.weeklyInsert = (array) => doQuery(
+exports.weeklyInsert = (array) => daoUtil.doQuery(
     `INSERT INTO weekly (
         gold_p,
         silver_p,
@@ -71,7 +64,7 @@ exports.weeklyInsert = (array) => doQuery(
     VALUES(?)`,
     array
 );
-exports.dailyInsert = (int) => doQuery(
+exports.dailyInsert = (int) => daoUtil.doQuery(
     `INSERT INTO daily_count
     (visitCount)
     VALUES (?)`,

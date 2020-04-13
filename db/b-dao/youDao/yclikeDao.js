@@ -1,35 +1,27 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
-exports.youtublogComLikeById = (id) => doQuery(
+exports.youtublogComLikeById = (id) => daoUtil.doQuery(
     `SELECT *
     from yc_like
     where yc_id = ?`,
     id
 );
-exports.youtublogComLikeCount = (id) => doQuery(
+exports.youtublogComLikeCount = (id) => daoUtil.doQuery(
     `select count(yc_id)
     as replyLikeCount
     from yc_like
     where yc_id = ?`,
     id
 );
-exports.youtublogComLikeByAuthor = (youtublogComId, userId) => doQuery(
+exports.youtublogComLikeByAuthor = (youtublogComId, userId) => daoUtil.doQuery(
     `SELECT COUNT(*) 
     AS count
     FROM yc_like
     WHERE yc_id = ? AND u_id = ?;`,
     [youtublogComId, userId]
 );
-exports.youtublogComLikeCountByAuthor = (id) => doQuery(
+exports.youtublogComLikeCountByAuthor = (id) => daoUtil.doQuery(
     `select count(c.yc_id)
     as total from(
         select y.id, y.author, yl.yc_id
@@ -43,14 +35,14 @@ exports.youtublogComLikeCountByAuthor = (id) => doQuery(
     id
 );
 /* ===== insert ===== */
-exports.insertYoutublogComLike = (yc_id, u_id) => doQuery(
+exports.insertYoutublogComLike = (yc_id, u_id) => daoUtil.doQuery(
     `INSERT INTO yc_like (yc_id, u_id)
     VALUES (?, ?)`,
     [yc_id, u_id]
 );
 
 /* ===== delete ===== */
-exports.deleteYoutublogComLike = (id, u_id) => doQuery(
+exports.deleteYoutublogComLike = (id, u_id) => daoUtil.doQuery(
     `DELETE FROM yc_like
     WHERE yc_id = ?
     AND u_id = ?`,

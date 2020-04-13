@@ -186,6 +186,7 @@ async function getUserLikes(id2) {
         tandyaService.tandyaAnsLikeCountByAuthor(id2),
         youtublogService.youtublogComLikeCountByAuthor(id2)
     ]);
+    console.log(id2);
     return {
         "penobrol": penobrolLikes,
         "tandya": tandyaLikes,

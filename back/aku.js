@@ -36,7 +36,8 @@ route.get('/', function(req, res){
         akuService.getUserArticle(req.session.id2)
             .then(([userPenobrol, userTandya, userYoutublog, totalLikes]) => {
                 akuService.countFollow(req.session.id2)
-                    .then(([following, follower]) => res.render('./ja/aku', {
+                    .then(([following, follower]) => {
+                        res.render('./ja/aku', {
                         user:req.session.id2,
                         u_id:req.session.u_id,
                         following: following[0].following,
@@ -45,7 +46,7 @@ route.get('/', function(req, res){
                         tandyas:userTandya,
                         youtublog:userYoutublog,
                         totalLikes:totalLikes
-                    }));
+                    })});
             });
     }
     else{

@@ -1,22 +1,15 @@
-const mysql = require('mysql');
-const b = require('../../../b');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
+const daoUtil = require('../../daoUtil');
 
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
 ////////////////////////////////Penobrol////////////////////////////////
 ////////////////Select////////////////
-exports.penobrolByAuthor = (id) => doQuery(
+exports.penobrolByAuthor = (id) => daoUtil.doQuery(
     `SELECT *
     from penobrol
     WHERE author = ?
     ORDER BY date DESC`,
     id
 );
-exports.penobrolByAuthorWithoutAnonim = (id) => doQuery(
+exports.penobrolByAuthorWithoutAnonim = (id) => daoUtil.doQuery(
     `SELECT *
     from penobrol
     WHERE author = (select id from users where u_id = ?)
@@ -25,14 +18,14 @@ exports.penobrolByAuthorWithoutAnonim = (id) => doQuery(
     id
 );
 
-exports.penobrolByRand = () => doQuery(
+exports.penobrolByRand = () => daoUtil.doQuery(
     `select p.*, u.u_id
     from penobrol as p
     join users as u on p.author = u.id
     order by rand()
     limit 4`
 );
-exports.penobrolSearch = (string) => doQuery(
+exports.penobrolSearch = (string) => daoUtil.doQuery(
     `SELECT *
     FROM penobrol
     AS result
@@ -40,21 +33,21 @@ exports.penobrolSearch = (string) => doQuery(
     AGAINST(?)`,
     [string]
 );
-exports.penobrolByDate = () => doQuery(
+exports.penobrolByDate = () => daoUtil.doQuery(
     `select p.*, u.u_id
     from penobrol as p
     join users as u on p.author = u.id
     order by date
     desc limit 3`
 );
-exports.penobrolByScore = () => doQuery(
+exports.penobrolByScore = () => daoUtil.doQuery(
     `select p.*, u.u_id
     from penobrol as p
     join users as u on p.author = u.id
     ORDER BY score
     DESC limit 3`
 );
-exports.penobrolById = (id) => doQuery( //select penobrol with userId
+exports.penobrolById = (id) => daoUtil.doQuery( //select penobrol with userId
     `select p.*, u.u_id
     from penobrol as p
     join users as u on p.author = u.id
@@ -62,19 +55,19 @@ exports.penobrolById = (id) => doQuery( //select penobrol with userId
     id
 );
 ////////////////Update////////////////
-exports.updatePenobrol = (title, content, public, thumbnail, id) => doQuery(
+exports.updatePenobrol = (title, content, public, thumbnail, id) => daoUtil.doQuery(
     `UPDATE penobrol
     SET title = ?, content = ?, public = ?, thumbnail = ?
     where id = ?`,
     [title, content, public, thumbnail, id]
 );
-exports.updatePenobrolView = (id) => doQuery(
+exports.updatePenobrolView = (id) => daoUtil.doQuery(
     `UPDATE penobrol
     SET p_view = p_view + 1
     WHERE id = ?`,
     id
 );
-exports.updatePenobrolScore = (id) => doQuery(
+exports.updatePenobrolScore = (id) => daoUtil.doQuery(
     `UPDATE penobrol
     SET score = (
         (select count(p_id) from p_com where p_id = ?) *.3
@@ -83,20 +76,20 @@ exports.updatePenobrolScore = (id) => doQuery(
     where id = ?`,
     [id, id, id]
 );
-exports.updatePenobrolDate = (id) => doQuery(
+exports.updatePenobrolDate = (id) => daoUtil.doQuery(
     `UPDATE penobrol
     set changed_date = now()
     WHERE id = ?`,
     [id]
 );
 ////////////////Insert////////////////
-exports.insertPenobrol = (author, title, content, public, thumbnail) => doQuery(
+exports.insertPenobrol = (author, title, content, public, thumbnail) => daoUtil.doQuery(
     `INSERT INTO penobrol (author, title, content, public, thumbnail)
     VALUES (?, ?, ?, ?, ?)`,
     [author, title, content, public, thumbnail]
 );
 ////////////////Delete////////////////
-exports.deletePenobrol = (id) => doQuery(
+exports.deletePenobrol = (id) => daoUtil.doQuery(
     `Delete from penobrol
     where id = ?`,
     id

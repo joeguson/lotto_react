@@ -1,15 +1,7 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
-exports.tandyaAnsComByTaId = (id) => doQuery(
+exports.tandyaAnsComByTaId = (id) => daoUtil.doQuery(
         `SELECT t.*, u.u_id
     FROM ta_com as t
     join users as u
@@ -17,7 +9,7 @@ exports.tandyaAnsComByTaId = (id) => doQuery(
     WHERE t.ta_id = ?`,
     id
 );
-exports.tandyaAnsComById = (id) => doQuery(
+exports.tandyaAnsComById = (id) => daoUtil.doQuery(
         `select t.*, u.u_id
     from ta_com as t
     join users as u
@@ -27,14 +19,14 @@ exports.tandyaAnsComById = (id) => doQuery(
 );
 
 /* ===== insert ===== */
-exports.insertTandyaAnsCom = (author, content, ta_id) => doQuery(
+exports.insertTandyaAnsCom = (author, content, ta_id) => daoUtil.doQuery(
         `INSERT INTO ta_com (author, content, ta_id)
     VALUES (?, ?, ?)`,
     [author, content, ta_id]
 );
 
 /* ===== delete ===== */
-exports.deleteTandyaAnsCom = (id) => doQuery(
+exports.deleteTandyaAnsCom = (id) => daoUtil.doQuery(
         `Delete from ta_com
     where id = ?`,
     id

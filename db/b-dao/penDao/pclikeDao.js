@@ -1,35 +1,27 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
-exports.penobrolComLikeById = (id) => doQuery(
+exports.penobrolComLikeById = (id) => daoUtil.doQuery(
     `SELECT *
     FROM pc_like
     where pc_id = ?`,
     id
 );
-exports.penobrolComLikeCount = (id) => doQuery(
+exports.penobrolComLikeCount = (id) => daoUtil.doQuery(
     `select count(pc_id)
     as replyLikeCount
     from pc_like
     where pc_id = ?`,
     id
 );
-exports.penobrolComLikeByAuthor = (penobrolComId, userId) => doQuery(
+exports.penobrolComLikeByAuthor = (penobrolComId, userId) => daoUtil.doQuery(
     `SELECT COUNT(*) 
     AS count
     FROM pc_like
     WHERE pc_id = ? AND u_id = ?;`,
     [penobrolComId, userId]
 );
-exports.penobrolComLikeCountByAuthor = (id) => doQuery(
+exports.penobrolComLikeCountByAuthor = (id) => daoUtil.doQuery(
     `select count(c.pc_id)
     as total from(
         select p.id, p.author, pl.pc_id
@@ -45,14 +37,14 @@ exports.penobrolComLikeCountByAuthor = (id) => doQuery(
 );
 
 /* ===== insert ===== */
-exports.insertPenobrolComLike = (pc_id, u_id) => doQuery(
+exports.insertPenobrolComLike = (pc_id, u_id) => daoUtil.doQuery(
     `INSERT INTO pc_like (pc_id, u_id)
     VALUES (?, ?)`,
     [pc_id, u_id]
 );
 
 /* ===== delete ===== */
-exports.deletePenobrolComLike = (id, u_id) => doQuery(
+exports.deletePenobrolComLike = (id, u_id) => daoUtil.doQuery(
     `DELETE FROM pc_like
     WHERE pc_id = ?
     AND u_id = ?`,

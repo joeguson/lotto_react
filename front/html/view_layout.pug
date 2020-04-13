@@ -47,51 +47,61 @@ block jscript
 
         window.addEventListener('load', function(){
             var type = window.location.href.split('/')[3];
-            makeRequest('GET', 'api/article/' + type + '/reply/'+#{topic.id})
+            makeRequest('GET', 'api/article/' + type + '/reply/'+ #{topic.id})
                 .then(function (e) {
                     let ele = JSON.parse(e);
-                    ele.result.forEach(element => createReplyLi(element, type, #{id2}));
+                    ele.result.forEach(function(element){
+                        createReplyLi(element, type, #{id2});
+                    });
                 });
         });
 
-        document.getElementById("articleLikeButton").onclick = function () {
-            //버튼을 누르자마자 현재 __like를 기준으로 우선 그림과 숫자를 바꿔줌
-            var articleLikeNum = document.getElementById('articleLikeNum');
-            var imgTag = this.childNodes[0];
-            if(__article.__like){
-                articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML)-1;
-                imgTag.src = location.origin +'/icons/cap.png';
-            }
-            else{
-                articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML)+1;
-                imgTag.src = location.origin +'/icons/nocap.png';
-            }
+        var articleLikeButton = document.getElementById("articleLikeButton");
+        if(articleLikeButton){
+            articleLikeButton.onclick = function () {
+                //버튼을 누르자마자 현재 __like를 기준으로 우선 그림과 숫자를 바꿔줌
+                var articleLikeNum = document.getElementById('articleLikeNum');
+                var imgTag = this.childNodes[0];
+                if (__article.__like) {
+                    articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML) - 1;
+                    imgTag.src = location.origin + '/icons/cap.png';
+                } else {
+                    articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML) + 1;
+                    imgTag.src = location.origin + '/icons/nocap.png';
+                }
 
-            //이후에 ajax 요청을 보냄
-            var type = window.location.href.split('/')[3];
-            var data = {
-                "id": #{topic.id},
-                "cancel": __article.__like
-            };
-            __article.__like = !__article.__like;
-            makeRequest('POST', 'api/article/' + type + '/like', data)
-                .then(function (e) {
-                    e = JSON.parse(e);
-                });
+                //이후에 ajax 요청을 보냄
+                var type = window.location.href.split('/')[3];
+                var data = {
+                    "id": #{topic.id},
+                    "cancel": __article.__like
+                };
+                __article.__like = !__article.__like;
+                makeRequest('POST', 'api/article/' + type + '/like', data)
+                    .then(function (e) {
+                        e = JSON.parse(e);
+                    });
+            }
         }
 
-        document.getElementById("articleWarnButton").onclick = function () {
-            var type = window.location.href.split('/')[3];
-            if(type==='penobrol') warnPenobrol(#{topic.id});
-            else if(type==='tandya') warnTandya(#{topic.id});
-            else if(type==='youtublog') warnYoutublog(#{topic.id});
+        var articleWarnButton = document.getElementById("articleWarnButton");
+        if(articleWarnButton){
+            articleWarnButton.onclick = function () {
+                var type = window.location.href.split('/')[3];
+                if(type==='penobrol') warnPenobrol(#{topic.id});
+                else if(type==='tandya') warnTandya(#{topic.id});
+                else if(type==='youtublog') warnYoutublog(#{topic.id});
+            }
         }
 
-        document.getElementById("articleDeleteButton").onclick = function () {
-            var type = window.location.href.split('/')[3];
-            if (type === 'penobrol') deletePenobrol(#{topic.id});
-            else if (type === 'tandya') deleteTandya(#{topic.id});
-            else if (type === 'youtublog') deleteYoutublog(#{topic.id});
+        var articleDeleteButton = document.getElementById("articleDeleteButton");
+        if(articleDeleteButton){
+            document.getElementById("articleDeleteButton").onclick = function () {
+                var type = window.location.href.split('/')[3];
+                if (type === 'penobrol') deletePenobrol(#{topic.id});
+                else if (type === 'tandya') deleteTandya(#{topic.id});
+                else if (type === 'youtublog') deleteYoutublog(#{topic.id});
+            }
         }
 
         function aMenuButton() {

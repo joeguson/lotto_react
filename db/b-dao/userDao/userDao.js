@@ -1,58 +1,51 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-function doQuery(query, args) {
-  return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 ////////////////Select////////////////
-exports.matchCredential = (id, pw) => doQuery(
+exports.matchCredential = (id, pw) => daoUtil.doQuery(
   `SELECT id, verify
   FROM users
   WHERE u_id=? AND u_pw= ?`,
   [id, pw]
 );
-exports.userInfoByEmail = (email) => doQuery(
+exports.userInfoByEmail = (email) => daoUtil.doQuery(
     `SELECT id, u_id, verify
     FROM users
     WHERE email = ?`,
     email
 );
-exports.userInfoById = (id) => doQuery(
+exports.userInfoById = (id) => daoUtil.doQuery(
     `select u_id, date_format(u_bday,'%Y-%m-%d')as u_bday, sex, email
     from users
     where id = ?`,
     id
 );
-exports.userCountById = (id) => doQuery(
+exports.userCountById = (id) => daoUtil.doQuery(
     `SELECT COUNT(u_id)
     AS total
     from users
     WHERE u_id = ?`,
     id
 );
-exports.userCountByEmail = (email) => doQuery(
+exports.userCountByEmail = (email) => daoUtil.doQuery(
     `SELECT COUNT(email)
     AS total
     from users
     WHERE email = ?`,
     email
 );
-exports.userBasicInfoById = (id) => doQuery(
+exports.userBasicInfoById = (id) => daoUtil.doQuery(
     `select u_id, date_format(u_bday,'%Y-%m-%d') as u_bday, sex, email
     from users
     where u_id = ?`,
     id
 );
-exports.userBasicInfoByEmail = (email) => doQuery(
+exports.userBasicInfoByEmail = (email) => daoUtil.doQuery(
     `select u_id, date_format(u_bday,'%Y-%m-%d') as u_bday, sex, email
     from users
     where email = ?`,
     email
 );
-exports.userSearch = (string) => doQuery(
+exports.userSearch = (string) => daoUtil.doQuery(
     `SELECT u_id
     FROM users
     AS result
@@ -61,7 +54,7 @@ exports.userSearch = (string) => doQuery(
     [string]
 );
 
-exports.getUserId2 = (userId) => doQuery(
+exports.getUserId2 = (userId) => daoUtil.doQuery(
     `SELECT id
     FROM users
     WHERE u_id = ?`,
@@ -69,32 +62,32 @@ exports.getUserId2 = (userId) => doQuery(
 );
 
 ////////////////Update////////////////
-exports.updateLoginDate = (id) => doQuery(
+exports.updateLoginDate = (id) => daoUtil.doQuery(
     `UPDATE users
     SET last_login = NOW()
     WHERE u_id = ?`,
     id
 );
-exports.updateUserInfo = (pw, id) => doQuery(
+exports.updateUserInfo = (pw, id) => daoUtil.doQuery(
     `update users
     set u_pw = ?
     where id = ?`,
     [pw, id]
 );
-exports.updateUserPw = (pw, id) => doQuery(
+exports.updateUserPw = (pw, id) => daoUtil.doQuery(
     `update users
     set u_pw = ?
     where u_id = ?`,
     [pw, id]
 );
-exports.verifyUser = (email) => doQuery(
+exports.verifyUser = (email) => daoUtil.doQuery(
     `UPDATE users
     set verify = 1, verify_date = NOW()
     where email = ?`,
     email
 );
 ////////////////Insert////////////////
-exports.insertUserInfo = (id, pw, bday, sex, email, verify) => doQuery(
+exports.insertUserInfo = (id, pw, bday, sex, email, verify) => daoUtil.doQuery(
     `INSERT INTO users
     (u_id, u_pw, u_bday, sex, email, verify)
     VALUES

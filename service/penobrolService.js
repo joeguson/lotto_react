@@ -1,4 +1,4 @@
-const parser = require('../db/parser.js');
+const parser = require('../db/parser/articleParser.js');
 const pccDao = require('../db/b-dao/penDao/pccDao');
 const pcDao = require('../db/b-dao/penDao/pcDao');
 const pclikeDao = require('../db/b-dao/penDao/pclikeDao');

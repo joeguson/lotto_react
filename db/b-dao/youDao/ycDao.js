@@ -1,15 +1,7 @@
-const mysql = require('mysql');
-const b = require('../../../b.js');
-const pool = mysql.createPool(b.poolConfig);
-const dbcon = require('../../dbconnection');
-
-//query가 없을때에는?
-function doQuery(query, args) {
-    return dbcon.doQuery(pool, query, args);
-}
+const daoUtil = require('../../daoUtil');
 
 /* ===== select ===== */
-exports.youtublogComByScore = (id) => doQuery(
+exports.youtublogComByScore = (id) => daoUtil.doQuery(
     `SELECT y.*, u.u_id
     FROM y_com as y
     join users as u on y.author = u.id
@@ -17,13 +9,13 @@ exports.youtublogComByScore = (id) => doQuery(
     order by score desc`,
     id
 );
-exports.youtublogComById = (id) => doQuery(
+exports.youtublogComById = (id) => daoUtil.doQuery(
     `select *
     from y_com
     where id = ?`,
     id
 );
-exports.youtublogComCountById = (id) => doQuery(
+exports.youtublogComCountById = (id) => daoUtil.doQuery(
     `select count(y_id)
     as replyCount
     from y_com
@@ -32,14 +24,14 @@ exports.youtublogComCountById = (id) => doQuery(
 );
 
 /* ===== update ===== */
-exports.updateYoutublogCom = (content, id, y_id) => doQuery(
+exports.updateYoutublogCom = (content, id, y_id) => daoUtil.doQuery(
     `UPDATE y_com
     SET content = ?, changed_date = now()
     where id = ?
     AND y_id = ?`,
     [content, id, y_id]
 );
-exports.updateYoutublogComScore = (yc_id) => doQuery(
+exports.updateYoutublogComScore = (yc_id) => daoUtil.doQuery(
     `UPDATE y_com
     set score = (
         (select count(yc_id) from yc_com where yc_id = ?) *.3
@@ -50,13 +42,13 @@ exports.updateYoutublogComScore = (yc_id) => doQuery(
 );
 
 /* ===== insert ===== */
-exports.insertYoutublogCom = (author, comment, y_id) => doQuery(
+exports.insertYoutublogCom = (author, comment, y_id) => daoUtil.doQuery(
     `INSERT INTO y_com (author, content, y_id)
     VALUES (?, ?, ?)`,
     [author, comment, y_id]
 );
 /* ===== delete ===== */
-exports.deleteYoutublogCom = (id) => doQuery(
+exports.deleteYoutublogCom = (id) => daoUtil.doQuery(
     `Delete from y_com
     where id = ?`,
     id

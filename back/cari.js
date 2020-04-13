@@ -1,6 +1,6 @@
 //url - '/cari'
 const route = require('express').Router();
-var parser = require('../db/parser.js');
+var parser = require('../db/parser/articleParser.js');
 const jsForBack = require('./jsForBack.js');
 const cariService = require('../service/cariService.js');
 
