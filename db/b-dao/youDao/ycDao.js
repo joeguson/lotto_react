@@ -34,10 +34,8 @@ exports.updateYoutublogCom = (content, id, y_id) => daoUtil.doQuery(
 );
 exports.updateYoutublogComScore = (yc_id) => daoUtil.doQuery(
     `UPDATE y_com
-    set score = (
-        (select count(yc_id) from yc_com where yc_id = ?) *.3
-        + (select count(yc_id) from yc_like where yc_id = ?)*.7
-    )/(select y_view from youtublog where id = y_id) * 100
+    set score = (select count(yc_id) from yc_com where yc_id = ?) *.4
+        + (select count(yc_id) from yc_like where yc_id = ?)*.6
     where id = ?`,
     [yc_id, yc_id, yc_id]
 );

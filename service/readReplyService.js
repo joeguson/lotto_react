@@ -72,6 +72,16 @@ exports.postReply = async function (article_id, userId, type, content) {
     return reply[0];
 };
 
+const updateReplyScoreFunctions = {
+    penobrol: pcDao.updatePenobrolComScore,
+    tandya: taDao.updateTandyaAnsScore,
+    youtublog: ycDao.updateYoutublogComScore
+};
+
+exports.updateReplyScore = async function(replyId, type){
+    await updateReplyScoreFunctions[type](replyId);
+};
+
 function applyAsyncToAll(type, list, userId, asyncFun) {
     const promiseList = list.map(item => asyncFun(type, userId, item));
     return Promise.all(promiseList);

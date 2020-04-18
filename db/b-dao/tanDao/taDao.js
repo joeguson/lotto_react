@@ -34,10 +34,8 @@ exports.updateTandyaAns = (content, id, t_id) => daoUtil.doQuery(
 );
 exports.updateTandyaAnsScore = (ta_id) => daoUtil.doQuery(
     `UPDATE t_ans
-    set score = (
-        (select count(ta_id) from ta_com where ta_id = ?) *.3
-        + (select count(ta_id) from ta_like where ta_id = ?)*.7
-    )/(select t_view from tandya where id = t_id) * 100
+    set score = (select count(ta_id) from ta_com where ta_id = ?) *.4
+        + (select count(ta_id) from ta_like where ta_id = ?)*.6
     where id = ?`,
     [ta_id, ta_id, ta_id]
 );

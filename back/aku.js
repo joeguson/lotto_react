@@ -1,6 +1,4 @@
 //url - '/aku'
-let userDao = require('../db/b-dao/userDao/userDao');
-const ajax = require("xmlhttprequest").XMLHttpRequest;
 const route = require('express').Router();
 const jsForBack = require('./jsForBack.js');
 const akuService = require('../service/akuService.js');

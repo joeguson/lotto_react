@@ -40,7 +40,9 @@ route.post('/:article_id', function (req, res) {
         final.type = req.body.type;
         final.reply = result;
         res.json(final);
-    });
+    }).catch(() =>
+        res.status(500).send('Could not post reply')
+    );
 });
 
 module.exports = route;

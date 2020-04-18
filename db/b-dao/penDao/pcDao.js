@@ -33,14 +33,12 @@ exports.updatePenobrolCom = (content, id, p_id) => daoUtil.doQuery(
     AND p_id = ?`
         [content, id, p_id]
 );
-exports.updatePenobrolComScore = (pc_id, p_id) => daoUtil.doQuery(
+exports.updatePenobrolComScore = (pc_id) => daoUtil.doQuery(
     `UPDATE p_com
-    set score = (
-        (select count(pc_id) from pc_com where pc_id = ?) *.3
-        + (select count(pc_id) from pc_like where pc_id = ?)*.7
-    )/(select p_view from penobrol where id = ?) * 100
+    set score = (select count(pc_id) from pc_com where pc_id = ?) *.4
+        + (select count(pc_id) from pc_like where pc_id = ?)*.6
     where id = ?`,
-    [pc_id, pc_id, p_id, pc_id]
+    [pc_id, pc_id, pc_id]
 );
 
 /* ===== insert ===== */

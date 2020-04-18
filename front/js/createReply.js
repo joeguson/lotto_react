@@ -48,6 +48,26 @@ function ajaxReply(content){
     return 'ab';
 }
 
+function ajaxReReply(reply, content){
+    const replyLi = document.getElementById("replyLi"+reply.id);
+    const re_replyDl = document.createElement('dl');
+    re_replyDl.className = "dlPccAndTac";
+    re_replyDl.id = 'cd';
+    //inside re_replyDl
+    const re_replyDt = document.createElement('dt');
+    re_replyDt.className = "dtPccAndTac";
+    {
+        //inside re_replyDt
+        const re_replyPre = document.createElement('pre');
+        re_replyPre.className = "pccomment-dt";
+        re_replyPre.innerHTML = content;
+        re_replyDt.appendChild(re_replyPre);
+    }
+    re_replyDl.append(re_replyDt);
+    replyLi.appendChild(re_replyDl);
+    return 'cd';
+}
+
 /* ====== Create Reply ====== */
 function createReplyLi(reply, type, userId){
     const replyUl = document.getElementById('replyUl');
@@ -55,6 +75,7 @@ function createReplyLi(reply, type, userId){
         // a reply is built in a li tag
         const replyLi = document.createElement('li');
         replyLi.className = "liComAndAns";
+        replyLi.id = "replyLi"+reply.id;
         {
             //inside replyLi
             const replyDl = document.createElement('dl');
@@ -98,7 +119,7 @@ function createReplyLi(reply, type, userId){
                 replyDl.appendChild(replyDd);
                 replyLi.appendChild(replyDl);
             }
-            if(userId) replyLi.appendChild(createReReplyInput());
+            if(userId) replyLi.appendChild(createReReplyInput(reply, type));
 
             reply.comments.forEach(re_reply => {
                 replyLi.appendChild(createReReply(re_reply, userId, type));
@@ -110,7 +131,7 @@ function createReplyLi(reply, type, userId){
 }
 
 /* ====== Create Re-reply Input ======= */
-function createReReplyInput(){
+function createReReplyInput(reply, type){
     const re_replyDiv = document.createElement('div');
     re_replyDiv.className = "pccOrTac";
     //inside re_replyDiv
@@ -121,7 +142,22 @@ function createReReplyInput(){
     re_replySubmit.className = "pccTacInputButton";
     re_replySubmit.type = "submit";
     re_replySubmit.value = "submit";
-
+    re_replySubmit.addEventListener('click', function(){
+        let newRereply = {};
+        newRereply.type = type;
+        newRereply.content = re_replyTextarea.value;
+        newRereply.replyId = reply.id;
+        let ajaxReReplyLi = ajaxReReply(reply, newRereply.content);
+        makeRequest('POST', 'api/rereply/'+ reply.id, newRereply)
+            .then(result => {
+                const replyLi = document.getElementById("replyLi"+reply.id);
+                const parsedResult = JSON.parse(result);
+                re_replyTextarea.value = '';
+                const tempReReply = document.getElementById(ajaxReReplyLi);
+                tempReReply.remove();
+                replyLi.appendChild(createReReply(parsedResult.rereply, parsedResult.userId, parsedResult.type));
+            });
+    });
     re_replyDiv.appendChild(re_replyTextarea);
     re_replyDiv.appendChild(re_replySubmit);
 
