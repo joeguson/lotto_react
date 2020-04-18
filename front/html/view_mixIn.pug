@@ -76,19 +76,9 @@ mixin aritcleLikeButton(status)
         button(class="articleLikeButton" type="submit" id="articleLikeButton")
             img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
 
-mixin reply(type)
-    if(type === 't')
-        form(action='tandya/answer/' + topic.id method='post' class='comansForm' onsubmit='return taChecksubmit();')
-            textarea(name='answer' id="taInput" class="pctaInput")
-            input(type='submit' value='answer' class="pctaInputButton" id='taInputButton')
-    else if(type === 'p')
-        form(action='penobrol/comment/' + topic.id method='post' class='comansForm' onsubmit='return pcChecksubmit();')
-            textarea(name='comment' id='pcInput' class="pctaInput")
-            input(type='submit' value='comment' class="pctaInputButton" id="pcInputButton")
-    else
-        form(action='youtublog/comment/' + topic.id method='post' class='comansForm' onsubmit='return ycChecksubmit();')
-            textarea(name='comment' id='ycInput' class="pctaInput")
-            input(type='submit' value='comment' class="pctaInputButton" id="ycInputButton")
+mixin reply()
+    textarea(name='reply' id="replyInput" class="pctaInput")
+    input(type='submit' value='answer' class="pctaInputButton" id="replySubmitButton")
 
 mixin articlePop(type, loginUser, articleAuthor)
     .aPopButton(onclick="aMenuButton()") ≡

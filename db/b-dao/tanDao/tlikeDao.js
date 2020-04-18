@@ -9,7 +9,7 @@ exports.tandyaLikeById = (id) => daoUtil.doQuery(
 );
 exports.tandyaLikeCount = (id) => daoUtil.doQuery(
     `select count(t_id)
-    as articleLikeCount
+    as likeCount
     from t_like
     where t_id = ?`,
     id

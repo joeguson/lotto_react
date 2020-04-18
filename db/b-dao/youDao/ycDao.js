@@ -10,9 +10,10 @@ exports.youtublogComByScore = (id) => daoUtil.doQuery(
     id
 );
 exports.youtublogComById = (id) => daoUtil.doQuery(
-    `select *
-    from y_com
-    where id = ?`,
+    `select y.*, u.u_id
+    from y_com as y
+    join users as u on y.author = u.id
+    where y.id = ?`,
     id
 );
 exports.youtublogComCountById = (id) => daoUtil.doQuery(

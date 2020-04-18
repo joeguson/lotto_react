@@ -10,7 +10,7 @@ exports.penobrolLikeById = (id) => daoUtil.doQuery(
 
 exports.penobrolLikeCount = (id) => daoUtil.doQuery(
     `select count(p_id)
-    as articleLikeCount
+    as likeCount
     from p_like
     where p_id = ?`,
     id

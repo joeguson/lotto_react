@@ -1,11 +1,16 @@
+/*
+ * Copyright (c) 2020. Created by Seung Joo Noh.
+ * All rights reserved.
+ */
+
 // url - '/api/article
 const route = require('express').Router();
-const jsForBack = require('../../back/jsForBack.js');
+const jsForBack = require('../back/jsForBack.js');
 
-const articleService = require('../../service/articleService');
-const penobrolService = require('../../service/penobrolService.js');
-const tandyaService = require('../../service/tandyaService.js');
-const youtublogService = require('../../service/youtublogService.js');
+const articleService = require('../service/articleService');
+const penobrolService = require('../service/penobrolService.js');
+const tandyaService = require('../service/tandyaService.js');
+const youtublogService = require('../service/youtublogService.js');
 
 const articleMainColumns = {
     penobrol: "title",

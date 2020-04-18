@@ -9,7 +9,7 @@ exports.youtublogComLikeById = (id) => daoUtil.doQuery(
 );
 exports.youtublogComLikeCount = (id) => daoUtil.doQuery(
     `select count(yc_id)
-    as replyLikeCount
+    as likeCount
     from yc_like
     where yc_id = ?`,
     id

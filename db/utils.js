@@ -19,10 +19,6 @@ exports.dateMaker = function(date) {
         return Math.round(diff/1000) + ' sec ago';
 };
 
-exports.commentLikeChecker = function(likeObject, cId, userId){
-    return likeObject.filter(e => (e.like_id === cId && e.u_id === userId)) > 0;
-};
-
 exports.getImage = function(contentString){
     let returnObj = {};
     const imgIndex = contentString.indexOf('<img', 0);

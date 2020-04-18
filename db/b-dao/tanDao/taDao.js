@@ -10,9 +10,10 @@ exports.tandyaAnsByScore = (id) => daoUtil.doQuery(
     id
 );
 exports.tandyaAnsById = (id) => daoUtil.doQuery(
-    `select *
-    from t_ans
-    where id = ?`,
+    `select t.*, u.u_id
+    from t_ans as t
+    join users as u on t.author = u.id
+    where t.id = ?`,
     id
 );
 exports.tandyaAnsCountById = (id) => daoUtil.doQuery(

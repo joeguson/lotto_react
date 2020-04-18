@@ -1,6 +1,7 @@
 //url - '/tandya'
 const route = require('express').Router();
 const articleService = require('../service/articleService.js');
+const readArticleService = require('../service/readArticleService.js');
 const tandyaService = require('../service/tandyaService.js');
 
 /* ===== tandya ===== */
@@ -18,7 +19,7 @@ route.get('/:tandya_no', function (req, res, next) {
     const id = req.params.tandya_no;
     const checkId = /^[0-9]+$/;
     if (checkId.test(id)) {
-        articleService.getFullArticleById(id, req.session.id2, 'tandya').then(result => {
+        readArticleService.getFullArticleById(id, req.session.id2, 'tandya').then(result => {
             if (!result) res.redirect('/tandya/'); // 결과가 없으면 홈으로 이동
             else tandyaService.updateTandyaView(result.id).then(() => // 받아왔으면 조회수 증가 후 페이지 표시
                 res.render('./jt/t-view', {

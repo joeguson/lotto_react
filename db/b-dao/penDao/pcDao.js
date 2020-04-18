@@ -10,9 +10,10 @@ exports.penobrolComByScore = (id) => daoUtil.doQuery(
     id
 );
 exports.penobrolComById = (id) => daoUtil.doQuery(
-    `select *
-    from p_com
-    where id = ?`,
+    `select p.*, u.u_id
+    from p_com as p
+    join users as u on p.author = u.id
+    where p.id = ?`,
     id
 );
 exports.penobrolComCountById = (id) => daoUtil.doQuery(

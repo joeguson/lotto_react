@@ -9,7 +9,7 @@ exports.penobrolComLikeById = (id) => daoUtil.doQuery(
 );
 exports.penobrolComLikeCount = (id) => daoUtil.doQuery(
     `select count(pc_id)
-    as replyLikeCount
+    as likeCount
     from pc_like
     where pc_id = ?`,
     id

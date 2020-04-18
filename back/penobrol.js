@@ -1,6 +1,7 @@
 //url - '/penobrol'
 const route = require('express').Router();
 const articleService = require('../service/articleService.js');
+const readArticleService = require('../service/readArticleService.js');
 const penobrolService = require('../service/penobrolService.js');
 
 /************FOR PENOBROL************/
@@ -17,7 +18,7 @@ route.get('/:penobrol_no', function (req, res, next) {
     const id = req.params.penobrol_no;
     const checkId = /^[0-9]+$/;
     if(checkId.test(id)){
-        articleService.getFullArticleById(id, req.session.id2, 'penobrol').then(result => {
+        readArticleService.getFullArticleById(id, req.session.id2, 'penobrol').then(result => {
             if (!result) res.redirect('/penobrol/'); // 결과가 없으면 홈으로 이동
             else penobrolService.updatePenobrolView(result.id).then(() => // 받아왔으면 조회수 증가 후 페이지 표시
                 res.render('./jp/p-view', {
