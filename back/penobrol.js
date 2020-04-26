@@ -1,6 +1,5 @@
 //url - '/penobrol'
 const route = require('express').Router();
-const articleService = require('../service/articleService.js');
 const readArticleService = require('../service/readArticleService.js');
 const penobrolService = require('../service/penobrolService.js');
 
@@ -10,11 +9,12 @@ route.get('/', function (req, res) {
         .then(([dateTopics, scoreTopics]) => res.render('./jp/p', {
             dateTopics: dateTopics,
             scoreTopics: scoreTopics,
-            id2: req.session.id2
+            id2: req.session.id2 ? req.session.id2 : 0
         }));
 });
 
 route.get('/:penobrol_no', function (req, res, next) {
+    // 로그인 정보를 가지고 가는경우 없는경우
     const id = req.params.penobrol_no;
     const checkId = /^[0-9]+$/;
     if(checkId.test(id)){
@@ -24,7 +24,7 @@ route.get('/:penobrol_no', function (req, res, next) {
                 res.render('./jp/p-view', {
                     topic: result,
                     u_id: req.session.u_id,
-                    id2: req.session.id2,
+                    id2: req.session.id2 ? req.session.id2 : 0
                 })
             );
         });
@@ -42,20 +42,11 @@ route.get('/new',function (req, res) {
     }
 });
 
-route.post('/comment/:penobrol_no', function (req, res) {
-    const p_id = req.params.penobrol_no;
-    penobrolService.postComment(
-        p_id,
-        req.session.id2,
-        req.body.comment
-    ).then(() => res.redirect('/penobrol/' + p_id));
-});
-
 route.get('/edit/:penobrol_no', function (req, res) {
     const p_id = req.params['penobrol_no'];
     const u_id = req.session.id2;
 
-    articleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
+    readArticleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
         if(penobrol && penobrol.author === u_id)
             res.render('./article_edit', {
                 u_id: u_id,
@@ -72,7 +63,7 @@ route.get('/edit/comment/:penobrol_no/:pcomment_no',function (req, res) {
     const u_id = req.session.id2;
     penobrolService.getCommentById(pc_id).then(comment => {
         if (u_id !== comment.author) res.redirect('/comment/view/' + p_id);
-        else articleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
+        else readArticleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
             res.render('./jp/pc-edit', {
                 id2: req.session.id2,
                 topic: penobrol,

@@ -81,6 +81,12 @@ exports.updateYoutublogDate = (id) => daoUtil.doQuery(
     WHERE id = ?`,
     [id]
 );
+exports.updateChosenYcom = (id, chosen_id) => daoUtil.doQuery(
+    `UPDATE youtublog
+    set chosen = ?
+    WHERE id = ?`,
+    [chosen_id, id]
+);
 ////////////////Insert////////////////
 exports.insertYoutublog = (author, title, content, public, thumbnail) => daoUtil.doQuery(
     `INSERT INTO youtublog(author, title, content, public, thumbnail)

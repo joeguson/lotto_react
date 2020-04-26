@@ -1,6 +1,5 @@
 //url - '/tandya'
 const route = require('express').Router();
-const articleService = require('../service/articleService.js');
 const readArticleService = require('../service/readArticleService.js');
 const tandyaService = require('../service/tandyaService.js');
 
@@ -25,7 +24,7 @@ route.get('/:tandya_no', function (req, res, next) {
                 res.render('./jt/t-view', {
                     topic: result,
                     u_id: req.session.u_id,
-                    id2: req.session.id2,
+                    id2: req.session.id2 ? req.session.id2 : 0
                 })
             );
         });
@@ -43,13 +42,26 @@ route.get('/new', function (req, res) {
     }
 });
 
-route.post('/answer/:tandya_no', function (req, res) {
-    const t_id = req.params.tandya_no;
-    tandyaService.postAnswer(
-        t_id,
-        req.session.id2,
-        req.body.answer
-    ).then(() => res.redirect('/tandya/' + t_id));
+route.get('/:id/answer/new', function (req, res) {
+    const articleId = req.params.id;
+    console.log(articleId);
+    const checkId = /^[0-9]+$/;
+    if (req.session.id2) {
+        if (checkId.test(articleId)) {
+            readArticleService.getFullArticleById(articleId, req.session.id2, 'tandya').then(result => {
+                if (!result) res.redirect('/tandya/'); // 결과가 없으면 홈으로 이동
+                else {
+                    res.render('./jt/t-answer', {
+                        topic: result,
+                        u_id: req.session.u_id,
+                        id2: req.session.id2 ? req.session.id2 : 0
+                    })
+                }
+            });
+        }
+    } else {
+        res.redirect('/tandya/');
+    }
 });
 
 route.get('/edit/:tandya_no', function (req, res) {

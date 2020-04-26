@@ -2,25 +2,27 @@
 
 window.addEventListener('load', function(){
     const replySubmitButton = document.getElementById("replySubmitButton");
-    replySubmitButton.onclick = function(){
-        let newReply = {};
-        const replyInput = document.getElementById('replyInput');
-        const replyContent = replyInput.value;
-        const articleType = (location.pathname).split('/')[1];
-        const articleId = (location.pathname).split('/')[2];
-        let ajaxReplyLi = ajaxReply(replyContent);
-        newReply.type = articleType;
-        newReply.content = replyContent;
-        newReply.articleId = articleId;
-        makeRequest('POST', 'api/reply/'+articleId, newReply)
-            .then(result => {
-                replyInput.value = '';
-                const tempReply = document.getElementById(ajaxReplyLi);
-                tempReply.remove();
-                const parsedResult = JSON.parse(result);
-                createReplyLi(parsedResult.reply, parsedResult.type, parsedResult.userId);
-            });
-    };
+    if(replySubmitButton){
+        replySubmitButton.onclick = function(){
+            let newReply = {};
+            const replyInput = document.getElementById('replyInput');
+            const replyContent = replyInput.value;
+            const articleType = (location.pathname).split('/')[1];
+            const articleId = (location.pathname).split('/')[2];
+            let ajaxReplyLi = ajaxReply(replyContent);
+            newReply.type = articleType;
+            newReply.content = replyContent;
+            newReply.articleId = articleId;
+            makeRequest('POST', 'api/reply/'+articleId, newReply)
+                .then(result => {
+                    replyInput.value = '';
+                    const tempReply = document.getElementById(ajaxReplyLi);
+                    tempReply.remove();
+                    const parsedResult = JSON.parse(result);
+                    createReplyLi(parsedResult.reply, parsedResult.type, parsedResult.userId);
+                });
+        };
+    }
 });
 
 /* ====== Create Ajax Reply ====== */
@@ -69,7 +71,7 @@ function ajaxReReply(reply, content){
 }
 
 /* ====== Create Reply ====== */
-function createReplyLi(reply, type, userId){
+function createReplyLi(reply, type, userId, articleAuthor){
     const replyUl = document.getElementById('replyUl');
     {
         // a reply is built in a li tag
@@ -87,11 +89,8 @@ function createReplyLi(reply, type, userId){
                     //inside replyDt
                     const replyPre = document.createElement('pre');
                     replyPre.className = "pcomment-dt";
-                    if(type==='tandya') replyPre.innerHTML = `${reply.answer}`;
-                    else replyPre.innerHTML = `${reply.content}`;
-                    if(userId){
-                        replyDt.appendChild(createMenuButton(userId, reply, type, 1));
-                    }
+                    type === 'tandya' ? replyPre.innerHTML = `${reply.answer}` : replyPre.innerHTML = `${reply.content}`;
+                    if(userId) replyDt.appendChild(createMenuButton(userId, articleAuthor, reply, type, 1));
                     replyDt.appendChild(replyPre);
                 }
                 const replyDd = document.createElement('dd');
@@ -180,7 +179,7 @@ function createReReply(re_reply, userId, type){
         re_replyPre.innerHTML = `${re_reply.content}`;
 
         if(userId){
-            re_replyDt.appendChild(createMenuButton(userId, re_reply, type, 0));
+            re_replyDt.appendChild(createMenuButton(userId, 0, re_reply, type, 0));
         }
         re_replyDt.appendChild(re_replyPre);
     }
@@ -217,14 +216,13 @@ function createLikeButton(userId, content, type, likeTarget){
             "cancel": content.likeStatus
         };
         content.likeStatus = !content.likeStatus;
-        makeRequest('POST', 'api/article/' + type + '/reply/like', data)
+        makeRequest('POST', 'api/like/' + type + '/reply', data)
             .then(function (e) {
                 e = JSON.parse(e);
             });
     };
     replyLikeImg.className = "pctalikeImage";
-    if(content.likeStatus) replyLikeImg.src = location.origin +'/icons/nocap.png';
-    else replyLikeImg.src = location.origin +'/icons/cap.png';
+    (content.likeStatus) ? replyLikeImg.src = location.origin +'/icons/nocap.png' : replyLikeImg.src = location.origin +'/icons/cap.png';
 
     replyLikeButton.appendChild(replyLikeImg);
     replyLikeSpan.appendChild(replyLikeButton);
@@ -233,22 +231,19 @@ function createLikeButton(userId, content, type, likeTarget){
 }
 
 /* ====== Create Menu Button ====== */
-function createMenuButton(userId, content, type, kind){
+function createMenuButton(userId, articleAuthor, content, type, kind){
     const menuButton = document.createElement('div');
     menuButton.innerHTML = "≡";
-    if(kind === 1) menuButton.className = "caPopButton";
-    else menuButton.className = "pcctacPopButton";
+    (kind === 1) ? menuButton.className = "caPopButton" : menuButton.className = "pcctacPopButton";
     menuButton.onclick = () => {
         menuButton.childNodes[1].classList.toggle("show");
     };
     const menuPopDiv= document.createElement('div');
-    if(kind === 1) menuPopDiv.className = "caPopDiv";
-    else menuPopDiv.className = "pcctacPopDiv";
+    (kind === 1) ? menuPopDiv.className = "caPopDiv" : menuPopDiv.className = "pcctacPopDiv";
     // Create warnButton
     {
         const warnButton = document.createElement('button');
-        if(kind === 1) warnButton.className = "caPopMenu";
-        else warnButton.className = "pcctacPopMenu";
+        (kind === 1) ? warnButton.className = "caPopMenu" : warnButton.className = "pcctacPopMenu";
         const warnImg= document.createElement('img');
         warnImg.src = location.origin +'/icons/warn.png';
         warnButton.onclick = () => {
@@ -271,8 +266,7 @@ function createMenuButton(userId, content, type, kind){
         // Create delete button
         {
             const deleteButton = document.createElement('button');
-            if(kind === 1) deleteButton.className = "caPopMenu";
-            else deleteButton.className = "pcctacPopMenu";
+            (kind === 1) ? deleteButton.className = "caPopMenu" : deleteButton.className = "pcctacPopMenu";
             const deleteImg= document.createElement('img');
             deleteImg.src = location.origin +'/icons/trash.png';
             deleteButton.onclick = () => {
@@ -290,8 +284,9 @@ function createMenuButton(userId, content, type, kind){
             deleteButton.appendChild(deleteImg);
             menuPopDiv.appendChild(deleteButton);
         }
-        // Create edit button
+        // Create edit & chosen button
         if(kind === 1) {
+            //edit
             const editA = document.createElement('a');
             editA.className="caPopMenu";
             if(type==='penobrol') editA.href = type+'/edit/comment/'+content.p_id+'/'+content.id;
@@ -302,6 +297,18 @@ function createMenuButton(userId, content, type, kind){
             editA.appendChild(editImg);
             menuPopDiv.appendChild(editA);
         }
+    }
+    if(userId === articleAuthor && kind === 1){
+        //chosen
+        const chosenButton = document.createElement('button');
+        chosenButton.className = "caPopMenu";
+        const chosenImg= document.createElement('img');
+        chosenImg.src = location.origin +'/icons/check.png';
+        chosenButton.onclick = () => {
+            __chooseFunc(type, content.id);
+        };
+        chosenButton.appendChild(chosenImg);
+        menuPopDiv.appendChild(chosenButton);
     }
     menuButton.appendChild(menuPopDiv);
     return menuButton;

@@ -5,35 +5,31 @@
 
 const utils = require("../utils.js");
 
-exports.parsePenobrolCComment = function (packet) {
+function parseReReply(packet) {
     return {
+        // common
         id: packet.id,
         author: packet.author,
         content: packet.content,
         date: utils.dateMaker(packet.date),
-        pc_id: packet.pc_id,
         u_id: packet.u_id
     };
+}
+
+exports.parsePenobrolCComment = function (packet) {
+    const penobrolComCom = parseReReply(packet);
+    penobrolComCom.pc_id = packet.pc_id;
+    return penobrolComCom;
 };
 
 exports.parseTandyaAComment = function (packet) {
-    return {
-        id: packet.id,
-        author: packet.author,
-        content: packet.content,
-        date: utils.dateMaker(packet.date),
-        ta_id: packet.ta_id,
-        u_id: packet.u_id
-    };
+    const tandyaAnsCom = parseReReply(packet);
+    tandyaAnsCom.ta_id = packet.ta_id;
+    return tandyaAnsCom;
 };
 
 exports.parseYoutublogCComment = function (packet) {
-    return {
-        id: packet.id,
-        author: packet.author,
-        content: packet.content,
-        date: utils.dateMaker(packet.date),
-        yc_id: packet.yc_id,
-        u_id: packet.u_id
-    };
+    const youtublogComCom = parseReReply(packet);
+    youtublogComCom.yc_id = packet.yc_id;
+    return youtublogComCom;
 };

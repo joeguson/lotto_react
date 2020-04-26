@@ -3,7 +3,7 @@ const phashDao = require('../db/b-dao/penDao/phashDao');
 const thashDao = require('../db/b-dao/tanDao/thashDao');
 const yhashDao = require('../db/b-dao/youDao/yhashDao');
 //others
-const hashParser = require('../db/parser/hashParser.js');
+const componentParser = require('../db/parser/componentParser.js');
 
 const getHashtagFunctions = {
     penobrol: phashDao.penobrolHashtagById,
@@ -11,9 +11,9 @@ const getHashtagFunctions = {
     youtublog: yhashDao.youtublogHashtagById
 };
 const hashtagParseFunctions = {
-    penobrol: hashParser.parseHashtagP,
-    tandya: hashParser.parseHashtagT,
-    youtublog: hashParser.parseHashtagY
+    penobrol: componentParser.parseHashtagP,
+    tandya: componentParser.parseHashtagT,
+    youtublog: componentParser.parseHashtagY
 };
 
 exports.getHash = async function(id, type){

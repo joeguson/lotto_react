@@ -1,7 +1,7 @@
 function __selectWarnFunc(warn_target) {
     return (warned_id) => {
         let data = {warned_id: warned_id};
-        const url = '/api/article/'+ warn_target +'/warn';
+        const url = '/api/warn/'+ warn_target;
         makeRequest('POST', url, data)
             .then(res => {
                 alert("Success warning this " + warn_target);
@@ -10,21 +10,24 @@ function __selectWarnFunc(warn_target) {
         })
     }
 }
-////////////////{type}/warn////////////////
-//////////////////article//////////////////
 
-warnPenobrol = __selectWarnFunc("penobrol");
-warnTandya = __selectWarnFunc("tandya");
-warnYoutublog = __selectWarnFunc('youtublog');
+/* ===== POST /{type}/warn ===== */
+/* ===== Article ===== */
 
-///////////////{type}/reply/warn///////////////
-////////////////////reply////////////////////
+warnPenobrol = __selectWarnFunc("penobrol/article");
+warnTandya = __selectWarnFunc("tandya/article");
+warnYoutublog = __selectWarnFunc('youtublog/article');
+
+/* ===== POST /{type}/reply/warn ===== */
+/* ===== Reply ===== */
+
 warnPenobrolCom = __selectWarnFunc("penobrol/reply");
 warnTandyaAns = __selectWarnFunc("tandya/reply");
 warnYoutublogCom = __selectWarnFunc('youtublog/reply');
 
-///////////////{type}/re-reply/warn///////////////
-////////////////////re-reply////////////////////
-warnPenobrolComCom = __selectWarnFunc("penobrol/re-reply");
-warnTandyaAnsCom = __selectWarnFunc("tandya/re-reply");
-warnYoutublogComCom = __selectWarnFunc('youtublog/re-reply');
+/* ===== POST /{type}/re-reply/warn ===== */
+/* ===== Re-reply ===== */
+
+warnPenobrolComCom = __selectWarnFunc("penobrol/rereply");
+warnTandyaAnsCom = __selectWarnFunc("tandya/rereply");
+warnYoutublogComCom = __selectWarnFunc('youtublog/rereply');

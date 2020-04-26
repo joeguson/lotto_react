@@ -81,6 +81,12 @@ exports.updateTandyaDate = (id) => daoUtil.doQuery(
     WHERE id = ?`,
     [id]
 );
+exports.updateChosenTans = (id, chosen_id) => daoUtil.doQuery(
+    `UPDATE tandya
+    set chosen = ?
+    WHERE id = ?`,
+    [chosen_id, id]
+);
 ////////////////Insert////////////////
 exports.insertTandya = (author, question, content, public, thumbnail) => daoUtil.doQuery(
     `INSERT INTO tandya(author, question, content, public, thumbnail)

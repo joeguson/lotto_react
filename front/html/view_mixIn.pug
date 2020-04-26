@@ -76,9 +76,12 @@ mixin aritcleLikeButton(status)
         button(class="articleLikeButton" type="submit" id="articleLikeButton")
             img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
 
-mixin reply()
-    textarea(name='reply' id="replyInput" class="pctaInput")
-    input(type='submit' value='answer' class="pctaInputButton" id="replySubmitButton")
+mixin reply(type, articleId)
+    if(type ==='t')
+        a(href='/tandya/'+articleId+'/answer/new' class="pctaInput")
+    else
+        textarea(name='reply' id="replyInput" class="pctaInput")
+        input(type='submit' value='answer' class="pctaInputButton" id="replySubmitButton")
 
 mixin articlePop(type, loginUser, articleAuthor)
     .aPopButton(onclick="aMenuButton()") ≡
@@ -97,21 +100,3 @@ mixin articlePop(type, loginUser, articleAuthor)
                 else if(type === 'y')
                     a(href='/youtublog/edit/' + topic.id class="aPopMenu")
                         img(src="./icons/edit.png")
-
-
-mixin caPop(type, loginUser, caAuthor, caId)
-    .caPopButton(onclick="caMenuButton(this)") ≡
-        .caPopDiv(id=`${caId}`)
-            if(loginUser === caAuthor)
-                if(type === 'p')
-                    a(class="caPopMenu" href='/penobrol/edit/comment/'+caId)
-                        img(src="./icons/edit.png")
-                else if(type === 't')
-                    a(class="caPopMenu" href='/tandya/edit/answer/'+caId)
-                        img(src="./icons/edit.png")
-                else if(type === 'y')
-                    a(class="caPopMenu" href='/penobrol/edit/comment/'+caId)
-                        img(src="./icons/edit.png")
-
-
-    

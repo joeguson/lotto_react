@@ -76,3 +76,12 @@ const updateArticleScoreFunctions = {
 exports.updateArticleScore = async function(articleId, type){
     await updateArticleScoreFunctions[type](articleId);
 };
+
+const updateArticleChosenFunctions = {
+    penobrol: penobrolDao.updateChosenPcom,
+    tandya: tandyaDao.updateChosenTans,
+    youtublog: youtublogDao.updateChosenYcom
+};
+exports.updateArticleChosen = function(articleId, replyId, type){
+    return updateArticleChosenFunctions[type](articleId, replyId);
+};

@@ -1,6 +1,5 @@
 //url - '/youtublog'
 const route = require('express').Router();
-const articleService = require('../service/articleService.js');
 const readArticleService = require('../service/readArticleService.js');
 const youtublogService = require('../service/youtublogService.js');
 
@@ -25,7 +24,7 @@ route.get('/:youtublog_no', function (req, res, next) {
                 res.render('./jy/y-view', {
                     topic: result,
                     u_id: req.session.u_id,
-                    id2: req.session.id2,
+                    id2: req.session.id2 ? req.session.id2 : 0
                 })
             );
         });
@@ -41,15 +40,6 @@ route.get('/new',function (req, res) {
     } else {
         res.redirect('/youtublog/');
     }
-});
-
-route.post('/comment/:youtublog_no', function (req, res) {
-    const y_id = req.params.youtublog_no;
-    youtublogService.postComment(
-        y_id,
-        req.session.id2,
-        req.body.comment
-    ).then(() => res.redirect('/youtublog/' + y_id));
 });
 
 route.get('/edit/:youtublog_no', function (req, res) {

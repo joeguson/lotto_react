@@ -6,8 +6,12 @@ const ylikeDao = require('../db/b-dao/youDao/ylikeDao');
 const pclikeDao = require('../db/b-dao/penDao/pclikeDao');
 const talikeDao = require('../db/b-dao/tanDao/talikeDao');
 const yclikeDao = require('../db/b-dao/youDao/yclikeDao');
+//readArticleFunctions
+const readArticleService = require('./readArticleService');
+//readReplyFunctions
+const readReplyService = require('./readReplyService');
 //others
-const likeParser = require('../db/parser/likeParser.js');
+const componentParser = require('../db/parser/componentParser.js');
 
 const likeStatusFunctions = {
     penobrol: plikeDao.penobrolLikeByAuthor,
@@ -44,4 +48,68 @@ exports.replyLikeStatus = async function(id, userId, type){
 
 exports.replyLikeCount = async function(id, type){
     return (await replyLikeCountFunctions[type](id))[0].likeCount;
+};
+
+const likeArticleFunctions = {
+    penobrol: plikeDao.insertPenobrolLike,
+    tandya: tlikeDao.insertTandyaLike,
+    youtublog: ylikeDao.insertYoutublogLike
+};
+const unlikeArticleFunctions = {
+    penobrol: plikeDao.deletePenobrolLike,
+    tandya: tlikeDao.deleteTandyaLike,
+    youtublog: ylikeDao.deleteYoutublogLike
+};
+
+exports.likeArticle = async function (article_id, user, val, type) {
+    try {
+        if (val) await unlikeArticleFunctions[type](article_id, user);
+        else await likeArticleFunctions[type](article_id, user);
+        await readArticleService.updateArticleScore(article_id, type);
+        return Number(!val);
+    } catch (e) {
+        return null;
+    }
+};
+
+const likeReplyFunctions = {
+    penobrol: pclikeDao.insertPenobrolComLike,
+    tandya: talikeDao.insertTandyaAnsLike,
+    youtublog: yclikeDao.insertYoutublogComLike
+};
+const unlikeReplyFunctions = {
+    penobrol: pclikeDao.deletePenobrolComLike,
+    tandya: talikeDao.deleteTandyaAnsLike,
+    youtublog: yclikeDao.deleteYoutublogComLike
+};
+
+exports.likeReply = async function (reply_id, user, val, type) {
+    try {
+        if (val) await unlikeReplyFunctions[type](reply_id, user);
+        else await likeReplyFunctions[type](reply_id, user);
+        await readReplyService.updateReplyScore(reply_id, type);
+        return Number(!val);
+    } catch (e) {
+        return null;
+    }
+};
+
+const articleLikeCountByAuthorFunctions = {
+    penobrol: plikeDao.penobrolLikeCountByAuthor,
+    tandya: tlikeDao.tandyaLikeCountByAuthor,
+    youtublog: ylikeDao.youtublogLikeCountByAuthor
+};
+
+exports.articleLikeCountByAuthor = async function (userId, type) {
+    return (await articleLikeCountByAuthorFunctions[type](userId))[0].total;
+};
+
+const replyLikeCountByAuthorFunctions = {
+    penobrol: pclikeDao.penobrolComLikeCountByAuthor,
+    tandya: talikeDao.tandyaAnsLikeCountByAuthor,
+    youtublog: yclikeDao.youtublogComLikeCountByAuthor
+};
+
+exports.replyLikeCountByAuthor = async function (userId, type) {
+    return (await replyLikeCountByAuthorFunctions[type](userId))[0].total;
 };

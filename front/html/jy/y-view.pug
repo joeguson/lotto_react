@@ -10,6 +10,9 @@ block articleInfo
     dt.aTtileDt #{topic.title}
     +basicPInfo(topic.u_id, topic.date, topic.view, topic.replyCount)
 
+block reply
+    +reply('y', 0)
+
 block ulComAndAns
 
     script.

@@ -82,6 +82,13 @@ exports.updatePenobrolDate = (id) => daoUtil.doQuery(
     WHERE id = ?`,
     [id]
 );
+exports.updateChosenPcom = (id, chosen_id) => daoUtil.doQuery(
+    `UPDATE penobrol
+    set chosen = ?
+    WHERE id = ?`,
+    [chosen_id, id]
+);
+
 ////////////////Insert////////////////
 exports.insertPenobrol = (author, title, content, public, thumbnail) => daoUtil.doQuery(
     `INSERT INTO penobrol (author, title, content, public, thumbnail)

@@ -5,7 +5,6 @@ block js
     script(type="text/javascript" src="/js/jsForAllJade.js")
     script(type="text/javascript" src="/js/createReply.js")
     script(type="text/javascript" src="/js/warnArticle.js")
-    script(type="text/javascript" src="/js/likeArticle.js")
     script(type="text/javascript" src="/js/deleteArticle.js")
     block view_js
 
@@ -31,7 +30,7 @@ block main
                 +aritcleLikeButton(topic.likeStatus)
     if(id2)
         .commentOrAnswer
-            +reply()
+            block reply
     .comAns
         ul.ulComAndAns(id='replyUl')
             block ulComAndAns
@@ -49,8 +48,21 @@ block jscript
             makeRequest('GET', 'api/reply/' + type + '/'+ #{topic.id})
                 .then(function (e) {
                     let ele = JSON.parse(e);
-                    ele.result.forEach(function(element){
-                        createReplyLi(element, type, #{id2});
+                    //chosen의 값이 있다면 chosen 먼저 createReply해야함
+                    if(#{topic.chosen} > 0){
+                        // 찾고, 저장하고, 빼내고, 줄이고, 만들고
+                        for(var i = 0; i < ele.result.length; i++){
+                            console.log(ele.result[i].id)
+                            if(#{topic.chosen} === ele.result[i].id){
+                                var chosen = ele.result[i];
+                                ele.result.splice(i, 1);
+                            }
+                        }
+                        createReplyLi(chosen, type, #{id2}, #{topic.author});
+                    }
+                    ele.result.forEach(function (element) {
+                        //TODO id2에 값이 없을때는 안됨 해결하기
+                        createReplyLi(element, type, #{id2}, #{topic.author});
                     });
                 });
         });
@@ -76,7 +88,7 @@ block jscript
                     "cancel": __article.__like
                 };
                 __article.__like = !__article.__like;
-                makeRequest('POST', 'api/article/' + type + '/like', data)
+                makeRequest('POST', 'api/like/' + type + '/article', data)
                     .then(function (e) {
                         e = JSON.parse(e);
                     });
@@ -100,6 +112,32 @@ block jscript
                 if (type === 'penobrol') deletePenobrol(#{topic.id});
                 else if (type === 'tandya') deleteTandya(#{topic.id});
                 else if (type === 'youtublog') deleteYoutublog(#{topic.id});
+            }
+        }
+
+        function __chooseFunc(target, id){
+            if (confirm("Are you sure to choose this content?")) {
+                let data = {
+                    article_id: #{topic.id},
+                    pre_chosen: #{topic.chosen},
+                    chosen_id: id
+                };
+                const url = '/api/article/chosen/' + target;
+                makeRequest('put', url, data).then(function(re){
+                    const result = JSON.parse(re);
+                    console.log(result.result);
+                    if(result.result === 'chosen'){ // choose라면 id를 가지고
+                        const chosenNew = document.getElementById('replyLi' + id);
+                        chosenNew.style.backgroundColor = "blue";
+                        alert("chosen");
+                    }
+                    else{ // cancel이라면
+                        const chosenCancel = document.getElementById('replyLi' + id);
+                        chosenCancel.style.backgroundColor = "white";
+                    }
+                    }).catch(function(res){
+                        alert("fail");
+                    })
             }
         }
 

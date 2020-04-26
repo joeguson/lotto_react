@@ -23,6 +23,7 @@ function parseArticle(packet) {
         score: packet.score,
         hashtags: packet.hashtags,
         likes: packet.likes,
+        chosen: (packet.chosen === null) ? 0 : packet.chosen,
         u_id: packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id
     };
 }
@@ -35,7 +36,8 @@ function parseFrontArticle(packet) {
         thumbnail: packet.thumbnail,
         u_id: packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id,
         hashtags: packet.hashtags,
-        likes: packet.likes
+        likes: packet.likes,
+        img : utils.getImage(packet.content)
     };
 }
 
@@ -45,7 +47,6 @@ exports.parseFrontPenobrol = function (packet) {
     penobrol.commentCount = packet.comments;
     penobrol.view = packet.p_view;
     penobrol.identifier = 'p';
-    penobrol.img = utils.getImage(packet.content);
     return penobrol;
 };
 
@@ -55,7 +56,6 @@ exports.parseFrontTandya = function (packet) {
     tandya.answerCount = packet.answers;
     tandya.view = packet.t_view;
     tandya.identifier = 't';
-    tandya.img = utils.getImage(packet.content);
     return tandya;
 };
 
@@ -65,7 +65,6 @@ exports.parseFrontYoutublog = function (packet) {
     youtublog.commentCount = packet.comments;
     youtublog.view = packet.y_view;
     youtublog.identifier = 'y';
-    youtublog.img = utils.getImage(packet.content);
     return youtublog;
 };
 
@@ -96,81 +95,7 @@ exports.parseYoutublog = function (packet) {
     return youtublog;
 };
 
-exports.parseHashtagP = function (packet) {
-    return {
-        id: packet.id,
-        p_id: packet.p_id,
-        hash: packet.hash
-    };
-};
-
-exports.parseHashtagT = function (packet) {
-    return {
-        id: packet.id,
-        t_id: packet.t_id,
-        hash: packet.hash
-    };
-};
-
-exports.parseHashtagY = function (packet) {
-    return {
-        id: packet.id,
-        y_id: packet.y_id,
-        hash: packet.hash
-    };
-};
-
-exports.parseComment = function (packet) {
-    return {
-        id: packet.id,
-        p_id: packet.p_id,
-        author: packet.author,
-        content: packet.content,
-        date: utils.dateMaker(packet.date),
-        score: packet.score,
-        changed_date: packet.changed_date,
-        comments: packet.comments,
-        likes: packet.likes,
-        u_id: packet.u_id
-    };
-};
-
-exports.parseAnswer = function (packet) {
-    return {
-        id: packet.id,
-        t_id: packet.t_id,
-        author: packet.author,
-        answer: packet.answer,
-        date: utils.dateMaker(packet.date),
-        score: packet.score,
-        changed_date: packet.changed_date,
-        comments: packet.comments,
-        likes: packet.likes,
-        u_id: packet.u_id
-    };
-};
-
-exports.parseCComment = function (packet) {
-    return {
-        id: packet.id,
-        author: packet.author,
-        content: packet.content,
-        date: utils.dateMaker(packet.date),
-        pc_id: packet.pc_id,
-        u_id: packet.u_id
-    };
-};
-
-exports.parseAComment = function (packet) {
-    return {
-        id: packet.id,
-        author: packet.author,
-        content: packet.content,
-        date: utils.dateMaker(packet.date),
-        ta_id: packet.ta_id,
-        u_id: packet.u_id
-    };
-};
+/* ==== Article Like ==== */
 
 exports.parsePLike = function (packet) {
     return {
@@ -193,16 +118,51 @@ exports.parseYLike = function (packet) {
     };
 };
 
-exports.parseCLike = function (packet) {
+/* ==== Reply Like ==== */
+
+exports.parsePcLike = function (packet) {
     return {
         pc_id: packet.pc_id,
         u_id: packet.u_id
     };
 };
 
-exports.parseALike = function (packet) {
+exports.parseTaLike = function (packet) {
     return {
         ta_id: packet.ta_id,
         u_id: packet.u_id
+    };
+};
+
+exports.parseYcLike = function (packet) {
+    return {
+        yc_id: packet.yc_id,
+        u_id: packet.u_id
+    };
+};
+
+/* ==== Reply Like ==== */
+
+exports.parseHashtagP = function (packet) {
+    return {
+        id: packet.id,
+        p_id: packet.p_id,
+        hash: packet.hash
+    };
+};
+
+exports.parseHashtagT = function (packet) {
+    return {
+        id: packet.id,
+        t_id: packet.t_id,
+        hash: packet.hash
+    };
+};
+
+exports.parseHashtagY = function (packet) {
+    return {
+        id: packet.id,
+        y_id: packet.y_id,
+        hash: packet.hash
     };
 };

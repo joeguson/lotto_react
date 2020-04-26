@@ -7,10 +7,10 @@
 const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 
-const articleService = require('../service/articleService');
 const penobrolService = require('../service/penobrolService.js');
 const tandyaService = require('../service/tandyaService.js');
 const youtublogService = require('../service/youtublogService.js');
+const articleService = require('../service/readArticleService.js');
 
 const articleMainColumns = {
     penobrol: "title",
@@ -63,12 +63,12 @@ const articleEditFunctions = {
     youtublog: youtublogService.editYoutublog
 };
 // article 을 수정하는 api
-route.put('/:type/:id', (req, res) => {
+route.put('/:type/:id', (req, res, next) => {
     const type = req.params['type'];
     const editFunction = articleEditFunctions[type];
     const column = req.body[articleMainColumns[type]];
-
-    if (editFunction == null)
+    if(type === 'chosen') next();
+    else if (editFunction == null)
         res.status(400).send('Wrong article type');
     else editFunction(
         req.params['id'],
@@ -81,64 +81,6 @@ route.put('/:type/:id', (req, res) => {
         res.json({'id': id})
     ).catch(() =>
         res.status(500).send('Could not edit article')
-    );
-});
-
-/* ===== GET /{type}/reply ===== */
-// article type 에 따른 reply 요청 함수
-const replyGetFunctions = {
-    penobrol: penobrolService.getFullPenobrolComById,
-    tandya: tandyaService.getFullTandyaAnsById,
-    youtublog: youtublogService.getFullYoutublogComById
-};
-// article의 reply를 요청하는 api
-route.get('/:type/reply/:id', (req, res) => {
-    const type = req.params['type'];
-    const articleId = req.params.id;
-
-    const replyGetFunction = articleService.getFullReplyByArticleId;
-    if (replyGetFunction == null)
-        res.status(400).send('Wrong article type');
-    else replyGetFunction(
-        articleId,
-        req.session.id2,
-        type
-    ).then(re =>
-        res.json({
-            'result': re
-        })
-    ).catch((e) => {
-            console.error(e);
-            res.status(500).send('Could not warn article')
-        }
-    );
-});
-
-/* ===== POST /{type}/re-reply ===== */
-// article type 에 따른 re-reply post 요청 함수
-const re_replyPostFunctions = {
-    penobrol: penobrolService.postCommentCom,
-    tandya: tandyaService.postAnswerCom,
-    youtublog: youtublogService.postCommentCom
-};
-// reply 에 like/취소 를 요청하는 api
-route.post('/:type/re-reply', (req, res) => {
-    const type = req.params['type'];
-    const postFunction = re_replyPostFunctions[type];
-
-    if (postFunction == null)
-        res.status(400).send('Wrong article type');
-    else postFunction(
-        req.body.id,
-        req.session.id2,
-        req.body.content
-    ).then(re =>
-        res.json({
-            'id': re.id,
-            'author': req.session.u_id
-        })
-    ).catch(() =>
-        res.status(500).send('Could not post re-reply')
     );
 });
 
@@ -162,163 +104,23 @@ route.get('/:type/load', (req, res) => {
     );
 });
 
-
-//**********  Like **********//
-
-/* ===== POST /{type}/like ===== */
-// article type 에 따른 like 요청 함수
-const articleLikeFunctions = {
-    penobrol: penobrolService.likePenobrol,
-    tandya: tandyaService.likeTandya,
-    youtublog: youtublogService.likeYoutublog
-};
-// like 의 개수를 받아오는 함수
-const articleLikeCountFunctions = {
-    penobrol: penobrolService.penobrolLikeCount,
-    tandya: tandyaService.tandyaLikeCount,
-    youtublog: youtublogService.youtublogLikeCount
-};
-// article 에 like/취소 를 요청하는 api
-route.post('/:type/like',
-    __getLikeRequestHandlerFunction(
-        articleLikeFunctions,
-        articleLikeCountFunctions
-    )
-);
-
-/* ===== POST /{type}/reply/like ===== */
-// article type 에 따른 reply like 요청 함수
-const replyLikeFunctions = {
-    penobrol: penobrolService.likePenobrolComment,
-    tandya: tandyaService.likeTandyaAnswer,
-    youtublog: youtublogService.likeYoutublogComment
-};
-// reply 의 like 의 개수를 받아오는 함수
-const replyLikeCountFunctions = {
-    penobrol: penobrolService.penobrolComLikeCount,
-    tandya: tandyaService.tandyaAnsLikeCount,
-    youtublog: youtublogService.youtublogComLikeCount
-};
-// reply 에 like/취소 를 요청하는 api
-route.post('/:type/reply/like',
-    __getLikeRequestHandlerFunction(
-        replyLikeFunctions,
-        replyLikeCountFunctions
-    )
-);
-
-
-// article, reply 에 like 요청을 보내기 위한 공용 함수
-function __getLikeRequestHandlerFunction(likeFunctions, likeCountFunctions) {
-    return (req, res) => {
-        const type = req.params['type'];
-        const likeFunction = likeFunctions[type];
-        const likeCountFunction = likeCountFunctions[type];
-        const id = req.body.id;
-        const cancel = req.body.cancel;
-
-        if (likeFunction == null) res.status(400).send('Wrong article type');
-        else likeFunction(
-            id,
-            req.session.id2,
-            cancel
-        ).then(val =>
-            likeCountFunction(id).then(count =>
-                res.json({
-                    'result': count,
-                    'button': val
-                })
-            ).catch(() => res.status(500).send('Cannot load state'))
-        ).catch(() => res.status(409).send('Already in like state'));
+route.put('/chosen/:type', (req, res) => {
+    const type = req.params['type'];
+    let articleId = req.body.article_id;
+    let preChosen = req.body.pre_chosen;
+    let newChosen = req.body.chosen_id;
+    if(preChosen === newChosen){ //cancel chosen
+        newChosen = null;
     }
-}
-
-//**********  Warn **********//
-
-/* ===== POST /{type}/warn ===== */
-// article type 에 따른 warn 요청 함수
-const articleWarnFunctions = {
-    penobrol: penobrolService.warnPenobrol,
-    tandya: tandyaService.warnTandya,
-    youtublog: youtublogService.warnYoutublog
-};
-
-const articleDidWarnFunctions = {
-    penobrol: penobrolService.didWarnPenobrol,
-    tandya: tandyaService.didWarnTandya,
-    youtublog: youtublogService.didWarnYoutublog
-};
-
-route.post('/:type/warn',
-    __getWarnRequestHandlerFunction(
-        articleWarnFunctions,
-        articleDidWarnFunctions
-    )
-);
-
-/* ===== POST /{type}/reply/warn ===== */
-// reply type 에 따른 warn 요청 함수
-const replyWarnFunctions = {
-    penobrol: penobrolService.warnPenobrolCom,
-    tandya: tandyaService.warnTandyaAns,
-    youtublog: youtublogService.warnYoutublogCom
-};
-
-const replyDidWarnFunctions = {
-    penobrol: penobrolService.didWarnPenobrolCom,
-    tandya: tandyaService.didWarnTandyaAns,
-    youtublog: youtublogService.didWarnYoutublogCom
-};
-
-route.post('/:type/reply/warn',
-    __getWarnRequestHandlerFunction(
-        replyWarnFunctions,
-        replyDidWarnFunctions
-    )
-);
-
-/* ===== POST /{type}/re-reply/warn ===== */
-// re-reply type 에 따른 warn 요청 함수
-const reReplyWarnFunctions = {
-    penobrol: penobrolService.warnPenobrolComCom,
-    tandya: tandyaService.warnTandyaAnsCom,
-    youtublog: youtublogService.warnYoutublogComCom
-};
-
-const reReplyDidWarnFunctions = {
-    penobrol: penobrolService.didWarnPenobrolComCom,
-    tandya: tandyaService.didWarnTandyaAnsCom,
-    youtublog: youtublogService.didWarnYoutublogComCom
-};
-
-route.post('/:type/re-reply/warn',
-    __getWarnRequestHandlerFunction(
-        reReplyWarnFunctions,
-        reReplyDidWarnFunctions
-    )
-);
-
-function __getWarnRequestHandlerFunction(warnFunctions, didWarnFunctions) {
-    return (req, res) => {
-        const type = req.params['type']; // req.params.type
-        const warnFunction = warnFunctions[type];
-        const didWarnFunction = didWarnFunctions[type];
-
-        if (didWarnFunction == null)
-            res.status(400).send("Wrong article type");
-        else didWarnFunction(req.session.id2, req.body.warned_id)
-            .then(didWarn => {
-                if (!didWarn) {
-                    warnFunction(req.session.id2, req.body.warned_id)
-                        .then(result => {
-                            res.json({
-                                'result': result
-                            })
-                        }).catch(() => res.status(499).send('Cannot load state'));
-                } else res.status(409).send('Already Warn');
-            }).catch(() => res.status(501).send('Cannot load state'));
-    }
-}
+    articleService.updateArticleChosen(articleId, newChosen, type)
+        .then(() => {
+            if(newChosen == null) res.json({result: 'cancel'});
+            else res.json({result: 'chosen'});
+        })
+        .catch(() => {
+            res.status(500).send('Could not make chosen');
+        });
+});
 
 //**********  DELETE **********//
 
@@ -337,7 +139,7 @@ route.delete('/:type',
 );
 
 /* ===== DELETE /{type}/reply ===== */
-// reply type 에 따른 warn 요청 함수
+// reply type 에 따른 delete 요청 함수
 const replyDeleteFunctions = {
     penobrol: penobrolService.deleteComment,
     tandya: tandyaService.deleteAnswer,
@@ -351,7 +153,7 @@ route.delete('/:type/reply',
 );
 
 /* ===== DELETE /{type}/re-reply ===== */
-// re-reply type 에 따른 warn 요청 함수
+// re-reply type 에 따른 delete 요청 함수
 const reReplyDeleteFunctions = {
     penobrol: penobrolService.deleteCComment,
     tandya: tandyaService.deleteAComment,
@@ -379,6 +181,5 @@ function __getDeleteRequestHandlerFunction(deleteFunctions) {
             }).catch(() => res.status(499).send('Cannot load state'));
     }
 }
-
 
 module.exports = route;

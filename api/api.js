@@ -9,6 +9,8 @@ const rereply = require('./rereplyApi');
 const youtube = require('./youtubeApi');
 const image = require('./imageApi');
 const opengraph = require('./opengraphApi');
+const warn = require('./warnApi');
+const like = require('./likeApi');
 
 api.use('/aku', akuRouter);
 api.use('/cari', cariRouter);
@@ -19,6 +21,8 @@ api.use('/rereply', rereply);
 api.use('/image', image);
 api.use('/opengraph', opengraph);
 api.use('/youtube', youtube);
+api.use('/warn', warn);
+api.use('/like', like);
 
 module.exports = api;
 

@@ -10,6 +10,9 @@ block articleInfo
         span #{topic.question}
     +basicPInfo(topic.u_id, topic.date, topic.view, topic.replyCount)
 
+block reply
+    +reply('t', topic.id)
+
 block ulComAndAns
 
     script.

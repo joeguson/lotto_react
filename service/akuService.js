@@ -3,6 +3,7 @@ const followDao = require('../db/b-dao/userDao/followDao');
 const tandyaService = require('./tandyaService');
 const penobrolService = require('./penobrolService');
 const youtublogService = require('./youtublogService');
+const likeService = require('./readLikeService');
 const key = require('../info/beritamus-admin-2ff0df5d17ca.json');
 const nodeMailer = require('nodeMailer');
 let config = require('../config.json');
@@ -179,14 +180,13 @@ exports.updateUserInfo = async function(pw, id2){
 // user의 정보에 총 like 개수를 넣어주는 함수
 async function getUserLikes(id2) {
     const [penobrolLikes, tandyaLikes, youtublogLikes, pcommentLikes, tanswerLikes, ycommentLikes] = await Promise.all([
-        penobrolService.penobrolLikeCountByAuthor(id2),
-        tandyaService.tandyaLikeCountByAuthor(id2),
-        youtublogService.youtublogLikeCountByAuthor(id2),
-        penobrolService.penobrolComLikeCountByAuthor(id2),
-        tandyaService.tandyaAnsLikeCountByAuthor(id2),
-        youtublogService.youtublogComLikeCountByAuthor(id2)
+        likeService.articleLikeCountByAuthor(id2, 'penobrol'),
+        likeService.articleLikeCountByAuthor(id2, 'tandya'),
+        likeService.articleLikeCountByAuthor(id2, 'youtublog'),
+        likeService.replyLikeCountByAuthor(id2, 'penobrol'),
+        likeService.replyLikeCountByAuthor(id2, 'tandya'),
+        likeService.replyLikeCountByAuthor(id2, 'youtublog')
     ]);
-    console.log(id2);
     return {
         "penobrol": penobrolLikes,
         "tandya": tandyaLikes,

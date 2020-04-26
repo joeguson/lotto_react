@@ -59,7 +59,7 @@
         controls.style.boxSizing = "border-box";
         controls.style.borderBottom = "none";
         controls.style.padding = "8px";
-        controls.style.background = "#0f4c81";
+        controls.style.backgroundColor = "#0f4c81";
         controls.style.color = "white";
         controls.style.borderRadius = "8px 8px 0 0";
         controls.style.width = w;
@@ -158,6 +158,7 @@
         btn.style.border = "none";
         btn.style.outline = "none";
         btn.style.cursor = "pointer";
+        btn.style.backgroundColor = "#0f4c81";
         btn.style.padding = "3px";
         btn.style.margin = "0 5px";
         parent.appendChild(btn);

@@ -5,7 +5,6 @@ const pclikeDao = require('../db/b-dao/penDao/pclikeDao');
 const phashDao = require('../db/b-dao/penDao/phashDao');
 const penobrolDao = require('../db/b-dao/penDao/penobrolDao');
 const plikeDao = require('../db/b-dao/penDao/plikeDao');
-const warningDao = require('../db/b-dao/warningDao');
 
 /* ===== exports ===== */
 
@@ -99,40 +98,6 @@ exports.postCommentCom = async function (pc_id, author, content) {
     return (await pccDao.penobrolComComById(postCom.insertId))[0];
 };
 
-exports.likePenobrol = async function (p_id, user, val) {
-    try {
-        if (val) await plikeDao.deletePenobrolLike(p_id, user);
-        else await plikeDao.insertPenobrolLike(p_id, user);
-        await penobrolDao.updatePenobrolScore(p_id);
-        return Number(!val);
-    } catch (e) {
-        return null;
-    }
-};
-
-exports.penobrolLikeCount = async function (p_id) {
-    return (await plikeDao.penobrolLikeCount(p_id))[0].plikeCount;
-};
-
-exports.likePenobrolComment = async function (pc_id, user, val) {
-    if (val) await pclikeDao.deletePenobrolComLike(pc_id, user);
-    else await pclikeDao.insertPenobrolComLike(pc_id, user);
-    await pcDao.updatePenobrolComScore(pc_id);
-    return Number(!val);
-};
-
-exports.penobrolComLikeCount = async function (pc_id) {
-    return (await pclikeDao.penobrolComLikeCount(pc_id))[0].pcLikeCount;
-};
-
-exports.penobrolLikeCountByAuthor = async function (id2) {
-    return (await plikeDao.penobrolLikeCountByAuthor(id2))[0].total;
-};
-
-exports.penobrolComLikeCountByAuthor = async function (id2) {
-    return (await pclikeDao.penobrolComLikeCountByAuthor(id2))[0].total;
-};
-
 exports.editPenobrol = async function (p_id, title, content, publicCode, thumbnail, hashtags) {
     penobrolDao.updatePenobrolDate(p_id);
     penobrolDao.updatePenobrol(title, content, publicCode, thumbnail, p_id);
@@ -165,30 +130,6 @@ exports.deleteCComment = async function (pcc_id, u_id) {
     return await deleteProcess(pcc_id, u_id, pccDao.penobrolComComById, pccDao.deletePenobrolComCom);
 };
 
-exports.warnPenobrol = async function (u_id, warned_id) {
-    return await warningDao.insertPenobrolWarning(u_id, warned_id);
-};
-
-exports.warnPenobrolCom = async function (u_id, warned_id) {
-    return await warningDao.insertPenobrolComWarning(u_id, warned_id);
-};
-
-exports.warnPenobrolComCom = async function (u_id, warned_id) {
-    return await warningDao.insertPenobrolComComWarning(u_id, warned_id);
-};
-
-exports.didWarnPenobrol = async function(u_id, warned_id) {
-    return (await warningDao.countPenobrolWarning(u_id, warned_id)) > 0;
-};
-
-exports.didWarnPenobrolCom = async function(u_id, warned_id) {
-    return (await warningDao.countPenobrolComWarning(u_id, warned_id)) > 0;
-};
-
-exports.didWarnPenobrolComCom = async function(u_id, warned_id) {
-    return (await warningDao.countPenobrolComComWarning(u_id, warned_id)) > 0;
-};
-
 /* ===== local functions ===== */
 
 // 하나의 penobrol 에 hashtag 와 Comment 개수를 넣어주는 함수
@@ -201,7 +142,8 @@ async function getFullPenobrol(penobrol) {
     ]);
     penobrol.hashtags = hashtagResult.map(parser.parseHashtagP);
     penobrol.commentCount = comCountResult[0].replyCount;
-    penobrol.likeCount = penobrolLikeCount[0].articleLikeCount;
+    penobrol.likeCount = penobrolLikeCount[0].likeCount;
+
     return penobrol;
 }
 

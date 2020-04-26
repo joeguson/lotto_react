@@ -5,7 +5,6 @@ const taDao = require('../db/b-dao/tanDao/taDao');
 const talikeDao = require('../db/b-dao/tanDao/talikeDao');
 const thashDao = require('../db/b-dao/tanDao/thashDao');
 const tlikeDao = require('../db/b-dao/tanDao/tlikeDao');
-const warningDao = require('../db/b-dao/warningDao');
 
 /* ===== exports ===== */
 
@@ -102,36 +101,6 @@ exports.postAnswerCom = async function(ta_id, author, content) {
     return (await tacDao.tandyaAnsComById(postCom.insertId))[0];
 };
 
-exports.likeTandya = async function(t_id, user, val) {
-    if(val) await tlikeDao.deleteTandyaLike(t_id, user);
-    else await tlikeDao.insertTandyaLike(t_id, user);
-    await tandyaDao.updateTandyaScore(t_id);
-    return Number(!val);
-};
-
-exports.tandyaLikeCount = async function(t_id) {
-    return (await tlikeDao.tandyaLikeCount(t_id))[0].tlikeCount;
-};
-
-exports.likeTandyaAnswer = async function(ta_id, user, val) {
-    if(val) await talikeDao.deleteTandyaAnsLike(ta_id, user);
-    else await talikeDao.insertTandyaAnsLike(ta_id, user);
-    await taDao.updateTandyaAnsScore(ta_id);
-    return Number(!val);
-};
-
-exports.tandyaAnsLikeCount = async function(ta_id) {
-    return (await talikeDao.tandyaAnsLikeCount(ta_id))[0].taLikeCount;
-};
-
-exports.tandyaLikeCountByAuthor = async function(id2) {
-    return (await tlikeDao.tandyaLikeCountByAuthor(id2))[0].total;
-};
-
-exports.tandyaAnsLikeCountByAuthor = async function(id2) {
-    return (await talikeDao.tandyaAnsLikeCountByAuthor(id2))[0].total;
-};
-
 exports.editTandya = async function(t_id, question, content, publicCode, thumbnail, hashtags) {
     tandyaDao.updateTandyaDate(t_id);
     tandyaDao.updateTandya(question, content, publicCode, thumbnail, t_id);
@@ -164,29 +133,6 @@ exports.deleteAComment = async function(tac_id, u_id) {
     return await deleteProcess(tac_id, u_id, tacDao.tandyaAnsComById, tacDao.deleteTandyaAnsCom);
 };
 
-exports.warnTandya = async function(u_id, warned_id) {
-    return await warningDao.insertTandyaWarning(u_id, warned_id);
-};
-
-exports.warnTandyaAns = async function(u_id, warned_id) {
-    return await warningDao.insertTandyaAnsWarning(u_id, warned_id);
-};
-
-exports.warnTandyaAnsCom = async function(u_id, warned_id) {
-    return await warningDao.insertTandyaAnsComWarning(u_id, warned_id);
-};
-
-exports.didWarnTandya = async function(u_id, warned_id) {
-    return (await warningDao.countTandyaWarning(u_id, warned_id)) > 0;
-};
-
-exports.didWarnTandyaAns = async function(u_id, warned_id) {
-    return (await warningDao.countTandyaAnsWarning(u_id, warned_id)) > 0;
-};
-
-exports.didWarnTandyaAnsCom = async function(u_id, warned_id) {
-    return (await warningDao.countTandyaAnsComWarning(u_id, warned_id)) > 0;
-};
 /* ===== local functions ===== */
 
 // 하나의 tandya 에 hashtag 와 answer 개수를 넣어주는 함수
@@ -200,7 +146,7 @@ async function getFullTandya(tandya) {
 
     tandya.hashtags = hashtagResult.map(parser.parseHashtagT);
     tandya.answerCount = ansCountResult[0].replyCount;
-    tandya.likeCount = tandyaLikeCount[0].articleLikeCount;
+    tandya.likeCount = tandyaLikeCount[0].likeCount;
     return tandya;
 }
 

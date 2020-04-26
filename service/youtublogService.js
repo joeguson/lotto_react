@@ -5,7 +5,6 @@ const yclikeDao = require('../db/b-dao/youDao/yclikeDao');
 const yhashDao = require('../db/b-dao/youDao/yhashDao');
 const youtublogDao = require('../db/b-dao/youDao/youtublogDao');
 const ylikeDao = require('../db/b-dao/youDao/ylikeDao');
-const warningDao = require('../db/b-dao/warningDao');
 const youtubeDao = require('../db/b-dao/youDao/youtubeDao');
 
 /* ===== exports ===== */
@@ -100,36 +99,6 @@ exports.postCommentCom = async function (yc_id, author, content) {
     return (await yccDao.youtublogComComById(postCom.insertId))[0];
 };
 
-exports.likeYoutublog = async function (y_id, user, val) {
-    if (val) await ylikeDao.deleteYoutublogLike(y_id, user);
-    else await ylikeDao.insertYoutublogLike(y_id, user);
-    await youtublogDao.updateYoutublogScore(y_id);
-    return Number(!val);
-};
-
-exports.youtublogLikeCount = async function (y_id) {
-    return (await ylikeDao.youtublogLikeCount(y_id))[0].ylikeCount;
-};
-
-exports.likeYoutublogComment = async function (yc_id, user, val) {
-    if (val) await yclikeDao.deleteYoutublogComLike(yc_id, user);
-    else await yclikeDao.insertYoutublogComLike(yc_id, user);
-    await ycDao.updateYoutublogComScore(yc_id);
-    return Number(!val);
-};
-
-exports.youtublogComLikeCount = async function (yc_id) {
-    return (await yclikeDao.youtublogComLikeCount(yc_id))[0].ycLikeCount;
-};
-
-exports.youtublogLikeCountByAuthor = async function (id2) {
-    return (await ylikeDao.youtublogLikeCountByAuthor(id2))[0].total;
-};
-
-exports.youtublogComLikeCountByAuthor = async function (id2) {
-    return (await yclikeDao.youtublogComLikeCountByAuthor(id2))[0].total;
-};
-
 exports.editYoutublog = async function (y_id, title, content, publicCode, thumbnail, hashtags) {
     youtublogDao.updateYoutublogDate(y_id);
     youtublogDao.updateYoutublog(title, content, publicCode, thumbnail, y_id);
@@ -160,30 +129,6 @@ exports.deleteComment = async function (yc_id, u_id) {
 
 exports.deleteCComment = async function (ycc_id, u_id) {
     return await deleteProcess(ycc_id, u_id, yccDao.youtublogComComById, yccDao.deleteYoutublogComCom);
-};
-
-exports.warnYoutublog = async function (u_id, warned_id) {
-    return await warningDao.insertYoutublogWarning(u_id, warned_id);
-};
-
-exports.warnYoutublogCom = async function (u_id, warned_id) {
-    return await warningDao.insertYoutublogComWarning(u_id, warned_id);
-};
-
-exports.warnYoutublogComCom = async function (u_id, warned_id) {
-    return await warningDao.insertYoutublogComComWarning(u_id, warned_id);
-};
-
-exports.didWarnYoutublog = async function(u_id, warned_id) {
-    return (await warningDao.countYoutublogWarning(u_id, warned_id)) > 0;
-};
-
-exports.didWarnYoutublogCom = async function(u_id, warned_id) {
-    return (await warningDao.countYoutublogComWarning(u_id, warned_id)) > 0;
-};
-
-exports.didWarnYoutublogComCom = async function(u_id, warned_id) {
-    return (await warningDao.countYoutublogComComWarning(u_id, warned_id)) > 0;
 };
 
 exports.getYoutubeById = async function(id) {
@@ -238,7 +183,7 @@ async function getFullYoutublog(youtublog) {
     ]);
     youtublog.hashtags = hashtagResult.map(parser.parseHashtagY);
     youtublog.commentCount = comCountResult[0].replyCount;
-    youtublog.likeCount = youtublogLikeCount[0].articleLikeCount;
+    youtublog.likeCount = youtublogLikeCount[0].likeCount;
     return youtublog;
 }
 
