@@ -44,6 +44,7 @@ function __createMask(){
 function __showLoading(){
     const loadDiv = document.createElement('div');
     const body = document.getElementsByTagName('body');
+    console.log(body);
     loadDiv.style.position = "fixed";
     loadDiv.style.top = "35%";
     loadDiv.style.right = "45%";

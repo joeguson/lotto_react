@@ -9,6 +9,9 @@ function __getIsPublic() {
 function postArticle(target) {
     __createMask();
     __showLoading();
+
+    return;
+
     const type = target.name;
     let content = document.getElementById('editor').value();
     let req = {};
