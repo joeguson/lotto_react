@@ -1,7 +1,7 @@
 const daoUtil = require('../../daoUtil');
 
-////////////////////////////////Penobrol////////////////////////////////
-////////////////Select////////////////
+/* ===== select ===== */
+
 exports.penobrolByAuthor = (id) => daoUtil.doQuery(
     `SELECT *
     from penobrol
@@ -54,7 +54,21 @@ exports.penobrolById = (id) => daoUtil.doQuery( //select penobrol with userId
     where p.id = ?`,
     id
 );
-////////////////Update////////////////
+
+exports.cariPenobrol = () => daoUtil.doQuery( //select penobrol with userId
+    `select *
+    from (
+    select *
+    from penobrol 
+    order by score
+    desc 
+    limit 15)p 
+    order by rand() 
+    limit 5`
+);
+
+/* ===== update ===== */
+
 exports.updatePenobrol = (title, content, public, thumbnail, id) => daoUtil.doQuery(
     `UPDATE penobrol
     SET title = ?, content = ?, public = ?, thumbnail = ?
@@ -89,13 +103,14 @@ exports.updateChosenPcom = (id, chosen_id) => daoUtil.doQuery(
     [chosen_id, id]
 );
 
-////////////////Insert////////////////
+/* ===== insert ===== */
 exports.insertPenobrol = (author, title, content, public, thumbnail) => daoUtil.doQuery(
     `INSERT INTO penobrol (author, title, content, public, thumbnail)
     VALUES (?, ?, ?, ?, ?)`,
     [author, title, content, public, thumbnail]
 );
-////////////////Delete////////////////
+
+/* ===== delete ===== */
 exports.deletePenobrol = (id) => daoUtil.doQuery(
     `Delete from penobrol
     where id = ?`,

@@ -1,15 +1,13 @@
+const articleService = require('./articleService');
+const hashService = require('./hashService');
 const akuService = require('./akuService');
-const tandyaService = require('./tandyaService');
-const penobrolService = require('./penobrolService');
-const youtublogService = require('./youtublogService');
-let config = require('../config.json');
 const jsForBack = require('../back/jsForBack.js');
 
 exports.getRandArticle = async function() {
     const randArticle = await Promise.all([
-        penobrolService.getRandPenobrol(),
-        tandyaService.getRandTandya(),
-        youtublogService.getRandYoutublog()
+        articleService.getRandFrontArticle('penobrol'),
+        articleService.getRandFrontArticle('tandya'),
+        articleService.getRandFrontArticle('youtublog'),
     ]);
     return randArticle;
 };
@@ -17,12 +15,23 @@ exports.getRandArticle = async function() {
 exports.getSearch = async function(words, hashes) {
     const searchResult = await Promise.all([
         akuService.searchUser(words),
-        penobrolService.searchPenobrol(words),
-        tandyaService.searchTandya(words),
-        penobrolService.searchPenobrolByHash(hashes),
-        tandyaService.searchTandyaByHash(hashes)
+        articleService.searchArticle(words, 'penobrol'),
+        articleService.searchArticle(words, 'tandya'),
+        articleService.searchArticle(words, 'youtublog'),
+        hashService.searchArticleByHash(hashes, 'penobrol'),
+        hashService.searchArticleByHash(hashes, 'tandya'),
+        hashService.searchArticleByHash(hashes, 'youtublog'),
     ]);
     return searchResult;
+};
+
+exports.getCariArticle = async function() {
+    const randArticle = await Promise.all([
+        articleService.getCariFrontArticle('penobrol'),
+        articleService.getCariFrontArticle('tandya'),
+        articleService.getCariFrontArticle('youtublog'),
+    ]);
+    return randArticle;
 };
 
 /* ===== local functions ===== */

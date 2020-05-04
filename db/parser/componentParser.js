@@ -7,72 +7,71 @@ const utils = require("../utils.js");
 
 /* ==== Article Like ==== */
 
-exports.parsePLike = function (packet) {
+function parseLikeCommon(packet){
+    return {u_id: packet.u_id}
+}
+
+function parseHashCommon(packet){
     return {
-        p_id: packet.p_id,
-        u_id: packet.u_id
-    };
+        id: packet.id,
+        hash: packet.hash
+    }
+}
+
+exports.parsePLike = function (packet) {
+    const tempLike = parseLikeCommon(packet);
+    tempLike.p_id = packet.p_id;
+    return tempLike;
 };
 
 exports.parseTLike = function (packet) {
-    return {
-        t_id: packet.t_id,
-        u_id: packet.u_id
-    };
+    const tempLike = parseLikeCommon(packet);
+    tempLike.t_id = packet.t_id;
+    return tempLike;
 };
 
 exports.parseYLike = function (packet) {
-    return {
-        y_id: packet.y_id,
-        u_id: packet.u_id
-    };
+    const tempLike = parseLikeCommon(packet);
+    tempLike.y_id = packet.y_id;
+    return tempLike;
 };
 
 /* ==== Reply Like ==== */
 
 exports.parsePcLike = function (packet) {
-    return {
-        pc_id: packet.pc_id,
-        u_id: packet.u_id
-    };
+    const tempLike = parseLikeCommon(packet);
+    tempLike.pc_id = packet.pc_id;
+    return tempLike;
 };
 
 exports.parseTaLike = function (packet) {
-    return {
-        ta_id: packet.ta_id,
-        u_id: packet.u_id
-    };
+    const tempLike = parseLikeCommon(packet);
+    tempLike.ta_id = packet.ta_id;
+    return tempLike;
 };
 
 exports.parseYcLike = function (packet) {
-    return {
-        yc_id: packet.yc_id,
-        u_id: packet.u_id
-    };
+    const tempLike = parseLikeCommon(packet);
+    tempLike.yc_id = packet.yc_id;
+    return tempLike;
 };
 
 /* ==== Reply Like ==== */
 
 exports.parseHashtagP = function (packet) {
-    return {
-        id: packet.id,
-        p_id: packet.p_id,
-        hash: packet.hash
-    };
+    const tempHash = parseHashCommon(packet);
+    tempHash.p_id = packet.p_id;
+    return tempHash;
 };
 
 exports.parseHashtagT = function (packet) {
-    return {
-        id: packet.id,
-        t_id: packet.t_id,
-        hash: packet.hash
-    };
+    const tempHash = parseHashCommon(packet);
+    tempHash.t_id = packet.t_id;
+    return tempHash;
 };
 
 exports.parseHashtagY = function (packet) {
-    return {
-        id: packet.id,
-        y_id: packet.y_id,
-        hash: packet.hash
-    };
+    const tempHash = parseHashCommon(packet);
+    tempHash.y_id = packet.y_id;
+    return tempHash;
 };

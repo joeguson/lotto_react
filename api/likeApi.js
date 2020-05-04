@@ -7,7 +7,7 @@
 const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 
-const likeService = require('../service/readLikeService');
+const likeService = require('../service/likeService');
 
 //**********  Like **********//
 

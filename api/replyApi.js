@@ -7,7 +7,7 @@
 const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 
-const readReplyService = require('../service/readReplyService');
+const readReplyService = require('../service/replyService');
 
 /* ===== GET /{type}/{id} ===== */
 // article의 reply를 요청하는 api

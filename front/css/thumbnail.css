@@ -84,3 +84,15 @@ dt a {
   font-size: 24px;
 }
 /*for bigger windows*/
+@media (min-width: 736px) {
+  .thumbnailLi {
+    width: 50%;
+    background-color: white;
+    margin-bottom: 5px;
+    border: 1px solid #5781a6;
+    margin-bottom: 10px;
+    padding: 5px;
+    cursor: url(hand.cur), pointer;
+    float: left;
+  }
+}

@@ -11,9 +11,13 @@ class BeritamusHashtag extends HTMLElement {
 
     __buildHashtag() {
         const hashtag = document.createElement("dd");
-        hashtag.className = "hashtag"
-        hashtag.innerText = this.src.map(e => `#${e.hash}`).join(' ');
-
+        hashtag.className = "hashtag";
+        this.src.forEach((hash) => {
+            const temp = document.createElement('span');
+            temp.innerHTML = '#'+hash.hash+'  ';
+            temp.style.backgroundColor = "#f4f5f0";
+            hashtag.appendChild(temp);
+        });
         this.appendChild(hashtag);
     }
 }

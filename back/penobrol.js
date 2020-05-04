@@ -1,16 +1,17 @@
 //url - '/penobrol'
 const route = require('express').Router();
-const readArticleService = require('../service/readArticleService.js');
+const readArticleService = require('../service/articleService.js');
 const penobrolService = require('../service/penobrolService.js');
 
-/************FOR PENOBROL************/
+/* ===== penobrol ===== */
 route.get('/', function (req, res) {
-    penobrolService.getOrderedPenobrol()
-        .then(([dateTopics, scoreTopics]) => res.render('./jp/p', {
-            dateTopics: dateTopics,
-            scoreTopics: scoreTopics,
+    readArticleService.getFrontArticle('penobrol')
+        .then(([results]) => {
+            res.render('./jp/p', {
+            topics: results,
             id2: req.session.id2 ? req.session.id2 : 0
-        }));
+            })}
+        );
 });
 
 route.get('/:penobrol_no', function (req, res, next) {

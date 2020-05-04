@@ -4,11 +4,72 @@ const jsForBack = require('./jsForBack.js');
 const akuService = require('../service/akuService.js');
 const geoip = require('geoip-lite');
 
+// login
+route.post('/login', function(req, res){
+    //login이 이뤄질때
+    const u_id = req.body.u_id;
+    const u_pw = req.body.u_pw;
+    // 아래의 코드는 접속 국가를 설정하기 위해 만듬
+    // let ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+    let ipAddress = '112.157.39.243';
+    let geo = geoip.lookup(ipAddress);
+    let countryCode = 0;
+    if(geo.country === 'KR') countryCode = 82;
+    else if(geo.country === 'ID') countryCode = 62;
+    else countryCode = 1;
+    akuService.userLogin(u_id, u_pw).then(result => {
+        if(result.verify === 1){ //match credential
+            akuService.updateLoginDate(u_id)
+                .then(
+                    req.session.u_id = u_id,
+                    req.session.id2 = result.id,
+                    req.session.countryCode = countryCode,
+                    req.session.save(function(){
+                        res.redirect('/aku');
+                    })
+                );
+        }
+        else if(result === -1){
+            res.render('./ja/login', {
+                "message":"please check your id or password"
+            });
+        }
+        else{
+            res.render('./ja/login', {
+                "message":"this email is not verified"
+            });
+        }
+    });
+});
+
+route.get('/', function(req, res){
+    if(req.session.id2) {
+        akuService.getUserArticle(req.session.id2)
+            .then(([userPenobrol, userTandya, userYoutublog, totalLikes]) => {
+                akuService.countFollow(req.session.id2)
+                    .then(([following, follower]) => {
+                        res.render('./ja/aku', {
+                            user:req.session.id2,
+                            u_id:req.session.u_id,
+                            following: following[0].following,
+                            follower: follower[0].follower,
+                            penobrols:userPenobrol[0],
+                            tandyas:userTandya[0],
+                            youtublog:userYoutublog[0],
+                            totalLikes:totalLikes
+                        })});
+            });
+    }
+    else{
+        res.render('./ja/login');
+    }
+});
+
 route.get('/register', function(req, res){
     if(req.query.email){
         let email = req.query.email;
         let code = req.query.code;
-        let result = akuService.verifyUserEmail(email, code)
+        akuService.verifyUserEmail(email, code)
             .then((result) => {
                 if (result === 1) res.render('./ja/aku');
                 else if (result === 0) res.render('./ja/aku', {"message": "your verification code is wrong"});
@@ -27,29 +88,6 @@ route.post('/register', function(req, res){
         req.body.email,
         parseInt(jsForBack.codeMaker())
     ).then(res.redirect('/aku'));
-});
-
-route.get('/', function(req, res){
-    if(req.session.u_id) {
-        akuService.getUserArticle(req.session.id2)
-            .then(([userPenobrol, userTandya, userYoutublog, totalLikes]) => {
-                akuService.countFollow(req.session.id2)
-                    .then(([following, follower]) => {
-                        res.render('./ja/aku', {
-                        user:req.session.id2,
-                        u_id:req.session.u_id,
-                        following: following[0].following,
-                        follower: follower[0].follower,
-                        penobrols:userPenobrol,
-                        tandyas:userTandya,
-                        youtublog:userYoutublog,
-                        totalLikes:totalLikes
-                    })});
-            });
-    }
-    else{
-        res.render('./ja/login');
-    }
 });
 
 route.get('/user/:user_id', function(req, res, next){
@@ -74,45 +112,11 @@ route.get('/logout', function(req, res){
     delete req.session.u_id;
     delete req.session.id2;
     delete req.session.valid;
+    delete req.session.countryCode;
     res.redirect("/aku");
 });
 
 
-route.post('/login', function(req, res){
-    //login이 이뤄질때
-    const u_id = req.body.u_id;
-    const u_pw = req.body.u_pw;
-    // 아래의 코드는 접속 국가를 설정하기 위해 만듬
-    // let ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-    let ipAddress = '112.157.39.243';
-    let geo = geoip.lookup(ipAddress);
-    let countryCode = 0;
-    if(geo.country === 'KR') countryCode = 82;
-    else if(geo.country === 'ID') countryCode = 62;
-    else countryCode = 1;
-    akuService.userLogin(u_id, u_pw).then(result => {
-        if (!result) res.render('./ja/aku', {
-            "message":"please check your id or password"
-        });
-        else {
-            if (parseInt(result.verify) == 1){
-                akuService.updateLoginDate(u_id).then(
-                    req.session.u_id = u_id,
-                    req.session.id2 = result.id,
-                    req.session.countryCode = countryCode,
-                    req.session.save(function(){
-                        res.redirect('/aku');
-                    })
-                );
-            }
-            else{
-                res.render('./ja/aku', {
-                    "message":"this email is not verified"
-                });
-            }
-        }
-    });
-});
 
 route.get('/logout', function(req, res){
     delete req.session.u_id;

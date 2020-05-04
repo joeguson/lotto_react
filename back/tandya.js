@@ -1,17 +1,17 @@
 //url - '/tandya'
 const route = require('express').Router();
-const readArticleService = require('../service/readArticleService.js');
+const readArticleService = require('../service/articleService.js');
 const tandyaService = require('../service/tandyaService.js');
 
 /* ===== tandya ===== */
-
 route.get('/', function (req, res) {
-    tandyaService.getOrderedTandya()
-        .then(([dateTopics, scoreTopics]) => res.render('./jt/t', {
-            dateTopics: dateTopics,
-            scoreTopics: scoreTopics,
-            id2: req.session.id2
-        }));
+    readArticleService.getFrontArticle('tandya')
+        .then(([results]) => {
+            res.render('./jt/t', {
+            topics: results,
+            id2: req.session.id2 ? req.session.id2 : 0
+        })}
+        );
 });
 
 route.get('/:tandya_no', function (req, res, next) {
@@ -29,9 +29,7 @@ route.get('/:tandya_no', function (req, res, next) {
             );
         });
     }
-    else {
-        next();
-    }
+    else next();
 });
 
 route.get('/new', function (req, res) {
@@ -44,7 +42,6 @@ route.get('/new', function (req, res) {
 
 route.get('/:id/answer/new', function (req, res) {
     const articleId = req.params.id;
-    console.log(articleId);
     const checkId = /^[0-9]+$/;
     if (req.session.id2) {
         if (checkId.test(articleId)) {

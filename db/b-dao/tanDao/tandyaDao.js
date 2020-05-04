@@ -1,6 +1,6 @@
 const daoUtil = require('../../daoUtil');
-////////////////////////////////Tandya////////////////////////////////
-////////////////Select////////////////
+
+/* ===== select ===== */
 exports.tandyaByAuthor = (id) => daoUtil.doQuery(
     `SELECT *
     from tandya
@@ -53,7 +53,18 @@ exports.tandyaById = (id) => daoUtil.doQuery(
     where t.id = ?`,
     id
 );
-////////////////Update////////////////
+exports.cariTandya = () => daoUtil.doQuery( //select penobrol with userId
+    `select * 
+    from (
+    select * 
+    from tandya 
+    order by score 
+    desc 
+    limit 15)p 
+    order by rand() 
+    limit 5`
+);
+
 exports.updateTandya = (question, content, public, thumbnail, id) => daoUtil.doQuery(
     `UPDATE tandya
     SET question = ?, content = ?, public = ?, thumbnail = ?
@@ -87,14 +98,15 @@ exports.updateChosenTans = (id, chosen_id) => daoUtil.doQuery(
     WHERE id = ?`,
     [chosen_id, id]
 );
-////////////////Insert////////////////
+
+/* ===== insert ===== */
 exports.insertTandya = (author, question, content, public, thumbnail) => daoUtil.doQuery(
     `INSERT INTO tandya(author, question, content, public, thumbnail)
     VALUES (?, ?, ?, ?, ?)`,
     [author, question, content, public, thumbnail]
 );
 
-////////////////Delete////////////////
+/* ===== delete ===== */
 exports.deleteTandya = (id) => daoUtil.doQuery(
     `Delete from tandya
     where id = ?`,

@@ -6,7 +6,7 @@ mixin frontPage(type)
         else
             a.addArticle(href='/aku') +
     ul.thumbnailUl(id="uls")
-        for v in dateTopics
+        for v in topics
             b-thumbnail(jsonSrc=`${JSON.stringify(v)}`)
 
 mixin basicPInfo(author, date, view, comAnsCount)

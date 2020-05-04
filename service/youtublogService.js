@@ -9,14 +9,6 @@ const youtubeDao = require('../db/b-dao/youDao/youtubeDao');
 
 /* ===== exports ===== */
 
-exports.searchYoutublog = async function (string) {
-    const results = await youtublogDao.youtublogSearch(string);
-    const parsed = results.map(subject =>
-        parser.parseFrontYoutublog(subject)
-    );
-    return await applyAsyncToAll(parsed, getFullYoutublog);
-};
-
 exports.searchYoutublogByHash = async function (array) {
     let yhResults = [];
     for (let h of array) {
@@ -25,49 +17,12 @@ exports.searchYoutublogByHash = async function (array) {
     return await applyAsyncToAll(yhResults, getFullYoutublog);
 };
 
-exports.getRandYoutublog = async function () {
-    const results = await youtublogDao.youtublogByRand();
-    const parsed = results.map(subject =>
-        parser.parseFrontYoutublog(subject)
-    );
-    return await applyAsyncToAll(parsed, getFullYoutublog);
-};
-
-exports.getUserYoutublog = async function (id2) {
-    const results = await youtublogDao.youtublogByAuthor(id2);
-    const parsed = results.map(subject =>
-        parser.parseFrontYoutublog(subject)
-    );
-    return await applyAsyncToAll(parsed, getFullYoutublog);
-};
-
 exports.getUserYoutublogWithoutAnonim = async function (id2) {
     const results = await youtublogDao.youtublogByAuthorWithoutAnonim(id2);
     const parsed = results.map(subject =>
         parser.parseFrontYoutublog(subject)
     );
     return await applyAsyncToAll(parsed, getFullYoutublog);
-};
-
-exports.getOrderedYoutublog = async function () {
-    // date, score 기준으로 youtublog 를 받아오는 것을 병렬로 처리
-    const results = await Promise.all([
-        youtublogDao.youtublogByDate(),
-        youtublogDao.youtublogByScore()
-    ]);
-    // byDate, byScore 를 youtublog 객체로 변환
-    const parsed = results.map(subject =>
-        subject.map(parser.parseFrontYoutublog)
-    );
-    // byDate, byScore 에 있는 youtublog 들에게 hashtag 와 comment 개수를 넣어줌
-    return await Promise.all(parsed.map((list) => applyAsyncToAll(list, getFullYoutublog)));
-};
-
-exports.getFullYoutublogComById = async function(id, userId) {
-    const youtublogComResult = (await ycDao.youtublogComByScore(id)).map(parser.parseComment);
-    if(youtublogComResult == null) return null;
-    const youtublogComResultWithReply = await applyAsyncToAll(youtublogComResult, getFullComments);
-    return youtublogComResultWithReply;
 };
 
 // youtublog 의 조회수를 올리고 그에 따라 점수를 업데이트 하는 함수
@@ -85,20 +40,6 @@ exports.postYoutublog = async function (author, title, content, publicCode, thum
     return youtublog.insertId;
 };
 
-exports.postComment = async function (y_id, author, comment) {
-    const com = await ycDao.insertYoutublogCom(author, comment, y_id);
-    await youtublogDao.updateYoutublogScore(y_id);
-    return com.insertId;
-};
-
-exports.postCommentCom = async function (yc_id, author, content) {
-    // 결과에 상관 없는 처리이므로 굳이 기다리지 않아도 됨
-    ycDao.updateYoutublogComScore(yc_id);
-
-    const postCom = await yccDao.insertYoutublogComCom(author, content, yc_id);
-    return (await yccDao.youtublogComComById(postCom.insertId))[0];
-};
-
 exports.editYoutublog = async function (y_id, title, content, publicCode, thumbnail, hashtags) {
     youtublogDao.updateYoutublogDate(y_id);
     youtublogDao.updateYoutublog(title, content, publicCode, thumbnail, y_id);
@@ -106,12 +47,6 @@ exports.editYoutublog = async function (y_id, title, content, publicCode, thumbn
     if (hashtags != null && hashtags.length > 0)
         await insertHashtags(y_id, hashtags);
     return y_id;
-};
-
-exports.getCommentById = async function (yc_id) {
-    const commentResult = (await ycDao.youtublogComById(yc_id))[0];
-    if (commentResult == null) return null;
-    return parser.parseComment(commentResult);
 };
 
 exports.editComment = async function (yc_id, content, y_id) {
@@ -182,7 +117,7 @@ async function getFullYoutublog(youtublog) {
 
     ]);
     youtublog.hashtags = hashtagResult.map(parser.parseHashtagY);
-    youtublog.commentCount = comCountResult[0].replyCount;
+    youtublog.replyCount = comCountResult[0].replyCount;
     youtublog.likeCount = youtublogLikeCount[0].likeCount;
     return youtublog;
 }

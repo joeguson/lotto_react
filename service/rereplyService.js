@@ -2,12 +2,13 @@
 const pccDao = require('../db/b-dao/penDao/pccDao');
 const tacDao = require('../db/b-dao/tanDao/tacDao');
 const yccDao = require('../db/b-dao/youDao/yccDao');
-//readArticleFunctions
-const readArticleFunction = require('./readArticleService');
-//readReplyFunctions
-const readReplyFunction = require('./readReplyService');
+//articleServices
+const articleService = require('./articleService');
+//replyServices
+const replyService = require('./replyService');
 //others
 const reReplyParser = require('../db/parser/reReplyParser.js');
+const serviceUtil = require('./serviceUtil');
 
 const getRereplyFunctions = {
     penobrol: pccDao.penobrolComComByPcId,
@@ -37,7 +38,7 @@ const getReReplyById = {
 
 exports.postReReply = async function (reply_id, userId, type, content) {
     const reReplyResult = await postReReplyFunctions[type](userId, content, reply_id);
-    await readReplyFunction.updateReplyScore(reply_id, type);
+    await replyService.updateReplyScore(reply_id, type);
     let reReply = (await getReReplyById[type](reReplyResult.insertId)).map(reReplyParseFunctions[type]);
     return reReply[0];
 };

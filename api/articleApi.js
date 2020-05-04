@@ -10,7 +10,7 @@ const jsForBack = require('../back/jsForBack.js');
 const penobrolService = require('../service/penobrolService.js');
 const tandyaService = require('../service/tandyaService.js');
 const youtublogService = require('../service/youtublogService.js');
-const articleService = require('../service/readArticleService.js');
+const articleService = require('../service/articleService.js');
 
 const articleMainColumns = {
     penobrol: "title",
@@ -94,12 +94,10 @@ const randArticleFunctions = {
 };
 route.get('/:type/load', (req, res) => {
     const type = req.params['type'];
-    const loadFunction = randArticleFunctions[type];
-
-    if (loadFunction == null)
-        res.status(400).send('Wrong article type');
-    else loadFunction()
-        .then(rand => {res.json(rand);})
+    articleService.getRandFrontArticle(type)
+        .then(([rand]) => {
+            res.json(rand);
+        })
         .catch(() => res.status(500).send('Could not post re-reply')
     );
 });

@@ -6,10 +6,10 @@ const ylikeDao = require('../db/b-dao/youDao/ylikeDao');
 const pclikeDao = require('../db/b-dao/penDao/pclikeDao');
 const talikeDao = require('../db/b-dao/tanDao/talikeDao');
 const yclikeDao = require('../db/b-dao/youDao/yclikeDao');
-//readArticleFunctions
-const readArticleService = require('./readArticleService');
-//readReplyFunctions
-const readReplyService = require('./readReplyService');
+//articleServices
+const articleService = require('./articleService');
+//replyServices
+const replyService = require('./replyService');
 //others
 const componentParser = require('../db/parser/componentParser.js');
 
@@ -65,7 +65,7 @@ exports.likeArticle = async function (article_id, user, val, type) {
     try {
         if (val) await unlikeArticleFunctions[type](article_id, user);
         else await likeArticleFunctions[type](article_id, user);
-        await readArticleService.updateArticleScore(article_id, type);
+        await articleService.updateArticleScore(article_id, type);
         return Number(!val);
     } catch (e) {
         return null;
@@ -87,7 +87,7 @@ exports.likeReply = async function (reply_id, user, val, type) {
     try {
         if (val) await unlikeReplyFunctions[type](reply_id, user);
         else await likeReplyFunctions[type](reply_id, user);
-        await readReplyService.updateReplyScore(reply_id, type);
+        await replyService.updateReplyScore(reply_id, type);
         return Number(!val);
     } catch (e) {
         return null;

@@ -59,6 +59,11 @@ class BeritamusThumbnail extends HTMLElement {
             location.href = `${type}`+'/'+`${this.src.id}`;
         };
 
+        const like = document.createElement("dd");
+        like.className = "ddcontent";
+        like.innerText = this.src.likeCount;
+        this.dl.appendChild(like);
+
         const dt = document.createElement("dt");
         const title = document.createElement("a");
         title.href = `${type}`+'/'+`${this.src.id}`;
@@ -66,10 +71,10 @@ class BeritamusThumbnail extends HTMLElement {
         dt.appendChild(title);
         this.dl.appendChild(dt);
 
-        const content = document.createElement("dd");
-        content.className = "ddcontent";
-        content.innerText = this.src.thumbnail;
-        this.dl.appendChild(content);
+        const thumbnail = document.createElement("dd");
+        thumbnail.className = "ddcontent";
+        thumbnail.innerText = this.src.thumbnail;
+        this.dl.appendChild(thumbnail);
 
         const hashtag = document.createElement("b-hashtag");
         hashtag.className = "hashtag";
@@ -77,9 +82,13 @@ class BeritamusThumbnail extends HTMLElement {
         this.dl.appendChild(hashtag);
 
         const date = document.createElement("dd");
-        date.innerText = this.src.identifier === 't'? this.src.answerCount + ' answers': this.src.commentCount +' comments';
-        date.innerText = date.innerText +  ' / ' + this.src.date + ' / ' + this.src.view + ' views / ' +this.src.likeCount + ' likes';
+        date.innerText = this.src.identifier === 't'? this.src.replyCount + ' answers': this.src.replyCount +' comments';
+        date.innerText = date.innerText +  ' / ' + this.src.date + ' / ' + this.src.view + ' views';
         this.dl.appendChild(date);
+
+        const chosen = document.createElement("dd");
+        if(this.src.chosenContent) chosen.innerHTML = this.src.chosenContent.answer;
+        this.dl.appendChild(chosen);
 
         return this.dl;
     }

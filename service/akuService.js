@@ -1,9 +1,10 @@
 const userDao = require('../db/b-dao/userDao/userDao');
 const followDao = require('../db/b-dao/userDao/followDao');
+const articleService = require('./articleService');
 const tandyaService = require('./tandyaService');
 const penobrolService = require('./penobrolService');
 const youtublogService = require('./youtublogService');
-const likeService = require('./readLikeService');
+const likeService = require('./likeService');
 const key = require('../info/beritamus-admin-2ff0df5d17ca.json');
 const nodeMailer = require('nodeMailer');
 let config = require('../config.json');
@@ -18,6 +19,16 @@ const transporter = nodeMailer.createTransport({
 
 let mailOptions = {
     from: 'admin@beritamus.com'
+};
+
+//login
+exports.userLogin = async function(u_id, u_pw) {
+    const result = await userDao.matchCredential(u_id, u_pw);
+    if(result[0]){
+        if(result[0].verify === 1) return result[0]; //match credential
+        else return 0; //match but email not verified
+    }
+    else return -1; //no result
 };
 
 // follow 요청을 한 후 성공 여부 반환
@@ -64,9 +75,9 @@ exports.searchUser = async function(string) {
 
 exports.getUserArticle = async function(id2) {
     return await Promise.all([
-        penobrolService.getUserPenobrol(id2),
-        tandyaService.getUserTandya(id2),
-        youtublogService.getUserYoutublog(id2),
+        articleService.getArticleByAuthor(id2, 'penobrol'),
+        articleService.getArticleByAuthor(id2, 'tandya'),
+        articleService.getArticleByAuthor(id2, 'youtublog'),
         getUserLikes(id2)
     ]);
 };
@@ -78,12 +89,6 @@ exports.getUserArticleByForeigner = async function(id2, me) {
         youtublogService.getUserYoutublogWithoutAnonim(id2),
         await followDao.select(me, id2)
     ]);
-};
-
-exports.userLogin = async function(u_id, u_pw) {
-    const result = await userDao.matchCredential(u_id, u_pw);
-    if(result == null) return null;
-    else return result[0];
 };
 
 exports.updateLoginDate = async function(u_id) {

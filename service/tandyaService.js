@@ -8,14 +8,6 @@ const tlikeDao = require('../db/b-dao/tanDao/tlikeDao');
 
 /* ===== exports ===== */
 
-exports.searchTandya = async function(string) {
-    const results = await tandyaDao.tandyaSearch(string);
-    const parsed = results.map(subject =>
-        parser.parseFrontTandya(subject)
-    );
-    return await applyAsyncToAll(parsed, getFullTandya);
-};
-
 exports.searchTandyaByHash = async function(array) {
     let thResults = [];
     for(var h of array){
@@ -24,49 +16,12 @@ exports.searchTandyaByHash = async function(array) {
     return await applyAsyncToAll(thResults, getFullTandya);
 };
 
-exports.getRandTandya = async function() {
-    const results = await tandyaDao.tandyaByRand();
-    const parsed = results.map(subject =>
-        parser.parseFrontTandya(subject)
-    );
-    return await applyAsyncToAll(parsed, getFullTandya);
-};
-
-exports.getUserTandya = async function(id2) {
-    const results = await tandyaDao.tandyaByAuthor(id2);
-    const parsed = results.map(subject =>
-        parser.parseFrontTandya(subject)
-    );
-    return await applyAsyncToAll(parsed, getFullTandya);
-};
-
 exports.getUserTandyaWithoutAnonim = async function(id2) {
     const results = await tandyaDao.tandyaByAuthorWithoutAnonim(id2);
     const parsed = results.map(subject =>
         parser.parseFrontTandya(subject)
     );
     return await applyAsyncToAll(parsed, getFullTandya);
-};
-
-exports.getOrderedTandya = async function() {
-    // date, score 기준으로 tandya 를 받아오는 것을 병렬로 처리
-    const results = await Promise.all([
-        tandyaDao.tandyaByDate(),
-        tandyaDao.tandyaByScore()
-    ]);
-    // byDate, byScore 를 tandya 객체로 변환
-    const parsed = results.map(subject =>
-        subject.map(parser.parseFrontTandya)
-    );
-    // byDate, byScore 에 있는 tandya 들에게 hashtag 와 answer 개수를 넣어줌
-    return await Promise.all(parsed.map((list) => applyAsyncToAll(list, getFullTandya)));
-};
-
-exports.getFullTandyaAnsById = async function(id, userId) {
-    const tandyaAnsResult = (await taDao.tandyaAnsByScore(id)).map(parser.parseAnswer);
-    if(tandyaAnsResult == null) return null;
-    const tandyaAnsResultWithReply = await applyAsyncToAll(tandyaAnsResult, getFullAnswer);
-    return tandyaAnsResultWithReply;
 };
 
 // tandya 의 조회수를 올리고 그에 따라 점수를 업데이트 하는 함수
@@ -84,23 +39,6 @@ exports.postTandya = async function(author, question, content, publicCode, thumb
     return tandya.insertId;
 };
 
-exports.postAnswer = async function(t_id, author, answer) {
-    const ans = await taDao.insertTandyaAns(author, answer, t_id);
-    await tandyaDao.updateTandyaScore(t_id);
-    return ans.insertId;
-};
-
-exports.postAnswerCom = async function(ta_id, author, content) {
-    // 결과에 상관 없는 처리이므로 굳이 기다리지 않아도 됨
-    taDao.updateTandyaAnsScore(ta_id);
-
-    const postCom = await tacDao.insertTandyaAnsCom(author, content, ta_id);
-    // 삽입 시간을 db 기준으로 하지 않고 서버 시간을 기준으로 하면 모든 정보를 알고 있기 때문에 추가 쿼리를 할 필요 없음
-    // 즉, 아래의 await tandyaAnsComById(postCom.insertId) 은 db 시간을 기준으로 하기 때문에 생기는
-    // 완전히 불필요한 문장
-    return (await tacDao.tandyaAnsComById(postCom.insertId))[0];
-};
-
 exports.editTandya = async function(t_id, question, content, publicCode, thumbnail, hashtags) {
     tandyaDao.updateTandyaDate(t_id);
     tandyaDao.updateTandya(question, content, publicCode, thumbnail, t_id);
@@ -108,12 +46,6 @@ exports.editTandya = async function(t_id, question, content, publicCode, thumbna
     if(hashtags != null && hashtags.length > 0)
         await insertHashtags(t_id, hashtags);
     return t_id;
-};
-
-exports.getAnswerById = async function(ta_id) {
-    const answerResult = (await taDao.tandyaAnsById(ta_id))[0];
-    if(answerResult == null) return null;
-    return parser.parseAnswer(answerResult);
 };
 
 exports.editAnswer = async function(ta_id, content, t_id) {
@@ -145,7 +77,7 @@ async function getFullTandya(tandya) {
     ]);
 
     tandya.hashtags = hashtagResult.map(parser.parseHashtagT);
-    tandya.answerCount = ansCountResult[0].replyCount;
+    tandya.replyCount = ansCountResult[0].replyCount;
     tandya.likeCount = tandyaLikeCount[0].likeCount;
     return tandya;
 }

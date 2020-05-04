@@ -8,7 +8,7 @@ exports.tandyaHashtagById = (id) => daoUtil.doQuery(
     id
 );
 exports.tandyaSearchByHash = (hash) => daoUtil.doQuery(
-    `select *
+    `select id
     from tandya
     where id in
     (select distinct t_id from tandya_hashtag where hash like ?)`,

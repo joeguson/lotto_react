@@ -34,8 +34,12 @@ html
                 block main
             section.footer
                 block footer
-                    p contact : admin@beritamus.com
-                    p www.beritamus.com
+                    .footer1
+                        p admin@beritamus.com
+                        p www.beritamus.com
+                    .footer2
+                        p
+                            a() References
 
     block jscript
     script.
@@ -48,9 +52,9 @@ html
                 case 'youtublog':
                     const currentLiTag = document.getElementById(currentTag + 'LiTag');
                     const currentATag = document.getElementById(currentTag + 'ATag');
-                    currentLiTag.style.borderBottom = '3px solid #ffff97';
+                    currentLiTag.style.borderBottom = '3px solid #f4f5f0';
                     currentLiTag.style.opacity = '.9';
-                    currentATag.style.color = '#ffff97';
+                    currentATag.style.color = '#f4f5f0';
                     break;
                 case 'cari':
                 default:

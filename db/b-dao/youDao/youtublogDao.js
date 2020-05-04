@@ -1,6 +1,6 @@
 const daoUtil = require('../../daoUtil');
-////////////////////////////////youtublog////////////////////////////////
-////////////////Select////////////////
+
+/* ===== select ===== */
 exports.youtublogByAuthor = (id) => daoUtil.doQuery(
     `SELECT *
     from youtublog
@@ -53,7 +53,19 @@ exports.youtublogById = (id) => daoUtil.doQuery(
     where y.id = ?`,
     id
 );
-////////////////Update////////////////
+exports.cariYoutublog = () => daoUtil.doQuery( //select penobrol with userId
+    `select * 
+    from (
+    select * 
+    from youtublog 
+    order by score 
+    desc 
+    limit 15)p 
+    order by rand() 
+    limit 5`
+);
+
+/* ===== update ===== */
 exports.updateYoutublog = (title, content, public, thumbnail, id) => daoUtil.doQuery(
     `UPDATE youtublog
     SET title = ?, content = ?, public = ?, thumbnail = ?
@@ -87,14 +99,15 @@ exports.updateChosenYcom = (id, chosen_id) => daoUtil.doQuery(
     WHERE id = ?`,
     [chosen_id, id]
 );
-////////////////Insert////////////////
+
+/* ===== insert ===== */
 exports.insertYoutublog = (author, title, content, public, thumbnail) => daoUtil.doQuery(
     `INSERT INTO youtublog(author, title, content, public, thumbnail)
     VALUES (?, ?, ?, ?, ?)`,
     [author, title, content, public, thumbnail]
 );
 
-////////////////Delete////////////////
+/* ===== delete ===== */
 exports.deleteYoutublog = (id) => daoUtil.doQuery(
     `Delete from youtublog
     where id = ?`,

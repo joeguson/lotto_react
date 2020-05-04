@@ -7,7 +7,7 @@
 const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 
-const readReReplyService = require('../service/readReReplyService');
+const readReReplyService = require('../service/rereplyService');
 
 /* ===== POST /{type}/re-reply ===== */
 // article type 에 따른 re-reply post 요청 함수

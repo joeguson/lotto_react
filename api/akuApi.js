@@ -5,7 +5,8 @@ const akuService = require('../service/akuService.js');
 /* ===== aku ===== */
 
 route.post('/check', function (req, res) {
-    akuService.checkUserDataExists(req.body.type, req.body.data).then(value => res.json(value));
+    akuService.checkUserDataExists(req.body.type, req.body.data)
+        .then(value => res.json(value));
 });
 
 route.get('/follow/:target', function (req, res) {

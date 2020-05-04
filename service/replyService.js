@@ -2,12 +2,12 @@
 const pcDao = require('../db/b-dao/penDao/pcDao');
 const taDao = require('../db/b-dao/tanDao/taDao');
 const ycDao = require('../db/b-dao/youDao/ycDao');
-//readArticleFunctions
-const readArticleFunction = require('./readArticleService');
-//readReReplyFunctions
-const readReReplyFunction = require('./readReReplyService');
-//readLikeFunctions
-const readLikeFunction = require('./readLikeService');
+//articleServices
+const articleService = require('./articleService');
+//rereplyServices
+const rereplyService = require('./rereplyService');
+//likeServices
+const likeService = require('./likeService');
 //others
 const replyParser = require('../db/parser/replyParser.js');
 
@@ -42,9 +42,9 @@ exports.getFullReply = async function (articleId, userId, type) {
 
 async function getReplyDetails(type, userId, item) {
     const [re_replyResult, likeStatus, likeCount] = await Promise.all([
-        readReReplyFunction.getFullReReply(item.id, type),
-        readLikeFunction.replyLikeStatus(item.id, userId, type),
-        readLikeFunction.replyLikeCount(item.id, type),
+        rereplyService.getFullReReply(item.id, type),
+        likeService.replyLikeStatus(item.id, userId, type),
+        likeService.replyLikeCount(item.id, type),
     ]);
     item.comments = re_replyResult;
     item.likeStatus = likeStatus;
@@ -66,10 +66,14 @@ const getReplyById = {
 
 exports.postReply = async function (article_id, userId, type, content) {
     const replyResult = await postReplyFunctions[type](userId, content, article_id);
-    await readArticleFunction.updateArticleScore(article_id, type);
+    await articleService.updateArticleScore(article_id, type);
     let reply = (await getReplyById[type](replyResult.insertId)).map(replyParseFunctions[type]);
     reply = await applyAsyncToAll(type, reply, userId, getReplyDetails);
     return reply[0];
+};
+
+exports.getReplyById = async function(reply_id, type){
+    return replyParseFunctions[type]((await getReplyById[type](reply_id))[0]);
 };
 
 const updateReplyScoreFunctions = {

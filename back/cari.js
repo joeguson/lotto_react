@@ -8,28 +8,36 @@ route.get('/search', function (req, res) {
     let wordOnly = jsForBack.getWordOnly(rawCariString);
     let hashOnly = jsForBack.getHashOnly(rawCariString);
     cariService.getSearch(wordOnly, hashOnly)
-        .then(([uResults, pResults, tResults, phResults, thResults]) => {
+        .then(([uResults, pResults, tResults, yResults, phResults, thResults, yhResults]) => {
+            console.log(phResults);
+            console.log(thResults);
+            console.log(yhResults);
             let hResults = phResults.concat(thResults);
+            hResults = hResults.concat(yhResults);
+
             res.render('./jc/cari-result', {
                 search_string: req.query.search,
                 user: uResults,
-                penobrol: pResults,
-                tandya: tResults,
-                hashtag: hResults,
+                penobrol: pResults[0],
+                tandya: tResults[0],
+                youtublog: yResults[0],
+                hashtag: hResults[0],
                 u_id: req.session.u_id,
-                id2 : req.session.id2
+                id2: req.session.id2 ? req.session.id2 : 0
         })})
 });
 
 route.get('/', function (req, res) {
-    cariService.getRandArticle()
-        .then(([randPenobrol, randTandya, randYoutublog]) => {
-            let result = randPenobrol.concat(randTandya);
-            result = result.concat(randYoutublog);
+    //사용자에게 처음으로 보여지는 부분
+    //각 테마에서 점수기준으로 상위 15개를 골라 무작위로 5개를 고른후 합친 결과를 보여줌
+    cariService.getCariArticle()
+        .then(([cariPenobrol, cariTandya, cariYoutublog]) => {
+            let result = cariPenobrol[0].concat(cariTandya[0]);
+            result = result.concat(cariYoutublog[0]);
             jsForBack.shuffle(result);
             res.render('./jc/cari', {
                 list: result,
-                u_id: req.session.u_id
+                id2: req.session.id2 ? req.session.id2 : 0
             })
         });
 });

@@ -10,8 +10,6 @@ function postArticle(target) {
     __createMask();
     __showLoading();
 
-    return;
-
     const type = target.name;
     let content = document.getElementById('editor').value();
     let req = {};
@@ -74,8 +72,6 @@ function finalPost(body) {
     xhr.send(JSON.stringify(body));
     xhr.onload = () => {
         let id = JSON.parse(xhr.responseText).id;
-        console.log(body);
-        console.log(id);
         if(body.type === 'p') window.location.href = location.origin + "/penobrol/" + id.toString();
         else if(body.type === 't') window.location.href = location.origin + "/tandya/" + id.toString();
         else if(body.type ==='y') window.location.href = location.origin + "/youtublog/" + id.toString();

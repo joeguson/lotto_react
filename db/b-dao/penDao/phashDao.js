@@ -8,7 +8,7 @@ exports.penobrolHashtagById = (id) => daoUtil.doQuery(
     id
 );
 exports.penobrolSearchByHash = (hash) => daoUtil.doQuery(
-    `select *
+    `select id
     from penobrol
     where id in
     (select distinct p_id from penobrol_hashtag where hash like ?)`,

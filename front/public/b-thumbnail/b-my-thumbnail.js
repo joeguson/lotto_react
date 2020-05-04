@@ -77,8 +77,8 @@ class BeritamusMyThumbnail extends HTMLElement {
         this.dl.appendChild(hashtag);
 
         const date = document.createElement("dd");
-        date.innerText = this.src.identifier === 't'? this.src.answerCount + ' answers': this.src.commentCount +' comments';
-        date.innerText = date.innerText +  ' / ' + this.src.date + ' / ' + this.src.view + ' views / ' +this.src.likeCount + ' likes';
+        date.innerText = this.src.identifier === 't'? this.src.replyCount + ' answers': this.src.replyCount +' comments';
+        date.innerText = date.innerText +  ' / ' + this.src.date + ' / ' + this.src.view + ' views';
         this.dl.appendChild(date);
 
         return this.dl;

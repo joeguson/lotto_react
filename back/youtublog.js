@@ -1,16 +1,14 @@
 //url - '/youtublog'
 const route = require('express').Router();
-const readArticleService = require('../service/readArticleService.js');
+const readArticleService = require('../service/articleService.js');
 const youtublogService = require('../service/youtublogService.js');
 
-/************FOR YOUTUBLOG************/
-
+/* ===== youtublog ===== */
 route.get('/', function (req, res) {
-    youtublogService.getOrderedYoutublog()
-        .then(([dateTopics, scoreTopics]) => res.render('./jy/y', {
-            dateTopics: dateTopics,
-            scoreTopics: scoreTopics,
-            id2: req.session.id2
+    readArticleService.getFrontArticle('youtublog')
+        .then(([results]) => res.render('./jy/y', {
+            topics: results,
+            id2: req.session.id2 ? req.session.id2 : 0
         }));
 });
 

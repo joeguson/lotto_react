@@ -20,24 +20,24 @@ block jscript
     script.
         window.addEventListener('scroll', function(){
             var pathname = window.location.pathname;
-            if(pathname != '/cari'){
-                if (document.documentElement.scrollTop + document.documentElement.clientHeight == document.documentElement.scrollHeight){
-                    loadMore(pathname);
-                }
+            if (document.documentElement.scrollTop + document.documentElement.clientHeight == document.documentElement.scrollHeight){
+                loadMore(pathname);
             }
         });
 
         let loadMore = function(pathname){
-            makeRequest('GET', 'api/article' + pathname+'/load').then(function(result){
-                result = JSON.parse(result);
-                let randomUl = document.getElementById('uls');
-                result.map(function(data){
-                    let lis = document.createElement("b-thumbnail");
-                    lis.setAttribute("jsonSrc", JSON.stringify(data));
-                    return lis;
-                }).forEach(function(li){
-                    randomUl.appendChild(li);
-                });
+            let loadUrl = '';
+            if(pathname === '/cari') loadUrl = 'api/cari/load';
+            else loadUrl = 'api/article' + pathname+'/load';
+            makeRequest('GET', loadUrl)
+                .then(function(result){
+                    result = JSON.parse(result);
+                    var randomUl = document.getElementById('uls');
+                    result.map(function(data){
+                        let lis = document.createElement("b-thumbnail");
+                        lis.setAttribute("jsonSrc", JSON.stringify(data));
+                        randomUl.appendChild(lis);
+                    })
             }).catch(function(){
                 console.log(err);
                 });

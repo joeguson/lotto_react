@@ -9,42 +9,39 @@ function anonymouseMaker(username) {
     return username.substring(0, 3) + '****';
 }
 
-function parseArticle(packet) {
+function parseCommon(packet){
     return {
-        // common
-        id: packet.id,
-        content: packet.content,
-        author: packet.author,
-        thumbnail: packet.thumbnail,
-        date: utils.dateMaker(packet.date), // reformat date
-        public: packet.public,
-        warning: packet.warning,
-        changed_date: packet.changed_date,
-        score: packet.score,
-        hashtags: packet.hashtags,
-        likes: packet.likes,
-        chosen: (packet.chosen === null) ? 0 : packet.chosen,
-        u_id: packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id
-    };
-}
-
-function parseFrontArticle(packet) {
-    return {
-        // common
         id: packet.id,
         date: utils.dateMaker(packet.date), // reformat date
         thumbnail: packet.thumbnail,
         u_id: packet.u_id && packet.public !== 'p'? anonymouseMaker(packet.u_id) : packet.u_id,
-        hashtags: packet.hashtags,
-        likes: packet.likes,
-        img : utils.getImage(packet.content)
-    };
+        chosen: (packet.chosen === null) ? 0 : packet.chosen,
+        hashtags: packet.hashtags
+    }
+}
+
+function parseArticle(packet) {
+    const temp = parseCommon(packet);
+    temp.content = packet.content;
+    temp.author = packet.author;
+    temp.author = packet.author;
+    temp.public = packet.public;
+    temp.warning = packet.warning;
+    temp.changed_date = packet.changed_date;
+    temp.score = packet.score;
+    temp.likes = packet.likes;
+    return temp;
+}
+
+function parseFrontArticle(packet) {
+    const temp = parseCommon(packet);
+    temp.img = utils.getImage(packet.content);
+    return temp;
 }
 
 exports.parseFrontPenobrol = function (packet) {
     const penobrol = parseFrontArticle(packet);
     penobrol.title = packet.title;
-    penobrol.commentCount = packet.comments;
     penobrol.view = packet.p_view;
     penobrol.identifier = 'p';
     return penobrol;
@@ -53,7 +50,6 @@ exports.parseFrontPenobrol = function (packet) {
 exports.parseFrontTandya = function (packet) {
     const tandya = parseFrontArticle(packet);
     tandya.question = packet.question;
-    tandya.answerCount = packet.answers;
     tandya.view = packet.t_view;
     tandya.identifier = 't';
     return tandya;
@@ -62,7 +58,6 @@ exports.parseFrontTandya = function (packet) {
 exports.parseFrontYoutublog = function (packet) {
     const youtublog = parseFrontArticle(packet);
     youtublog.title = packet.title;
-    youtublog.commentCount = packet.comments;
     youtublog.view = packet.y_view;
     youtublog.identifier = 'y';
     return youtublog;

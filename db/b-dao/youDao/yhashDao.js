@@ -8,10 +8,10 @@ exports.youtublogHashtagById = (id) => daoUtil.doQuery(
     id
 );
 exports.youtublogSearchByHash = (hash) => daoUtil.doQuery(
-    `select *
+    `select id
     from youtublog
     where id in
-    (select distinct t_id from youtublog_hashtag where hash like ?)`,
+    (select distinct y_id from youtublog_hashtag where hash like ?)`,
     hash
 );
 /* ===== insert ===== */
