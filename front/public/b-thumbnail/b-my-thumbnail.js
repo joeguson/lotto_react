@@ -37,16 +37,35 @@ class BeritamusMyThumbnail extends HTMLElement {
         }
     }
     __build() {
+        let type = '';
+        if(this.src.identifier === 'p') type = 'penobrol';
+        else if(this.src.identifier === 't') type = 'tandya';
+        else type = 'youtublog';
         const li = document.createElement("li");
         li.appendChild(this.__buildImage());
         li.appendChild(this.__buildArticle());
-        li.className = "thumbnailLi";
+        li.className = "mythumbnailLi";
 
         const br = document.createElement("br");
         br.className = "clear";
         li.appendChild(br);
+        li.onclick = () => {
+            location.href = `${type}`+'/'+`${this.src.id}`;
+        };
         this.appendChild(li);
     }
+
+    __buildImage() {
+        this.div = document.createElement("div");
+        this.div.className = "mythumbnailImg";
+        if(this.src.img) {
+            this.img = document.createElement("img");
+            this.img.src = this.src.img.src;
+            this.div.appendChild(this.img);
+        }
+        return this.div;
+    }
+
     __buildArticle() {
         let type = '';
         if(this.src.identifier === 'p') type = 'penobrol';
@@ -54,7 +73,7 @@ class BeritamusMyThumbnail extends HTMLElement {
         else type = 'youtublog';
 
         this.dl = document.createElement("dl");
-        this.dl.className = "articleDl";
+        this.dl.className = "mythumbnailDl";
         this.dl.onclick = () => {
             location.href = `${type}`+'/'+`${this.src.id}`;
         };
@@ -82,17 +101,6 @@ class BeritamusMyThumbnail extends HTMLElement {
         this.dl.appendChild(date);
 
         return this.dl;
-    }
-
-    __buildImage() {
-        this.div = document.createElement("div");
-        this.div.className = "articleImage";
-        if(this.src.img) {
-            this.img = document.createElement("img");
-            this.img.src = this.src.img.src;
-            this.div.appendChild(this.img);
-        }
-        return this.div;
     }
 }
 

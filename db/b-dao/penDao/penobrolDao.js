@@ -56,14 +56,22 @@ exports.penobrolById = (id) => daoUtil.doQuery( //select penobrol with userId
 );
 
 exports.cariPenobrol = () => daoUtil.doQuery( //select penobrol with userId
-    `select *
-    from (
-    select *
-    from penobrol 
-    order by score
-    desc 
-    limit 15)p 
-    order by rand() 
+    `select p.*
+    from(
+    (select * 
+    from penobrol  
+    order by score  
+    desc  
+    limit 15)  
+    union  
+    (select *  
+    from penobrol  
+    order by date  
+    desc  
+    limit 15)
+    )p 
+    order by 
+    rand() 
     limit 5`
 );
 

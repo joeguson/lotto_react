@@ -26,6 +26,7 @@ function postArticle(target) {
         req.thumbnail = thumbnail;
         req.public = isPublic;
         req.hashtag = hashtag;
+        req.content = content;
 
         if (type === 'y') req.youtubes = document.getElementById('editor').youtubes;
 
@@ -33,7 +34,6 @@ function postArticle(target) {
         if(type === 't') req.question = document.getElementById('question').value;
         else req.title = document.getElementById('title').value;
     }
-
     const parsed = parseImgTags(content);
     content = parsed.content;
 

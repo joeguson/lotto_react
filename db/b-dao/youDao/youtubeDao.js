@@ -2,7 +2,9 @@
  * Copyright (c) 2020. Created by Hyun I Kim.
  * All rights reserved.
  */
-
+const mysql = require('mysql');
+const b = require('../../../b');
+const pool = mysql.createPool(b.poolConfig);
 const daoUtil = require('../../daoUtil');
 
 const youtubeSourceTable = "youtube_source";

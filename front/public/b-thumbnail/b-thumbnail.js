@@ -15,7 +15,6 @@ class BeritamusThumbnail extends HTMLElement {
     __start(){
         if(this.img){
             this.img.onload = () => {
-                const src = this.src;
                 const img = this.img;
                 const div = this.div;
 
@@ -37,16 +36,46 @@ class BeritamusThumbnail extends HTMLElement {
         }
     }
     __build() {
+        let type = '';
+        if(this.src.identifier === 'p') type = 'penobrol';
+        else if(this.src.identifier === 't') type = 'tandya';
+        else type = 'youtublog';
+
         const li = document.createElement("li");
         li.appendChild(this.__buildImage());
+        li.appendChild(this.__buildLike());
         li.appendChild(this.__buildArticle());
         li.className = "thumbnailLi";
 
         const br = document.createElement("br");
         br.className = "clear";
         li.appendChild(br);
+        li.onclick = () => {
+            location.href = `${type}`+'/'+`${this.src.id}`;
+        };
         this.appendChild(li);
     }
+
+    __buildImage() {
+        //사진이 있는 경우와 없는 경우
+        this.div = document.createElement("div");
+        this.div.className = "thumbnailImg";
+        if(this.src.img) {
+            this.img = document.createElement("img");
+            this.img.src = this.src.img.src;
+            this.div.appendChild(this.img);
+        }
+        return this.div;
+    }
+
+    __buildLike() {
+        const likeDiv = document.createElement("div");
+        likeDiv.className = "thumbnailLikeDiv";
+        likeDiv.style.backgroundImage = "url('http://localhost:3000/icons/testing.png')";
+        likeDiv.innerText = this.src.likeCount;
+        return likeDiv;
+    }
+
     __buildArticle() {
         let type = '';
         if(this.src.identifier === 'p') type = 'penobrol';
@@ -54,15 +83,10 @@ class BeritamusThumbnail extends HTMLElement {
         else type = 'youtublog';
 
         this.dl = document.createElement("dl");
-        this.dl.className = "articleDl";
+        this.dl.className = "thumbnailDl";
         this.dl.onclick = () => {
             location.href = `${type}`+'/'+`${this.src.id}`;
         };
-
-        const like = document.createElement("dd");
-        like.className = "ddcontent";
-        like.innerText = this.src.likeCount;
-        this.dl.appendChild(like);
 
         const dt = document.createElement("dt");
         const title = document.createElement("a");
@@ -93,16 +117,7 @@ class BeritamusThumbnail extends HTMLElement {
         return this.dl;
     }
 
-    __buildImage() {
-        this.div = document.createElement("div");
-        this.div.className = "articleImage";
-        if(this.src.img) {
-            this.img = document.createElement("img");
-            this.img.src = this.src.img.src;
-            this.div.appendChild(this.img);
-        }
-        return this.div;
-    }
+
 }
 
 customElements.define('b-thumbnail', BeritamusThumbnail);

@@ -54,14 +54,22 @@ exports.tandyaById = (id) => daoUtil.doQuery(
     id
 );
 exports.cariTandya = () => daoUtil.doQuery( //select penobrol with userId
-    `select * 
-    from (
-    select * 
-    from tandya 
-    order by score 
-    desc 
-    limit 15)p 
-    order by rand() 
+        `select t.*
+    from(
+    (select * 
+    from tandya  
+    order by score  
+    desc  
+    limit 15)  
+    union  
+    (select *  
+    from tandya
+    order by date  
+    desc  
+    limit 15)
+    )t 
+    order by 
+    rand() 
     limit 5`
 );
 

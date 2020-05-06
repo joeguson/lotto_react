@@ -40,9 +40,12 @@ route.post('/:type', (req, res) => {
         req.body.thumbnail,
         jsForBack.finalHashtagMaker(req.body.hashtag)
     ).then(id => {
+        console.log(id);
         if (type === 'youtublog') {
+            console.log('here i am');
             youtublogService.updateYoutube(req.body.youtubes, id)
                 .then(count => {
+                    console.log('here i am2');
                     res.json({id: id, updatedYoutubes: count});
                 }).catch((e) => {
                     console.error(e);

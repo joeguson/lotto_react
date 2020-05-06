@@ -54,14 +54,22 @@ exports.youtublogById = (id) => daoUtil.doQuery(
     id
 );
 exports.cariYoutublog = () => daoUtil.doQuery( //select penobrol with userId
-    `select * 
-    from (
-    select * 
-    from youtublog 
-    order by score 
-    desc 
-    limit 15)p 
-    order by rand() 
+        `select y.*
+    from(
+    (select * 
+    from youtublog  
+    order by score  
+    desc  
+    limit 15)  
+    union  
+    (select *  
+    from youtublog
+    order by date  
+    desc  
+    limit 15)
+    )y
+    order by 
+    rand() 
     limit 5`
 );
 

@@ -34,7 +34,7 @@ block userPenobrol
         if penobrols.length > 0
             ul.thumbnailUl
                 each p in penobrols
-                    b-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
+                    b-my-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
                 span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
@@ -44,7 +44,7 @@ block userTandya
         if tandyas.length > 0
             ul.thumbnailUl
                 each t in tandyas
-                    b-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
+                    b-my-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
                 span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
@@ -53,8 +53,8 @@ block userYoutublog
     p Youtublog
         if youtublog.length > 0
             ul.thumbnailUl
-                each t in youtublog
-                    b-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
+                each y in youtublog
+                    b-my-thumbnail(jsonSrc=`${JSON.stringify(y)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
                 span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
