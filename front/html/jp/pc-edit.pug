@@ -1,4 +1,4 @@
-extends ../view_layout
+extends ../layout
 include ../view_mixIn
 
 block js
@@ -25,12 +25,20 @@ block main
         .articleLike
             .articleLikeNum(id="articleLikeNum")= topic.likeCount
     if(id2)
-        form(action='/api/reply/penobrol/'+topic.id+'/'+edit_content.id method="put" id='commentForm' class='commentForm')
-            textarea(name='comment' id="comment" class="pcInput")= edit_content.content
-            input(type='submit' value='submit' class="pcInputButton" id="shit")
+        textarea(name='comment' id="comment" class="pcInput")= edit_content.content
+        input(type='submit' value='submit' class="pcInputButton" id="submit")
 
     script.
-        const shit = document.getElementById('shit');
-        shit.onclick = function(){
-            console.log('fuckinhell');
+        const submit = document.getElementById('submit');
+        if(submit){
+            const reply = document.getElementById('comment');
+            submit.onclick = function(){
+                let data = {};
+                data.comment = reply.value;
+                makeRequest('put', '/api/reply/penobrol/'+#{topic.id}+'/'+#{edit_content.id}, data)
+                    .then(function(){
+                        window.location.href = location.origin +'/penobrol/'+#{topic.id};
+                    });
+            }
         }
+

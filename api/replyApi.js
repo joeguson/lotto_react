@@ -58,13 +58,13 @@ route.put('/:type/:article_id/:reply_id',function (req, res) {
     const type = req.params['type'];
     const articleId = req.params['article_id'];
     const replyId = req.params['reply_id'];
-    console.log('hi');
     replyService.editReply(
         replyId,
-        articleId,
         req.body.comment,
+        articleId,
         type
-    ).then(() => res.redirect('/'+type+'/'+articleId));
+    ).then((result) => {
+        res.json(result)});
 });
 
 module.exports = route;

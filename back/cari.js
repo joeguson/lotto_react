@@ -9,19 +9,15 @@ route.get('/search', function (req, res) {
     let hashOnly = jsForBack.getHashOnly(rawCariString);
     cariService.getSearch(wordOnly, hashOnly)
         .then(([uResults, pResults, tResults, yResults, phResults, thResults, yhResults]) => {
-            console.log(phResults);
-            console.log(thResults);
-            console.log(yhResults);
             let hResults = phResults.concat(thResults);
             hResults = hResults.concat(yhResults);
-
             res.render('./jc/cari-result', {
                 search_string: req.query.search,
                 user: uResults,
-                penobrol: pResults[0],
-                tandya: tResults[0],
-                youtublog: yResults[0],
-                hashtag: hResults[0],
+                penobrol: pResults,
+                tandya: tResults,
+                youtublog: yResults,
+                hashtag: hResults,
                 u_id: req.session.u_id,
                 id2: req.session.id2 ? req.session.id2 : 0
         })})
@@ -33,8 +29,8 @@ route.get('/', function (req, res) {
     //그 이후, 스크롤이 바닥에 닿으면 random으로 각 테마에서 4개씩 최대 12개를 load해줌
     cariService.getCariArticle()
         .then(([cariPenobrol, cariTandya, cariYoutublog]) => {
-            let result = cariPenobrol[0].concat(cariTandya[0]);
-            result = result.concat(cariYoutublog[0]);
+            let result = cariPenobrol.concat(cariTandya);
+            result = result.concat(cariYoutublog);
             jsForBack.shuffle(result);
             res.render('./jc/cari', {
                 list: result,

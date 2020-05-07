@@ -30,8 +30,8 @@ exports.updatePenobrolCom = (content, id, p_id) => daoUtil.doQuery(
     `UPDATE p_com
     SET content = ?, changed_date = now()
     where id = ?
-    AND p_id = ?`
-        [content, id, p_id]
+    AND p_id = ?`,
+    [content, id, p_id]
 );
 exports.updatePenobrolComScore = (pc_id) => daoUtil.doQuery(
     `UPDATE p_com

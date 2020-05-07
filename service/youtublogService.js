@@ -14,9 +14,7 @@ exports.getYoutubeById = async function(id) {
     ]);
 
     const youtube = sourceResult[0];
-
     if (youtube == null) return null;
-
     youtube.timeRows = timeRowResult;
     return youtube;
 };
@@ -42,7 +40,7 @@ exports.deleteYoutube = async function(id) {
 };
 
 exports.updateYoutube = async function(ids, articleId) {
-    if (ids == null || articleId == null) return null;
+    if (ids.length === 0 || articleId == null) return null;
     return (await youtubeDao.updateYoutubeSourceArticleIds(ids, articleId)).affectedRows;
 };
 

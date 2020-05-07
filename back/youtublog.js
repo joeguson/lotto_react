@@ -63,9 +63,9 @@ route.get('/edit/comment/:youtublog_no/:ycomment_no',function (req, res) {
 
     replyService.getReplyById(yc_id, 'youtublog').then(comment => {
         if (u_id !== comment.author) res.redirect('/comment/view/' + y_id);
-        else articleService.getFullArticleById(y_id, 'youtublog').then(youtublog => {
+        else articleService.getFullArticleById(y_id, req.session.id2, 'youtublog').then(youtublog => {
             res.render('./jy/yc-edit', {
-                u_id: 'y',
+                id2: req.session.id2 ? req.session.id2 : 0,
                 topic: youtublog,
                 edit_content: comment
             });

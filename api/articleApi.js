@@ -8,7 +8,7 @@ const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 const youtublogService = require('../service/youtublogService.js');
 const articleService = require('../service/articleService.js');
-const deleteWarnService = require('../service/deleteWarnService.js');
+const deleteService = require('../service/deleteService.js');
 
 const articleMainColumns = {
     penobrol: "title",
@@ -105,9 +105,9 @@ route.put('/chosen/:type', (req, res) => {
 /* ===== DELETE /{type} ===== */
 // article type 에 따른 delete 요청 함수
 const articleDeleteFunctions = {
-    penobrol: deleteWarnService.deletePenobrol,
-    tandya: deleteWarnService.deleteTandya,
-    youtublog: deleteWarnService.deleteYoutublog
+    penobrol: deleteService.deletePenobrol,
+    tandya: deleteService.deleteTandya,
+    youtublog: deleteService.deleteYoutublog
 };
 
 route.delete('/:type',
@@ -119,9 +119,9 @@ route.delete('/:type',
 /* ===== DELETE /{type}/reply ===== */
 // reply type 에 따른 delete 요청 함수
 const replyDeleteFunctions = {
-    penobrol: deleteWarnService.deletePComment,
-    tandya: deleteWarnService.deleteAnswer,
-    youtublog: deleteWarnService.deleteYComment
+    penobrol: deleteService.deletePComment,
+    tandya: deleteService.deleteAnswer,
+    youtublog: deleteService.deleteYComment
 };
 
 route.delete('/:type/reply',
@@ -133,9 +133,9 @@ route.delete('/:type/reply',
 /* ===== DELETE /{type}/re-reply ===== */
 // re-reply type 에 따른 delete 요청 함수
 const reReplyDeleteFunctions = {
-    penobrol: deleteWarnService.deletePCComment,
-    tandya: deleteWarnService.deleteAComment,
-    youtublog: deleteWarnService.deleteYCComment
+    penobrol: deleteService.deletePCComment,
+    tandya: deleteService.deleteAComment,
+    youtublog: deleteService.deleteYCComment
 };
 
 route.delete('/:type/re-reply',

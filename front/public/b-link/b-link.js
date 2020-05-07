@@ -12,7 +12,6 @@ class BeritamusLink extends HTMLElement {
 
     __build() {
         const ogData = this.src;
-        console.log(ogData);
         const linkDiv = document.createElement("div");
         linkDiv.appendChild(this.__buildImage());
         linkDiv.appendChild(this.__buildTitle());
