@@ -1,44 +1,30 @@
-doctype html
-html(lang="id")
-    head
-        title beritamus
-        // what appears on the tab
-        base(href="/")
-        link(rel='stylesheet', href='common.css' type="text/css")
-        // links css common file
-        link(rel="stylesheet" href="penobrol_view.css" type="text/css")
-        // links css file
-        link(href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400|Pattaya&display=swap" rel="stylesheet")
-        meta(charset='UTF-8')
-        meta(name='viewport', content='width=device-width, user-scalable=no')    
-        meta(name='apple-mobile-web-app-capable', content='yes')
-        
-        // iphone에서 어플식으로 저장가능
-        // Lorem ipsum
-    body
-        .container
-            header
-                a(href='/penobrol') Beritamus      
-            section.main(id='main')
-                .title
-                    dl.pview-dl
-                        if topic.public == 'a'
-                            - var date_result = 'by '+ anonimmaker(topic.author) + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
-                        else
-                            - var date_result = 'by '+ topic.author + ' /  '+datemaker(topic.date)+' / ' + 'view : ' + topic.p_view + ' / ' + topic.com+ ' komen' 
-                        dt.pview-dt= topic.title
-                        if hashtag.ht1 != ' '   
-                            dd.pview-dd.hashtag
-                                -for(var n=0; n<topic.hashtagcount; n++)
-                                    a= '#' + hashtag[n].hash + ' '
-                        dd.pview-dd #{date_result} 
-                .pcontent
-                    p(class="content")= topic.content
-                    div(id="plike" class="plike")= topic.p_like
-                if u_id
-                    form(action='/pcedit/'+topic.id+'/'+edit_content.id method='post' id='commentForm' class='commentForm')
-                        textarea(name='comment' id="comment" class="pcInput")= edit_content.content
-                        input(type='submit' value='submit' class="pcInputButton")
-            section.footer(id='footer') 
-                p contact : admin@beritamus.com
-                p www.beritamus.com
+extends ../view_layout
+include ../view_mixIn
+
+block js
+    script(type="text/javascript" src="/js/jsForAllJade.js")
+    script(type="text/javascript" src="/js/warnArticle.js")
+    script(type="text/javascript" src="/js/deleteArticle.js")
+
+block css
+    link(rel="stylesheet" href="../css/view_layout.css" type="text/css")
+    link(rel='stylesheet', href='/css/view_mixIn.css' type="text/css")
+
+block submain
+
+block main
+    .article
+        .articleInfo
+            dl.aTtileDl
+                block articleInfo
+                if(id2)
+                    +articlePop(topic.identifier, id2, topic.author)
+                +hashtag(topic.hashtags)
+        .articleContent
+            +articleContent(topic.content)
+        .articleLike
+            .articleLikeNum(id="articleLikeNum")= topic.likeCount
+    if id2
+        form(action='/api/reply/youtublog/'+topic.id+'/'+edit_content.id method='put' id='commentForm' class='commentForm')
+            textarea(name='comment' id="comment" class="pcInput")= edit_content.content
+            input(type='submit' value='submit' class="pcInputButton")

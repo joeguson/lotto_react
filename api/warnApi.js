@@ -7,7 +7,7 @@
 const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 
-const warnService = require('../service/warnService');
+const warnService = require('../service/deleteWarnService');
 
 //**********  Warn **********//
 const warnFunctions = {

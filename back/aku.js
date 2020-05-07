@@ -100,9 +100,9 @@ route.get('/user/:user_id', function(req, res, next){
                         u_id:user_id,
                         following: following[0].following,
                         follower: follower[0].follower,
-                        penobrols:userPenobrol,
-                        tandyas:userTandya,
-                        youtublogs:userYoutublog,
+                        penobrols:userPenobrol[0],
+                        tandyas:userTandya[0],
+                        youtublogs:userYoutublog[0],
                         follow: followResult.length > 0
                     }));
             });

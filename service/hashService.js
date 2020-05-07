@@ -39,3 +39,23 @@ exports.searchArticleByHash = async function (array, type) {
     }
     return await Promise.all(tempResult.map(item => articleService.getFrontArticleById(item, type)));
 };
+
+const postHashtagFunctions = {
+    penobrol: phashDao.insertPenobrolHash,
+    tandya: thashDao.insertTandyaHash,
+    youtublog: yhashDao.insertYoutublogHash
+};
+
+exports.postHashtags = async function (articleId, hashs, type) {
+    return await Promise.all(hashs.map(item => postHashtagFunctions[type](articleId, item)));
+};
+
+const deleteHashtagFunctions = {
+    penobrol: phashDao.deletePenobrolHash,
+    tandya: thashDao.deleteTandyaHash,
+    youtublog: yhashDao.deleteYoutublogHash
+};
+
+exports.deleteHashtags = async function (articleId, type) {
+    return await deleteHashtagFunctions[type](articleId);
+};

@@ -1,11 +1,11 @@
 //url - '/penobrol'
 const route = require('express').Router();
-const readArticleService = require('../service/articleService.js');
-const penobrolService = require('../service/penobrolService.js');
+const articleService = require('../service/articleService.js');
+const replyService = require('../service/replyService.js');
 
 /* ===== penobrol ===== */
 route.get('/', function (req, res) {
-    readArticleService.getFrontArticle('penobrol')
+    articleService.getFrontArticle('penobrol')
         .then(([results]) => {
             res.render('./jp/p', {
             topics: results,
@@ -19,9 +19,9 @@ route.get('/:penobrol_no', function (req, res, next) {
     const id = req.params.penobrol_no;
     const checkId = /^[0-9]+$/;
     if(checkId.test(id)){
-        readArticleService.getFullArticleById(id, req.session.id2, 'penobrol').then(result => {
+        articleService.getFullArticleById(id, req.session.id2, 'penobrol').then(result => {
             if (!result) res.redirect('/penobrol/'); // 결과가 없으면 홈으로 이동
-            else penobrolService.updatePenobrolView(result.id).then(() => // 받아왔으면 조회수 증가 후 페이지 표시
+            else articleService.updateViewArticle(result.id, 'penobrol').then(() => // 받아왔으면 조회수 증가 후 페이지 표시
                 res.render('./jp/p-view', {
                     topic: result,
                     u_id: req.session.u_id,
@@ -47,9 +47,9 @@ route.get('/edit/:penobrol_no', function (req, res) {
     const p_id = req.params['penobrol_no'];
     const u_id = req.session.id2;
 
-    readArticleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
+    articleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
         if(penobrol && penobrol.author === u_id)
-            res.render('./article_edit', {
+            res.render('./edit_layout', {
                 u_id: u_id,
                 type: 'penobrol',
                 article: penobrol
@@ -62,54 +62,15 @@ route.get('/edit/comment/:penobrol_no/:pcomment_no',function (req, res) {
     const p_id = req.params.penobrol_no;
     const pc_id = req.params.pcomment_no;
     const u_id = req.session.id2;
-    penobrolService.getCommentById(pc_id).then(comment => {
+    replyService.getReplyById(pc_id, 'penobrol').then(comment => {
         if (u_id !== comment.author) res.redirect('/comment/view/' + p_id);
-        else readArticleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
+        else articleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
             res.render('./jp/pc-edit', {
-                id2: req.session.id2,
+                id2: req.session.id2 ? req.session.id2 : 0,
                 topic: penobrol,
                 edit_content: comment
             });
         });
-    });
-});
-
-route.put('/comment/:penobrol_no/:pcooment_no',function (req, res) {
-    const p_id = req.params.penobrol_no;
-    penobrolService.editComment(
-        req.params.pcomment_no,
-        p_id,
-        req.body.comment
-    ).then(() => res.redirect('/penobrol/'+ p_id));
-});
-
-route.delete('/:id', function(req, res){
-    penobrolService.deletePenobrol(
-        req.body.deleteId,
-        req.session.id2
-    ).then(result => {
-        if(result) res.json({"result": "deleted"});
-        else res.redirect('/penobrol');
-    });
-});
-
-route.delete('/comment/:id',  function(req, res){
-    penobrolService.deleteComment(
-        req.body.deleteId,
-        req.session.id2
-    ).then(result => {
-        if(result) res.json({"result": "deleted"});
-        else res.redirect('/penobrol/' + req.body.penobrolId);
-    });
-});
-
-route.delete('/ccomment/:id', function(req, res){
-    penobrolService.deleteCComment(
-        req.body.deleteId,
-        req.session.id2
-    ).then(result => {
-        if(result) res.json({"result": "deleted"});
-        else res.redirect('/penobrol/' + req.body.penobrolId);
     });
 });
 

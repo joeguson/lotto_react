@@ -86,6 +86,17 @@ exports.updateReplyScore = async function(replyId, type){
     await updateReplyScoreFunctions[type](replyId);
 };
 
+const editReplyFunctions = {
+    penobrol: pcDao.updatePenobrolCom,
+    tandya: taDao.updateTandyaAns,
+    youtublog: ycDao.updateYoutublogCom
+};
+
+exports.editReply = async function (replyId, content, articleId, type) {
+    await editReplyFunctions[type](content, replyId, articleId);
+    return replyId;
+};
+
 function applyAsyncToAll(type, list, userId, asyncFun) {
     const promiseList = list.map(item => asyncFun(type, userId, item));
     return Promise.all(promiseList);

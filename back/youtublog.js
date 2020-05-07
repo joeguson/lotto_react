@@ -1,11 +1,12 @@
 //url - '/youtublog'
 const route = require('express').Router();
-const readArticleService = require('../service/articleService.js');
+const articleService = require('../service/articleService.js');
+const replyService = require('../service/replyService.js');
 const youtublogService = require('../service/youtublogService.js');
 
 /* ===== youtublog ===== */
 route.get('/', function (req, res) {
-    readArticleService.getFrontArticle('youtublog')
+    articleService.getFrontArticle('youtublog')
         .then(([results]) => res.render('./jy/y', {
             topics: results,
             id2: req.session.id2 ? req.session.id2 : 0
@@ -16,9 +17,9 @@ route.get('/:youtublog_no', function (req, res, next) {
     const id = req.params.youtublog_no;
     const checkId = /^[0-9]+$/;
     if(checkId.test(id)){
-        readArticleService.getFullArticleById(id, req.session.id2, 'youtublog').then(result => {
+        articleService.getFullArticleById(id, req.session.id2, 'youtublog').then(result => {
             if (!result) res.redirect('/youtublog/'); // 결과가 없으면 홈으로 이동
-            else youtublogService.updateYoutublogView(result.id).then(() => // 받아왔으면 조회수 증가 후 페이지 표시
+            else articleService.updateViewArticle(result.id, 'youtublog').then(() => // 받아왔으면 조회수 증가 후 페이지 표시
                 res.render('./jy/y-view', {
                     topic: result,
                     u_id: req.session.u_id,
@@ -44,9 +45,9 @@ route.get('/edit/:youtublog_no', function (req, res) {
     const y_id = req.params['youtublog_no'];
     const u_id = req.session.id2;
 
-    youtublogService.getFullYoutublogById(y_id).then(youtublog => {
+    articleService.getFullArticleById(y_id, req.session.id2, 'youtublog').then(youtublog => {
         if(youtublog && youtublog.author === u_id)
-            res.render('./article_edit', {
+            res.render('./edit_layout', {
                 u_id: u_id,
                 type: 'youtublog',
                 article: youtublog
@@ -60,9 +61,9 @@ route.get('/edit/comment/:youtublog_no/:ycomment_no',function (req, res) {
     const yc_id = req.params.ycomment_no;
     const u_id = req.session.id2;
 
-    youtublogService.getCommentById(yc_id).then(comment => {
+    replyService.getReplyById(yc_id, 'youtublog').then(comment => {
         if (u_id !== comment.author) res.redirect('/comment/view/' + y_id);
-        else youtublogService.getFullYoutublogById(y_id).then(youtublog => {
+        else articleService.getFullArticleById(y_id, 'youtublog').then(youtublog => {
             res.render('./jy/yc-edit', {
                 u_id: 'y',
                 topic: youtublog,
@@ -72,44 +73,6 @@ route.get('/edit/comment/:youtublog_no/:ycomment_no',function (req, res) {
     });
 });
 
-route.put('/comment/:youtublog_no/:ycooment_no',function (req, res) {
-    const y_id = req.params.youtublog_no;
-    youtublogService.editComment(
-        req.params.ycomment_no,
-        y_id,
-        req.body.comment
-    ).then(() => res.redirect('/youtublog/'+ y_id));
-});
-
-route.delete('/:id', function(req, res){
-    youtublogService.deleteYoutublog(
-        req.body.deleteId,
-        req.session.id2
-    ).then(result => {
-        if(result) res.json({"result": "deleted"});
-        else res.redirect('/youtublog');
-    });
-});
-
-route.delete('/comment/:id',  function(req, res){
-    youtublogService.deleteComment(
-        req.body.deleteId,
-        req.session.id2
-    ).then(result => {
-        if(result) res.json({"result": "deleted"});
-        else res.redirect('/youtublog/' + req.body.youtublogId);
-    });
-});
-
-route.delete('/ccomment/:id', function(req, res){
-    youtublogService.deleteCComment(
-        req.body.deleteId,
-        req.session.id2
-    ).then(result => {
-        if(result) res.json({"result": "deleted"});
-        else res.redirect('/youtublog/' + req.body.youtublogId);
-    });
-});
 
 route.get('/embed/:id', function(req, res) {
     const id = req.params.id;

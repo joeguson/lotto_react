@@ -53,7 +53,7 @@ block main
         p.infoP
             span(id='hashtagInfo' class='infoSpan') 20/20
         p
-            button(id='btnSubmit', class="submit") share
+            button(id='btnSubmit', class="submit") edit
         script.
             const mainColumnMaxLength = 200;
             const thumbnailMaxLength = 200;
@@ -68,7 +68,7 @@ block main
             }
 
             function getContent() {
-                return document.getElementById('content').value;
+                return document.getElementById('editor').value();
             }
 
             function getHashtags() {

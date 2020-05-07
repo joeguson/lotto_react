@@ -7,7 +7,7 @@
 const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
 
-const readReplyService = require('../service/replyService');
+const replyService = require('../service/replyService');
 
 /* ===== GET /{type}/{id} ===== */
 // article의 reply를 요청하는 api
@@ -17,7 +17,7 @@ route.get('/:type/:id', (req, res) => {
     const articleId = req.params.id;
     const checkId = /^[0-9]+$/;
     if(checkId.test(articleId)){
-        readReplyService.getFullReply(articleId, req.session.id2, type)
+        replyService.getFullReply(articleId, req.session.id2, type)
             .then(reply => {
                 res.json({
                     'result': reply
@@ -38,7 +38,7 @@ route.post('/:article_id', function (req, res) {
         case 'a' : req.body.type = 'tandya'; break;
         case 'yc' : req.body.type = 'youtublog'; break;
     }
-    readReplyService.postReply(
+    replyService.postReply(
         req.body.articleId,
         req.session.id2,
         req.body.type,
@@ -52,6 +52,19 @@ route.post('/:article_id', function (req, res) {
     }).catch(() =>
         res.status(500).send('Could not post reply')
     );
+});
+
+route.put('/:type/:article_id/:reply_id',function (req, res) {
+    const type = req.params['type'];
+    const articleId = req.params['article_id'];
+    const replyId = req.params['reply_id'];
+    console.log('hi');
+    replyService.editReply(
+        replyId,
+        articleId,
+        req.body.comment,
+        type
+    ).then(() => res.redirect('/'+type+'/'+articleId));
 });
 
 module.exports = route;

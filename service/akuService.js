@@ -1,9 +1,6 @@
 const userDao = require('../db/b-dao/userDao/userDao');
 const followDao = require('../db/b-dao/userDao/followDao');
 const articleService = require('./articleService');
-const tandyaService = require('./tandyaService');
-const penobrolService = require('./penobrolService');
-const youtublogService = require('./youtublogService');
 const likeService = require('./likeService');
 const key = require('../info/beritamus-admin-2ff0df5d17ca.json');
 const nodeMailer = require('nodeMailer');
@@ -84,9 +81,9 @@ exports.getUserArticle = async function(id2) {
 
 exports.getUserArticleByForeigner = async function(id2, me) {
     return await Promise.all([
-        penobrolService.getUserPenobrolWithoutAnonim(id2),
-        tandyaService.getUserTandyaWithoutAnonim(id2),
-        youtublogService.getUserYoutublogWithoutAnonim(id2),
+        articleService.getArticleByAuthorWithoutAnonim(id2, 'penobrol'),
+        articleService.getArticleByAuthorWithoutAnonim(id2, 'tandya'),
+        articleService.getArticleByAuthorWithoutAnonim(id2, 'youtublog'),
         await followDao.select(me, id2)
     ]);
 };

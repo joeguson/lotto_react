@@ -105,6 +105,22 @@ exports.getArticleByAuthor = async function (id2, type) {
     return [await Promise.all(parsed.map(item => getCommonComponents(item, type)))];
 };
 
+const getArticleByAuthorWithoutAnonimFunctions = {
+    penobrol: penobrolDao.penobrolByAuthorWithoutAnonim,
+    tandya: tandyaDao.tandyaByAuthorWithoutAnonim,
+    youtublog: youtublogDao.youtublogByAuthorWithoutAnonim
+};
+
+exports.getArticleByAuthorWithoutAnonim = async function (id2, type) {
+    let results = await getArticleByAuthorWithoutAnonimFunctions[type](id2);
+    let parsed = results.map(articleParseFrontFunctions[type]);
+    parsed.map((item) => {
+        if(item.chosen != 0) getChosenContent(item, type);
+        else item.chosenContent = null;
+    });
+    return [await Promise.all(parsed.map(item => getCommonComponents(item, type)))];
+};
+
 const getFullArticleFunctions = {
     penobrol: penobrolDao.penobrolById,
     tandya: tandyaDao.tandyaById,
@@ -163,6 +179,50 @@ exports.searchArticle = async function (string, type) {
     return [await Promise.all(parsed.map(item => getCommonComponents(item, type)))];
 };
 
+const postArticleFunctions = {
+    penobrol: penobrolDao.insertPenobrol,
+    tandya: tandyaDao.insertTandya,
+    youtublog: youtublogDao.insertYoutublog
+};
+
+exports.postArticle = async function(author, title, content, publicCode, thumbnail, hashtags, type){
+    const article = await postArticleFunctions[type](author, title, content, publicCode, thumbnail);
+    if (hashtags != null && hashtags.length > 0)
+        await hashService.postHashtags(article.insertId, hashtags, type);
+
+    return article.insertId;
+};
+
+const updateArticleViewFunctions = {
+    penobrol: penobrolDao.updatePenobrolView,
+    tandya: tandyaDao.updateTandyaView,
+    youtublog: youtublogDao.updateYoutublogView
+};
+
+exports.updateViewArticle = async function(articleId, type){
+    await updateArticleViewFunctions[type](articleId);
+    await updateArticleScoreFunctions[type](articleId);
+};
+
+const editArticleFunctions = {
+    penobrol: penobrolDao.updatePenobrol,
+    tandya: tandyaDao.updateTandya,
+    youtublog: youtublogDao.updateYoutublog
+};
+const updateArticleDateFunctions = {
+    penobrol: penobrolDao.updatePenobrolDate,
+    tandya: tandyaDao.updateTandyaDate,
+    youtublog: youtublogDao.updateYoutublogDate
+};
+exports.editArticle = async function(articleId, title, content, publicCode, thumbnail, hashtags, type){
+    updateArticleDateFunctions[type](articleId);
+    editArticleFunctions[type](title, content, publicCode, thumbnail, articleId);
+    await hashService.deleteHashtags(articleId, type);
+    if (hashtags != null && hashtags.length > 0)
+        await hashService.postHashtags(articleId, hashtags, type);
+
+    return articleId;
+};
 
 async function getChosenContent(article, type) {
     article.chosenContent = await replyService.getReplyById(article.chosen, type);

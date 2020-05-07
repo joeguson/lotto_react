@@ -6,11 +6,9 @@
 // url - '/api/article
 const route = require('express').Router();
 const jsForBack = require('../back/jsForBack.js');
-
-const penobrolService = require('../service/penobrolService.js');
-const tandyaService = require('../service/tandyaService.js');
 const youtublogService = require('../service/youtublogService.js');
 const articleService = require('../service/articleService.js');
+const deleteWarnService = require('../service/deleteWarnService.js');
 
 const articleMainColumns = {
     penobrol: "title",
@@ -20,32 +18,22 @@ const articleMainColumns = {
 
 /* ===== POST /{type} ===== */
 // article type 에 따른 post 함수
-const articlePostFunctions = {
-    penobrol: penobrolService.postPenobrol,
-    tandya: tandyaService.postTandya,
-    youtublog: youtublogService.postYoutublog
-};
 // 새 article 을 추가하는 api
 route.post('/:type', (req, res) => {
     const type = req.params['type'];
-    const postFunction = articlePostFunctions[type];
     const column = req.body[articleMainColumns[type]];
-    if (postFunction == null)
-        res.status(400).send('Wrong article type');
-    else postFunction(
+    articleService.postArticle(
         req.session.id2,
         column,
         req.body.content,
         req.body.public,
         req.body.thumbnail,
-        jsForBack.finalHashtagMaker(req.body.hashtag)
+        jsForBack.finalHashtagMaker(req.body.hashtag),
+        type
     ).then(id => {
-        console.log(id);
         if (type === 'youtublog') {
-            console.log('here i am');
             youtublogService.updateYoutube(req.body.youtubes, id)
                 .then(count => {
-                    console.log('here i am2');
                     res.json({id: id, updatedYoutubes: count});
                 }).catch((e) => {
                     console.error(e);
@@ -60,26 +48,19 @@ route.post('/:type', (req, res) => {
 
 /* ==== PUT /{type}/{id} ===== */
 // article type 에 따른 edit 함수
-const articleEditFunctions = {
-    penobrol: penobrolService.editPenobrol,
-    tandya: tandyaService.editTandya,
-    youtublog: youtublogService.editYoutublog
-};
 // article 을 수정하는 api
 route.put('/:type/:id', (req, res, next) => {
     const type = req.params['type'];
-    const editFunction = articleEditFunctions[type];
     const column = req.body[articleMainColumns[type]];
     if(type === 'chosen') next();
-    else if (editFunction == null)
-        res.status(400).send('Wrong article type');
-    else editFunction(
+    else articleService.editArticle(
         req.params['id'],
         column,
         req.body.content,
         req.body.public,
         req.body.thumbnail,
-        jsForBack.finalHashtagMaker(req.body.hashtag)
+        jsForBack.finalHashtagMaker(req.body.hashtag),
+        type
     ).then(id =>
         res.json({'id': id})
     ).catch(() =>
@@ -90,11 +71,7 @@ route.put('/:type/:id', (req, res, next) => {
 /* ===== GET /{type}/load===== */
 // article type 에 따른 load get 요청 함수
 // article 무한스크롤을 요청하는 api
-const randArticleFunctions = {
-    penobrol: penobrolService.getRandPenobrol,
-    tandya: tandyaService.getRandTandya,
-    youtublog: youtublogService.getRandYoutublog
-};
+
 route.get('/:type/load', (req, res) => {
     const type = req.params['type'];
     articleService.getRandFrontArticle(type)
@@ -128,9 +105,9 @@ route.put('/chosen/:type', (req, res) => {
 /* ===== DELETE /{type} ===== */
 // article type 에 따른 delete 요청 함수
 const articleDeleteFunctions = {
-    penobrol: penobrolService.deletePenobrol,
-    tandya: tandyaService.deleteTandya,
-    youtublog: youtublogService.deleteYoutublog
+    penobrol: deleteWarnService.deletePenobrol,
+    tandya: deleteWarnService.deleteTandya,
+    youtublog: deleteWarnService.deleteYoutublog
 };
 
 route.delete('/:type',
@@ -142,9 +119,9 @@ route.delete('/:type',
 /* ===== DELETE /{type}/reply ===== */
 // reply type 에 따른 delete 요청 함수
 const replyDeleteFunctions = {
-    penobrol: penobrolService.deleteComment,
-    tandya: tandyaService.deleteAnswer,
-    youtublog: youtublogService.deleteComment
+    penobrol: deleteWarnService.deletePComment,
+    tandya: deleteWarnService.deleteAnswer,
+    youtublog: deleteWarnService.deleteYComment
 };
 
 route.delete('/:type/reply',
@@ -156,9 +133,9 @@ route.delete('/:type/reply',
 /* ===== DELETE /{type}/re-reply ===== */
 // re-reply type 에 따른 delete 요청 함수
 const reReplyDeleteFunctions = {
-    penobrol: penobrolService.deleteCComment,
-    tandya: tandyaService.deleteAComment,
-    youtublog: youtublogService.deleteCComment
+    penobrol: deleteWarnService.deletePCComment,
+    tandya: deleteWarnService.deleteAComment,
+    youtublog: deleteWarnService.deleteYCComment
 };
 
 route.delete('/:type/re-reply',
