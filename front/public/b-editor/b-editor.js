@@ -238,28 +238,7 @@
             this.youtubeDialog.showModal(youtubeId);
         };
 
-        this.youtubeDialog.onConfirmCallback = (id) => {
-            this.youtubes.push(id);
-
-            const tagId = 'embed-' + id;
-
-            const embed = document.createElement('iframe');
-            embed.id = tagId;
-            embed.src = '/youtublog/embed/' + id;
-            embed.style.border = 'none';
-            embed.style.width = '100%';
-
-            const embedHTML = embed.outerHTML;
-
-            this.editor.body.focus();
-            this.editor.execCommand('insertHTML', false, embedHTML);
-
-            const iframe = this.editor.getElementById(tagId);
-            iframe.onload = () => {
-                const content = iframe.contentDocument ? iframe.contentDocument : iframe.contentWindow.document;
-                iframe.height = content.body.scrollHeight;
-            };
-        };
+        this.youtubeDialog.onConfirmCallback = (id) => this.__onYoutubeAdd(id);
     }
 
     cmd(id, showUi, value) {
@@ -313,6 +292,28 @@
     __onLinkClick(){this.linkDialog.showModal();}
 
     __onYoutubeClick() {this.youtubeIdDialog.showModal();}
+
+    __onYoutubeAdd(id) {
+        this.youtubes.push(id);
+
+        const tagId = 'embed-' + id;
+
+        const embed = document.createElement('iframe');
+        embed.id = tagId;
+        embed.src = '/youtublog/embed/' + id;
+        embed.style.border = 'none';
+        embed.style.width = '100%';
+
+        const embedHTML = embed.outerHTML;
+        this.editor.body.focus();
+        this.editor.execCommand('insertHTML', false, embedHTML);
+
+        const iframe = this.editor.getElementById(tagId);
+        iframe.onload = () => {
+            const content = iframe.contentDocument ? iframe.contentDocument : iframe.contentWindow.document;
+            iframe.height = content.body.scrollHeight;
+        };
+    }
 
 }
 

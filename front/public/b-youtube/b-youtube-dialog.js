@@ -61,7 +61,7 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
                 };
             });
 
-        makeRequest('POST', '/api/youtube', {source: source})
+        makeRequest('POST', '/api/youtube', {source: this.__youtubeId})
             .then(res => {
                 const sourceId = JSON.parse(res.toString()).id;
 

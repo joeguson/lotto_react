@@ -1,0 +1,37 @@
+html
+    head
+        link(rel='stylesheet' href="/css/youtube_embed.css" type="text/css")
+        style(type='text/css')
+
+
+    body
+        if youtube
+            div(style='background-image: url("https://i.ytimg.com/vi/UdydVecLZeU/hqdefault.jpg"); width: 100%; padding-top: 56.25%; background-size: contain; background-repeat: no-repeat')
+
+            each timeRow in youtube.timeRows
+                div(class='time_row')
+                    button(id="time-" + timeRow.time)=timeRow.time
+                    span=timeRow.desc
+            script.
+                const embeddedYoutube = document.getElementById('embedded_youtube');
+                let init = true;
+
+                window.onload = function() {
+                    if (init) {
+                        init = false;
+
+                        matchEmbeddedIframeAspectRatio();
+
+                        const buttons = Array.from(document.getElementsByTagName('button'));
+                        for (const button of buttons) {
+                            if (!button.id.startsWith('time-')) continue;
+                            setOnClickToTimeButton(button);
+                        }
+                    }
+                };
+
+                window.onresize = function() {
+                    matchEmbeddedIframeAspectRatio();
+                };
+        else
+            h1='Wrong youtube source id'

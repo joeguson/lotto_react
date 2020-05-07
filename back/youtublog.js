@@ -76,8 +76,12 @@ route.get('/edit/comment/:youtublog_no/:ycomment_no',function (req, res) {
 
 route.get('/embed/:id', function(req, res) {
     const id = req.params.id;
+
+    const edit = req.query.edit;
+    const template = edit === '1' ? './embed/youtube_embed_edit' : './embed/youtube_embed';
+
     youtublogService.getYoutubeById(id).then(youtube =>
-        res.render('./embed/youtube_embed', {youtube: youtube})
+        res.render(template, {youtube: youtube})
     );
 });
 
