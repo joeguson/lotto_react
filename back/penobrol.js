@@ -6,7 +6,7 @@ const replyService = require('../service/replyService.js');
 /* ===== penobrol ===== */
 route.get('/', function (req, res) {
     articleService.getFrontArticle('penobrol')
-        .then(([results]) => {
+        .then((results) => {
             res.render('./jp/p', {
             topics: results,
             id2: req.session.id2 ? req.session.id2 : 0

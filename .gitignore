@@ -5,7 +5,6 @@ images/*
 # intellij
 .idea/
 *.iml
-**/*.less
 .DS_Store
 node_modules/
 info/beritamus-admin-2ff0df5d17ca.json

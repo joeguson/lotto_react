@@ -75,7 +75,7 @@ route.put('/:type/:id', (req, res, next) => {
 route.get('/:type/load', (req, res) => {
     const type = req.params['type'];
     articleService.getRandFrontArticle(type)
-        .then(([rand]) => {
+        .then((rand) => {
             res.json(rand);
         })
         .catch(() => res.status(500).send('Could not post re-reply')

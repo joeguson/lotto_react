@@ -4,12 +4,9 @@ const taDao = require('../db/b-dao/tanDao/taDao');
 const ycDao = require('../db/b-dao/youDao/ycDao');
 //articleServices
 const articleService = require('./articleService');
-//rereplyServices
-const rereplyService = require('./rereplyService');
-//likeServices
-const likeService = require('./likeService');
 //others
 const replyParser = require('../db/parser/replyParser.js');
+const serviceUtil = require('./serviceUtil');
 
 const getReplyFunctions = {
     penobrol: pcDao.penobrolComByScore,
@@ -35,23 +32,10 @@ exports.getFullReply = async function (articleId, userId, type) {
     let replyResult = (await getReplyFunctions[type](articleId))
         .map(replyParseFunctions[type]);
 
-    let reply = await applyAsyncToAll(type, replyResult, userId, getReplyDetails);
+    let reply = await serviceUtil.applyAsyncToAll(type, replyResult, userId, serviceUtil.getReplyDetails);
 
     return reply;
 };
-
-async function getReplyDetails(type, userId, item) {
-    const [re_replyResult, likeStatus, likeCount] = await Promise.all([
-        rereplyService.getFullReReply(item.id, type),
-        likeService.replyLikeStatus(item.id, userId, type),
-        likeService.replyLikeCount(item.id, type),
-    ]);
-    item.comments = re_replyResult;
-    item.likeStatus = likeStatus;
-    item.likeCount = likeCount;
-
-    return item;
-}
 
 const postReplyFunctions = {
     penobrol: pcDao.insertPenobrolCom,
@@ -68,7 +52,7 @@ exports.postReply = async function (article_id, userId, type, content) {
     const replyResult = await postReplyFunctions[type](userId, content, article_id);
     await articleService.updateArticleScore(article_id, type);
     let reply = (await getReplyById[type](replyResult.insertId)).map(replyParseFunctions[type]);
-    reply = await applyAsyncToAll(type, reply, userId, getReplyDetails);
+    reply = await serviceUtil.applyAsyncToAll(type, reply, userId, serviceUtil.getReplyDetails);
     return reply[0];
 };
 
@@ -96,8 +80,3 @@ exports.editReply = async function (replyId, content, articleId, type) {
     await editReplyFunctions[type](content, replyId, articleId);
     return replyId;
 };
-
-function applyAsyncToAll(type, list, userId, asyncFun) {
-    const promiseList = list.map(item => asyncFun(type, userId, item));
-    return Promise.all(promiseList);
-}

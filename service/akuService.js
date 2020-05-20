@@ -51,23 +51,26 @@ exports.isFollowing = async function(source, target) {
 };
 
 exports.countFollow = async function(id2) {
-    return await Promise.all([
+    const follow = {};
+    const [countFollowing, countFollower] = await Promise.all([
         followDao.countFollowing(id2),
         followDao.countFollower(id2)
     ]);
+    follow.following = countFollowing[0].following;
+    follow.follower = countFollower[0].follower;
+    return follow;
 };
 
 exports.countFollowByForeigner = async function(userId) {
     const id2 = (await userDao.getUserId2(userId))[0].id;
-    return await Promise.all([
+    const follow = {};
+    const [countFollowing, countFollower] = await Promise.all([
         followDao.countFollowing(id2),
         followDao.countFollower(id2)
     ]);
-};
-
-exports.searchUser = async function(string) {
-    const results = await userDao.userSearch(string);
-    return results[0];
+    follow.following = countFollowing[0].following;
+    follow.follower = countFollower[0].follower;
+    return follow;
 };
 
 exports.getUserArticle = async function(id2) {

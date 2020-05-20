@@ -1,4 +1,4 @@
-extends ../layout
+extends ../front_layout
 
 block js
     script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
@@ -9,25 +9,14 @@ block css
     link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
     link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
 
-block submain
-    //.ad Advertising
-    .search
-        form(action='/cari/search' method='get')
-            input(type='text' name='search' value=`${search_string}`)
-            button(type='submit' class="submit" value="search")
-                img(src="icons/cari3.png" class="cariImage")
-
 block main
     ul.thumbnailUl(id='uls')
         if(user)
             for itemm in user
                 a(href="/aku/user/"+`${itemm}`) #{itemm}
-        if(penobrol)
-            for item in penobrol
+        if(article)
+            for item in article
                 b-thumbnail(jsonSrc=`${JSON.stringify(item)}`)
-        if(tandya)
-            for items in tandya
-                b-thumbnail(jsonSrc=`${JSON.stringify(items)}`)
         if(hashtag)
             for itemss in hashtag
                 b-thumbnail(jsonSrc=`${JSON.stringify(itemss)}`)

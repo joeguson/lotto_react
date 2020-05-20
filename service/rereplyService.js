@@ -2,13 +2,10 @@
 const pccDao = require('../db/b-dao/penDao/pccDao');
 const tacDao = require('../db/b-dao/tanDao/tacDao');
 const yccDao = require('../db/b-dao/youDao/yccDao');
-//articleServices
-const articleService = require('./articleService');
 //replyServices
 const replyService = require('./replyService');
 //others
 const reReplyParser = require('../db/parser/reReplyParser.js');
-const serviceUtil = require('./serviceUtil');
 
 const getRereplyFunctions = {
     penobrol: pccDao.penobrolComComByPcId,

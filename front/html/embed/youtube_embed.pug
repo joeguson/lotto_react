@@ -3,7 +3,7 @@ html
         link(rel='stylesheet' href="/css/youtube_embed.css" type="text/css")
     body
         if youtube
-            iframe(id='embedded_youtube' width='100%' src=`https://www.youtube.com/embed/${youtube.source}`
+            iframe(id='_embedded_youtube' width='100%' src=`https://www.youtube.com/embed/${youtube.source}?`
                 allow='accelerometer; autoplay; encrypted-media; gyroscope;'
                 allowfullscreen)
             each timeRow in youtube.timeRows
@@ -11,7 +11,7 @@ html
                     button(id="time-" + timeRow.time)=timeRow.time
                     span=timeRow.desc
             script.
-                const embeddedYoutube = document.getElementById('embedded_youtube');
+                const embeddedYoutube = document.getElementById('_embedded_youtube');
                 let init = true;
 
                 window.onload = function() {
@@ -43,7 +43,7 @@ html
                     const time = parseTimeFromId(timeButton.id);
                     const src = embeddedYoutube.src;
                     const startStringIndex = src.indexOf('?');
-                    const queryParams = '?autoplay=1&rel=0&start=' + time;
+                    const queryParams = '?autoplay=1&start=' + time;
                     timeButton.onclick = function() {
                         embeddedYoutube.src = src.substring(0, startStringIndex) + queryParams;
                     };

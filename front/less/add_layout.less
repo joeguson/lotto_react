@@ -1,0 +1,52 @@
+//out: ../css/add_layout.css
+//common.css is for
+//layout.pug / nav
+// Variables
+@themes: "../less";
+// Usage
+@import "@{themes}/variable.less";
+
+.article{width:100%; background-color: @bgcolor1; padding:20px 10px; text-align: center; margin:0 auto;}
+
+article p{width:100%;}
+article p:nth-child(3){margin-bottom: @marginbottom-mbl;}
+article p:nth-child(5){margin-bottom: @marginbottom-mbl;}
+article p:nth-child(6){margin-bottom: @marginbottom-mbl;}
+.infoP{width: 90%; text-align: right; margin: 0 auto;}
+
+//inside ps
+.title{height:40px; width:90%;}
+.infoSpan{text-align: right; font-size: 12px; color:darkred;}
+label{margin-bottom: @marginbottom-mbl;}
+.thumbnail{height:40px; width:90%;}
+
+input{border:1px solid lightgray; font-size: 16px; padding:10px; border:1px solid @main;}
+textarea{border:1px solid lightgray; font-size: 16px; padding: 10px; margin-bottom: @marginbottom-mbl; border:1px solid @main;}
+
+button {
+    background-color: transparent;
+}
+.b-editor-hover-transition:hover{
+    background-color: #2043aa;
+    transition: all 0.3s linear 0s;
+}
+
+.content{height:500px; width:90%;}
+.hashtag{height:40px; width:90%;}
+.submit{.button(); width:90%; margin:@marginbottom-mbl auto 0; display: block; font-size: 14px; line-height: 35px; height:35px;}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/*for bigger windows*/
+@media (min-width:@min-width){
+    article{width:90%; text-align: center; margin:0 auto;}
+
+}

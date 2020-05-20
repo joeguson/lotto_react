@@ -12,7 +12,7 @@ mixin basicTInfo(author, date, view, comAnsCount)
     - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' answers'
     dd.abasicInfo #{basicInfo}
 
-mixin articleContent(content)
+mixin articleContent()
     iframe(id="content" class="aContent" style="border: none;")
     script.
         const contentFrame = document.getElementById("content");
@@ -30,7 +30,6 @@ mixin articleContent(content)
 
         function autoHeight() {
             contentFrame.height = page.body.scrollHeight + 'px';
-
             const innerIFrames = Array.from(page.getElementsByTagName('iframe'));
             for (const innerIFrame of innerIFrames) {
                 if (!innerIFrame.id.startsWith('embed-')) continue;

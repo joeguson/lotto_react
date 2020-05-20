@@ -20,7 +20,7 @@ const getCariFrontArticleFunctions = {
 
 exports.getCariFrontArticle = async function(type){
     const temp = await getCariFrontArticleFunctions[type]();
-    return await __articleFrontParseSupplement(temp, type);
+    return await serviceUtil.__articleFrontParseSupplement(temp, type);
 };
 
 const getFrontArticleFunctions = {
@@ -29,19 +29,13 @@ const getFrontArticleFunctions = {
     youtublog: [youtublogDao.youtublogByScore, youtublogDao.youtublogByDate]
 };
 
-const articleParseFrontFunctions = {
-    penobrol: articleParser.parseFrontPenobrol,
-    tandya: articleParser.parseFrontTandya,
-    youtublog: articleParser.parseFrontYoutublog
-};
-
 exports.getFrontArticle = async function(type){
     //2개의 쿼리를 실행하므로 flatten 함수 필요
     let results = serviceUtil.flatten(await Promise.all([
         getFrontArticleFunctions[type][0](),
         getFrontArticleFunctions[type][1]()
     ]));
-    return await __articleFrontParseSupplement(results, type);
+    return await serviceUtil.__articleFrontParseSupplement(results, type);
 };
 
 const getFrontArticleByIdFunctions = {
@@ -52,7 +46,7 @@ const getFrontArticleByIdFunctions = {
 
 exports.getFrontArticleById = async function(articleId, type){
     let results = await getFrontArticleByIdFunctions[type](articleId);
-    return (await __articleFrontParseSupplement(results, type))[0];
+    return (await serviceUtil.__articleFrontParseSupplement(results, type))[0];
 };
 
 const getRandArticleFunctions = {
@@ -63,7 +57,7 @@ const getRandArticleFunctions = {
 
 exports.getRandFrontArticle = async function (type) {
     let results = await getRandArticleFunctions[type]();
-    return await __articleFrontParseSupplement(results, type);
+    return await serviceUtil.__articleFrontParseSupplement(results, type);
 };
 
 const getArticleByAuthorFunctions = {
@@ -74,7 +68,7 @@ const getArticleByAuthorFunctions = {
 
 exports.getArticleByAuthor = async function (id2, type) {
     let results = await getArticleByAuthorFunctions[type](id2);
-    return await __articleFrontParseSupplement(results, type);
+    return await serviceUtil.__articleFrontParseSupplement(results, type);
 };
 
 const getArticleByAuthorWithoutAnonimFunctions = {
@@ -85,7 +79,7 @@ const getArticleByAuthorWithoutAnonimFunctions = {
 
 exports.getArticleByAuthorWithoutAnonim = async function (id2, type) {
     let results = await getArticleByAuthorWithoutAnonimFunctions[type](id2);
-    return await __articleFrontParseSupplement(results, type);
+    return await serviceUtil.__articleFrontParseSupplement(results, type);
 };
 
 const getFullArticleFunctions = {
@@ -107,7 +101,7 @@ exports.getFullArticleById = async function(id, userId, type){
 
     article.likeStatus = await likeService.articleLikeStatus(id, userId, type);
 
-    return await getCommonComponents(article, type);
+    return await serviceUtil.getCommonComponents(article, type);
 };
 
 const updateArticleScoreFunctions = {
@@ -127,17 +121,6 @@ const updateArticleChosenFunctions = {
 };
 exports.updateArticleChosen = function(articleId, replyId, type){
     return updateArticleChosenFunctions[type](articleId, replyId);
-};
-
-const searchArticleFunctions = {
-    penobrol: penobrolDao.penobrolSearch,
-    tandya: tandyaDao.tandyaSearch,
-    youtublog: youtublogDao.youtublogSearch
-};
-
-exports.searchArticle = async function (string, type) {
-    const results = await searchArticleFunctions[type](string);
-    return await __articleFrontParseSupplement(results, type);
 };
 
 const postArticleFunctions = {
@@ -175,6 +158,7 @@ const updateArticleDateFunctions = {
     tandya: tandyaDao.updateTandyaDate,
     youtublog: youtublogDao.updateYoutublogDate
 };
+
 exports.editArticle = async function(articleId, title, content, publicCode, thumbnail, hashtags, type){
     updateArticleDateFunctions[type](articleId);
     editArticleFunctions[type](title, content, publicCode, thumbnail, articleId);
@@ -184,30 +168,3 @@ exports.editArticle = async function(articleId, title, content, publicCode, thum
 
     return articleId;
 };
-
-async function __articleFrontParseSupplement(articles, type){
-    let parsed = articles.map(articleParseFrontFunctions[type]);
-    parsed.forEach((item) => {
-        if(item.chosen !== 0) getChosenContent(item, type);
-        else item.chosenContent = null;
-    });
-    return await Promise.all(parsed.map(item => getCommonComponents(item, type)));
-}
-
-async function getChosenContent(article, type) {
-    article.chosenContent = await replyService.getReplyById(article.chosen, type);
-    return article;
-}
-
-async function getCommonComponents(article, type) {
-    // hashtag 를 가져오는 작업과 comment 개수를 가져오는 작업을 병렬로 처리
-    const [replyCount, likeCount, hashtagResult] = await Promise.all([
-        replyService.countReplyByArticleId(article.id, type),
-        likeService.articleLikeCount(article.id, type),
-        hashService.getHash(article.id, type)
-    ]);
-    article.replyCount = replyCount;
-    article.likeCount = likeCount;
-    article.hashtags = hashtagResult;
-    return article;
-}

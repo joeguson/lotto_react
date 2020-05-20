@@ -44,6 +44,7 @@ exports.poolConfig = poolConfig;
 const apiRouter = require('./api/api');
 const aku = require('./back/aku');
 const cari = require('./back/cari');
+const search = require('./back/search');
 const penobrol = require('./back/penobrol');
 const tandya = require('./back/tandya');
 const youtublog = require('./back/youtublog');
@@ -74,6 +75,7 @@ app.use(function(req, res, next){
 /* ===== router ===== */
 app.use('/api', apiRouter);
 app.use('/cari', cari);
+app.use('/search', search);
 app.use('/aku', aku);
 app.use('/tandya', tandya);
 app.use('/penobrol', penobrol);

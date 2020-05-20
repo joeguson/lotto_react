@@ -24,12 +24,10 @@ class BeritamusThumbnail extends HTMLElement {
                 let frameWidth = div.offsetWidth;
                 let frameHeight = (frameWidth * 3) /4;
 
-                if(imgWidth > imgHeight){
-                    //가로로 긴 사진이라면
+                if(imgWidth > imgHeight){ //가로로 긴 사진이라면
                     img.style.width = frameWidth + 'px';
                 }
-                else{
-                    //세로로 길거나 정사각형의 사진
+                else{ //세로로 길거나 정사각형의 사진
                     img.style.height = frameHeight + 'px';
                 }
             }
@@ -42,9 +40,9 @@ class BeritamusThumbnail extends HTMLElement {
         else type = 'youtublog';
 
         const li = document.createElement("li");
-        li.appendChild(this.__buildImage());
+        if(this.src.img) li.appendChild(this.__buildImage()); //if img exists
         li.appendChild(this.__buildLike());
-        li.appendChild(this.__buildArticle());
+        li.appendChild(this.__buildArticle(type));
         li.className = "thumbnailLi";
 
         const br = document.createElement("br");
@@ -57,14 +55,11 @@ class BeritamusThumbnail extends HTMLElement {
     }
 
     __buildImage() {
-        //사진이 있는 경우와 없는 경우
         this.div = document.createElement("div");
         this.div.className = "thumbnailImg";
-        if(this.src.img) {
-            this.img = document.createElement("img");
-            this.img.src = this.src.img.src;
-            this.div.appendChild(this.img);
-        }
+        this.img = document.createElement("img");
+        this.img.src = this.src.img.src;
+        this.div.appendChild(this.img);
         return this.div;
     }
 
@@ -76,12 +71,7 @@ class BeritamusThumbnail extends HTMLElement {
         return likeDiv;
     }
 
-    __buildArticle() {
-        let type = '';
-        if(this.src.identifier === 'p') type = 'penobrol';
-        else if(this.src.identifier === 't') type = 'tandya';
-        else type = 'youtublog';
-
+    __buildArticle(type) {
         this.dl = document.createElement("dl");
         this.dl.className = "thumbnailDl";
         this.dl.onclick = () => {

@@ -1,0 +1,43 @@
+//out: ../css/user_layout.css
+// Variables
+@themes: "../less";
+// Usage
+@import "@{themes}/variable.less";
+
+.userInfo{width:100%; margin-bottom: @marginbottom-mbl; background-color: white; text-align: center; padding:10px;}
+.userStat{width:100%; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; background-color: white;}
+.userArticle{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; background-color: @bgcolor1;}
+
+//.userInfo - .userInfoSpan
+.userInfoSpan {width:30%; display: inline-block;}
+
+//.p-stat - .likeHeading(p), .likeStat(div)
+.userStat p {font-size: 18px; line-height: 30px; box-sizing: border-box;}
+.likeStat{width:100%; box-sizing: border-box; padding: 5px; text-align: center;}
+.likeStat:nth-child(2){border-top:1px solid lightgray}
+
+.likeStat .likeSpan:first-child{border-right:1px solid lightgray}
+.likeStat .likeSpan:nth-child(2){border-right:1px solid lightgray}
+.likeSpan{width:30%; box-sizing: border-box; display: inline-block; text-align: center;}
+.likeHeading{margin-bottom: 5px; color:@main;}
+.likeCount{width:100%; box-sizing: border-box; text-align: center; color:@likeColor; font-size: 20px}
+
+
+//.userArticle - p, ul(.thumbnailUl)
+.userArticle p{font-size: 20px; line-height: 30px; margin-bottom: 15px}
+.thumbnailUl{width:95%; margin: 0 auto; cursor: pointer; padding:5px; list-style: none;}
+
+.userPenobrol, .userTandya, .userYoutublog{padding: @marginbottom-mbl; margin-bottom: @marginbottom-mbl; background-color: white;}
+
+
+.logout{ font-size: 16px; color: white; .button();}
+
+form{font-size:0px;} //when making input tags inline, they have space between them. Cannot remove it with margin 0px;
+
+//.pic{width:20%; height:100%;}
+
+
+/*for bigger windows*/
+@media (min-width:@min-width){
+    form{margin: 80px auto @marginbottom-mbl auto;}
+}

@@ -15,7 +15,7 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
                 this.__iframe.height = "315";
                 this.__iframe.frameBorder = "0";
                 // iframe.allowFullscreen = true;
-                div.appendChild(this.__iframe);
+                div.appendChild(this.__iframe);f
             }
             {
                 const times = document.createElement("div");

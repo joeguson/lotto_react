@@ -6,7 +6,7 @@ const replyService = require('../service/replyService.js');
 /* ===== tandya ===== */
 route.get('/', function (req, res) {
     articleService.getFrontArticle('tandya')
-        .then(([results]) => {
+        .then((results) => {
             res.render('./jt/t', {
             topics: results,
             id2: req.session.id2 ? req.session.id2 : 0

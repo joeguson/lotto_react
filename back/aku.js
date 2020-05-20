@@ -47,15 +47,15 @@ route.get('/', function(req, res){
         akuService.getUserArticle(req.session.id2)
             .then(([userPenobrol, userTandya, userYoutublog, totalLikes]) => {
                 akuService.countFollow(req.session.id2)
-                    .then(([following, follower]) => {
+                    .then((follow) => {
                         res.render('./ja/aku', {
                             user:req.session.id2,
                             u_id:req.session.u_id,
-                            following: following[0].following,
-                            follower: follower[0].follower,
-                            penobrols:userPenobrol[0],
-                            tandyas:userTandya[0],
-                            youtublog:userYoutublog[0],
+                            following: follow.following,
+                            follower: follow.follower,
+                            penobrols:userPenobrol,
+                            tandyas:userTandya,
+                            youtublog:userYoutublog,
                             totalLikes:totalLikes
                         })});
             });
@@ -114,15 +114,6 @@ route.get('/logout', function(req, res){
     delete req.session.valid;
     delete req.session.countryCode;
     res.redirect("/aku");
-});
-
-
-
-route.get('/logout', function(req, res){
-    delete req.session.u_id;
-    delete req.session.id2;
-    delete req.session.valid;
-    res.redirect('/aku');
 });
 
 route.get('/find', function(req, res){

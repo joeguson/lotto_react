@@ -1,0 +1,46 @@
+//out: ../css/thumbnail.css
+
+// Variables
+@themes: "../less";
+// Usage
+@import "@{themes}/variable.less";
+
+/* ==== thumbnail and my-thumbnail ====*/
+
+//.thumbnailUl - .thumbnailLi
+//.mythumbnailUl - .mythumbnailLi
+.thumbnailLi{width:100%; background-color: #f4f5f0; .li-border(); padding: 5px; cursor: url(hand.cur), pointer; display: inline-block;}
+.mythumbnailLi{width:100%; background-color: #f4f5f0; margin-bottom: 5px; .li-border(); padding: 5px; cursor: url(hand.cur), pointer;}
+
+//.thumbnailLi - .thumbnailImg, .thumbnailLikeDiv, .thumbnailDl 
+.thumbnailImg{width:100%; text-align: center;}
+.thumbnailLikeDiv{width:100%;}
+.thumbnailDl{width:100%;}
+
+
+//.mythumbnailLi - .mythumbnailImg, .mythumbnailDl
+.mythumbnailImg{width:100%; text-align: center;}
+.mythumbnailDl{width:100%;}
+
+
+//.mythumbnailLi - .thumbnailDl, .articleImage
+
+//li - div(.articleDiv, .articleImgDiv) span, dl
+.articleImgDiv{width: 100%; height:100%; text-align: center; cursor: pointer;}
+
+//.articleDl - dt, dd
+dt{width: 90%; height:36px; line-height: 36px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
+
+//dl.p-dl - dt, dd
+
+dd{font-style: italic; font-size: 16px;}
+dl .ddcontent{overflow: hidden; text-overflow: ellipsis; white-space:normal; font-size: 16px; line-height: 16px; height:28px; font-style: normal; margin-bottom: 5px;}
+
+//dt - a
+dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none; font-size: 24px;}
+
+/*for bigger windows*/
+@media (min-width:@min-width){
+    //.thumbnailUl - .thumbnailLi
+    .thumbnailLi{display: inline-block;}
+}

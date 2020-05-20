@@ -13,7 +13,6 @@ class BeritamusYoutubeTime extends HTMLElement {
         this.appendChild(this.__getMinute());
         this.appendChild(this.__getSecond());
         this.appendChild(this.__getDescription());
-
     }
 
     __getHour(){

@@ -7,7 +7,7 @@ const youtublogService = require('../service/youtublogService.js');
 /* ===== youtublog ===== */
 route.get('/', function (req, res) {
     articleService.getFrontArticle('youtublog')
-        .then(([results]) => res.render('./jy/y', {
+        .then((results) => res.render('./jy/y', {
             topics: results,
             id2: req.session.id2 ? req.session.id2 : 0
         }));
@@ -18,7 +18,7 @@ route.get('/:youtublog_no', function (req, res, next) {
     const checkId = /^[0-9]+$/;
     if(checkId.test(id)){
         articleService.getFullArticleById(id, req.session.id2, 'youtublog').then(result => {
-            if (!result) res.redirect('/youtublog/'); // 결과가 없으면 홈으로 이동
+            if (!result) res.redirect('/youtublog'); // 결과가 없으면 홈으로 이동
             else articleService.updateViewArticle(result.id, 'youtublog').then(() => // 받아왔으면 조회수 증가 후 페이지 표시
                 res.render('./jy/y-view', {
                     topic: result,

@@ -23,7 +23,7 @@ block main
                     +articlePop(topic.identifier, id2, topic.author)
                 +hashtag(topic.hashtags)
         .articleContent
-            +articleContent(topic.content)
+            +articleContent()
         .articleLike
             .articleLikeNum(id="articleLikeNum")= topic.likeCount
             if(id2)
@@ -129,6 +129,7 @@ block jscript
                     if(result.result === 'chosen'){ // choose라면 id를 가지고
                         const chosenNew = document.getElementById('replyLi' + id);
                         chosenNew.style.backgroundColor = "blue";
+                        alert("chosen");
                         alert("chosen");
                     }
                     else{ // cancel이라면

@@ -8,8 +8,8 @@ const cariService = require('../service/cariService.js');
 route.get('/load', function(req, res){
     cariService.getRandArticle()
         .then(([randPenobrol, randTandya, randYoutublog]) => {
-            let result = randPenobrol[0].concat(randTandya[0]);
-            result = result.concat(randYoutublog[0]);
+            let result = randPenobrol.concat(randTandya);
+            result = result.concat(randYoutublog);
             jsForBack.shuffle(result);
             let responseData = result;
             res.json(responseData);

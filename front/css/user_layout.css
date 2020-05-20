@@ -84,7 +84,7 @@
   width: 100%;
   box-sizing: border-box;
   text-align: center;
-  color: #b91819;
+  color: #a13525;
   font-size: 20px;
 }
 .userArticle p {
@@ -123,7 +123,7 @@ form {
   font-size: 0px;
 }
 /*for bigger windows*/
-@media (min-width: 768px) {
+@media (min-width: 414px) {
   form {
     margin: 80px auto 10px auto;
   }

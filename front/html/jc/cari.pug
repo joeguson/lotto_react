@@ -5,12 +5,7 @@ block frontJs
 block frontCss
     link(rel='stylesheet', href='/css/cari.css' type="text/css")
 
-block submain
-    .search
-        form(action='/cari/search' method='get')
-            input(type='text' name='search')
-            button(type='submit' class="submit" value="search")
-                img(src="icons/cari3.png" class="cariImage")
+block submain_supplement
     .common_info
         a.weatherwidget-io(href="https://forecast7.com/en/n0d79113d92/indonesia/" data-label_1="INDONESIA" data-icons="Climacons Animated" data-days="5" data-theme="pure") INDONESIA
         script.

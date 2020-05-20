@@ -20,30 +20,29 @@ html
                 a(href='/cari') Beritamus
                 span /b'ritɛmus/
             nav
-                ul
+                ul(id='navUl')
                     li(id='akuLiTag')
                         a(href='/aku' id='akuATag')
-                            img(src="icons/aku.png" class="navImg" id="navImg")
-                    li(id='penobrolLiTag'): a(href='/penobrol' id='penobrolATag') penobrol
-                    li(id='tandyaLiTag'): a(href='/tandya' id='tandyaATag') tandya
-                    li(id='youtublogLiTag'): a(href='/youtublog' id='youtublogATag') youtublog
+                            img(src="icons/aku_white.png" class="navImg")
+                    li(id='penobrolLiTag')
+                        a(href='/penobrol' id='penobrolATag')
+                            img(src="icons/penobrol_white.png" class="navImg")
+                    li(id='tandyaLiTag')
+                        a(href='/tandya' id='tandyaATag')
+                            img(src="icons/tandya_white.png" class="navImg")
+                    li(id='youtublogLiTag')
+                        a(href='/youtublog' id='youtublogATag')
+                            img(src="icons/youtublog_white.png" class="navImg")
                 br.clear
             section.sub-main
                 block submain
             section.main
                 block main
-            section.footer
-                block footer
-                    .footer1
-                        p admin@beritamus.com
-                        p www.beritamus.com
-                    .footer2
-                        p
-                            a() References
+        block footer
 
     block jscript
     script.
-        window.addEventListener('load', function () {
+        window.addEventListener('DOMContentLoaded', function () {
             let currentTag = (location.pathname).split('/')[1];
             switch (currentTag) {
                 case 'aku':
@@ -52,9 +51,9 @@ html
                 case 'youtublog':
                     const currentLiTag = document.getElementById(currentTag + 'LiTag');
                     const currentATag = document.getElementById(currentTag + 'ATag');
-                    currentLiTag.style.borderBottom = '3px solid #f4f5f0';
-                    currentLiTag.style.opacity = '.9';
+                    currentLiTag.style.backgroundColor = 'white';
                     currentATag.style.color = '#f4f5f0';
+                    currentATag.children[0].setAttribute('src', 'icons/'+currentTag+'_blue.png');
                     break;
                 case 'cari':
                 default:
