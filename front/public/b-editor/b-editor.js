@@ -56,12 +56,13 @@
     buildControls(w) {
         const controls = document.createElement("div");
         controls.style.textAlign = "center";
+        controls.style.fontSize = "10px";
         controls.style.boxSizing = "border-box";
         controls.style.borderBottom = "none";
         controls.style.padding = "8px";
         controls.style.backgroundColor = "#0f4c81";
         controls.style.color = "white";
-        controls.style.borderRadius = "8px 8px 0 0";
+        controls.style.borderRadius = "5px 5px 0 0";
         controls.style.width = w;
         controls.style.margin = "0 auto";
 
@@ -125,7 +126,7 @@
         this.addControlButton(controls, "Undo", "←");
         this.addControlButton(controls, "Redo", "→");
 
-        if(this.youtublog === '1') this.addControlButton(controls, "Youtube", "Y");
+        if(this.youtublog === '1') this.addControlButton(controls, "Youtube", "Youtublog");
 
         return controls;
     }
@@ -250,7 +251,6 @@
 
     __onImgClick(){
         const i = this.imageInput;
-        const rot = this.rotateImage;
         if (i.files && i.files[0]) {
             const reader = new FileReader();
             reader.onload = (e) => {

@@ -1,0 +1,30 @@
+extends ./layout
+include ./view_mixIn
+
+block js
+    script(type="text/javascript" src="/js/jsForAllJade.js")
+    block view_js
+
+block css
+    link(rel="stylesheet" href="../css/view_layout.css" type="text/css")
+    link(rel='stylesheet', href='/css/view_mixIn.css' type="text/css")
+    block view_css
+
+block submain
+
+block main
+    .articleContainer(id='articleContainer')
+        .articleInfo
+            dl.articleDl
+                block articleDl
+        .articleThumb
+            block articleThumb
+        .articleContent
+            +articleContent()
+        .articleLike
+            .articleLikeNum(id="articleLikeNum")= topic.likeCount + '  highlight  '
+    if(id2)
+        .replyInputContainer
+            block replyInput
+
+block jscript

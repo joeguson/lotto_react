@@ -9,7 +9,7 @@ class BeritamusLinkDialog extends BeritamusDialog {
     connectedCallback() {
         this.contentAreaBuilder = () => {
             const input = document.createElement("input");
-            input.style.display = "block";
+            input.className = "dialogInput";
             input.id = "videoInput";
             this.idInput = input;
             return input;

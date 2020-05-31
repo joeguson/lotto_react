@@ -17,28 +17,29 @@ class BeritamusYoutubeTime extends HTMLElement {
 
     __getHour(){
         const h = document.createElement("input");
-        h.style.width = "10%";
+        h.className = 'youtublogTimeInput';
+        h.placeholder = 'h';
         return h;
     }
 
     __getMinute(){
         const m = document.createElement("input");
-        m.style.width = "10%";
-
+        m.className = 'youtublogTimeInput';
+        m.placeholder = 'm';
         return m;
     }
 
     __getSecond(){
         const s = document.createElement("input");
-        s.style.width = "10%";
-
+        s.className = 'youtublogTimeInput';
+        s.placeholder = 's';
         return s;
     }
 
     __getDescription(){
         const d = document.createElement("input");
-        d.style.width = "70%";
-
+        d.className = 'youtublogDescriptionInput';
+        d.placeholder = 'description';
         return d;
     }
 }

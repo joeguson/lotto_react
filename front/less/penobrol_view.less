@@ -4,8 +4,48 @@
 // Usage
 @import "@{themes}/variable.less";
 
-//block article - .aTtileDl - basicPInfo(mixin)
+.articleTitleDt{font-size: 22px; margin-bottom: 10px; color:@main;}
+.commentUl{width:100%; padding: 5px; list-style: none; background-color: white;}
 
+.replyChosen .replyLi{width:100%; padding: 5px;}
+.replyChosen .replyLi .replyDl{width:100%; margin-bottom: 20px;}
+//.replyDl - .replyDt, .replyDd
+.replyChosen .replyDt{width:100%;}
+.replyChosen .replyDd{width:100%;}
+.replyChosen .replyPre{width:100%; font-size: 16px; margin-bottom: 1px;}
+
+//.replyDd - .replySpan1, .replySpan2
+.replyChosen .replySpan1{color:gray; font-size: 12px;}
+.replyChosen .replySpan2{color: @palette5; font-size: 14px; font-family: @font-family2;}
+
+.replyChosen .replyButtonContainer{width:100%; text-align: left;}
+.replyChosen .replyButtonSpan{padding: 0px 8px; .right-border(); height:22px; line-height: 22px;}
+.replyChosen .replyButton{background: none; border: none; display: inline-block; text-align: center;}
+.replyChosen .replyButtonImg{height:22px; background: none; border: none;}
+
+//.commentUl - .replyLi
+.commentUl .replyLi{width:100%; .bottom-border(); padding: 5px;}
+
+//.replyLi - replyDl
+.commentUl .replyLi .replyDl{width:100%; margin-bottom: 20px;}
+
+//.replyDl - .replyDt, .replyDd
+.commentUl .replyDt{width:100%;}
+.commentUl .replyDd{width:100%;}
+
+//.replyDt - .replyPre
+.commentUl .replyPre{width:100%; font-size: 16px; margin-bottom: 1px;}
+
+//.replyDd - .replySpan1, .replySpan2
+.commentUl .replySpan1{color:gray; font-size: 12px;}
+.commentUl .replySpan2{color: @palette5; font-size: 14px; font-family: @font-family2;}
+
+.commentUl .replyButtonContainer{width:100%; text-align: left;}
+.commentUl .replyButtonSpan{padding: 0px 8px; .right-border(); height:22px; line-height: 22px;}
+.commentUl .replyButton{background: none; border: none; display: inline-block; text-align: center;}
+.commentUl .replyButtonImg{height:22px; background: none; border: none;}
 
 /*for bigger windows*/
-@media (min-width:@min-width){}
+@media (min-width:@min-width){
+    
+}

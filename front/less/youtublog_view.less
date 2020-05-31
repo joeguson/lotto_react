@@ -1,11 +1,11 @@
-//out: ../css/tandya_view.css
+//out: ../css/youtublog_view.css
 // Variables
 @themes: "../less";
 // Usage
 @import "@{themes}/variable.less";
 
 .articleTitleDt{font-size: 22px; margin-bottom: 10px; color:@main;}
-.answerUl{width:100%; padding: 5px; list-style: none; background-color: white;}
+.commentUl{width:100%; padding: 5px; list-style: none; background-color: white;}
 
 .replyChosen .replyLi{width:100%; padding: 5px;}
 .replyChosen .replyLi .replyDl{width:100%; margin-bottom: 20px;}
@@ -23,30 +23,27 @@
 .replyChosen .replyButton{background: none; border: none; display: inline-block; text-align: center;}
 .replyChosen .replyButtonImg{height:22px; background: none; border: none;}
 
-
-.replyInputLink{display: block; width:100%; .button(); text-decoration: none;}
-
-//.answerUl
-.answerUl .replyLi{width:100%; .bottom-border(); padding: 5px;}
+//.commentUl - .replyLi
+.commentUl .replyLi{width:100%; .bottom-border(); padding: 5px;}
 
 //.replyLi - replyDl
-.answerUl .replyLi .replyDl{width:100%; margin-bottom: 20px;}
+.commentUl .replyLi .replyDl{width:100%; margin-bottom: 20px;}
 
 //.replyDl - .replyDt, .replyDd
-.answerUl .replyDt{width:100%;}
-.answerUl .replyDd{width:100%;}
+.commentUl .replyDt{width:100%;}
+.commentUl .replyDd{width:100%;}
 
 //.replyDt - .replyPre
-.answerUl .replyPre{width:100%; font-size: 16px; margin-bottom: 1px;}
+.commentUl .replyPre{width:100%; font-size: 16px; margin-bottom: 1px;}
 
 //.replyDd - .replySpan1, .replySpan2
-.answerUl .replySpan1{color:gray; font-size: 12px;}
-.answerUl .replySpan2{color: @palette5; font-size: 14px; font-family: @font-family2;}
+.commentUl .replySpan1{color:gray; font-size: 12px;}
+.commentUl .replySpan2{color: @palette5; font-size: 14px; font-family: @font-family2;}
 
-.answerUl .replyButtonContainer{width:100%; text-align: left;}
-.answerUl .replyButtonSpan{padding: 0px 8px; .right-border(); height:22px; line-height: 22px;}
-.answerUl .replyButton{background: none; border: none; display: inline-block; text-align: center;}
-.answerUl .replyButtonImg{height:22px; background: none; border: none;}
+.commentUl .replyButtonContainer{width:100%; text-align: left;}
+.commentUl .replyButtonSpan{padding: 0px 8px; .right-border(); height:22px; line-height: 22px;}
+.commentUl .replyButton{background: none; border: none; display: inline-block; text-align: center;}
+.commentUl .replyButtonImg{height:22px; background: none; border: none;}
 
 /*for bigger windows*/
 @media (min-width:@min-width){

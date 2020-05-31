@@ -13,42 +13,38 @@ class BeritamusLink extends HTMLElement {
     __build() {
         const ogData = this.src;
         const linkDiv = document.createElement("div");
+        linkDiv.className = "linkDiv";
         linkDiv.appendChild(this.__buildImage());
         linkDiv.appendChild(this.__buildTitle());
         linkDiv.appendChild(this.__buildDesc());
         linkDiv.style.textAlign = "center";
         linkDiv.setAttribute("onclick", `window.open('${ogData.url}')`);
-        //아래의 방법은 왜 안되는지....
-        // linkDiv.onclick = () => {
-        //     window.open(ogData.url);
-        // };
         this.appendChild(linkDiv);
     }
 
     __buildImage() {
         const linkImg = document.createElement('img');
+        linkImg.className = "linkImg";
         if(this.src.img){
             linkImg.src = this.src.img;
-            linkImg.style.width = "90%";
-            linkImg.style.textAlign = "center";
         }
         return linkImg;
     }
 
     __buildTitle() {
         const titleDiv = document.createElement('div');
+        titleDiv.className = "linkTitle";
         if(this.src.title) {
             titleDiv.innerHTML = this.src.title;
-            titleDiv.style.width = "90%";
         }
         return titleDiv;
     }
 
     __buildDesc() {
         const titleDesc = document.createElement('div');
+        titleDesc.className = "linkDesc";
         if(this.src.desc) {
             titleDesc.innerHTML = this.src.desc;
-            titleDesc.style.width = "90%";
         }
         return titleDesc;
     }

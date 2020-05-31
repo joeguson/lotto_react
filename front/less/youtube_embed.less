@@ -1,0 +1,22 @@
+//out: ../css/youtube_embed.css
+// Variables
+@themes: "../less";
+// Usage
+@import "@{themes}/variable.less";
+
+body {margin: 0;}
+
+iframe {border: none; margin-bottom: @marginbottom-mbl;}
+.timeButtonDescContainer{width:100%; display: flex; margin-bottom: @marginbottom-mbl; .bottom-border();}
+
+.time_row{width:30%; text-align: center;}
+.desc_row{width:70%; }
+
+.timeRowButton{width: 100px; padding: 3px; text-align: center; font-size: 12px; background-color: @main; border: none; margin-bottom: 3px; margin-right: 3px; color: white; border-radius: 5px;}
+.descRow{font-size: 14px;}
+
+/*for bigger windows*/
+@media(min-width:@min-width){
+
+
+}

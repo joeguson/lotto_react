@@ -1,19 +1,18 @@
 mixin hashtag(hashtags)
     if(hashtags.length > 0)
-        dd.aHashtag
+        dd.articleHashtag
             - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
             a #{hashtags}
 
-mixin basicPInfo(author, date, view, comAnsCount)
-    - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' comments'
-    dd.abasicInfo #{basicInfo}
-
-mixin basicTInfo(author, date, view, comAnsCount)
-    - var basicInfo = 'by '+ author + ' / '+date+' / ' + 'view : ' +view + ' / ' + comAnsCount+ ' answers'
-    dd.abasicInfo #{basicInfo}
+mixin basicInfo(author, date, view, replyCount, ident)
+    - var author = 'by ' + author+ ' | '
+    - var dateView = date + ' | '+view+ ' views | '
+    - var replyCount = ident === 't'? replyCount + ' answers' : replyCount + ' comments'
+    - var basicInfo = author + dateView + replyCount
+    dd.articleBasicInfo #{basicInfo}
 
 mixin articleContent()
-    iframe(id="content" class="aContent" style="border: none;")
+    iframe(id="content" class="articleContentIframe" style="border: none;")
     script.
         const contentFrame = document.getElementById("content");
         contentFrame.width = "100%";
@@ -70,32 +69,35 @@ mixin articleContent()
 mixin aritcleLikeButton(status)
     if(status)
         button(class="articleLikeButton" type="submit" id="articleLikeButton")
-            img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
+            img(src="icons/highlight_ed.png" class="articleLikeImage" id="likeImage")
     else
         button(class="articleLikeButton" type="submit" id="articleLikeButton")
-            img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
+            img(src="icons/highlight.png" class="articleLikeImage" id="likeImage")
 
 mixin reply(type, articleId)
     if(type ==='t')
-        a(href='/tandya/'+articleId+'/answer/new' class="pctaInput")
+        a(href='/tandya/'+articleId+'/answer/new' class="replyInputLink") answer
     else
-        textarea(name='reply' id="replyInput" class="pctaInput")
-        input(type='submit' value='answer' class="pctaInputButton" id="replySubmitButton")
+        textarea(name='reply' id="replyInput" class="replyInput")
+        input(type='submit' value='comment' class="replyInputButton" id="replySubmitButton")
 
 mixin articlePop(type, loginUser, articleAuthor)
-    .aPopButton(onclick="aMenuButton()") ≡
-        .aPopDiv(id='aPopDiv')
-            button(class="aPopMenu" id = "articleWarnButton")
-                img(src="./icons/warn.png")
-            if(loginUser === articleAuthor)
-                button(class="aPopMenu" id = "articleDeleteButton")
-                    img(src="./icons/trash.png")
-                if(type === 'p')
-                    a(href='/penobrol/edit/'+topic.id class="aPopMenu")
-                        img(src="./icons/edit.png")
-                else if(type === 't' )
-                    a(href='/tandya/edit/'+topic.id class="aPopMenu")
-                        img(src="./icons/edit.png")
-                else if(type === 'y')
-                    a(href='/youtublog/edit/' + topic.id class="aPopMenu")
-                        img(src="./icons/edit.png")
+    span.articleMenuSpan
+        button.articleMenuButton(id="articleWarnButton")
+                img.articleMenuImg(src="./icons/warn.png")
+    if(loginUser === articleAuthor)
+        span.articleMenuSpan
+            button.articleMenuButton(id="articleDeleteButton")
+                img.articleMenuImg(src="./icons/trash.png")
+        if(type === 'p')
+            span.articleMenuSpan
+                a.articleMenuButton(href='/penobrol/edit/'+topic.id)
+                    img.articleMenuImg(src="./icons/edit.png")
+        else if(type === 't' )
+            span.articleMenuSpan
+                a.articleMenuButton(href='/tandya/edit/'+topic.id)
+                    img.articleMenuImg(src="./icons/edit.png")
+        else if(type === 'y')
+            span.articleMenuSpan
+                a.articleMenuButton(href='/youtublog/edit/' + topic.id)
+                    img.articleMenuImg(src="./icons/edit.png")

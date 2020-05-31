@@ -19,20 +19,15 @@ html
             header
                 a(href='/cari') Beritamus
                 span /b'ritɛmus/
-            nav
-                ul(id='navUl')
-                    li(id='akuLiTag')
-                        a(href='/aku' id='akuATag')
-                            img(src="icons/aku_white.png" class="navImg")
-                    li(id='penobrolLiTag')
-                        a(href='/penobrol' id='penobrolATag')
-                            img(src="icons/penobrol_white.png" class="navImg")
-                    li(id='tandyaLiTag')
-                        a(href='/tandya' id='tandyaATag')
-                            img(src="icons/tandya_white.png" class="navImg")
-                    li(id='youtublogLiTag')
-                        a(href='/youtublog' id='youtublogATag')
-                            img(src="icons/youtublog_white.png" class="navImg")
+            nav(id='navBar')
+                a(href='/aku' id='akuATag')
+                    img(src="icons/aku_white.png" id="navImg_a")
+                a(href='/penobrol' id='penobrolATag')
+                    img(src="icons/penobrol_white.png" id="navImg_p")
+                a(href='/tandya' id='tandyaATag')
+                    img(src="icons/tandya_white.png" id="navImg_t")
+                a(href='/youtublog' id='youtublogATag')
+                    img(src="icons/youtublog_white.png" id="navImg_y")
                 br.clear
             section.sub-main
                 block submain
@@ -49,10 +44,8 @@ html
                 case 'penobrol':
                 case 'tandya':
                 case 'youtublog':
-                    const currentLiTag = document.getElementById(currentTag + 'LiTag');
                     const currentATag = document.getElementById(currentTag + 'ATag');
-                    currentLiTag.style.backgroundColor = 'white';
-                    currentATag.style.color = '#f4f5f0';
+                    currentATag.style.backgroundColor = 'white';
                     currentATag.children[0].setAttribute('src', 'icons/'+currentTag+'_blue.png');
                     break;
                 case 'cari':
@@ -60,3 +53,17 @@ html
                     break;
             }
         });
+        window.onscroll = function () {
+            myFunction()
+        };
+
+        const navBar = document.getElementById("navBar");
+        var sticky = navBar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navBar.classList.add("sticky")
+            } else {
+                navBar.classList.remove("sticky");
+            }
+        }

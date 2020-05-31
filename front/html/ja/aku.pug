@@ -32,7 +32,7 @@ block userStat
 block userPenobrol
     p Penobrol
         if penobrols.length > 0
-            ul.thumbnailUl
+            ul.myThumbnailUl
                 each p in penobrols
                     b-my-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
         else
@@ -42,7 +42,7 @@ block userPenobrol
 block userTandya
     p Tandya
         if tandyas.length > 0
-            ul.thumbnailUl
+            ul.myThumbnailUl
                 each t in tandyas
                     b-my-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
         else
@@ -52,7 +52,7 @@ block userTandya
 block userYoutublog
     p Youtublog
         if youtublog.length > 0
-            ul.thumbnailUl
+            ul.myThumbnailUl
                 each y in youtublog
                     b-my-thumbnail(jsonSrc=`${JSON.stringify(y)}`)
         else

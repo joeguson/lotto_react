@@ -65,9 +65,13 @@ class BeritamusThumbnail extends HTMLElement {
 
     __buildLike() {
         const likeDiv = document.createElement("div");
+        const likeImg = document.createElement("img");
         likeDiv.className = "thumbnailLikeDiv";
-        likeDiv.style.backgroundImage = "url('http://localhost:3000/icons/testing.png')";
-        likeDiv.innerText = this.src.likeCount;
+        likeImg.className = "thumbnailLikeImg";
+        likeImg.src = this.src.likeCount ? 'icons/highlight_ed.png' : 'icons/highlight.png';
+        likeImg.style.height = '16px';
+        likeDiv.innerText = this.src.likeCount < 2 ? this.src.likeCount + ' highlight  ' : this.src.likeCount + ' highlights  ';
+        likeDiv.appendChild(likeImg);
         return likeDiv;
     }
 
@@ -79,35 +83,35 @@ class BeritamusThumbnail extends HTMLElement {
         };
 
         const dt = document.createElement("dt");
+        dt.className = "thumbnailDt";
         const title = document.createElement("a");
         title.href = `${type}`+'/'+`${this.src.id}`;
         title.innerText = this.src.identifier === 't'? this.src.question : this.src.title;
         dt.appendChild(title);
         this.dl.appendChild(dt);
 
-        const thumbnail = document.createElement("dd");
-        thumbnail.className = "ddcontent";
-        thumbnail.innerText = this.src.thumbnail;
-        this.dl.appendChild(thumbnail);
+        if(this.src.thumbnail){
+            const thumbnail = document.createElement("dd");
+            thumbnail.className = "ddthumbnail";
+            thumbnail.innerText = this.src.thumbnail;
+            this.dl.appendChild(thumbnail);
+        }
 
-        const hashtag = document.createElement("b-hashtag");
-        hashtag.className = "hashtag";
-        hashtag.setAttribute("jsonSrc", JSON.stringify(this.src.hashtags));
-        this.dl.appendChild(hashtag);
+        if(this.src.hashtags){
+            const hashtag = document.createElement("b-hashtag");
+            hashtag.className = "hashtag";
+            hashtag.setAttribute("jsonSrc", JSON.stringify(this.src.hashtags));
+            this.dl.appendChild(hashtag);
+        }
 
         const date = document.createElement("dd");
+        date.className = "dddate";
         date.innerText = this.src.identifier === 't'? this.src.replyCount + ' answers': this.src.replyCount +' comments';
-        date.innerText = date.innerText +  ' / ' + this.src.date + ' / ' + this.src.view + ' views';
+        date.innerText = date.innerText +  ' | ' + this.src.date + ' | ' + this.src.view + ' views';
         this.dl.appendChild(date);
-
-        const chosen = document.createElement("dd");
-        if(this.src.chosenContent) chosen.innerHTML = this.src.chosenContent.answer;
-        this.dl.appendChild(chosen);
 
         return this.dl;
     }
-
-
 }
 
 customElements.define('b-thumbnail', BeritamusThumbnail);

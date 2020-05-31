@@ -1,19 +1,17 @@
 extends ../front_layout
 
-block js
-    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
-    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
+block frontJs
 
-block css
+block frontCss
     link(rel='stylesheet', href='/css/cari.css' type="text/css")
     link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
     link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
 
 block main
+    if(user)
+        for itemm in user
+            a(href="/aku/user/"+`${itemm.u_id}` class='userResultAtag') #{itemm.u_id}
     ul.thumbnailUl(id='uls')
-        if(user)
-            for itemm in user
-                a(href="/aku/user/"+`${itemm}`) #{itemm}
         if(article)
             for item in article
                 b-thumbnail(jsonSrc=`${JSON.stringify(item)}`)

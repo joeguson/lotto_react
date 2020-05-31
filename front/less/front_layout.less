@@ -1,0 +1,23 @@
+//out: ../css/front_layout.css
+// Variables
+@themes: "../less";
+// Usage
+@import "@{themes}/variable.less";
+
+//sub-main - .ad(div), .search(div)
+
+.search{width:100%; background-color: @bgcolor1; font-size: 20px; margin-bottom: @marginbottom-mbl;}
+
+//.search - form
+form{width:100%; text-align: center; box-sizing: border-box; margin: 0 auto;}
+
+//form - input, button
+input{width: 90%; height:40px; border: 1px solid @main; font-size: 18px; text-align: center; box-sizing: border-box; display: inline;}
+.submit{.button(); width:10%; height:40px; font-size: 16px; display: inline; margin:0px; float:right; text-align: center; min-width: 23px; padding-bottom: 3px;}
+.cariImage{height:24px; vertical-align: middle;}
+
+/*for bigger windows*/
+@media (min-width:@min-width){
+
+}
+

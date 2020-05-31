@@ -1,13 +1,13 @@
-window.onload = ()=>{
+window.onload = () => {
     let idAuth = 0;
     let pwAuth = 0;
+    let pwAuth2 = 0;
     let mailAuth = 0;
+    let sex = 0;
 
-    let sex = '';
     const userIdCheck = RegExp(/^[A-Za-z0-9_.\-]{4,30}$/);
     const emailCheck = RegExp(/^[A-Za-z0-9_.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
     const passwordCheck = RegExp(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&])[A-Za-z\d$@!%*#?&]{7,}$/);
-    let checkboxValue;
 
     const userId = document.getElementById('u_id');
     const userPw = document.getElementById('u_pw');
@@ -28,8 +28,24 @@ window.onload = ()=>{
             userId.setAttribute('onkeypress', 'return false');
         }
     });
+    userPw.addEventListener('keydown', function () {
+        let count = 50;
+        count -= userPw.value.length;
+        pwInfo.innerHTML = count + '/50';
+        if(userPw.value.length > 50){
+            userPw.setAttribute('onkeypress', 'return false');
+        }
+    });
+    userPw2.addEventListener('keydown', function () {
+        let count = 50;
+        count -= userPw2.value.length;
+        pwInfo.innerHTML = count + '/50';
+        if(userPw.value.length > 50){
+            userPw.setAttribute('onkeypress', 'return false');
+        }
+    });
 
-    userId.addEventListener('blur', function () {
+    userId.addEventListener('focusout', function () {
         const data = {};
         data.type = 'id';
         data.data = userId.value;
@@ -40,10 +56,12 @@ window.onload = ()=>{
                     if(result === 'true'){
                         appearCross(userId);
                         idInfo.innerHTML = 'maaf, sudah dipakai';
+                        idAuth = 0;
                     }
                     else{
                         appearCheck(userId);
                         idInfo.innerHTML = 'silakan';
+                        idAuth = 1;
                     }
                 });
         } else {
@@ -52,42 +70,36 @@ window.onload = ()=>{
         }
     });
 
-    userPw.addEventListener('keyup', function () {
-        var count = 50;
-        count -= userPw.value.length;
-        pwInfo.innerHTML = count + '/50';
-        if(userPw.value.length > 50){
-            userPw.setAttribute('onkeypress', 'return false');
+    userPw.addEventListener('focusout', function () {
+        //length check
+        if(userPw.value.length >= 7){
+            if (passwordCheck.test(userPw.value)) {
+                pwInfo.innerHTML = '';
+                appearCheck(userPw);
+                pwAuth = 1;
+            }
+            else {
+                appearCross(userPw);
+                pwInfo.innerHTML = 'include at least a character & a number & a special character';
+                pwAuth = 0;
+            }
         }
-    });
-
-    userPw2.addEventListener('keyup', function () {
-        var count = 50;
-        count -= userPw2.value.length;
-        pwInfo.innerHTML = count + '/50';
-    });
-
-    userPw.addEventListener('blur', function () {
-        if (passwordCheck.test(userPw.value)) {
-            pwInfo.innerHTML = '';
-            appearCheck(userPw);
-            pwAuth = 1;
-        } else {
+         else {
             appearCross(userPw);
             pwInfo.innerHTML = 'maaf, terlalu pendek. harus lebih dari 7 huruf';
             pwAuth = 0;
         }
     });
 
-    userPw2.addEventListener('blur', function () {
+    userPw2.addEventListener('focusout', function () {
         if (userPw.value === userPw2.value && passwordCheck.test(userPw.value)) {
             pwInfo.innerHTML = '';
             appearCheck(userPw2);
-            pwAuth = 2;
+            pwAuth2 = 1;
         } else {
             appearCross(userPw2);
             pwInfo.innerHTML = 'Tidak sama';
-            pwAuth = 1;
+            pwAuth2 = 0;
         }
     });
 
@@ -96,7 +108,7 @@ window.onload = ()=>{
         userSexGirl.style.backgroundColor = 'lightgrey';
         userSexBoy.style.color = 'white';
         userSexGirl.style.color = 'black';
-        sex = 'laki';
+        sex = 1;
         gender.setAttribute('value', 'M');
     });
 
@@ -105,12 +117,12 @@ window.onload = ()=>{
         userSexGirl.style.backgroundColor = '#a13525';
         userSexGirl.style.color = 'white';
         userSexBoy.style.color = 'black';
-        sex = 'perempuan';
+        sex = 1;
         gender.setAttribute('value', 'F');
     });
 
 
-    userEmail.addEventListener('blur', function () {
+    userEmail.addEventListener('focusout', function () {
         const data = {};
         data.type = 'mail';
         data.data = userEmail.value;
@@ -120,10 +132,13 @@ window.onload = ()=>{
                     if(result === 'true'){
                         appearCross(userId);
                         emailInfo.innerHTML = 'maaf, sudah dipakai';
+                        mailAuth = 0;
+
                     }
                     else{
                         appearCheck(userId);
                         emailInfo.innerHTML = 'silakan';
+                        mailAuth = 1;
                     }
                 });
         } else {
@@ -137,17 +152,11 @@ window.onload = ()=>{
         return confirm('Please check your email and verify to complete your sign up');
     }
 
-// Used in front/html/ja/register.pug
-// noinspection JSUnusedGlobalSymbols
+    // Used in front/html/ja/register.pug
+    // noinspection JSUnusedGlobalSymbols
     function checkSubmit() {
-        if (idAuth && pwAuth && mailAuth && sex && checkboxValue)
-            return confirmRegister();
-    }
-
-// Used in front/html/ja/register.pug
-// noinspection JSUnusedGlobalSymbols
-    function checkboxCheck(target) {
-        checkboxValue = target.checked;
+        if (idAuth && pwAuth && pwAuth2 && mailAuth && sex){
+            return confirmRegister();}
     }
 
     function appearCross(target) {
@@ -166,5 +175,4 @@ window.onload = ()=>{
         target.style.backgroundColor = "white";
     }
 };
-
 

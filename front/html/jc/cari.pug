@@ -8,7 +8,8 @@ block frontCss
 block submain_supplement
     .common_info
         a.weatherwidget-io(href="https://forecast7.com/en/n0d79113d92/indonesia/" data-label_1="INDONESIA" data-icons="Climacons Animated" data-days="5" data-theme="pure") INDONESIA
-        script.
+    script.
+        window.addEventListener('load', function () {
             !function (d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0];
                 if (!d.getElementById(id)) {
@@ -18,15 +19,13 @@ block submain_supplement
                     fjs.parentNode.insertBefore(js, fjs);
                 }
             }(document, 'script', 'weatherwidget-io-js');
+        });
 
 block main
     if(id2 === 0)
         a.login(href="/aku") login
-    - var count = 6;
     ul.thumbnailUl(id='uls')
         for item in list
-            - count--;
             b-thumbnail(jsonSrc=`${JSON.stringify(item)}`)
-        if count == 0 && !u_id
-            .cariLogin
-                a(href='/aku') Login Dulu
+
+block jscript_supplement

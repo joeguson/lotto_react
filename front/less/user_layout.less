@@ -19,8 +19,8 @@
 .likeStat .likeSpan:first-child{border-right:1px solid lightgray}
 .likeStat .likeSpan:nth-child(2){border-right:1px solid lightgray}
 .likeSpan{width:30%; box-sizing: border-box; display: inline-block; text-align: center;}
-.likeHeading{margin-bottom: 5px; color:@main;}
-.likeCount{width:100%; box-sizing: border-box; text-align: center; color:@likeColor; font-size: 20px}
+.likeHeading{margin-bottom: 5px; color:@main; text-align: center;}
+.likeCount{width:100%; box-sizing: border-box; text-align: center; color:@likeColor; font-size: 18px;}
 
 
 //.userArticle - p, ul(.thumbnailUl)
@@ -30,7 +30,7 @@
 .userPenobrol, .userTandya, .userYoutublog{padding: @marginbottom-mbl; margin-bottom: @marginbottom-mbl; background-color: white;}
 
 
-.logout{ font-size: 16px; color: white; .button();}
+.logout{ font-size: 16px; color: white; .button(); display: block;}
 
 form{font-size:0px;} //when making input tags inline, they have space between them. Cannot remove it with margin 0px;
 
@@ -38,6 +38,4 @@ form{font-size:0px;} //when making input tags inline, they have space between th
 
 
 /*for bigger windows*/
-@media (min-width:@min-width){
-    form{margin: 80px auto @marginbottom-mbl auto;}
-}
+@media (min-width:@min-width){}

@@ -17,15 +17,13 @@ class BeritamusDialog extends HTMLElement{
         this.__dialog = document.createElement("dialog");
         this.__dialog.appendChild(this.__buildContentArea());
         this.__dialog.appendChild(this.__buildButtonArea());
-        this.__dialog.style.margin = "auto";
-        this.__dialog.style.width = "50%";
         this.__dialog.className = "dialogForm";
         this.appendChild(this.__dialog);
     }
 
     __buildContentArea() {
         this.__content = document.createElement("div");
-        this.__content.className = "dialogContent";
+        this.__content.className = "dialogContentArea";
 
         if (this.contentAreaBuilder != null) {
             const content = this.contentAreaBuilder();
@@ -37,11 +35,12 @@ class BeritamusDialog extends HTMLElement{
 
     __buildButtonArea() {
         this.__control = document.createElement("div");
-        this.__control.className = "dialogButton";
+        this.__control.className = "dialogButtonArea";
 
         if(this.__enableCancelButton){
             const cancelButton = document.createElement('button');
             cancelButton.innerText = 'cancel';
+            cancelButton.className = 'dialogButton';
             cancelButton.onclick = () =>{ this.onCancel();};
             this.__control.appendChild(cancelButton);
         }
@@ -49,6 +48,7 @@ class BeritamusDialog extends HTMLElement{
         if(this.__enableConfirmButton){
             const confirmButton = document.createElement('button');
             confirmButton.innerText = 'confirm';
+            confirmButton.className = 'dialogButton';
             confirmButton.onclick = () =>{ this.onConfirm();};
             this.__control.appendChild(confirmButton);
         }
@@ -61,7 +61,6 @@ class BeritamusDialog extends HTMLElement{
     onCancel(){
         this.__dialog.close();
     }
-
     showModal(){
         this.__dialog.showModal();
     }

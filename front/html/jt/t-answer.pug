@@ -10,16 +10,17 @@ block js
 block css
     link(rel="stylesheet" href="../css/view_layout.css" type="text/css")
     link(rel='stylesheet', href='/css/view_mixIn.css' type="text/css")
+    link(rel='stylesheet', href='/css/tandya_view.css' type="text/css")
+
 
 block main
-    .article
+    .articleContainer
         .articleInfo
-            dl.aTtileDl
-                block articleInfo
-                    dt.aTtileDt
-                        span Q :
-                        span #{topic.question}
-                    +basicPInfo(topic.u_id, topic.date, topic.view, topic.replyCount)
+            dl.articleDl
+                dt.articleTitleDt
+                    span Q :
+                    span #{topic.question}
+                +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
         .articleContent
             +articleContent(topic.content)
     b-editor(id='editor' width="90%" height="600px" name="content" youtublog='0')

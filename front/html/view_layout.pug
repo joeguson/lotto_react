@@ -11,29 +11,32 @@ block js
 block css
     link(rel="stylesheet" href="../css/view_layout.css" type="text/css")
     link(rel='stylesheet', href='/css/view_mixIn.css' type="text/css")
+    block view_css
 
 block submain
 
 block main
-    .article
+    .articleContainer(id='articleContainer')
         .articleInfo
-            dl.aTtileDl
-                block articleInfo
-                if(id2)
+            dl.articleDl
+                block articleDl
+            if(id2)
+                .articleMenuContainer
                     +articlePop(topic.identifier, id2, topic.author)
-                +hashtag(topic.hashtags)
+        .articleThumb
+            block articleThumb
         .articleContent
             +articleContent()
         .articleLike
-            .articleLikeNum(id="articleLikeNum")= topic.likeCount
+            .articleLikeNum(id="articleLikeNum")= topic.likeCount + '  highlight  '
             if(id2)
                 +aritcleLikeButton(topic.likeStatus)
+    if(topic.chosen)
+        .replyChosen(id='replyChosen')
     if(id2)
-        .commentOrAnswer
-            block reply
-    .comAns
-        ul.ulComAndAns(id='replyUl')
-            block ulComAndAns
+        .replyInputContainer
+            block replyInput
+    block reply
 
 block jscript
     script.
@@ -52,17 +55,16 @@ block jscript
                     if(#{topic.chosen} > 0){
                         // 찾고, 저장하고, 빼내고, 줄이고, 만들고
                         for(var i = 0; i < ele.result.length; i++){
-                            console.log(ele.result[i].id)
                             if(#{topic.chosen} === ele.result[i].id){
                                 var chosen = ele.result[i];
                                 ele.result.splice(i, 1);
                             }
                         }
-                        createReplyLi(chosen, type, #{id2}, #{topic.author});
+                        createChosenReply(chosen, type, #{id2}, #{topic.author});
                     }
                     ele.result.forEach(function (element) {
                         //TODO id2에 값이 없을때는 안됨 해결하기
-                        createReplyLi(element, type, #{id2}, #{topic.author});
+                        createReply(element, type, #{id2}, #{topic.author});
                     });
                 });
         });
@@ -74,11 +76,11 @@ block jscript
                 var articleLikeNum = document.getElementById('articleLikeNum');
                 var imgTag = this.childNodes[0];
                 if (__article.__like) {
-                    articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML) - 1;
-                    imgTag.src = location.origin + '/icons/cap.png';
+                    articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML) - 1 + '  highlight';
+                    imgTag.src = location.origin + '/icons/highlight.png';
                 } else {
-                    articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML) + 1;
-                    imgTag.src = location.origin + '/icons/nocap.png';
+                    articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML) + 1 + '  highlight';
+                    imgTag.src = location.origin + '/icons/highlight_ed.png';
                 }
 
                 //이후에 ajax 요청을 보냄
@@ -139,39 +141,5 @@ block jscript
                     }).catch(function(res){
                         alert("fail");
                     })
-            }
-        }
-
-        function aMenuButton() {
-            document.getElementById("aPopDiv").classList.toggle("show");
-        }
-        function caMenuButton(target) {
-            target.childNodes[1].classList.toggle("show");
-        }
-        function pcctacMenuButton(target) {
-            target.childNodes[1].classList.toggle("show");
-        }
-        window.onclick = function (event) {
-            if (!event.target.matches('.aPopButton')) {
-                var dropdowns = document.getElementsByClassName("aPopDiv");
-                fold_dropDown(dropdowns);
-            }
-            if (!event.target.matches('.caPopButton')) {
-                var dropdowns = document.getElementsByClassName("caPopDiv");
-                fold_dropDown(dropdowns);
-            }
-            if (!event.target.matches('.pcctacPopButton')) {
-                var dropdowns = document.getElementsByClassName("pcctacPopDiv");
-                fold_dropDown(dropdowns);
-            }
-
-            function fold_dropDown(dropdown) {
-                var i;
-                for (i = 0; i < dropdown.length; i++) {
-                    var openDropdown = dropdown[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
             }
         }

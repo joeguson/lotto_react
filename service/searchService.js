@@ -49,7 +49,7 @@ exports.determineSearch = async function(type, words, hashes){
 
 async function __searchUser(string) {
     const results = await userDao.userSearch(string);
-    return results[0];
+    return results;
 };
 
 const searchArticleFunctions = {

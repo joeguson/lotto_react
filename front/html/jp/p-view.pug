@@ -3,14 +3,23 @@ include ../view_mixIn
 
 block view_js
 
+block view_css
+    link(rel='stylesheet', href='/css/penobrol_view.css' type="text/css")
+
 block submain
     //.ad Advertisement
 
-block articleInfo
-    dt.aTtileDt #{topic.title}
-    +basicPInfo(topic.u_id, topic.date, topic.view, topic.replyCount)
+block articleDl
+    dt.articleTitleDt= topic.title
+    +hashtag(topic.hashtags)
+    +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
 
-block reply
+block articleThumb
+    if(topic.thumbnail)
+        p.articleThumbP= topic.thumbnail
+
+block replyInput
     +reply('p', 0)
 
-block ulComAndAns
+block reply
+    ul.commentUl(id='replyUl')

@@ -6,18 +6,16 @@ block newArticleInfo
     p.infoP
         span(id='titleInfo' class='infoSpan') 200/200
     p
-        label
-            input(id='rbP' type='radio' value='p' name="public" checked)
-            span  public
-        label
-            input(id='rbA' type='radio' value='a' name="public")
-            span  anonymous
+        input(id='rbP' class='radioButton' type='radio' value='p' name="public" checked)
+        label(for='rbP') public
+        input(id='rbA' class='radioButton' type='radio' value='a' name="public")
+        label(for='rbA') anonymous
 
 block newArticleContent
     b-editor(id='editor' width="90%" height="600px" name="content" youtublog='0')
 
 block newArticleSubmit
-    button(class="submit" id='submit' name='p' onclick='postArticle(this)') share
+    button(class="articleSubmit" id='submit' name='p' onclick='postArticle(this)') share
 
     script.
         function checksubmit(){

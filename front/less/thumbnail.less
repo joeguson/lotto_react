@@ -7,40 +7,45 @@
 
 /* ==== thumbnail and my-thumbnail ====*/
 
+/********** thumbnail **********/
+
 //.thumbnailUl - .thumbnailLi
-//.mythumbnailUl - .mythumbnailLi
-.thumbnailLi{width:100%; background-color: #f4f5f0; .li-border(); padding: 5px; cursor: url(hand.cur), pointer; display: inline-block;}
-.mythumbnailLi{width:100%; background-color: #f4f5f0; margin-bottom: 5px; .li-border(); padding: 5px; cursor: url(hand.cur), pointer;}
+.thumbnailLi{width:100%; background-color: white; .li-border(); padding: 8px; cursor: url(hand.cur), pointer; display: inline-block;}
+
 
 //.thumbnailLi - .thumbnailImg, .thumbnailLikeDiv, .thumbnailDl 
 .thumbnailImg{width:100%; text-align: center;}
-.thumbnailLikeDiv{width:100%;}
+.thumbnailLikeDiv{width:100%; color:@palette5; font-style: italic; text-align: center; font-weight: bold; margin-bottom: 5px;}
 .thumbnailDl{width:100%;}
 
+//thumbnailLikeDiv - .thumbnailLikeImg(img)
+.thumbnailLikeImg{height: 16px;}
+
+//.thumbnailDl - .thumbnailDt(dt), .ddthumbnail(dd), b-hashtag, .dddate(dd), ddchosen(dd)
+.thumbnailDt{width: 90%; height:36px; line-height: 36px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
+.ddthumbnail{text-overflow: ellipsis; white-space:normal; font-size: 16px; line-height: 16px; height:28px; font-style: normal; margin-bottom: 5px;}
+b-hashtag{}
+.dddate{font-style: italic; font-size: 16px;}
+.ddchosen{}
+
+//.thumbnailDt - a
+.thumbnailDt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none; font-size: 24px;}
+
+
+/********** my-thumbnail **********/
+//.mythumbnailUl - .mythumbnailLi
+.mythumbnailLi{width:100%; background-color: #f4f5f0; margin-bottom: 5px; .li-border(); padding: 5px; cursor: url(hand.cur), pointer;}
 
 //.mythumbnailLi - .mythumbnailImg, .mythumbnailDl
 .mythumbnailImg{width:100%; text-align: center;}
 .mythumbnailDl{width:100%;}
-
-
 //.mythumbnailLi - .thumbnailDl, .articleImage
 
 //li - div(.articleDiv, .articleImgDiv) span, dl
 .articleImgDiv{width: 100%; height:100%; text-align: center; cursor: pointer;}
 
-//.articleDl - dt, dd
-dt{width: 90%; height:36px; line-height: 36px; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bolder;}
-
 //dl.p-dl - dt, dd
-
-dd{font-style: italic; font-size: 16px;}
-dl .ddcontent{overflow: hidden; text-overflow: ellipsis; white-space:normal; font-size: 16px; line-height: 16px; height:28px; font-style: normal; margin-bottom: 5px;}
-
-//dt - a
-dt a{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: @main; text-decoration: none; font-size: 24px;}
 
 /*for bigger windows*/
 @media (min-width:@min-width){
-    //.thumbnailUl - .thumbnailLi
-    .thumbnailLi{display: inline-block;}
 }

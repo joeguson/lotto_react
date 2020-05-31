@@ -35,7 +35,6 @@
 @font-family2: 'Pattaya', sans-serif; //for beritamus at the top
 @font-family3: 'Fruktur', cursive;
 
-
 @likeColor: #a13525;
 
 @marginbottom-mbl: 10px;
@@ -48,85 +47,25 @@
 @min-width: 414px;
 
 .section-border{
-    border-top: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
+    border-top: 1px solid darkgray;
+    border-bottom: 1px solid darkgray;
 }
 .button{
-    width: 100%; height:45px; box-sizing: border-box; font-size: 16px; color:white; background-color:@button-color; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; border-style: none;
+    width: 100%; height:45px; font-size: 16px; color:white; background-color:@button-color; text-align: center; line-height: 40px; text-decoration: none; border-style: none;
 }
-
 .li-border{
     border: 1px solid @mainlight;
     margin-bottom: 10px;
 }
 
 .top-border{
-    border-top: 1px solid @main;
+    border-top: 1px solid lightgray;
 }
 
-@font-face {
-  font-family: 'icomoon';
-  src:  url('../icons/fonts/icomoon.eot?hjgbuf');
-  src:  url('../icons/fonts/icomoon.eot?hjgbuf') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?hjgbuf') format('truetype'),
-    url('fonts/icomoon.woff?hjgbuf') format('woff'),
-    url('fonts/icomoon.svg?hjgbuf#icomoon') format('svg');
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
+.bottom-border{
+    border-bottom: 1px solid lightgray;
 }
 
-[class^="icon-"], [class*=" icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-aku_black:before {
-  content: "\e900";
-}
-.icon-cari_black:before {
-  content: "\e901";
-}
-.icon-penobrol_black:before {
-  content: "\e902";
-}
-.icon-tandya_black:before {
-  content: "\e903";
-}
-.icon-youtublog_black:before {
-  content: "\e904";
-}
-.icon-image:before {
-  content: "\e90d";
-}
-.icon-images:before {
-  content: "\e90e";
-}
-.icon-bubble:before {
-  content: "\e96b";
-}
-.icon-blocked:before {
-  content: "\ea0e";
-}
-.icon-cross:before {
-  content: "\ea0f";
-}
-.icon-checkmark:before {
-  content: "\ea10";
-}
-.icon-checkmark2:before {
-  content: "\ea11";
-}
-.icon-youtube:before {
-  content: "\ea9d";
+.right-border{
+    border-right: 1px solid lightgray;
 }

@@ -7,9 +7,11 @@ html
                 allow='accelerometer; autoplay; encrypted-media; gyroscope;'
                 allowfullscreen)
             each timeRow in youtube.timeRows
-                div(class='time_row')
-                    button(id="time-" + timeRow.time)=timeRow.time
-                    span=timeRow.desc
+                .timeButtonDescContainer
+                    div(class='time_row')
+                        button(id="time-" + timeRow.time class="timeRowButton")=timeRow.time
+                    div(class='desc_row')
+                        span(class="descRow")=timeRow.desc
             script.
                 const embeddedYoutube = document.getElementById('_embedded_youtube');
                 let init = true;

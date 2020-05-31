@@ -1,37 +1,32 @@
-extends ../layout
+extends ../reply_edit_layout
 include ../view_mixIn
 
-block js
+block view_js
     script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/js/warnArticle.js")
-    script(type="text/javascript" src="/js/deleteArticle.js")
 
-block css
+block view_css
     link(rel="stylesheet" href="../css/view_layout.css" type="text/css")
     link(rel='stylesheet', href='/css/view_mixIn.css' type="text/css")
 
 block submain
 
-block main
-    .article
-        .articleInfo
-            dl.aTtileDl
-                block articleInfo
-                if(id2)
-                    +articlePop(topic.identifier, id2, topic.author)
-                +hashtag(topic.hashtags)
-        .articleContent
-            +articleContent(topic.content)
-        .articleLike
-            .articleLikeNum(id="articleLikeNum")= topic.likeCount
-    if(id2)
-        textarea(name='comment' id="comment" class="pcInput")= edit_content.content
-        input(type='submit' value='submit' class="pcInputButton" id="submit")
+block articleDl
+    dt.articleTitleDt= topic.title
+    +hashtag(topic.hashtags)
+    +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
 
+block articleThumb
+    if(topic.thumbnail)
+        p.articleThumbP= topic.thumbnail
+
+block replyInput
+    if(id2)
+        textarea(name='reply' id="reply" class="replyInput")= edit_content.content
+        input(type='submit' value='comment' class="replyInputButton" id="replySubmitButton")
     script.
-        const submit = document.getElementById('submit');
+        const submit = document.getElementById('replySubmitButton');
         if (submit) {
-            const reply = document.getElementById('comment');
+            const reply = document.getElementById('reply');
             submit.onclick = function () {
                 let data = {};
                 data.comment = reply.value;

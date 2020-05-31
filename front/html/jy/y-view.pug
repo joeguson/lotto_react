@@ -3,17 +3,26 @@ include ../view_mixIn
 
 block view_js
 
+block view_css
+    link(rel='stylesheet', href='/css/youtublog_view.css' type="text/css")
+
 block submain
     //.ad Advertisement
 
-block articleInfo
+block articleDl
     dt.aTtileDt #{topic.title}
-    +basicPInfo(topic.u_id, topic.date, topic.view, topic.replyCount)
+    +hashtag(topic.hashtags)
+    +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
 
-block reply
+block articleThumb
+    if(topic.thumbnail)
+        p.articleThumbP= topic.thumbnail
+
+block replyInput
     +reply('y', 0)
 
-block ulComAndAns
+block reply
+    ul.commentUl(id='replyUl')
 
     script.
         function ycChecksubmit() {

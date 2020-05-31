@@ -1,0 +1,27 @@
+mixin hashtag(hashtags)
+    if(hashtags.length > 0)
+        dd.articleHashtag
+            - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
+            a #{hashtags}
+
+mixin basicInfo(author, date, view, replyCount, ident)
+    - var author = 'by ' + author+ ' | '
+    - var dateView = date + ' | '+view+ ' views | '
+    - var replyCount = ident === 't'? replyCount + ' answers' : replyCount + ' comments'
+    - var basicInfo = author + dateView + replyCount
+    dd.articleBasicInfo #{basicInfo}
+
+mixin aritcleLikeButton(status)
+    if(status)
+        button(class="articleLikeButton" type="submit" id="articleLikeButton")
+            img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
+    else
+        button(class="articleLikeButton" type="submit" id="articleLikeButton")
+            img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
+
+mixin reply(type, articleId)
+    if(type ==='t')
+        a(href='/tandya/'+articleId+'/answer/new' class="replyInputLink") answer
+    else
+        textarea(name='reply' id="replyInput" class="replyInput")
+        input(type='submit' value='comment' class="replyInputButton" id="replySubmitButton")

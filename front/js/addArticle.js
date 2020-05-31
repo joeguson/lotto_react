@@ -13,6 +13,7 @@ function postArticle(target) {
     const type = target.name;
     let content = document.getElementById('editor').value();
     let req = {};
+    req.content = content;
     if(type === 'a'){
         req.type = type;
         req.articleId = location.href.split('/')[4];
@@ -26,7 +27,6 @@ function postArticle(target) {
         req.thumbnail = thumbnail;
         req.public = isPublic;
         req.hashtag = hashtag;
-        req.content = content;
 
         if (type === 'y') req.youtubes = document.getElementById('editor').youtubes;
 
@@ -36,7 +36,6 @@ function postArticle(target) {
     }
     const parsed = parseImgTags(content);
     content = parsed.content;
-
     const imgCount = Object.keys(parsed.imgs).length;
     if(imgCount === 0) finalPost(req);
     else {

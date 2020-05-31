@@ -15,44 +15,32 @@ block userStat
 block userPenobrol
     p Penobrol
         if penobrols.length > 0
-            ul.thumbnailUl
+            ul.myThumbnailUl
                 each p in penobrols
                     b-my-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
+                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
 
 block userTandya
     p Tandya
         if tandyas.length > 0
-            ul.thumbnailUl
+            ul.myThumbnailUl
                 each t in tandyas
                     b-my-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
+                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
 
 block userYoutublog
     p Youtublog
         if youtublogs.length > 0
-            ul.thumbnailUl
+            ul.myThumbnailUl
                 each y in youtublogs
                     b-my-thumbnail(jsonSrc=`${JSON.stringify(y)}`)
         else
             .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") K
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") S
-                span(style="font-family: 'Fruktur', cursive; font-size:48px;")  0
-                span(style="font-family: 'Fruktur', cursive; font-size:28px;") NG...
+                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
 
 
 block jscript

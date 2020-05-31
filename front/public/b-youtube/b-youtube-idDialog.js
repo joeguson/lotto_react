@@ -10,10 +10,10 @@ class BeritamusIdDialog extends BeritamusDialog {
     connectedCallback() {
         this.contentAreaBuilder = () => {
             const input = document.createElement("input");
-            input.style.display = "block";
-            input.style.width = "100%";
-            input.id = "videoInput";
             this.idInput = input;
+            input.className = "dialogInput";
+            input.placeholder = "full youtube URL";
+            input.id = "videoInput";
             return input;
         };
         super.connectedCallback();

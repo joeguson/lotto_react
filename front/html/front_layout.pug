@@ -8,6 +8,7 @@ block js
     block frontJs
 
 block css
+    link(rel='stylesheet', href='/css/front_layout.css' type="text/css")
     link(rel='stylesheet', href='/css/thumbnail.css' type="text/css")
     link(rel='stylesheet', href='/css/mixIn.css' type="text/css")
     block frontCss
@@ -15,7 +16,7 @@ block css
 block submain
     .search
         form(method='get' id='searchForm')
-            input(type='text' name='s' id="searchInput")
+            input(type='text' name='s' id='searchInput' class='searchInput')
             button(type='submit' class="submit" value="s")
                 img(src="icons/cari_white.png" class="cariImage")
     block submain_supplement
@@ -23,11 +24,12 @@ block submain
 block main
 
 block jscript
+    block jscript_supplement
     script.
         window.addEventListener('scroll', function(){
             let pathname = window.location.pathname;
             if((pathname.split('/'))[1] !== 'search') {
-                if (document.documentElement.scrollTop + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
+                if(((window.innerHeight + window.scrollY)) >= window.document.scrollingElement.scrollHeight) {
                     loadMore(pathname);
                 }
             }

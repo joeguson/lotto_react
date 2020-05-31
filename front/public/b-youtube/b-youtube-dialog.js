@@ -9,13 +9,13 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
     connectedCallback() {
         this.contentAreaBuilder = () => {
             const div = document.createElement("div");
+            div.className = 'youtublogContainer';
             {
                 this.__iframe = document.createElement("iframe");
-                this.__iframe.width = "560";
-                this.__iframe.height = "315";
+                this.__iframe.className = "youtublogIframe";
                 this.__iframe.frameBorder = "0";
                 // iframe.allowFullscreen = true;
-                div.appendChild(this.__iframe);f
+                div.appendChild(this.__iframe);
             }
             {
                 const times = document.createElement("div");
@@ -23,6 +23,7 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
                 const p = document.createElement("button");
                 times.appendChild(p);
                 p.innerText = "+";
+                p.className = 'youtublogPlusTimeButton';
                 p.onclick = () => {
                     const c = this.__newYoutubeTimeDescriptionCard((card) => {
                         times.removeChild(card);
@@ -48,7 +49,6 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
         super.onConfirm();
 
         // TODO Open progress dialog
-
         const source = this.__sourceUrl(this.__youtubeId);
         const timeRows = Array.from(this.getElementsByTagName('b-youtube-time'))
             .map(e => {
@@ -102,11 +102,12 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
     __newYoutubeTimeDescriptionCard(minusCallback) {
         const c = document.createElement("div");
         c.style.display = "flex";
+        c.style.marginBottom = "5px";
         const d = document.createElement("b-youtube-time");
         d.style.width = "95%";
         c.appendChild(d);
         const b = document.createElement("button");
-        b.style.width = "5%";
+        b.className = 'youtublogMinusTimeButton';
         b.innerText = "-";
         b.onclick = () => {
             minusCallback(c);
