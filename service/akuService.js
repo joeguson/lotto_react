@@ -2,8 +2,7 @@ const userDao = require('../db/b-dao/userDao/userDao');
 const followDao = require('../db/b-dao/userDao/followDao');
 const articleService = require('./articleService');
 const likeService = require('./likeService');
-const key = require('../info/beritamus-admin-2ff0df5d17ca.json');
-const nodeMailer = require('nodeMailer');
+const nodeMailer = require('nodemailer');
 let config = require('../config.json');
 const jsForBack = require('../back/jsForBack.js');
 
@@ -11,7 +10,7 @@ const transporter = nodeMailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,
-    auth: key.mail_config
+    auth: config.key.mail_config
 });
 
 let mailOptions = {
