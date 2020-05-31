@@ -1,5 +1,10 @@
 body{box-sizing: border-box; scroll-padding: 5px;}
-div{width:100%;}
+
+.linkDiv{width:100%; border-bottom: 1px solid lightgray; }
+
+.linkImg{width:40%; text-align: center; margin-bottom: 10px;}
+.linkTitle{width:100%; text-align: center; margin:0px; font-size: 16px; line-height: 16px; margin-bottom: 5px;}
+.linkDesc{width:80%; text-align: center; margin:0px; font-size: 14px; line-height: 14px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 
 /*.rotate000{*/
 /*    transform: rotate(0deg);*/
