@@ -24,7 +24,6 @@ block submain
 block main
 
 block jscript
-    block jscript_supplement
     script.
         window.addEventListener('scroll', function(){
             let pathname = window.location.pathname;
@@ -63,3 +62,4 @@ block jscript
             }
             searchForm.setAttribute('action', '/search/' + currentTag);
         });
+    block jscript_supplement

@@ -95,8 +95,6 @@ exports.flatten = function(list) {
     const flatArrayReducer = (acc, val) => {
         return acc.concat(val);
     };
-    const flattenedData = list.reduce(flatArrayReducer, []);
-    console.log('from serviceUtil');
     // console.log(flattenedData);
-    return flattenedData;
+    return list.reduce(flatArrayReducer, []);
 };

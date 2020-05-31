@@ -18,8 +18,8 @@ class BeritamusThumbnail extends HTMLElement {
                 const img = this.img;
                 const div = this.div;
 
-                let imgWidth = img.offsetWidth;
-                let imgHeight = img.offsetHeight;
+                let imgWidth = img.width;
+                let imgHeight = img.height;
 
                 let frameWidth = div.offsetWidth;
                 let frameHeight = (frameWidth * 3) /4;
