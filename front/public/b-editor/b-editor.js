@@ -219,7 +219,7 @@
                     console.log('from b-editor 219');
                     console.log(result);
                     let ogData = {
-                        url : result.ogs.data.ogUrl,
+                        url : result.ogs.data['ogUrl'],
                         img : result.ogs.data.ogImage.url,
                         imgWidth : result.ogs.data.ogImage.width,
                         imgHeight : result.ogs.data.ogImage.height,
