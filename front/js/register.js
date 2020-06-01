@@ -1,14 +1,13 @@
+let idAuth = 0;
+let pwAuth = 0;
+let pwAuth2 = 0;
+let mailAuth = 0;
+let sex = 0;
+const userIdCheck = RegExp(/^[A-Za-z0-9_.\-]{4,30}$/);
+const emailCheck = RegExp(/^[A-Za-z0-9_.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+const passwordCheck = RegExp(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&])[A-Za-z\d$@!%*#?&]{7,}$/);
+
 window.onload = () => {
-    let idAuth = 0;
-    let pwAuth = 0;
-    let pwAuth2 = 0;
-    let mailAuth = 0;
-    let sex = 0;
-
-    const userIdCheck = RegExp(/^[A-Za-z0-9_.\-]{4,30}$/);
-    const emailCheck = RegExp(/^[A-Za-z0-9_.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
-    const passwordCheck = RegExp(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&])[A-Za-z\d$@!%*#?&]{7,}$/);
-
     const userId = document.getElementById('u_id');
     const userPw = document.getElementById('u_pw');
     const userPw2 = document.getElementById('u_pw2');
@@ -147,41 +146,37 @@ window.onload = () => {
         }
     });
 
-    function confirmRegister() {
-        return confirm('Please check your email and verify to complete your sign up');
-    }
 
-    // Used in front/html/ja/register.pug
-    // noinspection JSUnusedGlobalSymbols
-    function checkSubmit() {
-        console.log(idAuth);
-        console.log(pwAuth);
-        console.log(pwAuth2);
-        console.log(mailAuth);
-        console.log(sex);
-        if (idAuth && pwAuth && pwAuth2 && mailAuth && sex){
-            return confirmRegister();
-        }
-        else{
-            alert('please check all the criteria');
-            return false;
-        }
-    }
-
-    function appearCross(target) {
-        target.style.backgroundImage = "url('../icons/no.png')";
-        target.style.backgroundRepeat = "no-repeat";
-        target.style.backgroundPosition = "99%";
-        target.style.backgroundSize = "2%";
-        target.style.backgroundColor = "white";
-    }
-
-    function appearCheck(target) {
-        target.style.backgroundImage = "url('../icons/check.png')";
-        target.style.backgroundRepeat = "no-repeat";
-        target.style.backgroundPosition = "99%";
-        target.style.backgroundSize = "2%";
-        target.style.backgroundColor = "white";
-    }
 };
+
+// Used in front/html/ja/register.pug
+// noinspection JSUnusedGlobalSymbols
+function checkSubmit() {
+    if (idAuth && pwAuth && pwAuth2 && mailAuth && sex){
+        return confirmRegister();
+    }
+    else{
+        alert('please check all the criteria');
+        return false;
+    }
+}
+function confirmRegister() {
+    return confirm('Please check your email and verify to complete your sign up');
+}
+
+function appearCross(target) {
+    target.style.backgroundImage = "url('../icons/no.png')";
+    target.style.backgroundRepeat = "no-repeat";
+    target.style.backgroundPosition = "99%";
+    target.style.backgroundSize = "2%";
+    target.style.backgroundColor = "white";
+}
+
+function appearCheck(target) {
+    target.style.backgroundImage = "url('../icons/check.png')";
+    target.style.backgroundRepeat = "no-repeat";
+    target.style.backgroundPosition = "99%";
+    target.style.backgroundSize = "2%";
+    target.style.backgroundColor = "white";
+}
 
