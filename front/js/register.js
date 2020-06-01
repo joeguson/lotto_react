@@ -55,18 +55,18 @@ window.onload = () => {
                 .then((result) => {
                     if(result === 'true'){
                         appearCross(userId);
-                        idInfo.innerHTML = 'maaf, sudah dipakai';
+                        idInfo.innerHTML = 'sorry, already used';
                         idAuth = 0;
                     }
                     else{
                         appearCheck(userId);
-                        idInfo.innerHTML = 'silakan';
+                        idInfo.innerHTML = 'confirmed';
                         idAuth = 1;
                     }
                 });
         } else {
             appearCross(userId);
-            idInfo.innerHTML = 'maaf, minta pakai yang lain';
+            idInfo.innerHTML = 'please, use different ID';
         }
     });
 
@@ -74,19 +74,19 @@ window.onload = () => {
         //length check
         if(userPw.value.length >= 7){
             if (passwordCheck.test(userPw.value)) {
-                pwInfo.innerHTML = '';
+                pwInfo.innerHTML = 'confirm your password 1 more time';
                 appearCheck(userPw);
                 pwAuth = 1;
             }
             else {
                 appearCross(userPw);
-                pwInfo.innerHTML = 'include at least a character & a number & a special character';
+                pwInfo.innerHTML = 'include at least 1 character & 1 number & 1 special character';
                 pwAuth = 0;
             }
         }
          else {
             appearCross(userPw);
-            pwInfo.innerHTML = 'maaf, terlalu pendek. harus lebih dari 7 huruf';
+            pwInfo.innerHTML = 'too short, must be longer than 7 words';
             pwAuth = 0;
         }
     });
@@ -98,7 +98,7 @@ window.onload = () => {
             pwAuth2 = 1;
         } else {
             appearCross(userPw2);
-            pwInfo.innerHTML = 'Tidak sama';
+            pwInfo.innerHTML = 'does not match';
             pwAuth2 = 0;
         }
     });
@@ -154,8 +154,18 @@ window.onload = () => {
     // Used in front/html/ja/register.pug
     // noinspection JSUnusedGlobalSymbols
     function checkSubmit() {
+        console.log(idAuth);
+        console.log(pwAuth);
+        console.log(pwAuth2);
+        console.log(mailAuth);
+        console.log(sex);
         if (idAuth && pwAuth && pwAuth2 && mailAuth && sex){
-            return confirmRegister();}
+            return confirmRegister();
+        }
+        else{
+            alert('please check all the criteria');
+            return false;
+        }
     }
 
     function appearCross(target) {

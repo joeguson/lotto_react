@@ -11,19 +11,18 @@ route.post('/login', function(req, res){
     const u_pw = req.body.u_pw;
     // 아래의 코드는 접속 국가를 설정하기 위해 만듬
     // let ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-    let ipAddress = '112.157.39.243';
-    let geo = geoip.lookup(ipAddress);
-    let countryCode = 0;
-    if(geo.country === 'KR') countryCode = 82;
-    else if(geo.country === 'ID') countryCode = 62;
-    else countryCode = 1;
+    // let ipAddress = '112.157.39.243';
+    // let geo = geoip.lookup(ipAddress);
+    // let countryCode = 0;
+    // if(geo.country === 'KR') countryCode = 82;
+    // else if(geo.country === 'ID') countryCode = 62;
+    // else countryCode = 1;
     akuService.userLogin(u_id, u_pw).then(result => {
         if(result.verify === 1){ //match credential
             akuService.updateLoginDate(u_id)
                 .then(
                     req.session.u_id = u_id,
                     req.session.id2 = result.id,
-                    req.session.countryCode = countryCode,
                     req.session.save(function(){
                         res.redirect('/aku');
                     })
@@ -113,7 +112,6 @@ route.get('/logout', function(req, res){
     delete req.session.u_id;
     delete req.session.id2;
     delete req.session.valid;
-    delete req.session.countryCode;
     res.redirect("/aku");
 });
 
