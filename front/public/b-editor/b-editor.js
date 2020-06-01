@@ -212,7 +212,7 @@
 
         this.linkDialog.onConfirmCallback = (linkAddress) => {
             let data = {"urlSource" : linkAddress};
-            let url = '/api/opengraph';
+            let url = 'api/opengraph';
             makeRequest('post', url, data)
                 .then((sent) => {
                     let result = JSON.parse(sent);

@@ -65,14 +65,14 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
         console.log(source);
         console.log('from b-youtube-dialog 66');
         console.log(timeRows);
-        makeRequest('POST', '/api/youtube', {source: this.__youtubeId})
+        makeRequest('POST', 'api/youtube', {source: this.__youtubeId})
             .then(res => {
                 console.log('from b-youtube-dialog 66');
                 console.log(res);
                 const sourceId = JSON.parse(res.toString()).id;
 
                 if (timeRows.length > 0) {
-                    makeRequest('POST', '/api/youtube/time-row', {
+                    makeRequest('POST', 'api/youtube/time-row', {
                         sourceId: sourceId,
                         timeRows: timeRows
                     }).then(() => {
