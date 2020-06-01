@@ -214,8 +214,8 @@
             let data = {"urlSource" : linkAddress};
             let url = '/api/opengraph';
             makeRequest('post', url, data)
-                .then(result => {
-                    result = JSON.parse(result);
+                .then((sent) => {
+                    let result = JSON.parse(sent);
                     let ogData = {
                         url : result.ogs.data.ogUrl,
                         img : result.ogs.data.ogImage.url,
