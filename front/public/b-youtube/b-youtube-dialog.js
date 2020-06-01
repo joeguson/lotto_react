@@ -46,6 +46,7 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
     }
 
     onConfirm() {
+        console.log('from b-youtube-dialog 49');
         super.onConfirm();
 
         // TODO Open progress dialog
@@ -60,9 +61,14 @@ class BeritamusYoutubeDialog extends BeritamusDialog {
                     desc: e.children[3].value
                 };
             });
-
+        console.log('from b-youtube-dialog 64');
+        console.log(source);
+        console.log('from b-youtube-dialog 66');
+        console.log(timeRows);
         makeRequest('POST', '/api/youtube', {source: this.__youtubeId})
             .then(res => {
+                console.log('from b-youtube-dialog 66');
+                console.log(res);
                 const sourceId = JSON.parse(res.toString()).id;
 
                 if (timeRows.length > 0) {
