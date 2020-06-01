@@ -76,7 +76,7 @@ route.get('/register', function(req, res){
             });
     }
     else{
-        res.redirect('/aku')
+        res.render('./ja/register');
     }
 });
 
