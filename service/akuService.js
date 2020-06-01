@@ -116,7 +116,7 @@ exports.checkUserDataExists = async function(type, data) {
     return parseInt(count[0].total) > 0;
 };
 
-exports.postUser = async function(u_id, u_pw, birthday, u_sex,  u_email, code){
+exports.postUser = async function(host, u_id, u_pw, birthday, u_sex,  u_email, code){
     await userDao.insertUserInfo(u_id, u_pw, birthday, u_sex, u_email, code);
     mailOptions.to = u_email;
     mailOptions.subject = 'Email Verification from Beritamus';
@@ -124,7 +124,7 @@ exports.postUser = async function(u_id, u_pw, birthday, u_sex,  u_email, code){
         <p>Welcome To Beritamus!</p>
         <p>Selamat Datang!</p>
         <p>Please button below</p>
-        <a href="http://${config.url}/aku/register/?email=${u_email}&code=${code}">Enter Beritamus!</a>
+        <a href="http://${host}/aku/register/?email=${u_email}&code=${code}">Enter Beritamus!</a>
     `;
     deliverMail(mailOptions);
 };

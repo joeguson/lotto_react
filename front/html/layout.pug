@@ -34,36 +34,36 @@ html
             section.main
                 block main
         block footer
-    script.
-        window.addEventListener('DOMContentLoaded', function () {
-            let currentTag = (location.pathname).split('/')[1];
-            switch (currentTag) {
-                case 'aku':
-                case 'penobrol':
-                case 'tandya':
-                case 'youtublog':
-                    const currentATag = document.getElementById(currentTag + 'ATag');
-                    currentATag.style.backgroundColor = 'white';
-                    currentATag.children[0].setAttribute('src', 'icons/' + currentTag + '_blue.png');
-                    break;
-                case 'cari':
-                default:
-                    break;
-            }
-        });
-        window.onscroll = function () {
-            myFunction()
-        };
+        script.
+            window.addEventListener('DOMContentLoaded', function () {
+                let currentTag = (location.pathname).split('/')[1];
+                switch (currentTag) {
+                    case 'aku':
+                    case 'penobrol':
+                    case 'tandya':
+                    case 'youtublog':
+                        const currentATag = document.getElementById(currentTag + 'ATag');
+                        currentATag.style.backgroundColor = 'white';
+                        currentATag.children[0].setAttribute('src', 'icons/' + currentTag + '_blue.png');
+                        break;
+                    case 'cari':
+                    default:
+                        break;
+                }
+            });
+            window.onscroll = function () {
+                myFunction()
+            };
 
-        const navBar = document.getElementById("navBar");
-        const sticky = navBar.offsetTop;
+            const navBar = document.getElementById("navBar");
+            const sticky = navBar.offsetTop;
 
-        function myFunction() {
-            if (window.pageYOffset >= sticky) {
-                navBar.classList.add("sticky")
-            } else {
-                navBar.classList.remove("sticky");
+            function myFunction() {
+                if (window.pageYOffset >= sticky) {
+                    navBar.classList.add("sticky")
+                } else {
+                    navBar.classList.remove("sticky");
+                }
             }
-        }
-    block jscript
+        block jscript
 

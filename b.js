@@ -88,5 +88,5 @@ app.listen(config.port, '0.0.0.0', function(){
 });
 
 app.all('*', function(req, res){
-    res.redirect('cari');
+    res.redirect('/cari');
 });

@@ -130,13 +130,12 @@ window.onload = () => {
             makeRequest('post', 'api/aku/check', data)
                 .then((result) => {
                     if(result === 'true'){
-                        appearCross(userId);
+                        appearCross(userEmail);
                         emailInfo.innerHTML = 'maaf, sudah dipakai';
                         mailAuth = 0;
-
                     }
                     else{
-                        appearCheck(userId);
+                        appearCheck(userEmail);
                         emailInfo.innerHTML = 'silakan';
                         mailAuth = 1;
                     }
