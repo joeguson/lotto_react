@@ -70,12 +70,14 @@ route.get('/register', function(req, res){
         let code = req.query.code;
         akuService.verifyUserEmail(email, code)
             .then((result) => {
-                if (result === 1) res.render('./ja/aku', {"message": "please login"});
-                else if (result === 0) res.render('./ja/aku', {"message": "your verification code is wrong"});
-                else res.render('./ja/aku', {"message": "wrong approach"});
+                if (result === 1) res.render('./ja/login', {"message": "please login"});
+                else if (result === 0) res.render('./ja/login', {"message": "your verification code is wrong"});
+                else res.render('./ja/login', {"message": "wrong approach"});
             });
     }
-    else res.render('./ja/register');
+    else{
+        res.redirect('/aku')
+    }
 });
 
 route.post('/register', function(req, res){
