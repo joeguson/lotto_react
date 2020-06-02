@@ -1,7 +1,7 @@
 extends ../layout
 
 block css
-    link(rel='stylesheet', href='../css/user-add.css' type="text/css")
+    link(rel='stylesheet', href='../css/register.css' type="text/css")
 
 block js
     script(type="text/javascript" src="../../js/register.js")
@@ -11,27 +11,25 @@ block submain
   //.ad Advertising
   
 block main
-    article
-        form(action='/aku/register' method='post' onsubmit='return checkSubmit();')
-            p
-                input(type='text' id = 'u_id' name='u_id' maxlength="30" placeholder='ID' required)
-            span(id='idInfo') 30/30
-            p
-                input(type='password' id = 'u_pw' name='u_pw' maxlength="50" placeholder='Password' required)
-            p
-                input(type='password' id = 'u_pw2' maxlength="50" placeholder='Check Password')
-            span(id='pwInfo')
-            p
-                input(type='date' name='birthday' value='2019-10-24' id='inputDate' required)
-            p
-                input(type='button' name='boy' id = 'boy' value='Male' class="sex" required)
-                input(type='button' name='girl' id = 'girl' value='Female' class="sex" required)
-                input(type="hidden" id="gender" name="gender" value="none")
-            p
-                input(type='text' name='email' id='email' placeholder='emailAdress@yourEmail.com' required)
-            span(id='emailInfo')
-            p
-                span By signing up, you agree to Beritamus's Terms, Data Policy and Cookie Policy
-            p
-                input(type='submit' value='Verification Mail' id='submit')
+    form(class='registerForm' action='/aku/register' method='post' onsubmit='return checkSubmit();')
+        .registerDiv
+            input(type='text' id = 'u_id' name='u_id' maxlength="30" placeholder='ID' required)
+            span(id='idInfo' class='registerInfo') 30/30
+        .registerDiv
+            input(type='password' id = 'u_pw' name='u_pw' maxlength="50" placeholder='Password' required)
+            input(type='password' id = 'u_pw2' maxlength="50" placeholder='Check Password')
+            span(id='pwInfo' class='registerInfo') Include 1 character, number and special character
+        .registerDiv
+            input(type='date' name='birthday' value='2019-10-24' id='inputDate' required)
+        .registerDiv
+            input(type='button' name='boy' id = 'boy' value='Male' class="sex" required)
+            input(type='button' name='girl' id = 'girl' value='Female' class="sex" required)
+            input(type="hidden" id="gender" name="gender" value="none")
+        .registerDiv
+            input(type='text' name='email' id='email' placeholder='emailAdress@yourEmail.com' required)
+            span(id='emailInfo' class='registerInfo') Please put a valid email address
+        .registerDiv
+            span(class='registerAgreement') By signing up, you agree to Beritamus's Terms, Data Policy and Cookie Policy
+        .registerDiv
+            input(type='submit' id='submit' value='Get Verification Mail')
 

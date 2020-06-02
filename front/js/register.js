@@ -75,6 +75,7 @@ window.onload = () => {
             if (passwordCheck.test(userPw.value)) {
                 pwInfo.innerHTML = 'confirm your password 1 more time';
                 appearCheck(userPw);
+                userPw2.focus();
                 pwAuth = 1;
             }
             else {
