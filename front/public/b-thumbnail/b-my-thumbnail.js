@@ -37,7 +37,7 @@ class BeritamusMyThumbnail extends HTMLElement {
         likeDiv.className = "thumbnailLikeDiv";
         likeImg.className = "thumbnailLikeImg";
         // TODO change the img
-        likeImg.src = this.src.likeCount ? 'icons/testing.png' : 'icons/highlight.png';
+        likeImg.src = this.src.likeCount ? 'icons/highlight_ed.png' : 'icons/highlight.png';
         likeDiv.innerText = this.src.likeCount < 2 ? this.src.likeCount + ' highlight  ' : this.src.likeCount + ' highlights  ';
         likeDiv.appendChild(likeImg);
         return likeDiv;

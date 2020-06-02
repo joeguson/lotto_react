@@ -33,6 +33,8 @@
   background-color: white;
   text-align: center;
   padding: 10px;
+  border-top: 1px solid darkgray;
+  border-bottom: 1px solid darkgray;
 }
 .userStat {
   width: 100%;

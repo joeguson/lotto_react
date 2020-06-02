@@ -1,80 +1,51 @@
 extends ../user_layout
+include ../aku_mixIn
 
 block userInfo
-    span.userInfoSpan
-        p #{u_id}
-    span.userInfoSpan #{follower} followers
-    span.userInfoSpan following #{following}
+    +userInfo(false, u_id, follower, following)
 
 block userStat
     if(follow)
-        button(type="submit" id="followId") UNFOLLOW
+        button(type="submit" id="followId" class='followButton') UNFOLLOW
     else
-        button(type="submit" id="followId") FOLLOW
+        button(type="submit" id="followId" class='followButton') FOLLOW
 
 block userPenobrol
-    p Penobrol
-        if penobrols.length > 0
-            ul.myThumbnailUl
-                each p in penobrols
-                    b-my-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
-        else
-            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
+    +userArticle('penobrol', penobrols)
 
 block userTandya
-    p Tandya
-        if tandyas.length > 0
-            ul.myThumbnailUl
-                each t in tandyas
-                    b-my-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
-        else
-            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
+    +userArticle('penobrol', tandyas)
 
 block userYoutublog
-    p Youtublog
-        if youtublogs.length > 0
-            ul.myThumbnailUl
-                each y in youtublogs
-                    b-my-thumbnail(jsonSrc=`${JSON.stringify(y)}`)
-        else
-            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
+    +userArticle('penobrol', youtublogs)
 
-
-block jscript
+block jscript_supplement
     script.
-        const followButton = document.getElementById("followId");
-        let followState = "#{follow}" === "true";
+        var followButton = document.getElementById("followId");
+        let followState = #{follow} === true;
 
-        followButton.addEventListener("click", function(){
-            followButton.disabled = true;
-            requestFollow();
-        });
+        if (followButton) {
+            followButton.addEventListener("click", function () {
+                followButton.disabled = true;
+                requestFollow();
+            });
+        }
+
         function requestFollow() {
             const data = {
-                status : !followState,
-                target : "#{u_id}"
+                status: !followState,
+                target: "#{u_id}"
             };
-            var original = JSON.stringify(data);
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', "/api/aku/follow");
-            xhr.setRequestHeader('Content-type', "application/json");
-            xhr.send(original);
-            xhr.onload = function () {
-                if (this.status >= 200 && this.status < 300) {
+            makeRequest('POST', 'api/aku/follow', data)
+                .then(function (e) {
                     changeText();
-                } else {
-                    console.error(this.status);
-                }
-                followButton.disabled = false;
-            };
-            xhr.onerror = function () {
-                console.error("error");
-            };
-        };
+                    followButton.disabled = false;
+                })
+                .catch(function (e) {
+                    console.error(e);
+                });
+        }
         function changeText() {
-            followButton.innerText = followState ? "FOLLOW": "UNFOLLOW";
+            followButton.innerText = followState ? "FOLLOW" : "UNFOLLOW";
             followState = !followState;
         }

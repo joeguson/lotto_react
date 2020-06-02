@@ -54,7 +54,7 @@ route.get('/', function(req, res){
                             follower: follow.follower,
                             penobrols:userPenobrol,
                             tandyas:userTandya,
-                            youtublog:userYoutublog,
+                            youtublogs:userYoutublog,
                             totalLikes:totalLikes
                         })});
             });
@@ -92,21 +92,23 @@ route.post('/register', function(req, res){
     ).then(res.redirect('/aku'));
 });
 
-route.get('/user/:user_id', function(req, res, next){
+route.get('/user/:user_id', function(req, res){
     let user_id = req.params.user_id;
         akuService.getUserArticleByForeigner(user_id, req.session.id2)
             .then(([userPenobrol, userTandya, userYoutublog, followResult]) => {
                 akuService.countFollowByForeigner(user_id)
-                    .then(([following, follower]) => res.render('./ja/aku_view', {
+                    .then((result) => {
+                        res.render('./ja/aku_view', {
                         user:req.session.id2,
                         u_id:user_id,
-                        following: following[0].following,
-                        follower: follower[0].follower,
-                        penobrols:userPenobrol[0],
-                        tandyas:userTandya[0],
-                        youtublogs:userYoutublog[0],
+                        following: result.following,
+                        follower: result.follower,
+                        penobrols:userPenobrol,
+                        tandyas:userTandya,
+                        youtublogs:userYoutublog,
                         follow: followResult.length > 0
-                    }));
+                        })
+                    });
             });
 });
 

@@ -1,63 +1,27 @@
 extends ../user_layout
+include ../aku_mixIn
 
 block userInfo
-    span.userInfoSpan
-        a.changinfo(href= '/aku/change') #{u_id}
-    span.userInfoSpan #{follower} followers
-    span.userInfoSpan following  #{following}
+    +userInfo(true, u_id, follower, following)
 
 block userStat
     .likeStat
-        span.likeSpan
-            p.likeHeading Penobrol
-            p.likeCount= totalLikes.penobrol
-        span.likeSpan
-            p.likeHeading Tandya
-            p.likeCount= totalLikes.tandya
-        span.likeSpan
-            p.likeHeading Youtublog
-            p.likeCount= totalLikes.youtublog
+        +userLikeCount('Penobrol', totalLikes.penobrol)
+        +userLikeCount('Tandya', totalLikes.tandya)
+        +userLikeCount('Youtublog', totalLikes.youtublog)
     .likeStat
-        span.likeSpan
-            p.likeHeading Penobrol Comment
-            p.likeCount= totalLikes.pcomment
-        span.likeSpan
-            p.likeHeading Tandya Answer
-            p.likeCount= totalLikes.answer
-        span.likeSpan
-            p.likeHeading Youtublog Comment
-            p.likeCount= totalLikes.ycomment
-
+        +userLikeCount('Penobrol Comment', totalLikes.pcomment)
+        +userLikeCount('Tandya Answer', totalLikes.answer)
+        +userLikeCount('Youtublog Comment', totalLikes.ycomment)
 
 block userPenobrol
-    p Penobrol
-        if penobrols.length > 0
-            ul.myThumbnailUl
-                each p in penobrols
-                    b-my-thumbnail(jsonSrc=`${JSON.stringify(p)}`)
-        else
-            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
+    +userArticle('penobrol', penobrols)
 
 block userTandya
-    p Tandya
-        if tandyas.length > 0
-            ul.myThumbnailUl
-                each t in tandyas
-                    b-my-thumbnail(jsonSrc=`${JSON.stringify(t)}`)
-        else
-            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
+    +userArticle('tandya', tandyas)
 
 block userYoutublog
-    p Youtublog
-        if youtublog.length > 0
-            ul.myThumbnailUl
-                each y in youtublog
-                    b-my-thumbnail(jsonSrc=`${JSON.stringify(y)}`)
-        else
-            .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
-                span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
+    +userArticle('youtublog', youtublogs)
 
 block logout
     a.logout(href= '/aku/logout') Logout

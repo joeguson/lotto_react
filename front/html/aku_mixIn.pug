@@ -1,27 +1,22 @@
-mixin hashtag(hashtags)
-    if(hashtags.length > 0)
-        dd.articleHashtag
-            - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
-            a #{hashtags}
+mixin userInfo(self, u_id, follower, following)
+    span.userInfoSpan
+        if(self)
+            a.changinfo(href= '/aku/change') #{u_id}
+        else
+            p(style='color:#0f4c81;') #{u_id}
+    span.userInfoSpan #{follower} followers
+    span.userInfoSpan following  #{following}
 
-mixin basicInfo(author, date, view, replyCount, ident)
-    - var author = 'by ' + author+ ' | '
-    - var dateView = date + ' | '+view+ ' views | '
-    - var replyCount = ident === 't'? replyCount + ' answers' : replyCount + ' comments'
-    - var basicInfo = author + dateView + replyCount
-    dd.articleBasicInfo #{basicInfo}
+mixin userLikeCount(type, likeCount)
+    span.likeSpan
+        p.likeHeading= type
+        p.likeCount= likeCount
 
-mixin aritcleLikeButton(status)
-    if(status)
-        button(class="articleLikeButton" type="submit" id="articleLikeButton")
-            img(src="icons/nocap.png" class="articleLikeImage" id="likeImage")
+mixin userArticle(type, articles)
+    if articles.length > 0
+        ul.myThumbnailUl
+            each a in articles
+                b-my-thumbnail(jsonSrc=`${JSON.stringify(a)}`)
     else
-        button(class="articleLikeButton" type="submit" id="articleLikeButton")
-            img(src="icons/cap.png" class="articleLikeImage" id="likeImage")
-
-mixin reply(type, articleId)
-    if(type ==='t')
-        a(href='/tandya/'+articleId+'/answer/new' class="replyInputLink") answer
-    else
-        textarea(name='reply' id="replyInput" class="replyInput")
-        input(type='submit' value='comment' class="replyInputButton" id="replySubmitButton")
+        .kosong(style="text-align:center; font-family: 'Fruktur', cursive;")
+            span(style="font-family: 'Fruktur', cursive; font-size:50px;") 0
