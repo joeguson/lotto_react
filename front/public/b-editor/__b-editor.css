@@ -1,28 +1,9 @@
 body{box-sizing: border-box; scroll-padding: 5px;}
 
-.linkDiv{width:100%; border-bottom: 1px solid lightgray; }
+
+
+.linkDiv{width:100%;}
 
 .linkImg{width:40%; text-align: center; margin-bottom: 10px;}
 .linkTitle{width:100%; text-align: center; margin:0px; font-size: 16px; line-height: 16px; margin-bottom: 5px;}
 .linkDesc{width:80%; text-align: center; margin:0px; font-size: 14px; line-height: 14px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-
-/*.rotate000{*/
-/*    transform: rotate(0deg);*/
-/*    -webkit-transform: rotate(0deg);*/
-/*    -ms-transform: rotate(0deg);*/
-/*}*/
-/*.rotate090{*/
-/*    transform: rotate(90deg);*/
-/*    -webkit-transform: rotate(90deg);*/
-/*    -ms-transform: rotate(90deg);*/
-/*}*/
-/*.rotate180{*/
-/*    transform: rotate(180deg);*/
-/*    -webkit-transform: rotate(180deg);*/
-/*    -ms-transform: rotate(180deg);*/
-/*}*/
-/*.rotate270{*/
-/*    transform: rotate(270deg);*/
-/*    -webkit-transform: rotate(270deg);*/
-/*    -ms-transform: rotate(270deg);*/
-/*}*/

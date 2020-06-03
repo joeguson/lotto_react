@@ -10,7 +10,7 @@ route.get('/:type', function (req, res) {
     let type = req.params.type;
     searchService.determineSearch(type, wordOnly, hashOnly)
         .then((result) =>{
-            res.render('./jc/cari-result', {
+            res.render('./layouts/front_layouts/cari-result', {
                 search_string: req.query.s,
                 user: result.user,
                 article: result.article,

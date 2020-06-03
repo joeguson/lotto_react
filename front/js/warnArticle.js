@@ -1,7 +1,7 @@
 function __selectWarnFunc(warn_target) {
     return (warned_id) => {
         let data = {warned_id: warned_id};
-        const url = '/api/warn/'+ warn_target;
+        const url = 'api/warn/'+ warn_target;
         makeRequest('POST', url, data)
             .then(() => {
                 alert("Success warning this " + warn_target);

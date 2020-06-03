@@ -40,6 +40,8 @@
 .articleContentIframe {
   width: 100%;
   min-height: 300px;
+  border: none;
+  overflow-x: hidden;
 }
 .articleLikeButton {
   text-align: center;

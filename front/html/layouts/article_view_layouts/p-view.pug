@@ -1,0 +1,25 @@
+extends ../article_view_layout
+include ../../mixins/view_mixin
+
+block view_js
+
+block view_css
+    link(rel='stylesheet' href='../../css/penobrol_view.css' type="text/css")
+
+block submain
+    //.ad Advertisement
+
+block articleDl
+    dt.articleTitleDt= topic.title
+    +hashtag(topic.hashtags)
+    +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
+
+block articleThumb
+    if(topic.thumbnail)
+        p.articleThumbP= topic.thumbnail
+
+block replyInput
+    +reply('p', 0)
+
+block reply
+    ul.commentUl(id='replyUl')

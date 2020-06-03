@@ -1,0 +1,38 @@
+extends ../reply_edit_layout
+include ../../mixins/view_mixin
+
+block view_js
+    script(type="text/javascript" src="/js/jsForAllJade.js")
+
+block view_css
+    link(rel="stylesheet" href="../../css/view_layout.css" type="text/css")
+    link(rel='stylesheet' href='../../css/view_mixin.css' type="text/css")
+
+block submain
+
+block articleDl
+    dt.articleTitleDt= topic.title
+    +hashtag(topic.hashtags)
+    +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
+
+block articleThumb
+    if(topic.thumbnail)
+        p.articleThumbP= topic.thumbnail
+
+block replyInput
+    if(id2)
+        textarea(name='reply' id="reply" class="replyInput")= edit_content.content
+        input(type='submit' value='comment' class="replyInputButton" id="replySubmitButton")
+    script.
+        const submit = document.getElementById('replySubmitButton');
+        if (submit) {
+            const reply = document.getElementById('reply');
+            submit.onclick = function () {
+                let data = {};
+                data.comment = reply.value;
+                makeRequest('put', '/api/reply/youtublog/' + #{topic.id} + '/' + #{edit_content.id}, data)
+                    .then(function () {
+                        window.location.href = location.origin + '/youtublog/' + #{topic.id};
+                    });
+            }
+        }

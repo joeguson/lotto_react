@@ -81,19 +81,21 @@ window.onload = () => {
             else {
                 appearCross(userPw);
                 pwInfo.innerHTML = 'include at least 1 character & 1 number & 1 special character';
+                userPw2.focus();
                 pwAuth = 0;
             }
         }
          else {
             appearCross(userPw);
             pwInfo.innerHTML = 'too short, must be longer than 7 words';
+            userPw2.focus();
             pwAuth = 0;
         }
     });
 
     userPw2.addEventListener('focusout', function () {
         if (userPw.value === userPw2.value && passwordCheck.test(userPw.value)) {
-            pwInfo.innerHTML = '';
+            pwInfo.innerHTML = 'confirmed';
             appearCheck(userPw2);
             pwAuth2 = 1;
         } else {

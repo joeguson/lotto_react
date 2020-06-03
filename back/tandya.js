@@ -7,7 +7,7 @@ const replyService = require('../service/replyService.js');
 route.get('/', function (req, res) {
     articleService.getFrontArticle('tandya')
         .then((results) => {
-            res.render('./jt/t', {
+            res.render('./layouts/front_layouts/t', {
             topics: results,
             id2: req.session.id2 ? req.session.id2 : 0
         })}
@@ -21,7 +21,7 @@ route.get('/:tandya_no', function (req, res, next) {
         articleService.getFullArticleById(id, req.session.id2, 'tandya').then(result => {
             if (!result) res.redirect('/tandya/'); // 결과가 없으면 홈으로 이동
             else articleService.updateViewArticle(result.id, 'tandya').then(() => // 받아왔으면 조회수 증가 후 페이지 표시
-                res.render('./jt/t-view', {
+                res.render('./layouts/article_view_layouts/t-view', {
                     topic: result,
                     u_id: req.session.u_id,
                     id2: req.session.id2 ? req.session.id2 : 0
@@ -34,9 +34,9 @@ route.get('/:tandya_no', function (req, res, next) {
 
 route.get('/new', function (req, res) {
     if (req.session.id2) {
-        res.render('./jt/t-add', {id2: req.session.id2});
+        res.render('./layouts/article_add_layouts/t-add', {id2: req.session.id2});
     } else {
-        res.redirect('/tandya/');
+        res.redirect('/tandya');
     }
 });
 
@@ -67,7 +67,7 @@ route.get('/edit/:tandya_no', function (req, res) {
 
     articleService.getFullArticleById(t_id, req.session.id2, 'tandya').then(tandya => {
         if(tandya != null && tandya.author === u_id)
-            res.render('./edit_layout', {
+            res.render('./layouts/edit_layout', {
                 u_id: u_id,
                 type: 'tandya',
                 article: tandya
@@ -84,7 +84,7 @@ route.get('/edit/answer/:tandya_no/:tanswer_no', function (req, res) {
     replyService.getReplyById(ta_id, 'tandya').then(answer => {
         if (u_id !== answer.author) res.redirect('/tandya/' + t_id);
         else articleService.getFullArticleById(t_id, 'tandya').then(tandya => {
-            res.render('./jt/ta-edit', {
+            res.render('./layouts/reply_edit_layouts/ta-edit', {
                 u_id: 'y',
                 topic: tandya,
                 edit_content: answer

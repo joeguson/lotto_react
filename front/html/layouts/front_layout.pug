@@ -1,0 +1,65 @@
+extends ../layout
+include ../mixins/mixin
+
+block js
+    script(type="text/javascript" src="/js/jsForAllJade.js")
+    script(type="text/javascript" src="/public/b-thumbnail/b-thumbnail.js")
+    script(type="text/javascript" src="/public/b-hashtag/b-hashtag.js")
+    block frontJs
+
+block css
+    link(rel='stylesheet' href='/css/front_layout.css' type="text/css")
+    link(rel='stylesheet' href='/css/thumbnail.css' type="text/css")
+    link(rel='stylesheet' href='/css/mixin.css' type="text/css")
+    block frontCss
+
+block submain
+    .search
+        form(method='get' id='searchForm')
+            input(type='text' name='s' id='searchInput' class='searchInput')
+            button(type='submit' class="submit" value="s")
+                img(src="icons/cari_white.png" class="cariImage")
+    block submain_supplement
+
+block main
+
+block jscript
+    script.
+        window.addEventListener('scroll', function(){
+            let pathname = window.location.pathname;
+            if((pathname.split('/'))[1] !== 'search') {
+                if(((window.innerHeight + window.scrollY)) >= window.document.scrollingElement.scrollHeight) {
+                    loadMore(pathname);
+                }
+            }
+        });
+
+        let loadMore = function(pathname){
+            let loadUrl = '';
+            if(pathname === '/cari') loadUrl = 'api/cari/load';
+            else loadUrl = 'api/article' + pathname+'/load';
+            makeRequest('GET', loadUrl)
+                .then(function(result){
+                    result = JSON.parse(result);
+                    var randomUl = document.getElementById('uls');
+                    result.map(function(data){
+                        let lis = document.createElement("b-thumbnail");
+                        lis.setAttribute("jsonSrc", JSON.stringify(data));
+                        randomUl.appendChild(lis);
+                    })
+                }).catch(function(err){
+                    console.log(err);
+                });
+        };
+        window.addEventListener('load', function () {
+            let currentTag = (location.pathname).split('/')[1];
+            let subTag = (location.pathname).split('/')[2];
+            let searchForm = document.getElementById('searchForm');
+            let searchInput = document.getElementById('searchInput');
+            if(currentTag === 'search') {
+                currentTag = subTag;
+                searchInput.value =  `#{search_string}`;
+            }
+            searchForm.setAttribute('action', '/search/' + currentTag);
+        });
+    block jscript_supplement

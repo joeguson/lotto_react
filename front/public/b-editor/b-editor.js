@@ -54,40 +54,42 @@
     }
 
     buildControls(w) {
-        const controls = document.createElement("div");
-        controls.style.textAlign = "center";
-        controls.style.fontSize = "10px";
-        controls.style.boxSizing = "border-box";
-        controls.style.borderBottom = "none";
-        controls.style.padding = "8px";
-        controls.style.backgroundColor = "#0f4c81";
-        controls.style.color = "white";
-        controls.style.borderRadius = "5px 5px 0 0";
-        controls.style.width = w;
-        controls.style.margin = "0 auto";
+        const controlContainer = document.createElement("div");
+        const controlSection1= document.createElement("div");
+        const controlSection2= document.createElement("div");
+        const controlSection3= document.createElement("div");
+        const controlSection4= document.createElement("div");
+        const controlSection5= document.createElement("div");
+        const controlSection6= document.createElement("div");
+        controlContainer.className = 'controlContainer';
+        controlSection1.className = 'controlSection';
+        controlSection2.className = 'controlSection';
+        controlSection3.className = 'controlSection';
+        controlSection4.className = 'controlSection';
+        controlSection5.className = 'controlSection';
+        controlSection6.className = 'controlSection';
+        controlContainer.style.width = w;
 
-        this.addControlButton(controls, "Bold", "<b>B</b>");
-        this.addControlButton(controls, "Italic", "<em>I</em>");
-        this.addControlButton(controls, "Superscript", "X<sup>2</sup>");
-        this.addControlButton(controls, "Subscript", "X<sub>2</sub>");
-        this.addControlButton(controls, "Strikethrough", "<s>abc</s>");
-        this.addControlButton(controls, "Numbered list", "(i)");
-        this.addControlButton(controls, "Bulleted list", "&bull;");
-        this.addControlButton(controls, "AlignCenter", "Center");
-        this.addControlButton(controls, "AlignLeft", "Left");
-        this.addControlButton(controls, "AlignRight", "Right");
+        //controlSection1 = font appearance
+        this.addControlButton(controlSection1, "Bold", "<b>Bold</b>");
+        this.addControlButton(controlSection1, "Italic", "<em>Italic</em>");
+        this.addControlButton(controlSection1, "Strikethrough", "<s>abcd</s>");
 
+        //controlSection2 = font align
+        this.addControlButton(controlSection2, "AlignLeft", "left");
+        this.addControlButton(controlSection2, "AlignCenter", "center");
+        this.addControlButton(controlSection2, "AlignRight", "right");
+
+        //controlSection3 = font color
         const cp = this.colorPicker = document.createElement("input");
+        cp.className= 'color-control';
         cp.type = "color";
         cp.title = "font color";
-        cp.style.border = "none";
-        cp.style.outline = "none";
-        cp.style.backgroundColor = "transparent";
-        cp.style.padding = "5px 0 0 0";
-        cp.style.margin = "3px 5px 0 0";
-        controls.appendChild(cp);
+        controlSection3.appendChild(cp);
 
+        //controlSection4 = font style & size
         const fonts = this.fontPicker = document.createElement("select");
+        fonts.className = 'font-control';
         [
             "Times New Roman",
             "Consolas",
@@ -103,7 +105,6 @@
             option.style.fontFamily = font;
             fonts.append(option);
         });
-        controls.append(fonts);
 
         const sizes = this.sizePicker = document.createElement("select");
         for(let i=1; i<10; i++) {
@@ -113,22 +114,35 @@
             if(i === 3) option.selected = true;
             sizes.appendChild(option);
         }
-        controls.appendChild(sizes);
+        sizes.className = 'size-control';
+        controlSection4.appendChild(sizes);
+        controlSection4.append(fonts);
 
-        this.addControlButton(controls, "Create link", "Link");
-
+        //controlSection5 = Link, Image, Youtublog
+        this.addControlButton(controlSection5, "Create link", "<u>link</u>");
         const input = this.imageInput = document.createElement("input");
         input.type = "file";
         input.accept = "image/*";
         input.style.display = "block";
+        this.addControlButton(controlSection5, "Insert image", "image");
+        if(this.youtublog === '1') this.addControlButton(controlSection5, "Youtube", "Youtublog");
 
-        this.addControlButton(controls, "Insert image", "Image");
-        this.addControlButton(controls, "Undo", "←");
-        this.addControlButton(controls, "Redo", "→");
+        //controlSection6 = undo forward
+        this.addControlButton(controlSection6, "Undo", "←");
+        this.addControlButton(controlSection6, "Redo", "→");
 
-        if(this.youtublog === '1') this.addControlButton(controls, "Youtube", "Youtublog");
+        controlContainer.appendChild(controlSection1);
+        controlContainer.appendChild(controlSection2);
+        controlContainer.appendChild(controlSection3);
+        controlContainer.appendChild(controlSection4);
+        controlContainer.appendChild(controlSection5);
+        controlContainer.appendChild(controlSection6);
 
-        return controls;
+        // this.addControlButton(control1, "Superscript", "X<sup>2</sup>");
+        // this.addControlButton(control1, "Subscript", "X<sub>2</sub>");
+        // this.addControlButton(control1, "Numbered list", "(i)");
+        // this.addControlButton(control1, "Bulleted list", "&bull;");
+        return controlContainer;
     }
 
     buildEditor(w, h) {
@@ -154,14 +168,7 @@
         const btn = document.createElement("button");
         btn.title = title;
         btn.innerHTML = innerHTML;
-        btn.className = "b-editor-hover-transition";
-        btn.style.color = "white";
-        btn.style.border = "none";
-        btn.style.outline = "none";
-        btn.style.cursor = "pointer";
-        btn.style.backgroundColor = "#0f4c81";
-        btn.style.padding = "3px";
-        btn.style.margin = "0 5px";
+        btn.className = "b-editor-button";
         parent.appendChild(btn);
 
         this.controlButtons[title] = btn;
@@ -172,24 +179,15 @@
         editor.designMode = "on";
         this.controlButtons["Bold"].onclick = this.cmd("Bold");
         this.controlButtons["Italic"].onclick = this.cmd("Italic");
-        this.controlButtons["Superscript"].onclick = this.cmd("Superscript");
-        this.controlButtons["Subscript"].onclick = this.cmd("Subscript");
         this.controlButtons["Strikethrough"].onclick = this.cmd("Strikethrough");
         this.controlButtons["AlignCenter"].onclick = this.cmd("JustifyCenter");
         this.controlButtons["AlignRight"].onclick = this.cmd("JustifyRight");
         this.controlButtons["AlignLeft"].onclick = this.cmd("JustifyLeft");
-
-        this.controlButtons["Numbered list"].onclick = this.cmd("InsertOrderedList", false,
-            "newOL" + Math.round(Math.random() * 1000));
-        this.controlButtons["Bulleted list"].onclick = this.cmd("InsertUnorderedList", false,
-            "newUL" + Math.round(Math.random() * 1000));
         if(this.youtublog === '1') this.controlButtons["Youtube"].onclick = () => { this.__onYoutubeClick(); };
-
         this.colorPicker.onchange = (e) => this.cmd("ForeColor", false, e.target.value)();
         this.fontPicker.onchange = (e) => this.cmd("FontName", false, e.target.value)();
         this.sizePicker.onchange = (e) => this.cmd("FontSize", false, e.target.value)();
         this.imageInput.onchange = (e) => { this.__onImgClick(); };
-
         this.controlButtons["Create link"].onclick = () =>{this.__onLinkClick();};
         this.controlButtons["Insert image"].onclick = () => this.imageInput.click();
         this.controlButtons["Undo"].onclick = this.cmd("undo");
@@ -241,6 +239,12 @@
         };
 
         this.youtubeDialog.onConfirmCallback = (id) => this.__onYoutubeAdd(id);
+        // this.controlButtons["Numbered list"].onclick = this.cmd("InsertOrderedList", false,
+        //     "newOL" + Math.round(Math.random() * 1000));
+        // this.controlButtons["Bulleted list"].onclick = this.cmd("InsertUnorderedList", false,
+        //     "newUL" + Math.round(Math.random() * 1000));
+        // this.controlButtons["Superscript"].onclick = this.cmd("Superscript");
+        // this.controlButtons["Subscript"].onclick = this.cmd("Subscript");
     }
 
     cmd(id, showUi, value) {

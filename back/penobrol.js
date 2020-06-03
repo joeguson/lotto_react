@@ -7,7 +7,7 @@ const replyService = require('../service/replyService.js');
 route.get('/', function (req, res) {
     articleService.getFrontArticle('penobrol')
         .then((results) => {
-            res.render('./jp/p', {
+            res.render('./layouts/front_layouts/p', {
             topics: results,
             id2: req.session.id2 ? req.session.id2 : 0
             })}
@@ -22,7 +22,7 @@ route.get('/:penobrol_no', function (req, res, next) {
         articleService.getFullArticleById(id, req.session.id2, 'penobrol').then(result => {
             if (!result) res.redirect('/penobrol/'); // 결과가 없으면 홈으로 이동
             else articleService.updateViewArticle(result.id, 'penobrol').then(() => // 받아왔으면 조회수 증가 후 페이지 표시
-                res.render('./jp/p-view', {
+                res.render('./layouts/article_view_layouts/p-view', {
                     topic: result,
                     u_id: req.session.u_id,
                     id2: req.session.id2 ? req.session.id2 : 0
@@ -37,9 +37,9 @@ route.get('/:penobrol_no', function (req, res, next) {
 
 route.get('/new',function (req, res) {
     if (req.session.u_id) {
-        res.render('./jp/p-add');
+        res.render('./layouts/article_add_layouts/p-add');
     } else {
-        res.redirect('/penobrol/');
+        res.redirect('/penobrol');
     }
 });
 
@@ -49,7 +49,7 @@ route.get('/edit/:penobrol_no', function (req, res) {
 
     articleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
         if(penobrol && penobrol.author === u_id)
-            res.render('./edit_layout', {
+            res.render('./layouts/edit_layout', {
                 u_id: u_id,
                 type: 'penobrol',
                 article: penobrol
@@ -65,7 +65,7 @@ route.get('/edit/comment/:penobrol_no/:pcomment_no',function (req, res) {
     replyService.getReplyById(pc_id, 'penobrol').then(comment => {
         if (u_id !== comment.author) res.redirect('/comment/view/' + p_id);
         else articleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
-            res.render('./jp/pc-edit', {
+            res.render('./layouts/reply_edit_layouts/pc-edit', {
                 id2: req.session.id2 ? req.session.id2 : 0,
                 topic: penobrol,
                 edit_content: comment

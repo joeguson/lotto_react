@@ -12,7 +12,7 @@ route.get('/', function (req, res) {
             let result = cariPenobrol.concat(cariTandya);
             result = result.concat(cariYoutublog);
             jsForBack.shuffle(result);
-            res.render('./jc/cari', {
+            res.render('./layouts/front_layouts/cari', {
                 list: result,
                 id2: req.session.id2 ? req.session.id2 : 0
             })

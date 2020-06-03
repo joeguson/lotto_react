@@ -1,0 +1,150 @@
+extends ../layout
+include ../mixins/view_mixin
+
+block js
+    script(type="text/javascript" src="/js/jsForAllJade.js")
+    script(type="text/javascript" src="/js/createReply.js")
+    script(type="text/javascript" src="/js/warnArticle.js")
+    script(type="text/javascript" src="/js/deleteArticle.js")
+    block view_js
+
+block css
+    link(rel="stylesheet" href="../css/view_layout.css" type="text/css")
+    link(rel='stylesheet' href='../css/view_mixin.css' type="text/css")
+    block view_css
+
+block submain
+
+block main
+    .articleContainer(id='articleContainer')
+        .articleInfo
+            dl.articleDl
+                block articleDl
+            if(id2)
+                .articleMenuContainer
+                    +articlePop(topic.identifier, id2, topic.author)
+        .articleThumb
+            block articleThumb
+        .articleContent
+            +articleContent()
+        .articleLike
+            .articleLikeNum(id="articleLikeNum")= topic.likeCount + '  highlight  '
+            if(id2)
+                +aritcleLikeButton(topic.likeStatus)
+    if(topic.chosen)
+        .replyChosen(id='replyChosen')
+    if(id2)
+        .replyInputContainer
+            block replyInput
+    block reply
+
+block jscript
+    script.
+        /* ===== articleLike ===== */
+        let __article = {
+            __like: #{topic.likeStatus},  // update value with __updateLikeState()
+            __likeCount: #{topic.likeCount}
+        };
+
+        window.addEventListener('load', function(){
+            var type = window.location.href.split('/')[3];
+            makeRequest('GET', 'api/reply/' + type + '/'+ #{topic.id})
+                .then(function (e) {
+                    let ele = JSON.parse(e);
+                    //chosen의 값이 있다면 chosen 먼저 createReply해야함
+                    if(#{topic.chosen} > 0){
+                        // 찾고, 저장하고, 빼내고, 줄이고, 만들고
+                        for(var i = 0; i < ele.result.length; i++){
+                            if(#{topic.chosen} === ele.result[i].id){
+                                var chosen = ele.result[i];
+                                ele.result.splice(i, 1);
+                            }
+                        }
+                        createChosenReply(chosen, type, #{id2}, #{topic.author});
+                    }
+                    ele.result.forEach(function (element) {
+                        //TODO id2에 값이 없을때는 안됨 해결하기
+                        createReply(element, type, #{id2}, #{topic.author});
+                    });
+                });
+        });
+
+        var articleLikeButton = document.getElementById("articleLikeButton");
+        if(articleLikeButton){
+            articleLikeButton.onclick = function () {
+                //버튼을 누르자마자 현재 __like를 기준으로 우선 그림과 숫자를 바꿔줌
+                var articleLikeNum = document.getElementById('articleLikeNum');
+                var imgTag = this.childNodes[0];
+                if (__article.__like) {
+                    articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML) - 1 + '  highlight';
+                    imgTag.src = location.origin + '/icons/highlight.png';
+                } else {
+                    articleLikeNum.innerHTML = parseInt(articleLikeNum.innerHTML) + 1 + '  highlight';
+                    imgTag.src = location.origin + '/icons/highlight_ed.png';
+                }
+
+                //이후에 ajax 요청을 보냄
+                var type = window.location.href.split('/')[3];
+                var data = {
+                    "id": #{topic.id},
+                    "cancel": __article.__like
+                };
+                __article.__like = !__article.__like;
+                makeRequest('POST', 'api/like/' + type + '/article', data)
+                    .then(function (e) {
+                        e = JSON.parse(e);
+                    });
+            }
+        }
+
+        var articleWarnButton = document.getElementById("articleWarnButton");
+        if(articleWarnButton){
+            articleWarnButton.onclick = function () {
+                if(confirm("Are you sure to warn this content?")){
+                    var type = window.location.href.split('/')[3];
+                    if (type === 'penobrol') warnPenobrol(#{topic.id});
+                    else if (type === 'tandya') warnTandya(#{topic.id});
+                    else if (type === 'youtublog') warnYoutublog(#{topic.id});
+                }
+                else{
+                    alert('not warned');
+                }
+            }
+        }
+
+        var articleDeleteButton = document.getElementById("articleDeleteButton");
+        if(articleDeleteButton){
+            document.getElementById("articleDeleteButton").onclick = function () {
+                var type = window.location.href.split('/')[3];
+                if (type === 'penobrol') deletePenobrol(#{topic.id});
+                else if (type === 'tandya') deleteTandya(#{topic.id});
+                else if (type === 'youtublog') deleteYoutublog(#{topic.id});
+            }
+        }
+
+        function __chooseFunc(target, id){
+            if (confirm("Are you sure to choose this content?")) {
+                let data = {
+                    article_id: #{topic.id},
+                    pre_chosen: #{topic.chosen},
+                    chosen_id: id
+                };
+                const url = '/api/article/chosen/' + target;
+                makeRequest('put', url, data).then(function(re){
+                    const result = JSON.parse(re);
+                    console.log(result.result);
+                    if(result.result === 'chosen'){ // choose라면 id를 가지고
+                        const chosenNew = document.getElementById('replyLi' + id);
+                        chosenNew.style.backgroundColor = "blue";
+                        alert("chosen");
+                        alert("chosen");
+                    }
+                    else{ // cancel이라면
+                        const chosenCancel = document.getElementById('replyLi' + id);
+                        chosenCancel.style.backgroundColor = "white";
+                    }
+                    }).catch(function(res){
+                        alert("fail");
+                    })
+            }
+        }

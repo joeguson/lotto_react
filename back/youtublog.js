@@ -7,7 +7,7 @@ const youtublogService = require('../service/youtublogService.js');
 /* ===== youtublog ===== */
 route.get('/', function (req, res) {
     articleService.getFrontArticle('youtublog')
-        .then((results) => res.render('./jy/y', {
+        .then((results) => res.render('./layouts/front_layouts/y', {
             topics: results,
             id2: req.session.id2 ? req.session.id2 : 0
         }));
@@ -20,7 +20,7 @@ route.get('/:youtublog_no', function (req, res, next) {
         articleService.getFullArticleById(id, req.session.id2, 'youtublog').then(result => {
             if (!result) res.redirect('/youtublog'); // 결과가 없으면 홈으로 이동
             else articleService.updateViewArticle(result.id, 'youtublog').then(() => // 받아왔으면 조회수 증가 후 페이지 표시
-                res.render('./jy/y-view', {
+                res.render('./layouts/article_view_layouts/y-view', {
                     topic: result,
                     u_id: req.session.u_id,
                     id2: req.session.id2 ? req.session.id2 : 0
@@ -35,9 +35,9 @@ route.get('/:youtublog_no', function (req, res, next) {
 
 route.get('/new',function (req, res) {
     if (req.session.u_id) {
-        res.render('./jy/y-add');
+        res.render('./layouts/article_add_layouts/y-add');
     } else {
-        res.redirect('/youtublog/');
+        res.redirect('/youtublog');
     }
 });
 
@@ -47,7 +47,7 @@ route.get('/edit/:youtublog_no', function (req, res) {
 
     articleService.getFullArticleById(y_id, req.session.id2, 'youtublog').then(youtublog => {
         if(youtublog && youtublog.author === u_id)
-            res.render('./edit_layout', {
+            res.render('./layouts/edit_layout', {
                 u_id: u_id,
                 type: 'youtublog',
                 article: youtublog
@@ -64,7 +64,7 @@ route.get('/edit/comment/:youtublog_no/:ycomment_no',function (req, res) {
     replyService.getReplyById(yc_id, 'youtublog').then(comment => {
         if (u_id !== comment.author) res.redirect('/comment/view/' + y_id);
         else articleService.getFullArticleById(y_id, req.session.id2, 'youtublog').then(youtublog => {
-            res.render('./jy/yc-edit', {
+            res.render('./layouts/reply_edit_layouts/yc-edit', {
                 id2: req.session.id2 ? req.session.id2 : 0,
                 topic: youtublog,
                 edit_content: comment

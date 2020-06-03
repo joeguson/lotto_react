@@ -31,6 +31,8 @@ function checkImage(imageObject){
 if(edit){
     edit = !edit;
     function postEditArticle(type) {
+        __createMask();
+        __showLoading();
         const isPublic = document.getElementById('rbP').checked ? 'p' : 'a';
         let content = document.getElementById('editor').value();
         const hashtag = document.getElementById('hashtag').value;

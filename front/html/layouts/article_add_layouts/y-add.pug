@@ -1,0 +1,39 @@
+extends ../article_add_layout
+
+block addJs
+    script(src="./public/b-youtube/b-youtube-time.js")
+    script(src="./public/b-youtube/b-youtube-idDialog.js")
+    script(src="./public/b-youtube/b-youtube-dialog.js")
+
+block newArticleInfo
+    p
+        input(type='text' name='title' placeholder='title' maxlength="200" class="title" id="title" required)
+    p.infoP
+        span(id='titleInfo' class='infoSpan') 200/200
+
+block newArticleContent
+    b-editor(id='editor' width="90%" height="600px" name="content" youtublog='1')
+
+block newArticleSubmit
+    button(class="articleSubmit" id='submit' name='y' onclick='postArticle(this)') share
+
+    script.
+        function checksubmit(){
+            if(title.value.length < 5){
+                alert('judulnya harus lebih dari 5 alphabet');
+                return false;
+            }
+            if(content.value.length < 5){
+                alert('kontennya harus lebih dari 5 alphabet');
+                return false;
+            }
+            return true;
+        }
+        title.addEventListener('keyup', function(){
+            var count = 200;
+            count -= title.value.length;
+            titleInfo.innerHTML = count + '/200';
+            if(count < 1){
+                titleInfo.innerHTML = 'exceeds the limit';
+            }
+        });

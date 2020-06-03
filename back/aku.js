@@ -29,12 +29,12 @@ route.post('/login', function(req, res){
                 );
         }
         else if(result === -1){
-            res.render('./ja/login', {
+            res.render('./layout_free/login', {
                 "message":"please check your id or password"
             });
         }
         else{
-            res.render('./ja/login', {
+            res.render('./layout_free/login', {
                 "message":"this email is not verified"
             });
         }
@@ -47,7 +47,7 @@ route.get('/', function(req, res){
             .then(([userPenobrol, userTandya, userYoutublog, totalLikes]) => {
                 akuService.countFollow(req.session.id2)
                     .then((follow) => {
-                        res.render('./ja/aku', {
+                        res.render('./layout_free/aku', {
                             user:req.session.id2,
                             u_id:req.session.u_id,
                             following: follow.following,
@@ -60,7 +60,7 @@ route.get('/', function(req, res){
             });
     }
     else{
-        res.render('./ja/login');
+        res.render('./layout_free/login');
     }
 });
 
@@ -70,13 +70,13 @@ route.get('/register', function(req, res){
         let code = req.query.code;
         akuService.verifyUserEmail(email, code)
             .then((result) => {
-                if (result === 1) res.render('./ja/login', {"message": "please login"});
-                else if (result === 0) res.render('./ja/login', {"message": "your verification code is wrong"});
-                else res.render('./ja/login', {"message": "wrong approach"});
+                if (result === 1) res.render('./layout_free/login', {"message": "please login"});
+                else if (result === 0) res.render('./layout_free/login', {"message": "your verification code is wrong"});
+                else res.render('./layout_free/login', {"message": "wrong approach"});
             });
     }
     else{
-        res.render('./ja/register');
+        res.render('./layout_free/register');
     }
 });
 
@@ -98,7 +98,7 @@ route.get('/user/:user_id', function(req, res){
             .then(([userPenobrol, userTandya, userYoutublog, followResult]) => {
                 akuService.countFollowByForeigner(user_id)
                     .then((result) => {
-                        res.render('./ja/aku_view', {
+                        res.render('./layout_free/aku_view', {
                         user:req.session.id2,
                         u_id:user_id,
                         following: result.following,
@@ -120,7 +120,7 @@ route.get('/logout', function(req, res){
 });
 
 route.get('/find', function(req, res){
-    res.render('./ja/findMyIdPw');
+    res.render('./layout_free/findMyIdPw');
 });
 
 route.post('/find', function(req, res){
@@ -133,7 +133,7 @@ route.post('/find', function(req, res){
 });
 
 route.get('/change', function(req, res){
-    if(req.session.id2) res.render('./ja/change_login', {
+    if(req.session.id2) res.render('./layout_free/change_login', {
         u_id: req.session.u_id
     });
     else res.redirect('/aku')
@@ -158,7 +158,7 @@ route.get('/change/info', function(req, res){
     if(req.session.id2 && req.session.valid){
         let result = akuService.getUserBasicInfo(req.session.id2)
             .then((result) => {
-                res.render('./ja/changeUserInfo', {
+                res.render('./layout_free/changeUserInfo', {
                     user: result
                 });
             });
