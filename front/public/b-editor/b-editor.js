@@ -214,8 +214,6 @@
             makeRequest('post', url, data)
                 .then((sent) => {
                     let result = JSON.parse(sent);
-                    console.log('from b-editor 219');
-                    console.log(result);
                     let ogData = {
                         url : result.ogs.data['ogUrl'],
                         img : result.ogs.data.ogImage.url,

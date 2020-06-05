@@ -169,9 +169,14 @@ function createReplyButton(userId, articleAuthor, content, type){
             warnImg.className = "replyButtonImg";
             warnImg.src = location.origin +'/icons/warn.png';
             warnButton.onclick = () => {
-                if(type==='penobrol') warnPenobrolCom(content.id);
-                else if(type==='tandya') warnTandyaAns(content.id);
-                else if(type==='youtublog') warnYoutublogCom(content.id);
+                if(confirm("Are you sure to warn this content?")){
+                    if(type==='penobrol') warnPenobrolCom(content.id);
+                    else if(type==='tandya') warnTandyaAns(content.id);
+                    else if(type==='youtublog') warnYoutublogCom(content.id);
+                }
+                else{
+                    alert('not warned');
+                }
             };
             warnButton.appendChild(warnImg);
             replyWarnSpan.appendChild(warnButton);

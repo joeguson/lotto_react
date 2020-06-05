@@ -1,0 +1,29 @@
+//out: ../css/article_view_layout.css
+// Variables
+@themes: "../less";
+// Usage
+@import "@{themes}/variable.less";
+
+//article
+.articleContainer{width:100%; background-color: white; padding: 10px; word-break:break-all; margin-bottom: @marginbottom-mbl; min-height: 500px;.section-border();}
+//article - .articleInfo, .articleThumb, .articleContent, .articleLike
+.articleInfo{width: 100%; min-height: 120px; padding-top: 15px;}
+.articleThumb{width: 100%; .top-border(); padding: 20px 0px;}
+.articleContent{width:100%; padding-top: 5px; text-align: justify; .top-border(); overflow-x:hidden;}
+.articleLike{width:100%; text-align: center; font-size: 24px; color:@palette5; margin: 20px 0px; .top-border(); padding-top: 20px;}
+
+.articleLikeNum{margin-bottom: 10px; font-size: 20px; font-family: @font-family2;}
+.articleDl{width:100%; margin-bottom: 20px;}
+
+.replyChosen{width:100%; background-color: @palette2; list-style: none; .section-border(); margin-bottom: 10px; padding: 5px;}
+//replyChosen's children are in penobrol_view / tandya_view / youtublog_view
+
+.replyInputContainer{width:100%; margin-bottom: @marginbottom-mbl;}
+.replyContainer{width:100%; .section-border(); background-color:white; margin:0px; padding:5px; margin-bottom: @marginbottom-mbl;}
+
+
+/*for bigger windows*/
+@media(min-width:@min-width){
+
+
+}

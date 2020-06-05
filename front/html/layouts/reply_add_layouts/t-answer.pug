@@ -1,0 +1,15 @@
+extends ../reply_add_layout
+
+block reply_add_layout_js
+
+block reply_add_layout_css
+    link(rel='stylesheet' href='../../css/tandya_view.css' type="text/css")
+
+block articleDl
+    dt.articleTitleDt
+        span Q :
+        span #{topic.question}
+    +hashtag(topic.hashtags)
+    +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
+
+block articleThumb

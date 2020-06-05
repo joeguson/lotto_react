@@ -48,7 +48,7 @@ route.get('/:id/answer/new', function (req, res) {
             articleService.getFullArticleById(articleId, req.session.id2, 'tandya').then(result => {
                 if (!result) res.redirect('/tandya/'); // 결과가 없으면 홈으로 이동
                 else {
-                    res.render('./jt/t-answer', {
+                    res.render('./layouts/reply_add_layouts/t-answer', {
                         topic: result,
                         u_id: req.session.u_id,
                         id2: req.session.id2 ? req.session.id2 : 0
