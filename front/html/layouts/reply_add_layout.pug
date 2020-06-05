@@ -1,4 +1,4 @@
-extends ../front_layout
+extends ../layout
 include ../mixins/article_view_mixin
 
 block js
@@ -26,6 +26,6 @@ block main
         .articleContent
             +articleContent()
     b-editor(id='editor' width="90%" height="600px" name="content" youtublog='0')
-    button(class="articleSubmit" id='submit' name='a' onclick='postArticle(this)') share
+    button(class="replySubmit" id='submit' name='a' onclick='postArticle(this)') answer
 
 
