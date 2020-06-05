@@ -98,7 +98,7 @@ route.get('/user/:user_id', function(req, res){
             .then(([userPenobrol, userTandya, userYoutublog, followResult]) => {
                 akuService.countFollowByForeigner(user_id)
                     .then((result) => {
-                        res.render('./layouts/user_layout/aku_view', {
+                        res.render('./layouts/user_layouts/aku_view', {
                         user:req.session.id2,
                         u_id:user_id,
                         following: result.following,
