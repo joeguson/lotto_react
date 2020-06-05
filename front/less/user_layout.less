@@ -4,38 +4,30 @@
 // Usage
 @import "@{themes}/variable.less";
 
-.userInfo{width:100%; margin-bottom: @marginbottom-mbl; background-color: white; text-align: center; padding:10px; .section-border();}
-.userStat{width:100%; .section-border();margin-bottom: @marginbottom-mbl; padding:10px; background-color: white;}
-.userArticle{width:100%; box-sizing: border-box; .section-border();margin-bottom: @marginbottom-mbl; background-color: @bgcolor1;}
+.userInfo {width: 100%; margin-bottom: @marginbottom-mbl; background-color: white; text-align: center; padding: 10px; .section-border();}
 
-//.userInfo - .userInfoSpan
-.userInfoSpan {width:30%; display: inline-block;}
+.userStat {width: 100%; .section-border(); margin-bottom: @marginbottom-mbl; padding: 10px; background-color: white;}
 
-//.p-stat - .likeHeading(p), .likeStat(div)
-.userStat p {font-size: 18px; line-height: 30px; box-sizing: border-box;}
-.likeStat{width:100%; box-sizing: border-box; padding: 5px; text-align: center;}
-.likeStat:nth-child(2){border-top:1px solid lightgray}
+.userArticle {width: 100%; .section-border(); margin-bottom: @marginbottom-mbl; background-color: @bgcolor1;}
 
-.likeStat .likeSpan:first-child{border-right:1px solid lightgray}
-.likeStat .likeSpan:nth-child(2){border-right:1px solid lightgray}
-.likeSpan{width:30%; box-sizing: border-box; display: inline-block; text-align: center;}
-.likeHeading{margin-bottom: 5px; color:@main; text-align: center;}
-.likeCount{width:100%; box-sizing: border-box; text-align: center; color:@likeColor; font-size: 18px;}
+.userInfoSpan { width: 30%; display: inline-block;}
 
+.userStat p {font-size: 18px; line-height: 30px; box-sizing: border-box; }
 
-//.userArticle - p, ul(.thumbnailUl)
-.thumbnailUl{width:95%; margin: 0 auto; cursor: pointer; padding:5px; list-style: none;}
+.likeStat {width: 100%; padding: 5px; text-align: center;}
 
-.userPenobrol, .userTandya, .userYoutublog{padding: @marginbottom-mbl; margin-bottom: @marginbottom-mbl; background-color: white;}
+.likeStat:nth-child(2) {.top-border();}
 
-.userArticleHeadingImg{display: block; height:40px; margin-bottom: 10px;}
+.likeStat .likeSpan:first-child {.right-border();}
 
-.logout{ font-size: 16px; color: white; .button(); display: block;}
+.likeStat .likeSpan:nth-child(2) {.right-border();}
 
-form{font-size:0px;} //when making input tags inline, they have space between them. Cannot remove it with margin 0px;
+.likeSpan {width: 30%; display: inline-block; text-align: center;}
 
-//.pic{width:20%; height:100%;}
+.likeHeading {margin-bottom: 5px; color: #0f4c81; text-align: center;}
+.likeCount {width: 100%; text-align: center; color: #a13525;font-size: 18px;}
+.thumbnailUl {width: 95%; margin: 0 auto; cursor: pointer;padding: 5px;list-style: none;}
+.userPenobrol, .userTandya, .userYoutublog {padding: 10px; margin-bottom: 10px; background-color: white;}
 
-
-/*for bigger windows*/
-@media (min-width:@min-width){}
+.userArticleHeadingImg { display: block; height: 40px; margin-bottom: 10px;}
+.logout {.button(); display: block;}

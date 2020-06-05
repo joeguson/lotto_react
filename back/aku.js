@@ -29,12 +29,12 @@ route.post('/login', function(req, res){
                 );
         }
         else if(result === -1){
-            res.render('./layout_free/login', {
+            res.render('./layouts/form_layouts/login', {
                 "message":"please check your id or password"
             });
         }
         else{
-            res.render('./layout_free/login', {
+            res.render('./layouts/form_layouts/login', {
                 "message":"this email is not verified"
             });
         }
@@ -47,7 +47,7 @@ route.get('/', function(req, res){
             .then(([userPenobrol, userTandya, userYoutublog, totalLikes]) => {
                 akuService.countFollow(req.session.id2)
                     .then((follow) => {
-                        res.render('./layout_free/aku', {
+                        res.render('./layouts/user_layouts/aku', {
                             user:req.session.id2,
                             u_id:req.session.u_id,
                             following: follow.following,
@@ -60,7 +60,7 @@ route.get('/', function(req, res){
             });
     }
     else{
-        res.render('./layout_free/login');
+        res.render('./layouts/form_layouts/login');
     }
 });
 
@@ -70,13 +70,13 @@ route.get('/register', function(req, res){
         let code = req.query.code;
         akuService.verifyUserEmail(email, code)
             .then((result) => {
-                if (result === 1) res.render('./layout_free/login', {"message": "please login"});
-                else if (result === 0) res.render('./layout_free/login', {"message": "your verification code is wrong"});
-                else res.render('./layout_free/login', {"message": "wrong approach"});
+                if (result === 1) res.render('./layouts/form_layouts/login', {"message": "please login"});
+                else if (result === 0) res.render('./layouts/form_layouts/login', {"message": "your verification code is wrong"});
+                else res.render('./layouts/form_layouts/login', {"message": "wrong approach"});
             });
     }
     else{
-        res.render('./layout_free/register');
+        res.render('./layouts/form_layouts/register');
     }
 });
 
@@ -98,7 +98,7 @@ route.get('/user/:user_id', function(req, res){
             .then(([userPenobrol, userTandya, userYoutublog, followResult]) => {
                 akuService.countFollowByForeigner(user_id)
                     .then((result) => {
-                        res.render('./layout_free/aku_view', {
+                        res.render('./layouts/user_layout/aku_view', {
                         user:req.session.id2,
                         u_id:user_id,
                         following: result.following,
@@ -120,7 +120,7 @@ route.get('/logout', function(req, res){
 });
 
 route.get('/find', function(req, res){
-    res.render('./layout_free/findMyIdPw');
+    res.render('./layouts/form_layouts/find_user_info');
 });
 
 route.post('/find', function(req, res){
@@ -132,20 +132,20 @@ route.post('/find', function(req, res){
     ).then(res.redirect('/aku'));
 });
 
-route.get('/change', function(req, res){
-    if(req.session.id2) res.render('./layout_free/change_login', {
+route.get('/update', function(req, res){
+    if(req.session.id2) res.render('./layouts/form_layouts/update_login', {
         u_id: req.session.u_id
     });
     else res.redirect('/aku')
 });
 
-route.post('/change', function(req, res){
+route.post('/update', function(req, res){
     if(req.session.id2){
         akuService.userLogin(req.session.u_id, req.body.u_pw)
             .then(result => {
                 if(result){
                     req.session.valid = 'valid';
-                    res.redirect('/aku/change/info');
+                    res.redirect('/aku/update/info');
                 }
                 else res.redirect('/aku')
             }
@@ -154,11 +154,11 @@ route.post('/change', function(req, res){
     else res.redirect('/aku')
 });
 
-route.get('/change/info', function(req, res){
+route.get('/update/info', function(req, res){
     if(req.session.id2 && req.session.valid){
         let result = akuService.getUserBasicInfo(req.session.id2)
             .then((result) => {
-                res.render('./layout_free/changeUserInfo', {
+                res.render('./layouts/form_layouts/update_user_info', {
                     user: result
                 });
             });
@@ -166,7 +166,7 @@ route.get('/change/info', function(req, res){
     else res.redirect('/aku')
 });
 
-route.post('/change/info', function(req, res){
+route.post('/update/info', function(req, res){
     if(req.session.id2){
         akuService.updateUserInfo(
             req.body.u_pw,

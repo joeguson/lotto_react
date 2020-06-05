@@ -1,0 +1,23 @@
+extends ../form_layout
+
+block form_layout_js
+
+block form_layout_css
+
+block pre_form
+
+block formTag
+    input(type='text' name='u_id' placeholder='  ID' id="input_id" required)
+    input(type='password' name='u_pw' placeholder='  Password' id="input_pw" required)
+    if message
+        p.message= message
+    input(type='submit' value="Login" id="login" onsubmit='return doubleClick();')
+
+block post_form
+    .register
+        span(id="hilang")
+            a(href='/aku/find') Forgot
+        span(id="daftar")
+            a(href='/aku/register') Register
+
+

@@ -29,7 +29,6 @@ app.locals.pretty = true;
 app.use(express.static('front'));
 app.use(express.static('vendor'));
 app.use(express.static('back'));
-app.use(express.static('images'));
 app.use("/pug", express.static('/'));
 app.set('view engine', 'pug');
 app.set('views', './front/html');

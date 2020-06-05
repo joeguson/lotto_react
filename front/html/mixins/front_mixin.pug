@@ -1,0 +1,16 @@
+mixin frontPage(type)
+    .login
+        if(id2)
+            -var href= type+'/new/'
+            a.addArticle(href= `${href}`) +
+        else
+            a.addArticle(href='/aku') +
+    ul.thumbnailUl(id="uls")
+        for v in topics
+            b-thumbnail(jsonSrc=`${JSON.stringify(v)}`)
+
+mixin frontUl(lists)
+    ul.thumbnailUl(id="uls")
+        for l in lists
+            b-thumbnail(jsonSrc=`${JSON.stringify(l)}`)
+

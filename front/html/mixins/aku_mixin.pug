@@ -1,7 +1,7 @@
 mixin userInfo(self, u_id, follower, following)
     span.userInfoSpan
         if(self)
-            a.changinfo(href= '/aku/change') #{u_id}
+            a.changinfo(href= '/aku/update') #{u_id}
         else
             p(style='color:#0f4c81;') #{u_id}
     span.userInfoSpan #{follower} followers

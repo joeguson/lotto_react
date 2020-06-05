@@ -24,8 +24,6 @@ block submain_supplement
 block main
     if(id2 === 0)
         a.login(href="/aku") login
-    ul.thumbnailUl(id='uls')
-        for item in list
-            b-thumbnail(jsonSrc=`${JSON.stringify(item)}`)
+    +frontUl(list)
 
 block jscript_supplement

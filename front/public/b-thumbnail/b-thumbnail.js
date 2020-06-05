@@ -98,9 +98,14 @@ class BeritamusThumbnail extends HTMLElement {
         }
 
         if(this.src.hashtags){
-            const hashtag = document.createElement("b-hashtag");
+            const hashtag = document.createElement("dd");
             hashtag.className = "hashtag";
-            hashtag.setAttribute("jsonSrc", JSON.stringify(this.src.hashtags));
+            this.src.hashtags.forEach((hash) => {
+                const temp = document.createElement('span');
+                temp.innerHTML = '#'+hash.hash+'  ';
+                temp.style.backgroundColor = "#f4f5f0";
+                hashtag.appendChild(temp);
+            });
             this.dl.appendChild(hashtag);
         }
 

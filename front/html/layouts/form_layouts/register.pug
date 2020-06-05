@@ -1,0 +1,34 @@
+extends ../form_layout
+
+block form_layout_js
+    script(type="text/javascript" src="../../js/register.js")
+    script(type="text/javascript" src="../../js/jsForAllJade.js")
+
+block form_layout_css
+
+block pre_form
+  
+block formTag
+    .registerDiv
+        input(type='text' id = 'u_id' name='u_id' maxlength="30" placeholder='ID' required)
+        span(id='idInfo' class='registerInfo') 30/30
+    .registerDiv
+        input(type='password' id = 'u_pw' name='u_pw' maxlength="50" placeholder='Password' required)
+        input(type='password' id = 'u_pw2' maxlength="50" placeholder='Check Password')
+        span(id='pwInfo' class='registerInfo') Include 1 character, number and special character
+    .registerDiv
+        input(type='date' name='birthday' value='2019-10-24' id='inputDate' required)
+    .registerDiv
+        input(type='button' name='boy' id = 'boy' value='Male' class="sex" required)
+        input(type='button' name='girl' id = 'girl' value='Female' class="sex" required)
+        input(type="hidden" id="gender" name="gender" value="none")
+    .registerDiv
+        input(type='text' name='email' id='email' placeholder='emailAdress@yourEmail.com' required)
+        span(id='emailInfo' class='registerInfo') Please put a valid email address
+    .registerDiv
+        span(class='registerAgreement') By signing up, you agree to Beritamus's Terms, Data Policy and Cookie Policy
+    .registerDiv
+        input(type='submit' id='submit' value='Get Verification Mail')
+
+block post_form
+

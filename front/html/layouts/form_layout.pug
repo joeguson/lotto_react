@@ -1,0 +1,62 @@
+extends ../layout
+
+block js
+    script(type="text/javascript" src="./js/jsForAllJade.js")
+    block form_layout_js
+
+block css
+    link(rel='stylesheet' href='/css/form_layout.css' type="text/css")
+    block form_layout_css
+
+block submain
+
+block main
+    block pre_form
+    .formDiv
+        form(id='formTag' class='formtag')
+            block formTag
+    block post_form
+
+block jscript
+    script.
+        window.addEventListener('load', function () {
+            const formTag = document.getElementById('formTag');
+            switch (location.pathname) {
+                case '/aku':
+                    formTag.setAttribute('action', 'aku/login');
+                    formTag.setAttribute('method', 'POST');
+                    break;
+                case '/aku/register':
+                    formTag.setAttribute('action', 'aku/register');
+                    formTag.setAttribute('method', 'POST');
+                    formTag.setAttribute('onsubmit', 'return doubleClick();');
+                    break;
+                case '/aku/find':
+                    formTag.setAttribute('action', 'aku/find');
+                    formTag.setAttribute('method', 'POST');
+                    formTag.setAttribute('onsubmit', 'return doubleClick();');
+                    break;
+                case '/aku/update':
+                    formTag.setAttribute('action', 'aku/update');
+                    formTag.setAttribute('method', 'POST');
+                    formTag.setAttribute('onsubmit', 'return doubleClick();');
+                    break;
+                case '/aku/update/info':
+                    formTag.setAttribute('action', '/aku/update/info');
+                    formTag.setAttribute('method', 'POST');
+                    formTag.setAttribute('onsubmit', 'return doubleClick();');
+                    break;
+            }
+        });
+
+        var click = true;
+        function doubleClick() {
+            if (click) {
+                console.log('ss');
+                click = !click;
+                setTimeout(function () {
+                    click = true;
+                }, 2000)
+                return true;
+            }
+        }
