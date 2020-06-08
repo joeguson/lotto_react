@@ -37,7 +37,7 @@ route.get('/:penobrol_no', function (req, res, next) {
 
 route.get('/new',function (req, res) {
     if (req.session.u_id) {
-        res.render('./layouts/article_add_layouts/p-add');
+        res.render('./layouts/article_add_edit_layouts/article_add_layouts/p-add');
     } else {
         res.redirect('/penobrol');
     }
@@ -48,12 +48,13 @@ route.get('/edit/:penobrol_no', function (req, res) {
     const u_id = req.session.id2;
 
     articleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
-        if(penobrol && penobrol.author === u_id)
-            res.render('./layouts/edit_layout', {
+        if(penobrol && penobrol.author === u_id){
+            res.render('./layouts/article_add_edit_layouts/article_edit_layouts/p-edit', {
                 u_id: u_id,
                 type: 'penobrol',
                 article: penobrol
             });
+        }
         else res.redirect('/penobrol/' + p_id);
     });
 });
@@ -65,7 +66,7 @@ route.get('/edit/comment/:penobrol_no/:pcomment_no',function (req, res) {
     replyService.getReplyById(pc_id, 'penobrol').then(comment => {
         if (u_id !== comment.author) res.redirect('/comment/view/' + p_id);
         else articleService.getFullArticleById(p_id, req.session.id2, 'penobrol').then(penobrol => {
-            res.render('./layouts/reply_edit_layouts/pc-edit', {
+            res.render('./layouts/reply_add_edit_layouts/pc-edit', {
                 id2: req.session.id2 ? req.session.id2 : 0,
                 topic: penobrol,
                 edit_content: comment

@@ -1,0 +1,27 @@
+extends ../article_add_edit_layout
+
+block article_add_edit_layout_js
+
+block article_add_edit_layout_css
+
+block submain
+    //.ad Advertisement
+
+block b-editor
+
+block submitButton
+
+block jscript_supplement
+    script.
+        const mainColumn = document.getElementById('mainColumn');
+        const thumbnail = document.getElementById('thumbnail');
+        const hashtag = document.getElementById('hashtag');
+
+        const mainColumnVal = "#{article['title']}" ? "#{article['title']}" : "#{article['question']}";
+        const thumbnailVal = "#{article['thumbnail']}";
+        const hashtagVal = `#{article.hashtags.map(e => `#${e.hash}`).join(" ")}`;
+
+        mainColumn.setAttribute('value', mainColumnVal);
+        thumbnail.setAttribute('value', thumbnailVal);
+        hashtag.setAttribute('value', hashtagVal);
+

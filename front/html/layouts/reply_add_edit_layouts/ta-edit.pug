@@ -1,0 +1,33 @@
+extends ../reply_add_edit_layout
+
+block reply_add_edit_layout_js
+
+block reply_add_edit_layout_css
+    link(rel='stylesheet' href='../../css/tandya_view.css' type="text/css")
+
+block submain
+
+block articleDl
+    dt.articleTitleDt
+        span Q :
+        span #{topic.question}
+    +hashtag(topic.hashtags)
+    +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
+
+block articleThumb
+    if(topic.thumbnail)
+        p.articleThumbP= topic.thumbnail
+
+block replyInput
+    b-editor(id='editor' width="90%" height="600px" name="content")
+    script.
+        const edit_iframe = document.getElementById("iframe");
+        edit_iframe.contentWindow.document.body.innerHTML = "#{edit_content['answer']}"
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&amp;/g, '&')
+            .replace(/&quot;/g, '\"');
+
+block replySubmit
+    button(class="replySubmit" id='submit' name='answer' onclick='commonStart(this)') answer
+

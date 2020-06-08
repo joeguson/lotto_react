@@ -34,7 +34,7 @@ route.get('/:tandya_no', function (req, res, next) {
 
 route.get('/new', function (req, res) {
     if (req.session.id2) {
-        res.render('./layouts/article_add_layouts/t-add', {id2: req.session.id2});
+        res.render('./layouts/article_add_edit_layouts/article_add_layouts/t-add', {id2: req.session.id2});
     } else {
         res.redirect('/tandya');
     }
@@ -48,7 +48,7 @@ route.get('/:id/answer/new', function (req, res) {
             articleService.getFullArticleById(articleId, req.session.id2, 'tandya').then(result => {
                 if (!result) res.redirect('/tandya/'); // 결과가 없으면 홈으로 이동
                 else {
-                    res.render('./layouts/reply_add_layouts/t-answer', {
+                    res.render('./layouts/reply_add_edit_layouts/t-answer', {
                         topic: result,
                         u_id: req.session.u_id,
                         id2: req.session.id2 ? req.session.id2 : 0
@@ -67,7 +67,7 @@ route.get('/edit/:tandya_no', function (req, res) {
 
     articleService.getFullArticleById(t_id, req.session.id2, 'tandya').then(tandya => {
         if(tandya != null && tandya.author === u_id)
-            res.render('./layouts/edit_layout', {
+            res.render('./layouts/article_add_edit_layouts/article_edit_layouts/t-edit', {
                 u_id: u_id,
                 type: 'tandya',
                 article: tandya
@@ -80,11 +80,10 @@ route.get('/edit/answer/:tandya_no/:tanswer_no', function (req, res) {
     const t_id = req.params.tandya_no;
     const ta_id = req.params.tanswer_no;
     const u_id = req.session.id2;
-
     replyService.getReplyById(ta_id, 'tandya').then(answer => {
         if (u_id !== answer.author) res.redirect('/tandya/' + t_id);
-        else articleService.getFullArticleById(t_id, 'tandya').then(tandya => {
-            res.render('./layouts/reply_edit_layouts/ta-edit', {
+        else articleService.getFullArticleById(t_id, u_id,'tandya').then(tandya => {
+            res.render('./layouts/reply_add_edit_layouts/ta-edit', {
                 u_id: 'y',
                 topic: tandya,
                 edit_content: answer

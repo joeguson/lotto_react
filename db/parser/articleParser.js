@@ -29,7 +29,6 @@ function parseArticle(packet) {
     temp.warning = packet.warning;
     temp.changed_date = packet.changed_date;
     temp.score = packet.score;
-    temp.likes = packet.likes;
     return temp;
 }
 

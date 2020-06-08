@@ -1,4 +1,4 @@
-extends ../reply_add_layout
+extends ../reply_add_edit_layout
 
 block reply_add_layout_js
 
@@ -13,3 +13,11 @@ block articleDl
     +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
 
 block articleThumb
+    if(topic.thumbnail)
+        p.articleThumbP= topic.thumbnail
+
+block replyInput
+    b-editor(id='editor' width="90%" height="600px" name="content" youtublog='0')
+
+block replySubmit
+    button(class="replySubmit" id='submit' name='answer' onclick='commonStart(this)') answer

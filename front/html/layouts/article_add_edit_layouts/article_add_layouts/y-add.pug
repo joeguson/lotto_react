@@ -1,0 +1,7 @@
+extends ../article_add_layout
+
+block b-editor
+    b-editor(id='editor' width="90%" height="600px" name="content" youtublog='1')
+
+block submitButton
+    button(class="articleSubmit" id='submit' name='youtublog' onclick='commonStart(this)') share

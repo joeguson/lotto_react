@@ -35,7 +35,7 @@ route.get('/:youtublog_no', function (req, res, next) {
 
 route.get('/new',function (req, res) {
     if (req.session.u_id) {
-        res.render('./layouts/article_add_layouts/y-add');
+        res.render('./layouts/article_add_edit_layouts/article_add_layouts/y-add');
     } else {
         res.redirect('/youtublog');
     }
@@ -47,7 +47,7 @@ route.get('/edit/:youtublog_no', function (req, res) {
 
     articleService.getFullArticleById(y_id, req.session.id2, 'youtublog').then(youtublog => {
         if(youtublog && youtublog.author === u_id)
-            res.render('./layouts/edit_layout', {
+            res.render('./layouts/article_add_edit_layouts/article_edit_layouts/y-edit', {
                 u_id: u_id,
                 type: 'youtublog',
                 article: youtublog
@@ -64,7 +64,7 @@ route.get('/edit/comment/:youtublog_no/:ycomment_no',function (req, res) {
     replyService.getReplyById(yc_id, 'youtublog').then(comment => {
         if (u_id !== comment.author) res.redirect('/comment/view/' + y_id);
         else articleService.getFullArticleById(y_id, req.session.id2, 'youtublog').then(youtublog => {
-            res.render('./layouts/reply_edit_layouts/yc-edit', {
+            res.render('./layouts/reply_add_edit_layouts/yc-edit', {
                 id2: req.session.id2 ? req.session.id2 : 0,
                 topic: youtublog,
                 edit_content: comment

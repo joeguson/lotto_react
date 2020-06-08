@@ -35,7 +35,7 @@ route.get('/:type/:id', (req, res) => {
 route.post('/:article_id', function (req, res) {
     switch(req.body.type){
         case 'pc' : req.body.type = 'penobrol'; break;
-        case 'a' : req.body.type = 'tandya'; break;
+        case 'answer' : req.body.type = 'tandya'; break;
         case 'yc' : req.body.type = 'youtublog'; break;
     }
     replyService.postReply(

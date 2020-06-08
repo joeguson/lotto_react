@@ -3,18 +3,21 @@ include ../mixins/article_view_mixin
 
 block js
     script(type="text/javascript" src="/js/jsForAllJade.js")
+    script(type="text/javascript" src="./public/b-dialog.js")
+    script(type="text/javascript" src="./public/b-link/b-link.js")
+    script(type="text/javascript" src="./public/b-link/b-link-dialog.js")
     script(type="text/javascript" src="./public/b-editor/b-editor.js")
-    script(type="text/javascript" src="/js/addArticle.js")
-    script(type="text/javascript" src="/js/updateArticle.js")
-    block reply_add_layout_js
+    script(type="text/javascript" src="/js/reply_beditor.js")
+    script(type="text/javascript" src="/js/common_beditor.js")
+    block reply_add_edit_layout_js
 
 block css
-    link(rel="stylesheet" href="../../css/reply_add_layout.css" type="text/css")
+    link(rel="stylesheet" href="../../css/reply_add_edit_layout.css" type="text/css")
     link(rel='stylesheet' href='../../css/article_view_mixin.css' type="text/css")
     link(rel="stylesheet" href="../../css/b-editor.css" type="text/css")
     link(rel="stylesheet" href="../../css/b-dialog.css" type="text/css")
     link(rel="stylesheet" href="../../css/b-link.css" type="text/css")
-    block reply_add_layout_css
+    block reply_add_edit_layout_css
 
 block main
     .articleContainer(id='articleContainer')
@@ -25,7 +28,8 @@ block main
             block articleThumb
         .articleContent
             +articleContent()
-    b-editor(id='editor' width="90%" height="600px" name="content" youtublog='0')
-    button(class="replySubmit" id='submit' name='a' onclick='postArticle(this)') answer
+    block replyInput
+    block replySubmit
+
 
 
