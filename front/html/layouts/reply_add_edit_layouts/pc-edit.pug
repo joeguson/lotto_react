@@ -25,7 +25,7 @@ block replyInput
             const reply = document.getElementById('reply');
             submit.onclick = function () {
                 let data = {};
-                data.comment = reply.value;
+                data.content = reply.value;
                 makeRequest('put', '/api/reply/penobrol/' + #{topic.id} + '/' + #{edit_content.id}, data)
                     .then(function () {
                         window.location.href = location.origin + '/penobrol/' + #{topic.id};

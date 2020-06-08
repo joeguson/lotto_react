@@ -2,15 +2,15 @@ extends ../layout
 include ../mixins/article_view_mixin
 
 block js
-    script(type="text/javascript" src="/js/jsForAllJade.js")
-    script(type="text/javascript" src="/js/createReply.js")
-    script(type="text/javascript" src="/js/warnArticle.js")
-    script(type="text/javascript" src="/js/deleteArticle.js")
+    script(type="text/javascript" src="../../js/jsForAllJade.js")
+    script(type="text/javascript" src="../../js/createReply.js")
+    script(type="text/javascript" src="../../js/warnArticle.js")
+    script(type="text/javascript" src="../../js/deleteArticle.js")
     block view_js
 
 block css
-    link(rel="stylesheet" href="../css/article_view_layout.css" type="text/css")
-    link(rel='stylesheet' href='../css/article_view_mixin.css' type="text/css")
+    link(rel="stylesheet" href="../../css/article_view_layout.css" type="text/css")
+    link(rel='stylesheet' href='../../css/article_view_mixin.css' type="text/css")
     block view_css
 
 block submain
@@ -131,12 +131,12 @@ block jscript
                 };
                 const url = '/api/article/chosen/' + target;
                 makeRequest('put', url, data).then(function(re){
+                    const replyChosen = document.getElementById('replyChosen');
                     const result = JSON.parse(re);
-                    console.log(result.result);
                     if(result.result === 'chosen'){ // choose라면 id를 가지고
                         const chosenNew = document.getElementById('replyLi' + id);
-                        chosenNew.style.backgroundColor = "blue";
-                        alert("chosen");
+                        chosenNew.style.backgroundColor = "#f4f5f0";
+                        replyChosen.appendChild(chosenNew);
                         alert("chosen");
                     }
                     else{ // cancel이라면

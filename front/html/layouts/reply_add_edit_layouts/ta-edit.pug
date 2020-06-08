@@ -3,7 +3,7 @@ extends ../reply_add_edit_layout
 block reply_add_edit_layout_js
 
 block reply_add_edit_layout_css
-    link(rel='stylesheet' href='../../css/tandya_view.css' type="text/css")
+    link(rel='stylesheet' href='../../../css/tandya_view.css' type="text/css")
 
 block submain
 
@@ -29,5 +29,5 @@ block replyInput
             .replace(/&quot;/g, '\"');
 
 block replySubmit
-    button(class="replySubmit" id='submit' name='answer' onclick='commonStart(this)') answer
+    button(class="replySubmit" id='submit' name='tandya' onclick='commonStart(this)') answer
 

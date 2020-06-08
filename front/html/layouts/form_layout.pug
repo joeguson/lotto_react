@@ -1,11 +1,11 @@
 extends ../layout
 
 block js
-    script(type="text/javascript" src="./js/jsForAllJade.js")
+    script(type="text/javascript" src="../../js/jsForAllJade.js")
     block form_layout_js
 
 block css
-    link(rel='stylesheet' href='../css/form_layout.css' type="text/css")
+    link(rel='stylesheet' href='../../css/form_layout.css' type="text/css")
     block form_layout_css
 
 block submain
@@ -29,7 +29,7 @@ block jscript
                 case '/aku/register':
                     formTag.setAttribute('action', 'aku/register');
                     formTag.setAttribute('method', 'POST');
-                    formTag.setAttribute('onsubmit', 'return doubleClick();');
+                    formTag.setAttribute('onsubmit', 'return checkSubmit();');
                     break;
                 case '/aku/find':
                     formTag.setAttribute('action', 'aku/find');

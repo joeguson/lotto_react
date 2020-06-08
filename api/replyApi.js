@@ -60,7 +60,7 @@ route.put('/:type/:article_id/:reply_id',function (req, res) {
     const replyId = req.params['reply_id'];
     replyService.editReply(
         replyId,
-        req.body.comment,
+        req.body.content,
         articleId,
         type
     ).then((result) => {

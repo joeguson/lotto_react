@@ -1,5 +1,10 @@
 extends ../article_edit_layout
 
+block article_add_edit_layout_js
+    script(type="text/javascript" src="../../../../public/b-youtube/b-youtube-dialog.js")
+    script(type="text/javascript" src="../../../../public/b-youtube/b-youtube-idDialog.js")
+    script(type="text/javascript" src="../../../../public/b-youtube/b-youtube-time.js")
+
 block b-editor
     b-editor(id='editor' width="90%" height="600px" name="content" youtublog='1')
     script.

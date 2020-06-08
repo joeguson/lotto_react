@@ -23,9 +23,9 @@ function commonStart(target){
     let req = {};
     req.content = content;
     req.type = target.name;
-    req.articleId = location.href.split('/')[4];
+    req.articleId = location.pathname.split('/')[4];
 
-    preFinalPost(target.name, submitType, content, req, finalPost());
+    preFinalPost(target.name, submitType, content, req, finalPost);
 
     setTimeout(function(){
         edit = true;
@@ -33,15 +33,23 @@ function commonStart(target){
 }
 
 function finalPost(type, body) {
-    let postUrl = 'api/reply/'+body.articleId;
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', postUrl, true);
-    xhr.setRequestHeader('Content-type', "application/json");
-    xhr.withCredentials = true;
-    xhr.send(JSON.stringify(body));
-    xhr.onload = () => {
-        window.location.href = location.origin + "/tandya/" + body.articleId;
-    };
+    //add의 경우 true, edit일 경우 false
+    let postUrl = 'api/reply/';
+    if(submitType){
+        postUrl += body.articleId;
+        makeRequest('POST', postUrl, body)
+            .then((res) => {
+                window.location.href = location.origin + '/'+body.type + '/'+body.articleId;
+            });
+    }
+    else{
+        postUrl += type + '/'+ body.articleId + '/'+location.pathname.split('/')[5];
+        makeRequest('PUT', postUrl, body)
+            .then(res => {
+                const id = JSON.parse(res.toString()).id;
+                window.location.href = location.origin + '/'+body.type + '/'+body.articleId;
+            });
+    }
 }
 
 

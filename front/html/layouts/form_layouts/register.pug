@@ -1,8 +1,8 @@
 extends ../form_layout
 
 block form_layout_js
-    script(type="text/javascript" src="../../js/register.js")
-    script(type="text/javascript" src="../../js/jsForAllJade.js")
+    script(type="text/javascript" src="../../../js/register.js")
+    script(type="text/javascript" src="../../../js/jsForAllJade.js")
 
 block form_layout_css
 
@@ -11,10 +11,12 @@ block pre_form
 block formTag
     .registerDiv
         input(type='text' id = 'u_id' name='u_id' maxlength="30" placeholder='ID' required)
+    p.registerP
         span(id='idInfo' class='registerInfo') 30/30
     .registerDiv
         input(type='password' id = 'u_pw' name='u_pw' maxlength="50" placeholder='Password' required)
         input(type='password' id = 'u_pw2' maxlength="50" placeholder='Check Password')
+    p.registerP
         span(id='pwInfo' class='registerInfo') Include 1 character, number and special character
     .registerDiv
         input(type='date' name='birthday' value='2019-10-24' id='inputDate' required)
@@ -24,6 +26,7 @@ block formTag
         input(type="hidden" id="gender" name="gender" value="none")
     .registerDiv
         input(type='text' name='email' id='email' placeholder='emailAdress@yourEmail.com' required)
+    p.registerP
         span(id='emailInfo' class='registerInfo') Please put a valid email address
     .registerDiv
         span(class='registerAgreement') By signing up, you agree to Beritamus's Terms, Data Policy and Cookie Policy

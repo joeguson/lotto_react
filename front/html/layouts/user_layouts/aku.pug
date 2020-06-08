@@ -1,18 +1,17 @@
 extends ../user_layout
-include ../../mixins/aku_mixin
 
 block akuView_css
-    link(rel='stylesheet' href='../../css/aku_view.css' type="text/css")
+    link(rel='stylesheet' href='../../../css/aku_view.css' type="text/css")
 
 block userInfo
     +userInfo(true, u_id, follower, following)
 
 block userStat
-    .likeStat
+    .userlikeStat
         +userLikeCount('Penobrol', totalLikes.penobrol)
         +userLikeCount('Tandya', totalLikes.tandya)
         +userLikeCount('Youtublog', totalLikes.youtublog)
-    .likeStat
+    .userlikeStat
         +userLikeCount('Penobrol Comment', totalLikes.pcomment)
         +userLikeCount('Tandya Answer', totalLikes.answer)
         +userLikeCount('Youtublog Comment', totalLikes.ycomment)
