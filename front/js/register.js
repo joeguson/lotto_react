@@ -59,14 +59,22 @@ window.onload = () => {
                         idAuth = 0;
                     }
                     else{
-                        appearCheck(userId);
-                        idInfo.innerHTML = 'confirmed';
-                        idAuth = 1;
+                        if(confirm('use this ID')){
+                            appearCheck(userId);
+                            userId.readOnly = true;
+                            idInfo.innerHTML = 'confirmed';
+                            idAuth = 1;
+                        }
+                        else{
+                            appearCross(userId);
+                            idAuth = 0;
+                        }
                     }
                 });
         } else {
             appearCross(userId);
             idInfo.innerHTML = 'please, use different ID';
+            idAuth = 0;
         }
     });
 
@@ -74,10 +82,16 @@ window.onload = () => {
         //length check
         if(userPw.value.length >= 7){
             if (passwordCheck.test(userPw.value)) {
-                pwInfo.innerHTML = 'confirm your password 1 more time';
-                appearCheck(userPw);
-                userPw2.focus();
-                pwAuth = 1;
+                if(confirm('use this pw')){
+                    pwInfo.innerHTML = 'confirmed';
+                    appearCheck(userPw);
+                    userPw.readOnly = true;
+                    pwAuth = 1;
+                }
+                else{
+                    appearCross(userPw2);
+                    pwAuth = 0;
+                }
             }
             else {
                 appearCross(userPw);
@@ -96,9 +110,16 @@ window.onload = () => {
 
     userPw2.addEventListener('focusout', function () {
         if (userPw.value === userPw2.value && passwordCheck.test(userPw.value)) {
-            pwInfo.innerHTML = 'confirmed';
-            appearCheck(userPw2);
-            pwAuth2 = 1;
+            if(confirm('use this pw')){
+                pwInfo.innerHTML = 'confirmed';
+                appearCheck(userPw2);
+                userPw2.readOnly = true;
+                pwAuth2 = 1;
+            }
+            else{
+                appearCross(userPw2);
+                pwAuth2 = 0;
+            }
         } else {
             appearCross(userPw2);
             pwInfo.innerHTML = 'does not match';
@@ -134,23 +155,28 @@ window.onload = () => {
                 .then((result) => {
                     if(result === 'true'){
                         appearCross(userEmail);
-                        emailInfo.innerHTML = 'maaf, sudah dipakai';
+                        emailInfo.innerHTML = 'sorry, already used';
                         mailAuth = 0;
                     }
                     else{
-                        appearCheck(userEmail);
-                        emailInfo.innerHTML = 'silakan';
-                        mailAuth = 1;
+                        if(confirm('use this email')){
+                            emailInfo.innerHTML = 'confirmed';
+                            appearCheck(userEmail);
+                            userEmail.readOnly = true;
+                            mailAuth = 1;
+                        }
+                        else{
+                            appearCross(userEmail);
+                            mailAuth = 0;
+                        }
                     }
                 });
         } else {
-            emailInfo.innerHTML = 'maaf, email ini tidak boleh dipakai';
+            emailInfo.innerHTML = 'you can\'t use this email';
             appearCross(userEmail);
             mailAuth = 0;
         }
     });
-
-
 };
 
 // Used in front/html/ja/register.pug
@@ -167,9 +193,6 @@ if(start){
             return false;
         }
     }
-    setTimeout(function(){
-        start = true;
-    }, 3000);
 }
 
 
