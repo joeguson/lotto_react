@@ -22,6 +22,7 @@ block jscript
     script.
         window.addEventListener('load', function () {
             const formTag = document.getElementById('formTag');
+            console.log(location);
             switch (location.pathname) {
                 case '/aku':
                     formTag.setAttribute('action', 'aku/login');
@@ -31,6 +32,10 @@ block jscript
                     formTag.setAttribute('action', 'aku/register');
                     formTag.setAttribute('method', 'POST');
                     formTag.setAttribute('onsubmit', 'return checkSubmit();');
+                    break;
+                case '/aku/login/':
+                    formTag.setAttribute('action', 'aku/login');
+                    formTag.setAttribute('method', 'POST');
                     break;
                 case '/aku/find':
                     formTag.setAttribute('action', 'aku/find');

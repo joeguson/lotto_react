@@ -65,6 +65,10 @@ route.get('/', function(req, res){
 });
 
 route.get('/register', function(req, res){
+    res.render('./layouts/form_layouts/register');
+});
+
+route.get('/login', function(req, res){
     if(req.query.email){
         let email = req.query.email;
         let code = req.query.code;
@@ -75,9 +79,7 @@ route.get('/register', function(req, res){
                 else res.render('./layouts/form_layouts/login', {"message": "wrong approach"});
             });
     }
-    else{
-        res.render('./layouts/form_layouts/register');
-    }
+    else res.redirect('/aku')
 });
 
 route.post('/register', function(req, res){

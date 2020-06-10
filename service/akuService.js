@@ -124,7 +124,7 @@ exports.postUser = async function(host, u_id, u_pw, birthday, u_sex,  u_email, c
         <p>Welcome To Beritamus!</p>
         <p>Selamat Datang!</p>
         <p>Please button below</p>
-        <a href="http://${host}/aku/register/?email=${u_email}&code=${code}">Enter Beritamus!</a>
+        <a href="http://${host}/aku/login/?email=${u_email}&code=${code}">Enter Beritamus!</a>
     `;
     deliverMail(mailOptions);
 };
