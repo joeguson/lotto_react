@@ -1,14 +1,9 @@
 let idAuth = 0;
 let mailAuth = 0;
 let sex = 0;
-const userIdCheck = RegExp(/^[A-Za-z0-9_.\-]{4,30}$/);
-const emailCheck = RegExp(/^[A-Za-z0-9_.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
 
 window.onload = () => {
-    const userSexBoy = document.getElementById('boy');
-    const userSexGirl = document.getElementById('girl');
     const userEmail = document.getElementById('email');
-    const gender = document.getElementById('gender');
     const emailInfo = document.getElementById('emailInfo');
     const idpw = document.getElementById('idpw');
     const idButton = document.getElementById('id');
@@ -46,7 +41,7 @@ window.onload = () => {
             const data = {};
             data.type = 'id';
             data.data = idInput.value;
-            if (userIdCheck.test(idInput.value)) {
+            if (idValidityCheck(idInput.value)) {
                 appearCheck(idInput);
                 idInfo.innerHTML = '';
                 idAuth = 1;
@@ -57,29 +52,11 @@ window.onload = () => {
         });
     });
 
-    userSexBoy.addEventListener('click', function () {
-        userSexBoy.style.backgroundColor = '#a13525';
-        userSexGirl.style.backgroundColor = 'lightgrey';
-        userSexBoy.style.color = 'white';
-        userSexGirl.style.color = 'black';
-        sex = 1;
-        gender.setAttribute('value', 'M');
-    });
-
-    userSexGirl.addEventListener('click', function () {
-        userSexBoy.style.backgroundColor = 'lightgrey';
-        userSexGirl.style.backgroundColor = '#a13525';
-        userSexGirl.style.color = 'white';
-        userSexBoy.style.color = 'black';
-        sex = 1;
-        gender.setAttribute('value', 'F');
-    });
-
     userEmail.addEventListener('focusout', function () {
         const data = {};
         data.type = 'mail';
         data.data = userEmail.value;
-        if (emailCheck.test(userEmail.value) === true) {
+        if (mailValidityCheck(userEmail.value)) {
             makeRequest('post', 'api/aku/check', data)
                 .then((result) => {
                     if(result === 'true'){
@@ -93,14 +70,8 @@ window.onload = () => {
                         mailAuth = 1;
                     }
                 });
-        } else {
-            emailInfo.innerHTML = 'maaf, email ini tidak boleh dipakai';
-            appearCross(userEmail);
-            mailAuth = 0;
         }
     });
-
-
 };
 
 // Used in front/html/ja/register.pug
@@ -117,20 +88,3 @@ function checkSubmit() {
 function confirmRegister() {
     return confirm('Please check your email and verify to complete your sign up');
 }
-
-function appearCross(target) {
-    target.style.backgroundImage = "url('../icons/no.png')";
-    target.style.backgroundRepeat = "no-repeat";
-    target.style.backgroundPosition = "99%";
-    target.style.backgroundSize = "2%";
-    target.style.backgroundColor = "white";
-}
-
-function appearCheck(target) {
-    target.style.backgroundImage = "url('../icons/check.png')";
-    target.style.backgroundRepeat = "no-repeat";
-    target.style.backgroundPosition = "99%";
-    target.style.backgroundSize = "2%";
-    target.style.backgroundColor = "white";
-}
-

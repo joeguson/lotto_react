@@ -2,6 +2,7 @@ extends ../layout
 
 block js
     script(type="text/javascript" src="../../js/jsForAllJade.js")
+    script(type="text/javascript" src="../../js/user_common.js")
     block form_layout_js
 
 block css
@@ -49,7 +50,7 @@ block jscript
             }
         });
 
-        var click = true;
+        let click = true;
         function doubleClick() {
             if (click) {
                 click = !click;

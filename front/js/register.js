@@ -4,9 +4,6 @@ let pwAuth2 = 0;
 let mailAuth = 0;
 let sex = 0;
 let start = true;
-const userIdCheck = RegExp(/^[A-Za-z0-9_.\-]{4,30}$/);
-const emailCheck = RegExp(/^[A-Za-z0-9_.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
-const passwordCheck = RegExp(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&])[A-Za-z\d$@!%*#?&]{7,}$/);
 
 window.onload = () => {
     const userId = document.getElementById('u_id');
@@ -28,6 +25,7 @@ window.onload = () => {
             userId.setAttribute('onkeypress', 'return false');
         }
     });
+
     userPw.addEventListener('keydown', function () {
         let count = 50;
         count -= userPw.value.length;
@@ -36,12 +34,13 @@ window.onload = () => {
             userPw.setAttribute('onkeypress', 'return false');
         }
     });
+
     userPw2.addEventListener('keydown', function () {
         let count = 50;
         count -= userPw2.value.length;
         pwInfo.innerHTML = count + '/50';
-        if(userPw.value.length > 50){
-            userPw.setAttribute('onkeypress', 'return false');
+        if(userPw2.value.length > 50){
+            userPw2.setAttribute('onkeypress', 'return false');
         }
     });
 
@@ -50,7 +49,7 @@ window.onload = () => {
         data.type = 'id';
         data.data = userId.value;
 
-        if (userIdCheck.test(userId.value)) {
+        if (idValidityCheck(userId.value)) {
             makeRequest('post', 'api/aku/check', data)
                 .then((result) => {
                     if(result === 'true'){
@@ -81,7 +80,7 @@ window.onload = () => {
     userPw.addEventListener('focusout', function () {
         //length check
         if(userPw.value.length >= 7){
-            if (passwordCheck.test(userPw.value)) {
+            if (pwValidityCheck(userPw.value)) {
                 if(confirm('use this pw')){
                     pwInfo.innerHTML = 'confirmed';
                     appearCheck(userPw);
@@ -109,7 +108,7 @@ window.onload = () => {
     });
 
     userPw2.addEventListener('focusout', function () {
-        if (userPw.value === userPw2.value && passwordCheck.test(userPw.value)) {
+        if (userPw.value === userPw2.value && pwValidityCheck(userPw.value)) {
             if(confirm('use this pw')){
                 pwInfo.innerHTML = 'confirmed';
                 appearCheck(userPw2);
@@ -150,7 +149,7 @@ window.onload = () => {
         const data = {};
         data.type = 'mail';
         data.data = userEmail.value;
-        if (emailCheck.test(userEmail.value) === true) {
+        if (mailValidityCheck(userEmail.value)) {
             makeRequest('post', 'api/aku/check', data)
                 .then((result) => {
                     if(result === 'true'){
@@ -198,21 +197,5 @@ if(start){
 
 function confirmRegister() {
     return confirm('Please check your email and verify to complete your sign up');
-}
-
-function appearCross(target) {
-    target.style.backgroundImage = "url('../icons/no.png')";
-    target.style.backgroundRepeat = "no-repeat";
-    target.style.backgroundPosition = "99%";
-    target.style.backgroundSize = "2%";
-    target.style.backgroundColor = "white";
-}
-
-function appearCheck(target) {
-    target.style.backgroundImage = "url('../icons/check.png')";
-    target.style.backgroundRepeat = "no-repeat";
-    target.style.backgroundPosition = "99%";
-    target.style.backgroundSize = "2%";
-    target.style.backgroundColor = "white";
 }
 
