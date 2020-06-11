@@ -3,9 +3,9 @@
   border-top: 1px solid darkgray;
   border-bottom: 1px solid darkgray;
 }
-.small-button {
-  width: 50%;
-  height: 45px;
+.button {
+  width: 100%;
+  height: 40px;
   font-size: 14px;
   color: white;
   background-color: #0f4c81;
@@ -13,17 +13,7 @@
   line-height: 40px;
   text-decoration: none;
   border-style: none;
-}
-.button {
-  width: 100%;
-  height: 45px;
-  font-size: 16px;
-  color: white;
-  background-color: #0f4c81;
-  text-align: center;
-  line-height: 40px;
-  text-decoration: none;
-  border-style: none;
+  display: block;
 }
 .li-border {
   border: 1px solid #5781a6;
@@ -38,80 +28,23 @@
 .right-border {
   border-right: 1px solid lightgray;
 }
-.userInfo {
-  width: 100%;
-  margin-bottom: 10px;
-  background-color: white;
-  text-align: center;
-  padding: 10px;
-  border-top: 1px solid darkgray;
-  border-bottom: 1px solid darkgray;
-}
-.userStat {
-  width: 100%;
-  border-top: 1px solid darkgray;
-  border-bottom: 1px solid darkgray;
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: white;
-}
+.userInfo,
+.userStat,
 .userArticle {
   width: 100%;
+  margin-bottom: 10px;
+  background-color: white;
+  padding: 10px;
   border-top: 1px solid darkgray;
   border-bottom: 1px solid darkgray;
-  margin-bottom: 10px;
-  background-color: #ebedf2;
 }
-.userInfoSpan {
-  width: 30%;
-  display: inline-block;
-}
-.userStat p {
-  font-size: 18px;
-  line-height: 30px;
-  box-sizing: border-box;
-}
-.userlikeStat {
-  width: 100%;
-  padding: 5px;
+.userInfo {
   text-align: center;
-}
-.userlikeStat:nth-child(2) {
-  border-top: 1px solid lightgray;
-}
-.userlikeStat .likeSpan:first-child {
-  border-right: 1px solid lightgray;
-}
-.userlikeStat .likeSpan:nth-child(2) {
-  border-right: 1px solid lightgray;
-}
-.userlikeStat {
-  width: 30%;
-  display: inline-block;
-  text-align: center;
-}
-.likeHeading {
-  margin-bottom: 5px;
-  color: #0f4c81;
-  text-align: center;
-}
-.likeCount {
-  width: 100%;
-  text-align: center;
-  color: #a13525;
-  font-size: 18px;
-}
-.thumbnailUl {
-  width: 95%;
-  margin: 0 auto;
-  cursor: pointer;
-  padding: 5px;
-  list-style: none;
 }
 .userPenobrol,
 .userTandya,
 .userYoutublog {
-  padding: 10px;
+  padding: 5px;
   margin-bottom: 10px;
   background-color: white;
 }
@@ -120,15 +53,12 @@
   height: 40px;
   margin-bottom: 10px;
 }
-.logout {
-  width: 100%;
-  height: 45px;
-  font-size: 16px;
-  color: white;
-  background-color: #0f4c81;
-  text-align: center;
-  line-height: 40px;
-  text-decoration: none;
-  border-style: none;
-  display: block;
+/*for bigger windows*/
+@media (min-width: 960px) {
+  .userInfo,
+  .userStat,
+  .userArticle {
+    width: 960px;
+    margin: 0px auto 20px auto;
+  }
 }

@@ -28,9 +28,9 @@ body{width:100%; height:100%; margin:0px; padding:0px; background-color: @bgcolo
 //.container - header .submain .main
 header{width: 100%; font-size: @header-text-size; height:100px; text-align: center; background-color: white; padding: 10px 0px;}
 
-.sub-main{width:100%; background-color: @bgcolor1; margin-bottom: @marginbottom-mbl;}
+.sub-main{width:100%; background-color: @bgcolor1; margin:0px auto 10px auto; max-width: 1080px;}
 
-.main{width:100%; margin:0 auto; margin-bottom: @marginbottom-mbl;}
+.main{width:100%; margin:0px auto 10px auto; max-width: 1080px;}
 
 //header - a span
 header a{color:@main; text-decoration: none; font-family: @font-family2;}
@@ -39,8 +39,9 @@ header span{font-size:15px; line-height: 15px; display: block; text-align: cente
 
 #navBar{overflow: hidden; width: 100%; margin-bottom: @marginbottom-mbl; height: 35px; background-color: @main;}
 //nav - a
-#navBar a{text-decoration: none; display: block; height:100%; float: left; width:25%; text-align: center; padding: 8px 0px;}
-#navImg_a, #navImg_p, #navImg_t, #navImg_y {height:17px;}
+#navBar a{text-decoration: none; height:100%; float: left; width:25%; text-align: center;}
+.helper{display: inline-block; height: 100%; vertical-align: middle;}
+#navImg_a, #navImg_p, #navImg_t, #navImg_y {max-height:18px; vertical-align: middle;}
 
 .content { padding: 16px;}
 .sticky {position: fixed;top: 0;width: 100%;}

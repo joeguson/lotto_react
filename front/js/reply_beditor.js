@@ -4,7 +4,8 @@ let originalImages;
 
 //add / edit을 검사하고 edit의 경우 기존의 img를 가지고 있게 됨.
 window.addEventListener('load', () => {
-    const content = document.getElementById('editor').value();
+    let content;
+    if(document.getElementById('editor')) content = document.getElementById('editor').value();
     //add의 경우 true, edit일 경우 false
     submitType = !content;
     if(!submitType){

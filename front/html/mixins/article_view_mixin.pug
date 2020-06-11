@@ -1,15 +1,16 @@
-mixin hashtag(hashtags)
-    if(hashtags.length > 0)
-        dd.articleHashtag
-            - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
-            a #{hashtags}
-
 mixin basicInfo(author, date, view, replyCount, ident)
     - var author = 'by ' + author+ ' | '
     - var dateView = date + ' | '+view+ ' views | '
     - var replyCount = ident === 't'? replyCount + ' answers' : replyCount + ' comments'
     - var basicInfo = author + dateView + replyCount
     dd.articleBasicInfo #{basicInfo}
+
+mixin hashtag(hashtags)
+    if(hashtags.length > 0)
+        dd.articleHashtagDd
+            - var hashtags = topic.hashtags.map(e => `#${e.hash}`).join(" ");
+            a.articleHashtagA #{hashtags}
+
 
 mixin articleContent()
     iframe(id="content" class="articleContentIframe" style=" ")

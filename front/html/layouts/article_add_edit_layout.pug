@@ -22,17 +22,17 @@ block submain
 block main
     .article
         p.inputP
-            input(id='mainColumn' class='mainColumn' type='text' maxlength='200')
+            input(id='mainColumn' class='article_input' type='text' maxlength='200')
         p.infoP
             span(id='mainColumnInfo' class='infoSpan')
         p.inputP
-            input(id='thumbnail' class='thumbnail'  type='text' name='thumbnail' placeholder='   thumbnail' maxlength='200')
+            input(id='thumbnail' class='article_input'  type='text' name='thumbnail' placeholder='thumbnail' maxlength='200')
         p.infoP
             span(id='thumbnailInfo' class='infoSpan')
-        p.inputP
+        p(class='inputP editorP')
             block b-editor
         p.inputP
-            input(id='hashtag' class="hashtag"  type='text' name='hashtag' placeholder='#put #hashtags #like #this')
+            input(id='hashtag' class="article_input"  type='text' name='hashtag' placeholder='#put #hashtags #like #this')
         p.infoP
             span(id='hashInfo' class='infoSpan')
         p.inputP
@@ -124,13 +124,13 @@ block jscript
         let currentTag = (location.pathname).split('/')[1];
         switch (currentTag) {
             case 'penobrol':
-                mainColumn.setAttribute('placeholder', '   title');
+                mainColumn.setAttribute('placeholder', 'title');
                 break;
             case 'tandya':
-                mainColumn.setAttribute('placeholder', '   question');
+                mainColumn.setAttribute('placeholder', 'question');
                 break;
             case 'youtublog':
-                mainColumn.setAttribute('placeholder', '   title');
+                mainColumn.setAttribute('placeholder', 'title');
                 break;
         }
     block jscript_supplement

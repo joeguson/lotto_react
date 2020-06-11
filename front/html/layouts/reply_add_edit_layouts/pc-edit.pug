@@ -8,8 +8,6 @@ block submain
 
 block articleDl
     dt.articleTitleDt= topic.title
-    +hashtag(topic.hashtags)
-    +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
 
 block articleThumb
     if(topic.thumbnail)

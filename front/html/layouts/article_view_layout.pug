@@ -20,11 +20,15 @@ block main
         .articleInfo
             dl.articleDl
                 block articleDl
-            if(id2)
-                .articleMenuContainer
-                    +articlePop(topic.identifier, id2, topic.author)
+                +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
+                +hashtag(topic.hashtags)
+
+        if(id2)
+            .articleMenuContainer
+                +articlePop(topic.identifier, id2, topic.author)
         .articleThumb
-            block articleThumb
+            if(topic.thumbnail)
+                p.articleThumbP #{topic.thumbnail}
         .articleContent
             +articleContent()
         .articleLike
@@ -36,7 +40,8 @@ block main
     if(id2)
         .replyInputContainer
             block replyInput
-    block reply
+    .replyContainer
+        block replyContainer
 
 block jscript
     script.

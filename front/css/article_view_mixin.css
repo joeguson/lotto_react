@@ -3,9 +3,9 @@
   border-top: 1px solid darkgray;
   border-bottom: 1px solid darkgray;
 }
-.small-button {
-  width: 50%;
-  height: 45px;
+.button {
+  width: 100%;
+  height: 40px;
   font-size: 14px;
   color: white;
   background-color: #0f4c81;
@@ -13,17 +13,7 @@
   line-height: 40px;
   text-decoration: none;
   border-style: none;
-}
-.button {
-  width: 100%;
-  height: 45px;
-  font-size: 16px;
-  color: white;
-  background-color: #0f4c81;
-  text-align: center;
-  line-height: 40px;
-  text-decoration: none;
-  border-style: none;
+  display: block;
 }
 .li-border {
   border: 1px solid #5781a6;
@@ -38,15 +28,17 @@
 .right-border {
   border-right: 1px solid lightgray;
 }
-.articleHashtag {
-  color: grey;
-  font-size: 12px;
-  margin: 3px 0px;
-}
 .articleBasicInfo {
-  color: grey;
+  color: dimgray;
   font-size: 12px;
   margin: 3px 0px;
+  margin-bottom: 10px;
+}
+.articleHashtagA {
+  color: black;
+  font-size: 14px;
+  margin: 3px 0px;
+  background-color: #f4f5f0;
 }
 .articleContentIframe {
   width: 100%;
@@ -66,7 +58,7 @@
 }
 .replyInput {
   width: 80%;
-  padding: 5px;
+  padding: 0px 5px;
   margin: 0 auto;
   height: 70px;
   border: 1px solid #0f4c81;
@@ -78,7 +70,7 @@
   background-color: #0f4c81;
   display: inline-block;
   text-align: center;
-  line-height: 40px;
+  line-height: 70px;
   text-decoration: none;
   border-style: none;
   width: 20%;
@@ -87,13 +79,6 @@
   margin: 0px auto 10px auto;
   font-size: 12px;
   float: right;
-}
-.articleMenuContainer {
-  width: 100%;
-  border-top: 1px solid lightgray;
-  text-align: left;
-  line-height: 20px;
-  padding: 5px 0px;
 }
 .articleMenuSpan {
   width: 50px;
@@ -106,4 +91,15 @@
 }
 .articleMenuImg {
   width: 20px;
+}
+/*for bigger windows*/
+@media (min-width: 960px) {
+  .replyInput {
+    height: 100px;
+  }
+  .replyInputButton {
+    height: 100px;
+    line-height: 100px;
+    font-size: 16px;
+  }
 }

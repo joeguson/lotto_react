@@ -4,30 +4,15 @@
 // Usage
 @import "@{themes}/variable.less";
 
-.userInfo {width: 100%; margin-bottom: @marginbottom-mbl; background-color: white; text-align: center; padding: 10px; .section-border();}
+.userInfo, .userStat, .userArticle {width: 100%; margin-bottom: @marginbottom-mbl; background-color: white; padding: 10px; .section-border();}
+.userInfo{text-align: center;}
 
-.userStat {width: 100%; .section-border(); margin-bottom: @marginbottom-mbl; padding: 10px; background-color: white;}
-
-.userArticle {width: 100%; .section-border(); margin-bottom: @marginbottom-mbl; background-color: @bgcolor1;}
-
-.userInfoSpan { width: 30%; display: inline-block;}
-
-.userStat p {font-size: 18px; line-height: 30px; box-sizing: border-box; }
-
-.userlikeStat {width: 100%; padding: 5px; text-align: center;}
-
-.userlikeStat:nth-child(2) {.top-border();}
-
-.userlikeStat .likeSpan:first-child {.right-border();}
-
-.userlikeStat .likeSpan:nth-child(2) {.right-border();}
-
-.userlikeStat {width: 30%; display: inline-block; text-align: center;}
-
-.likeHeading {margin-bottom: 5px; color: #0f4c81; text-align: center;}
-.likeCount {width: 100%; text-align: center; color: #a13525;font-size: 18px;}
-.thumbnailUl {width: 95%; margin: 0 auto; cursor: pointer;padding: 5px;list-style: none;}
-.userPenobrol, .userTandya, .userYoutublog {padding: 10px; margin-bottom: 10px; background-color: white;}
+//.userArticle - .userPenobrol, .userTandya, .userYoutublog
+.userPenobrol, .userTandya, .userYoutublog {padding: 5px; margin-bottom: @marginbottom-mbl; background-color: white;}
 
 .userArticleHeadingImg { display: block; height: 40px; margin-bottom: 10px;}
-.logout {.button(); display: block;}
+
+/*for bigger windows*/
+@media (min-width:@min-width){
+    .userInfo, .userStat, .userArticle {width:@min-width;; margin:0px auto @marginbottom-com auto;}
+}

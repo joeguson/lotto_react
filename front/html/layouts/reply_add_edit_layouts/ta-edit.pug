@@ -1,6 +1,12 @@
 extends ../reply_add_edit_layout
 
 block reply_add_edit_layout_js
+    script(type="text/javascript" src="../../../public/b-dialog.js")
+    script(type="text/javascript" src="../../../public/b-link/b-link.js")
+    script(type="text/javascript" src="../../../public/b-link/b-link-dialog.js")
+    script(type="text/javascript" src="../../../public/b-editor/b-editor.js")
+    script(type="text/javascript" src="../../../js/reply_beditor.js")
+    script(type="text/javascript" src="../../../js/common_beditor.js")
 
 block reply_add_edit_layout_css
     link(rel='stylesheet' href='../../../css/tandya_view.css' type="text/css")
@@ -11,8 +17,6 @@ block articleDl
     dt.articleTitleDt
         span Q :
         span #{topic.question}
-    +hashtag(topic.hashtags)
-    +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
 
 block articleThumb
     if(topic.thumbnail)

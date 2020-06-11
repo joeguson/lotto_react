@@ -4,17 +4,25 @@
 // Usage
 @import "@{themes}/variable.less";
 
-.articleHashtag{color:grey; font-size: 12px; margin: 3px 0px;}
-.articleBasicInfo{color:grey; font-size: 12px; margin: 3px 0px;}
+.articleBasicInfo{color:dimgray; font-size: 12px; margin: 3px 0px; margin-bottom: @marginbottom-mbl;}
+
+.articleHashtagDd{}
+.articleHashtagA{color:black; font-size: 14px; margin: 3px 0px; background-color: @palette2;}
+
 .articleContentIframe{width:100%; min-height: 300px; border: none; overflow-x: hidden;}
 .articleLikeButton{text-align: center; background: none; border: none;}
 .articleLikeImage{height:100%; background: none; border: none;}
 
-.replyInput{width: 80%; padding: 5px; margin: 0 auto; height: 70px; border: 1px solid #0f4c81; box-sizing: border-box; font-size: 12px;
+.replyInput{width: 80%; padding: 0px 5px; margin: 0 auto; height: 70px; border: 1px solid #0f4c81; box-sizing: border-box; font-size: 12px;
 }
-.replyInputButton{color: white;  background-color: @main; display: inline-block; text-align: center; line-height: 40px; text-decoration: none; border-style: none; width: 20%; height: 70px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 12px; float: right;}
+.replyInputButton{color: white;  background-color: @main; display: inline-block; text-align: center; line-height: 70px; text-decoration: none; border-style: none; width: 20%; height: 70px; border: 1px solid @main; margin: 0px auto 10px auto; font-size: 12px; float: right;}
 
-.articleMenuContainer{width:100%; .top-border(); text-align: left; line-height: 20px; padding: 5px 0px;}
 .articleMenuSpan{width: 50px; padding: 0px 10px; .right-border();}
 .articleMenuButton{background: none; border: none;}
 .articleMenuImg{width:20px;}
+
+/*for bigger windows*/
+@media(min-width:@min-width){
+    .replyInput{height: 100px;}
+    .replyInputButton{height: 100px; line-height: 100px; font-size: 16px;}
+}

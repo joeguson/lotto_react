@@ -3,9 +3,9 @@
   border-top: 1px solid darkgray;
   border-bottom: 1px solid darkgray;
 }
-.small-button {
-  width: 50%;
-  height: 45px;
+.button {
+  width: 100%;
+  height: 40px;
   font-size: 14px;
   color: white;
   background-color: #0f4c81;
@@ -13,17 +13,7 @@
   line-height: 40px;
   text-decoration: none;
   border-style: none;
-}
-.button {
-  width: 100%;
-  height: 45px;
-  font-size: 16px;
-  color: white;
-  background-color: #0f4c81;
-  text-align: center;
-  line-height: 40px;
-  text-decoration: none;
-  border-style: none;
+  display: block;
 }
 .li-border {
   border: 1px solid #5781a6;
@@ -41,17 +31,16 @@
 .articleContainer {
   width: 100%;
   background-color: white;
-  padding: 10px;
+  padding: 0px 10px;
   word-break: break-all;
   margin-bottom: 10px;
-  min-height: 500px;
+  min-height: 600px;
   border-top: 1px solid darkgray;
   border-bottom: 1px solid darkgray;
 }
 .articleInfo {
   width: 100%;
-  min-height: 120px;
-  padding-top: 15px;
+  padding: 30px 0px;
 }
 .articleThumb {
   width: 100%;
@@ -60,25 +49,19 @@
 }
 .articleContent {
   width: 100%;
-  padding-top: 5px;
+  padding: 10px 0px;
   text-align: justify;
   border-top: 1px solid lightgray;
   overflow-x: hidden;
 }
 .articleDl {
   width: 100%;
-  margin-bottom: 20px;
-}
-.replySubmit {
-  width: 100%;
-  height: 45px;
-  font-size: 16px;
-  color: white;
-  background-color: #0f4c81;
-  text-align: center;
-  line-height: 40px;
-  text-decoration: none;
-  border-style: none;
-  margin-top: 20px;
 }
 /*for bigger windows*/
+@media (min-width: 960px) {
+  .articleContainer {
+    width: 80%;
+    margin: 0px auto;
+    margin-bottom: 20px;
+  }
+}

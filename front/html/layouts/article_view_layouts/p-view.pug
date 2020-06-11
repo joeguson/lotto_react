@@ -9,16 +9,10 @@ block submain
     //.ad Advertisement
 
 block articleDl
-    dt.articleTitleDt= topic.title
-    +hashtag(topic.hashtags)
-    +basicInfo(topic.u_id, topic.date, topic.view, topic.replyCount, topic.identifier)
-
-block articleThumb
-    if(topic.thumbnail)
-        p.articleThumbP= topic.thumbnail
+    dt.articleTitleDt #{topic.title}
 
 block replyInput
     +reply('p', 0)
 
-block reply
+block replyContainer
     ul.commentUl(id='replyUl')

@@ -3,9 +3,9 @@
   border-top: 1px solid darkgray;
   border-bottom: 1px solid darkgray;
 }
-.small-button {
-  width: 50%;
-  height: 45px;
+.button {
+  width: 100%;
+  height: 40px;
   font-size: 14px;
   color: white;
   background-color: #0f4c81;
@@ -13,17 +13,7 @@
   line-height: 40px;
   text-decoration: none;
   border-style: none;
-}
-.button {
-  width: 100%;
-  height: 45px;
-  font-size: 16px;
-  color: white;
-  background-color: #0f4c81;
-  text-align: center;
-  line-height: 40px;
-  text-decoration: none;
-  border-style: none;
+  display: block;
 }
 .li-border {
   border: 1px solid #5781a6;
@@ -41,47 +31,12 @@
 .articleContainer {
   width: 100%;
   background-color: white;
-  padding: 10px;
+  padding: 0px 10px;
   word-break: break-all;
   margin-bottom: 10px;
-  min-height: 500px;
+  min-height: 600px;
   border-top: 1px solid darkgray;
   border-bottom: 1px solid darkgray;
-}
-.articleInfo {
-  width: 100%;
-  min-height: 120px;
-  padding-top: 15px;
-}
-.articleThumb {
-  width: 100%;
-  border-top: 1px solid lightgray;
-  padding: 20px 0px;
-}
-.articleContent {
-  width: 100%;
-  padding-top: 5px;
-  text-align: justify;
-  border-top: 1px solid lightgray;
-  overflow-x: hidden;
-}
-.articleLike {
-  width: 100%;
-  text-align: center;
-  font-size: 24px;
-  color: #a13525;
-  margin: 20px 0px;
-  border-top: 1px solid lightgray;
-  padding-top: 20px;
-}
-.articleLikeNum {
-  margin-bottom: 10px;
-  font-size: 20px;
-  font-family: 'Pattaya', sans-serif;
-}
-.articleDl {
-  width: 100%;
-  margin-bottom: 20px;
 }
 .replyChosen {
   width: 100%;
@@ -100,9 +55,75 @@
   width: 100%;
   border-top: 1px solid darkgray;
   border-bottom: 1px solid darkgray;
-  background-color: white;
-  margin: 0px;
-  padding: 5px;
+}
+.articleInfo {
+  width: 100%;
+  padding: 30px 0px;
+}
+.articleDl {
+  width: 100%;
+}
+.articleMenuContainer {
+  width: 100%;
+  border-top: 1px solid lightgray;
+  text-align: left;
+  min-height: 40px;
+  padding: 8px 0px;
+}
+.articleThumb {
+  width: 100%;
+  border-top: 1px solid lightgray;
+  padding: 20px 0px;
+}
+.articleContent {
+  width: 100%;
+  padding: 10px 0px;
+  text-align: justify;
+  border-top: 1px solid lightgray;
+  overflow-x: hidden;
+}
+.articleThumbP {
+  font-size: 18px;
+  font-style: italic;
+}
+.articleLike {
+  width: 100%;
+  text-align: center;
+  color: #a13525;
+  padding: 20px 0px;
+  border-top: 1px solid lightgray;
+}
+.articleLikeNum {
   margin-bottom: 10px;
+  font-size: 20px;
+  font-family: 'Pattaya', sans-serif;
+}
+.articleTitleDt {
+  font-size: 22px;
+  margin-bottom: 5px;
+  color: #0f4c81;
 }
 /*for bigger windows*/
+@media (min-width: 960px) {
+  .articleContainer {
+    width: 960px;
+    margin: 0px auto;
+    margin-bottom: 20px;
+  }
+  .replyChosen {
+    width: 960px;
+    margin: 0px auto;
+  }
+  .replyInputContainer {
+    width: 960px;
+    margin: 0px auto;
+    margin-bottom: 20px;
+  }
+  .replyContainer {
+    width: 960px;
+    margin: 0px auto;
+  }
+  .articleLikeNum {
+    font-size: 24px;
+  }
+}

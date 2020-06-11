@@ -5,18 +5,16 @@
 @import "@{themes}/variable.less";
 
 //article
-.articleContainer{width:100%; background-color: white; padding: 10px; word-break:break-all; margin-bottom: @marginbottom-mbl; min-height: 500px;.section-border();}
+.articleContainer{width:100%; background-color: white; padding: 0px 10px; word-break:break-all; margin-bottom: @marginbottom-mbl; min-height: 600px;.section-border();}
+
 //article - .articleInfo, .articleThumb, .articleContent, .articleLike
-.articleInfo{width: 100%; min-height: 120px; padding-top: 15px;}
+.articleInfo{width: 100%; padding: 30px 0px;}
 .articleThumb{width: 100%; .top-border(); padding: 20px 0px;}
-.articleContent{width:100%; padding-top: 5px; text-align: justify; .top-border(); overflow-x:hidden;}
+.articleContent{width:100%; padding: 10px 0px; text-align: justify; .top-border(); overflow-x:hidden;}
 
-.articleDl{width:100%; margin-bottom: 20px;}
-
-.replySubmit{.button(); margin-top: 20px;}
+.articleDl{width:100%;}
 
 /*for bigger windows*/
 @media(min-width:@min-width){
-
-
+    .articleContainer{width:80%; margin: 0px auto; margin-bottom: @marginbottom-com;}
 }

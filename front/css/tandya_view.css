@@ -3,9 +3,9 @@
   border-top: 1px solid darkgray;
   border-bottom: 1px solid darkgray;
 }
-.small-button {
-  width: 50%;
-  height: 45px;
+.button {
+  width: 100%;
+  height: 40px;
   font-size: 14px;
   color: white;
   background-color: #0f4c81;
@@ -13,17 +13,7 @@
   line-height: 40px;
   text-decoration: none;
   border-style: none;
-}
-.button {
-  width: 100%;
-  height: 45px;
-  font-size: 16px;
-  color: white;
-  background-color: #0f4c81;
-  text-align: center;
-  line-height: 40px;
-  text-decoration: none;
-  border-style: none;
+  display: block;
 }
 .li-border {
   border: 1px solid #5781a6;
@@ -37,11 +27,6 @@
 }
 .right-border {
   border-right: 1px solid lightgray;
-}
-.articleTitleDt {
-  font-size: 22px;
-  margin-bottom: 10px;
-  color: #0f4c81;
 }
 .answerUl {
   width: 100%;
@@ -99,15 +84,15 @@
   border: none;
 }
 .replyInputLink {
-  display: block;
   width: 100%;
-  height: 45px;
-  font-size: 16px;
+  height: 40px;
+  font-size: 14px;
   color: white;
   background-color: #0f4c81;
   text-align: center;
   line-height: 40px;
   border-style: none;
+  display: block;
   text-decoration: none;
 }
 .answerUl .replyLi {

@@ -1,6 +1,7 @@
 let idAuth = 0;
 let mailAuth = 0;
 let sex = 0;
+let id = true;
 
 window.onload = () => {
     const userEmail = document.getElementById('email');
@@ -12,44 +13,39 @@ window.onload = () => {
 
     idButton.addEventListener('click', function(){
         idpw.setAttribute('value', 'id');
+        id = true;
         while ( idDiv.hasChildNodes() ) { idDiv.removeChild( idDiv.firstChild ); }
     });
 
     pwButton.addEventListener('click', function(){
-        idpw.setAttribute('value', 'pw');
-        const idInput = document.createElement('input');
-        idInput.type = 'text';
-        idInput.id = 'u_id';
-        idInput.name = 'u_id';
-        idInput.placeholder = 'Your Id';
-        const idInfo = document.createElement('span');
-        idInfo.id = 'idInfo';
-        idInfo.className = 'registerInfo';
-        idInfo.innerHTML = '30/30';
-        idDiv.appendChild(idInput);
-        idDiv.appendChild(idInfo);
-        idInput.addEventListener('keydown', function () {
-            let count = 30;
-            count -= idInput.value.length;
-            idInfo.innerHTML = count + '/30';
-            if(idInput.value.length > 30){
-                idInput.setAttribute('onkeypress', 'return false');
-            }
-        });
-
-        idInput.addEventListener('focusout', function () {
-            const data = {};
-            data.type = 'id';
-            data.data = idInput.value;
-            if (idValidityCheck(idInput.value)) {
-                appearCheck(idInput);
-                idInfo.innerHTML = '';
-                idAuth = 1;
-            } else {
-                appearCross(idInput);
-                idInfo.innerHTML = 'this ID does not exist';
-            }
-        });
+        if(id){
+            id = !id;
+            idpw.setAttribute('value', 'pw');
+            const idInput = document.createElement('input');
+            idInput.type = 'text';
+            idInput.id = 'u_id';
+            idInput.name = 'u_id';
+            idInput.placeholder = 'Your Id';
+            const idInfo = document.createElement('span');
+            idInfo.id = 'idInfo';
+            idInfo.className = 'registerInfo';
+            idInfo.innerHTML = '30/30';
+            idDiv.appendChild(idInput);
+            idDiv.appendChild(idInfo);
+            idInput.addEventListener('focusout', function () {
+                const data = {};
+                data.type = 'id';
+                data.data = idInput.value;
+                if (idValidityCheck(idInput.value)) {
+                    appearCheck(idInput);
+                    idInfo.innerHTML = '';
+                    idAuth = 1;
+                } else {
+                    appearCross(idInput);
+                    idInfo.innerHTML = 'this ID does not exist';
+                }
+            });
+        }
     });
 
     userEmail.addEventListener('focusout', function () {
