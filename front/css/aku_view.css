@@ -32,29 +32,25 @@
   width: 30%;
   display: inline-block;
 }
-.userStat p {
-  font-size: 18px;
-  line-height: 30px;
-  box-sizing: border-box;
-}
 .userlikeStat {
   width: 100%;
   padding: 5px;
   text-align: center;
+  margin: 0px auto;
+  display: block;
 }
 .userlikeStat:nth-child(2) {
   border-top: 1px solid lightgray;
+}
+.likeSpan {
+  width: 30%;
+  display: inline-block;
 }
 .userlikeStat .likeSpan:first-child {
   border-right: 1px solid lightgray;
 }
 .userlikeStat .likeSpan:nth-child(2) {
   border-right: 1px solid lightgray;
-}
-.userlikeStat {
-  width: 30%;
-  display: inline-block;
-  text-align: center;
 }
 .likeHeading {
   margin-bottom: 5px;
