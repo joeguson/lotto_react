@@ -6,18 +6,20 @@
 
 //b-dialog - .dialogForm(dialog), .dialogContentArea(div), .dialogButtonArea(div
 
-.dialogForm{width: 50%; margin: 0px auto; padding: 10px; .li-border();}
+.dialogForm{width: 90%; margin: 0px auto; padding: 10px; .li-border();}
 .dialogContentArea{width:100%; margin-bottom: 10px;}
-.dialogButtonArea{width:100%; height: 40px; text-align: center; padding: 5px;}
-.dialogButton{width: 50%; height: 30px; background-color: @main; font-size: 12px; color:white;}
+.dialogButtonArea{width:100%; height: 40px; text-align: center; padding: 5px; margin-bottom: 5px;}
 
-
-.dialogInput{display: block; width:100%; .li-border();}
+.dialogInput{display: block; width:100%; .li-border(); height:40px; font-size: 14px; padding: 5px;}
+.dialogButton{width: 45%; height: 40px; background-color: @main; font-size: 12px; color:white; border-style: none;}
+.dialogButton:first-child{margin-right: 5px;}
 
 //youtublog
 .youtublogContainer{width:100%;}
 .youtublogIframe{width:100%;}
-.youtublogPlusTimeButton{width: 20px; height:20px; background-color: @main; font-size: 12px; color:white;}
-.youtublogTimeInput{width:10%; font-size: 12px; text-align: center; box-sizing: border-box; .li-border(); margin: 0px;}
-.youtublogDescriptionInput{width:70%; font-size: 12px; text-align: center;box-sizing: border-box; .li-border(); margin: 0px;}
-.youtublogMinusTimeButton{width: 5%; background-color: @main; font-size: 12px; color:white; vertical-align: middle;}
+.youtublogPlusTimeButton{width: 20px; height:20px; background-color: @main; font-size: 12px; color:white; border:none;}
+
+.youtublogTimeInput{width:10%; height:25px; font-size: 14px; text-align: center; .li-border(); margin: 0px; padding: 3px;}
+.youtublogDescriptionInput{width:70%;  height:25px; font-size: 12px; text-align: center;.li-border(); margin: 0px; padding: 3px;}
+
+.youtublogMinusTimeButton{width: 5%; background-color: @main; font-size: 12px; color:white; vertical-align: middle; border:none;}

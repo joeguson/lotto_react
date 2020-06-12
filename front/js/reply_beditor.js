@@ -23,8 +23,10 @@ function commonStart(target){
 
     let req = {};
     req.content = content;
+    req.articleType = location.pathname.split('/')[1];
     req.type = target.name;
-    req.articleId = location.pathname.split('/')[4];
+    req.articleId = location.pathname.split('/')[2];
+
 
     preFinalPost(target.name, submitType, content, req, finalPost);
 
@@ -40,7 +42,7 @@ function finalPost(type, body) {
         postUrl += body.articleId;
         makeRequest('POST', postUrl, body)
             .then((res) => {
-                window.location.href = location.origin + '/'+body.type + '/'+body.articleId;
+                window.location.href = location.origin + '/'+body.articleType + '/'+body.articleId;
             });
     }
     else{
@@ -48,7 +50,7 @@ function finalPost(type, body) {
         makeRequest('PUT', postUrl, body)
             .then(res => {
                 const id = JSON.parse(res.toString()).id;
-                window.location.href = location.origin + '/'+body.type + '/'+body.articleId;
+                window.location.href = location.origin + '/'+body.articleType + '/'+body.articleId;
             });
     }
 }
