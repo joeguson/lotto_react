@@ -2,7 +2,6 @@ class BeritamusLink extends HTMLElement {
     constructor() {
         super();
         this.src = null;
-        this.img = null;
     }
 
     connectedCallback() {
@@ -14,9 +13,14 @@ class BeritamusLink extends HTMLElement {
         const ogData = this.src;
         const linkDiv = document.createElement("div");
         linkDiv.className = "linkDiv";
-        linkDiv.appendChild(this.__buildImage());
-        linkDiv.appendChild(this.__buildTitle());
-        linkDiv.appendChild(this.__buildDesc());
+        if(ogData.img) linkDiv.appendChild(this.__buildImage());
+
+        const linkContent = document.createElement('div');
+        linkContent.className = 'linkContent';
+        linkContent.appendChild(this.__buildTitle());
+        linkContent.appendChild(this.__buildDesc());
+
+        linkDiv.appendChild(linkContent);
         linkDiv.style.textAlign = "center";
         linkDiv.setAttribute("onclick", `window.open('${ogData.url}')`);
         this.appendChild(linkDiv);
@@ -25,15 +29,14 @@ class BeritamusLink extends HTMLElement {
     __buildImage() {
         const linkImg = document.createElement('img');
         linkImg.className = "linkImg";
-        if(this.src.img){
-            linkImg.src = this.src.img;
-        }
+        linkImg.src = this.src.img;
         return linkImg;
     }
 
     __buildTitle() {
         const titleDiv = document.createElement('div');
         titleDiv.className = "linkTitle";
+        titleDiv.style.backgroundColor = 'white';
         if(this.src.title) {
             titleDiv.innerHTML = this.src.title;
         }

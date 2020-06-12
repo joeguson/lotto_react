@@ -20,7 +20,7 @@ route.get('/:penobrol_no', function (req, res, next) {
     const checkId = /^[0-9]+$/;
     if(checkId.test(id)){
         articleService.getFullArticleById(id, req.session.id2, 'penobrol').then(result => {
-            if (!result) res.redirect('/penobrol/'); // 결과가 없으면 홈으로 이동
+            if (!result) res.redirect('/penobrol'); // 결과가 없으면 홈으로 이동
             else articleService.updateViewArticle(result.id, 'penobrol').then(() => // 받아왔으면 조회수 증가 후 페이지 표시
                 res.render('./layouts/article_view_layouts/p-view', {
                     topic: result,

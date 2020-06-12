@@ -23,18 +23,9 @@ exports.getCariFrontArticle = async function(type){
     return await serviceUtil.__articleFrontParseSupplement(temp, type);
 };
 
-const getFrontArticleFunctions = {
-    penobrol: [penobrolDao.penobrolByScore, penobrolDao.penobrolByDate],
-    tandya: [tandyaDao.tandyaByScore, tandyaDao.tandyaByDate],
-    youtublog: [youtublogDao.youtublogByScore, youtublogDao.youtublogByDate]
-};
-
 exports.getFrontArticle = async function(type){
     //2개의 쿼리를 실행하므로 flatten 함수 필요
-    let results = serviceUtil.flatten(await Promise.all([
-        getFrontArticleFunctions[type][0](),
-        getFrontArticleFunctions[type][1]()
-    ]));
+    let results = await getCariFrontArticleFunctions[type]();
     return await serviceUtil.__articleFrontParseSupplement(results, type);
 };
 
