@@ -7,10 +7,11 @@ block userInfo
     +userInfo(false, u_id, follower, following)
 
 block userStat
-    if(follow)
-        button(type="submit" id="followId" class='followButton') UNFOLLOW
-    else
-        button(type="submit" id="followId" class='followButton') FOLLOW
+    if(id2)
+        if(follow)
+            button(type="submit" id="followId" class='followButton') UNFOLLOW
+        else
+            button(type="submit" id="followId" class='followButton') FOLLOW
 
 block userPenobrol
     +userArticle('penobrol', penobrols)
