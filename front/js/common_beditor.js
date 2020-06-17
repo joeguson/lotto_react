@@ -1,7 +1,7 @@
 /* ===== Image functions ===== */
 // replace image tag src into uploaded file
 function replace(content, id, filename, index = 0) {
-    filename = "https://beritamus.s3-ap-southeast-1.amazonaws.com/images/" + filename;
+    filename = "https://beablion.s3-ap-southeast-1.amazonaws.com/images/" + filename;
     var s = 0, e = 0;
     while (true) {
         const imgIndex = content.indexOf('<img', index);

@@ -14,7 +14,7 @@ const transporter = nodeMailer.createTransport({
 });
 
 let mailOptions = {
-    from: 'admin@beritamus.com'
+    from: 'no-reply@beablion.com'
 };
 
 //login
@@ -119,12 +119,12 @@ exports.checkUserDataExists = async function(type, data) {
 exports.postUser = async function(host, u_id, u_pw, birthday, u_sex,  u_email, code){
     await userDao.insertUserInfo(u_id, u_pw, birthday, u_sex, u_email, code);
     mailOptions.to = u_email;
-    mailOptions.subject = 'Email Verification from Beritamus';
+    mailOptions.subject = 'Email Verification from Beablion';
     mailOptions.html = `
-        <p>Welcome To Beritamus!</p>
+        <p>Welcome To Beablion!</p>
         <p>Selamat Datang!</p>
         <p>Please button below</p>
-        <a href="http://${host}/aku/login/?email=${u_email}&code=${code}">Enter Beritamus!</a>
+        <a href="http://${host}/aku/login/?email=${u_email}&code=${code}">Enter Beablion!</a>
     `;
     deliverMail(mailOptions);
 };
@@ -138,7 +138,7 @@ exports.findUserInfo = async function(u_id, birthday, u_sex,  u_email){
     let check = await userDao.userBasicInfoByEmail(u_email);
     mailOptions.to = u_email;
     if(u_id){ //pw를 찾을때
-        mailOptions.subject = 'Your new password for beritamus.com';
+        mailOptions.subject = 'Your new password for Beablion.com';
         if(check[0].u_bday === birthday && check[0].sex === u_sex && check[0].u_id === u_id){
             let tempPw = jsForBack.pwMaker();
             await userDao.updateUserPw(tempPw, u_id);
@@ -157,10 +157,10 @@ exports.findUserInfo = async function(u_id, birthday, u_sex,  u_email){
         }
     }
     else{ //id를 찾을때
-        mailOptions.subject = 'Your id information for Beritamus';
+        mailOptions.subject = 'Your id information for Beablion';
         if(check[0].u_bday === birthday && check[0].sex === u_sex){
             mailOptions.html = `
-                <p>Below is your id for beritamus.com</p>
+                <p>Below is your id for Beablion.com</p>
                 <h2>${check[0].u_id}</h2>
             `;
         }

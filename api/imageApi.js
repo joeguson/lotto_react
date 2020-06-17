@@ -60,7 +60,7 @@ route.post('/', (req, res) => {
 
 function saveImage(path, filename, data, callback) {
     const params = {
-        'Bucket':'beritamus',
+        'Bucket':'beablion',
         'Key': path + "/" + filename,
         'ACL':'public-read',
         'ContentEncoding': 'base64',
@@ -71,7 +71,7 @@ function saveImage(path, filename, data, callback) {
 
 function deleteImage(path, filename, callback) {
     const params = {
-        'Bucket':'beritamus',
+        'Bucket':'beablion',
         'Key': path + "/" + filename,
     };
     s3.deleteObject(params, callback);

@@ -27,7 +27,7 @@ exports.getImage = function(contentString){
     if(imgIndex == -1 || srcIndex == -1 || endIndex == -1) return null;
 
     returnObj.src = contentString.substring(srcIndex + 5, endIndex);
-    if(returnObj.src.indexOf('beritamus', 0) != -1){
+    if(returnObj.src.indexOf('beablion', 0) != -1){
         returnObj.src = returnObj.src.substring(0, returnObj.src.indexOf('images/')+6)+ '/thumbnail'+returnObj.src.substring(returnObj.src.indexOf('images/')+6, endIndex);
     }
     return returnObj;
@@ -43,7 +43,6 @@ exports.getYoutube = function(contentString){
 
     returnObj.src = contentString.substring(srcIndex + 5, endIndex);
     //openGraph를 통해 image 가져오기
-    console.log(returnObj.src);
     returnObj.src = returnObj.src.substring(0, returnObj.src.indexOf('images/')+6)+ '/thumbnail'+returnObj.src.substring(returnObj.src.indexOf('images/')+6, endIndex);
     return returnObj;
 };
