@@ -28,9 +28,9 @@ body{width:100%; height:100%; margin:0px; padding:0px; background-color: @bgcolo
 //.container - header .submain .main
 header{width: 100%; font-size: @header-text-size; height:100px; text-align: center; background-color: white; padding: 10px 0px;}
 
-.sub-main{width:100%; background-color: @bgcolor1; margin:0px auto 10px auto; max-width: 1080px;}
+.sub-main{width:100%; background-color: @bgcolor1; margin:0px auto 10px auto; max-width: @max-width;}
 
-.main{width:100%; margin:0px auto 10px auto; max-width: 1080px;}
+.main{width:100%; margin:0px auto 10px auto; max-width: @max-width;}
 
 //header - a span
 header a{color:@main; text-decoration: none; font-family: @font-family2;}
@@ -56,4 +56,7 @@ header span{font-size:15px; line-height: 15px; display: block; text-align: cente
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@media (min-width:@min-width){  
 }

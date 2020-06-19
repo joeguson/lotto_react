@@ -80,6 +80,20 @@
   line-height: 40px;
   text-decoration: none;
   border-style: none;
+  max-width: 540px;
+  margin: 0 auto;
+  display: block;
+}
+.followButton {
+  width: 100%;
+  height: 40px;
+  font-size: 14px;
+  color: white;
+  background-color: #0f4c81;
+  text-align: center;
+  line-height: 40px;
+  text-decoration: none;
+  border-style: none;
   display: block;
 }
 /*for bigger windows*/

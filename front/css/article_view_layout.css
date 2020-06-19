@@ -106,7 +106,6 @@
 /*for bigger windows*/
 @media (min-width: 960px) {
   .articleContainer {
-    width: 960px;
     margin: 0px auto;
     margin-bottom: 20px;
   }

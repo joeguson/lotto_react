@@ -86,12 +86,12 @@ header {
   width: 100%;
   background-color: #ebedf2;
   margin: 0px auto 10px auto;
-  max-width: 1080px;
+  max-width: 960px;
 }
 .main {
   width: 100%;
   margin: 0px auto 10px auto;
-  max-width: 1080px;
+  max-width: 960px;
 }
 header a {
   color: #0f4c81;

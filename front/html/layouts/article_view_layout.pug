@@ -135,19 +135,18 @@ block jscript
                     chosen_id: id
                 };
                 const url = '/api/article/chosen/' + target;
-                makeRequest('put', url, data).then(function(re){
-                    const replyChosen = document.getElementById('replyChosen');
-                    const result = JSON.parse(re);
-                    if(result.result === 'chosen'){ // choose라면 id를 가지고
-                        const chosenNew = document.getElementById('replyLi' + id);
-                        chosenNew.style.backgroundColor = "#f4f5f0";
-                        replyChosen.appendChild(chosenNew);
-                        alert("chosen");
-                    }
-                    else{ // cancel이라면
-                        const chosenCancel = document.getElementById('replyLi' + id);
-                        chosenCancel.style.backgroundColor = "white";
-                    }
+                makeRequest('put', url, data)
+                    .then(function(re){
+                        const result = JSON.parse(re);
+                        if(result.result === 'chosen'){ // choose라면 id를 가지고
+                            const chosenNew = document.getElementById('replyLi' + id);
+                            chosenNew.style.backgroundColor = "#f4f5f0";
+                            alert("chosen");
+                        }
+                        else{ // cancel이라면
+                            const chosenCancel = document.getElementById('replyLi' + id);
+                            chosenCancel.style.backgroundColor = "white";
+                        }
                     }).catch(function(res){
                         alert("fail");
                     })

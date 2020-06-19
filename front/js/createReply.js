@@ -7,20 +7,23 @@ window.addEventListener('load', function(){
             let newReply = {};
             const replyInput = document.getElementById('replyInput');
             const replyContent = replyInput.value;
-            const articleType = (location.pathname).split('/')[1];
-            const articleId = (location.pathname).split('/')[2];
-            let ajaxReplyLi = ajaxReply(replyContent);
-            newReply.type = articleType;
-            newReply.content = replyContent;
-            newReply.articleId = articleId;
-            makeRequest('POST', 'api/reply/'+articleId, newReply)
-                .then(result => {
-                    replyInput.value = '';
-                    const tempReply = document.getElementById(ajaxReplyLi);
-                    tempReply.remove();
-                    const parsedResult = JSON.parse(result);
-                    createReply(parsedResult.reply, parsedResult.type, parsedResult.userId);
-                });
+            if(replyInput.value){
+                const articleType = (location.pathname).split('/')[1];
+                const articleId = (location.pathname).split('/')[2];
+                let ajaxReplyLi = ajaxReply(replyContent);
+                newReply.type = articleType;
+                newReply.content = replyContent;
+                newReply.articleId = articleId;
+                makeRequest('POST', 'api/reply/'+articleId, newReply)
+                    .then(result => {
+                        replyInput.value = '';
+                        const tempReply = document.getElementById(ajaxReplyLi);
+                        tempReply.remove();
+                        const parsedResult = JSON.parse(result);
+                        createReply(parsedResult.reply, parsedResult.type, parsedResult.userId);
+                    });
+            }
+            else alert('must be longer than a word');
         };
     }
 });

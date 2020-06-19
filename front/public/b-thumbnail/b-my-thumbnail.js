@@ -34,12 +34,20 @@ class BeritamusMyThumbnail extends HTMLElement {
     __buildLike() {
         const likeDiv = document.createElement("div");
         const likeImg = document.createElement("img");
+        const likeNum = document.createElement("span");
+
         likeDiv.className = "thumbnailLikeDiv";
-        likeImg.className = "thumbnailLikeImg";
-        // TODO change the img
-        likeImg.src = this.src.likeCount ? 'icons/highlight_ed.png' : 'icons/highlight.png';
-        likeDiv.innerText = this.src.likeCount < 2 ? this.src.likeCount + ' highlight  ' : this.src.likeCount + ' highlights  ';
+        {
+            likeImg.className = "thumbnailLikeImg";
+            likeImg.src = this.src.likeCount ? 'icons/highlight_ed.png' : 'icons/highlight.png';
+            likeImg.style.height = '24px';
+
+            likeNum.style.marginLeft = '5px';
+            likeNum.innerHTML = this.src.likeCount;
+        }
         likeDiv.appendChild(likeImg);
+        likeDiv.appendChild(likeNum);
+
         return likeDiv;
     }
 

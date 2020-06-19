@@ -74,8 +74,3 @@
   display: block;
 }
 /*for bigger windows*/
-@media (min-width: 960px) {
-  .article {
-    width: 960px;
-  }
-}
