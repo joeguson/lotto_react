@@ -36,9 +36,9 @@ function parseImgTags(content) {
         // data
         const dataIndex = srcIndex + 5;
         // ">
-        const endIndex = content.indexOf('\">', imgIndex);
+        const endIndex = content.indexOf('\"', dataIndex);
         const data = content.substring(dataIndex, endIndex);
-        if(data.substring(0,4) != "http"){
+        if (data.substring(0,4) !== 'http') {
             posMaps[id] = {s: dataIndex, e: endIndex};
             imgMaps[id] = data;
             id++;
