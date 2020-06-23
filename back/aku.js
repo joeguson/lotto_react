@@ -83,6 +83,7 @@ route.get('/login', function(req, res){
 });
 
 route.post('/register', function(req, res){
+    console.log(req.headers.host);
     akuService.postUser(
         req.headers.host,
         req.body.u_id,
