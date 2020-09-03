@@ -1,0 +1,15 @@
+function getLottoCombination() {
+  const combinationSet = new Set();
+  while (combinationSet.size < 6) {
+    const num = Math.floor(Math.random() * 46);
+    if (num === 0) continue;
+    combinationSet.add(num);
+  }
+  const combinationArr = [...combinationSet].sort((a, b) => {
+    return a - b;
+  });
+  return combinationArr;
+}
+
+const c = getLottoCombination();
+console.log(c);

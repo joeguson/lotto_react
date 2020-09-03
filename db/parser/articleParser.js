@@ -3,8 +3,6 @@
  * All rights reserved.
  */
 
-const utils = require("../utils.js");
-
 function anonymouseMaker(username) {
     return username.substring(0, 3) + '****';
 }

@@ -4,7 +4,7 @@
  */
 
 const mysql = require('mysql');
-const b = require('../b');
+const b = require('../lotto');
 const pool = mysql.createPool(b.poolConfig);
 
 exports.doQuery = (query, args) => {
